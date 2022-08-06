@@ -1,5 +1,6 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/example/bloc/example_bloc.dart';
 import 'package:flutter_boilerplate/page/page.dart';
 import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: BlocProvider(
-          create: (context) => ExampleCubit(ExampleRepositoryImpl()),
+          create: (context) => ExampleBloc(ExampleRepositoryImpl()),
           child: Pages(),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

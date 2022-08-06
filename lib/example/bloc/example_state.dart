@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/bloc/base_state.dart';
 
 import '../data/example_model.dart';
 
 @immutable
-abstract class ExampleState {
+abstract class ExampleState implements BaseState {
   const ExampleState();
 }
 
