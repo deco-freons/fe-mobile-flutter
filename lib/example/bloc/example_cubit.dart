@@ -8,7 +8,7 @@ class ExampleCubit extends BaseCubit<ExampleState> {
 
   ExampleCubit(this._playerRepository) : super(const ExampleInitialState());
 
-  Future<void> getPlayer() async {
+  Future<void> healthcheck() async {
     emit(const ExampleLoadingState());
     final response = await _playerRepository.healthcheck();
     emit(ExampleFetchState(model: ExampleModel(message: response["message"])));

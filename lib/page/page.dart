@@ -48,7 +48,7 @@ class TextInputField extends StatelessWidget {
   
   void submit(BuildContext context) {
     final repo = context.read<ExampleCubit>();
-    repo.getPlayer();
+    repo.healthcheck();
   }
   
 }
