@@ -4,13 +4,13 @@ import 'package:flutter_boilerplate/example/data/example_model.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
 
 class ExampleCubit extends BaseCubit<ExampleState> {
-  final ExampleRepository _playerRepository;
+  final ExampleRepository _exampleRepository;
 
-  ExampleCubit(this._playerRepository) : super(const ExampleInitialState());
+  ExampleCubit(this._exampleRepository) : super(const ExampleInitialState());
 
   Future<void> healthcheck() async {
     emit(const ExampleLoadingState());
-    final response = await _playerRepository.healthcheck();
+    final response = await _exampleRepository.healthcheck();
     emit(ExampleFetchState(model: ExampleModel(message: response["message"])));
   }
 }
