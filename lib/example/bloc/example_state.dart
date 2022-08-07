@@ -16,9 +16,9 @@ class ExampleLoadingState extends ExampleState {
   const ExampleLoadingState();
 }
 
-class ExampleFetchState extends ExampleState {
+class ExampleSuccessState extends ExampleState {
   final ExampleModel model;
-  const ExampleFetchState({
+  const ExampleSuccessState({
     required this.model
   });
 }

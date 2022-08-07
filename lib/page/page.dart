@@ -18,7 +18,7 @@ class _PageState extends State<Pages> {
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: BlocBuilder<ExampleBloc, ExampleState>(
             builder: (context, state) {
-              if(state is ExampleFetchState) {
+              if(state is ExampleSuccessState) {
                 return Text(state.model.message);
               } else if(state is ExampleInitialState) {
                 return buildTextField();

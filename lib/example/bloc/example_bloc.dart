@@ -12,7 +12,7 @@ class ExampleBloc extends BaseBloc<ExampleEvent, ExampleState> {
     on<Healthcheck>((event, emit) async {
       emit(const ExampleLoadingState());
       final response = await _exampleRepository.healthcheck();
-      emit(ExampleFetchState(model: ExampleModel(message: response["message"])));
+      emit(ExampleSuccessState(model: ExampleModel(message: response["message"])));
     });
   }
 }

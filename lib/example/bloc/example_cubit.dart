@@ -11,6 +11,6 @@ class ExampleCubit extends BaseCubit<ExampleState> {
   Future<void> healthcheck() async {
     emit(const ExampleLoadingState());
     final response = await _exampleRepository.healthcheck();
-    emit(ExampleFetchState(model: ExampleModel(message: response["message"])));
+    emit(ExampleSuccessState(model: ExampleModel(message: response["message"])));
   }
 }

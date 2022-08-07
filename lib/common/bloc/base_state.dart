@@ -13,8 +13,8 @@ class BaseLoadingState extends BaseState {
   const BaseLoadingState();
 }
 
-class BaseFetchState extends BaseState {
-  const BaseFetchState();
+class BaseSuccessState extends BaseState {
+  const BaseSuccessState();
 }
 
 class BaseErrorState extends BaseState {
