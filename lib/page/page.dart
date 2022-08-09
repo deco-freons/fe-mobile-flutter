@@ -14,20 +14,18 @@ class _PageState extends State<Pages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: BlocBuilder<ExampleBloc, ExampleState>(
-            builder: (context, state) {
-              if(state is ExampleSuccessState) {
-                return Text(state.model.message);
-              } else if(state is ExampleInitialState) {
-                return buildTextField();
-              } else {
-                return Container();
-              }
-        }),
-      )
-    );
+        body: Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: BlocBuilder<ExampleBloc, ExampleState>(builder: (context, state) {
+        if (state is ExampleSuccessState) {
+          return Text(state.model.message);
+        } else if (state is ExampleInitialState) {
+          return buildTextField();
+        } else {
+          return Container();
+        }
+      }),
+    ));
   }
 
   Widget buildTextField() {
@@ -47,11 +45,10 @@ class TextInputField extends StatelessWidget {
       ),
     );
   }
-  
+
   void submit(BuildContext context) {
     final example = context.read<ExampleBloc>();
     example.add(const Healthcheck());
     // example.healthcheck();
   }
-  
 }
