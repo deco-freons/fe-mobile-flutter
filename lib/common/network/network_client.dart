@@ -31,7 +31,7 @@ class NetworkClient {
       dio.options.headers['content-type'] = 'application/json';
       if (authorized) {
         dio.options.headers['Authorization'] =
-      "Bearer ${sharedPreferences.getString('token')}";
+            "Bearer ${sharedPreferences.getString('token')}";
       }
 
       final response = await dio.request(
@@ -39,7 +39,6 @@ class NetworkClient {
         data: formData ? FormData.fromMap(body) : json.encode(body),
       );
       responseData = _response(response);
-
     } on BadRequestException {
       throw BadRequestException();
     } on ForbiddenException {
@@ -59,16 +58,25 @@ class NetworkClient {
   }
 
   dynamic _response(Response response) {
-    switch(response.statusCode) {
-      case 200: return response.data;
-      case 201: return response.data;
-      case 400: throw BadRequestException();
-      case 401: throw UnauthorizedException();
-      case 403: throw ForbiddenException();
-      case 404: throw NotFoundException();
-      case 405: throw MethodNotAllowedException();
-      case 500: throw InternalServerErrorException(response.data.toString());
-      default: throw InternalServerErrorException();
+    switch (response.statusCode) {
+      case 200:
+        return response.data;
+      case 201:
+        return response.data;
+      case 400:
+        throw BadRequestException();
+      case 401:
+        throw UnauthorizedException();
+      case 403:
+        throw ForbiddenException();
+      case 404:
+        throw NotFoundException();
+      case 405:
+        throw MethodNotAllowedException();
+      case 500:
+        throw InternalServerErrorException(response.data.toString());
+      default:
+        throw InternalServerErrorException();
     }
   }
 
@@ -79,8 +87,13 @@ class NetworkClient {
     bool authorized = false,
   }) async {
     try {
-      return _request(path: path, method: "GET", body: body, formData: formData, authorized: authorized);
-    } catch(e) {
+      return _request(
+          path: path,
+          method: "GET",
+          body: body,
+          formData: formData,
+          authorized: authorized);
+    } catch (e) {
       rethrow;
     }
   }
@@ -92,8 +105,13 @@ class NetworkClient {
     bool authorized = false,
   }) async {
     try {
-      return _request(path: path, method: "POST", body: body, formData: formData, authorized: authorized);
-    } catch(e) {
+      return _request(
+          path: path,
+          method: "POST",
+          body: body,
+          formData: formData,
+          authorized: authorized);
+    } catch (e) {
       rethrow;
     }
   }
@@ -105,8 +123,13 @@ class NetworkClient {
     bool authorized = false,
   }) async {
     try {
-      return _request(path: path, method: "PUT", body: body, formData: formData, authorized: authorized);
-    } catch(e) {
+      return _request(
+          path: path,
+          method: "PUT",
+          body: body,
+          formData: formData,
+          authorized: authorized);
+    } catch (e) {
       rethrow;
     }
   }
@@ -118,8 +141,13 @@ class NetworkClient {
     bool authorized = false,
   }) async {
     try {
-      return _request(path: path, method: "PATCH", body: body, formData: formData, authorized: authorized);
-    } catch(e) {
+      return _request(
+          path: path,
+          method: "PATCH",
+          body: body,
+          formData: formData,
+          authorized: authorized);
+    } catch (e) {
       rethrow;
     }
   }
@@ -131,8 +159,13 @@ class NetworkClient {
     bool authorized = false,
   }) async {
     try {
-      return _request(path: path, method: "DELETE", body: body, formData: formData, authorized: authorized);
-    } catch(e) {
+      return _request(
+          path: path,
+          method: "DELETE",
+          body: body,
+          formData: formData,
+          authorized: authorized);
+    } catch (e) {
       rethrow;
     }
   }
