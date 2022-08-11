@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_boilerplate/auth/bloc/register/register_cubit.dart';
-// import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
-// import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
-// import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
-import 'package:flutter_boilerplate/example/bloc/example_bloc.dart';
 import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
-import 'package:flutter_boilerplate/example/bloc/example_event.dart';
 import 'package:flutter_boilerplate/example/bloc/example_state.dart';
 import 'package:flutter_boilerplate/example/data/example_model.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
@@ -80,7 +74,7 @@ class RegisterForm extends StatelessWidget {
       bottomText: 'Already have an account?',
       textButton: "Sign In",
       submitHandler: () {
-        ExampleModel data = ExampleModel(message: 'fullName');
+        ExampleModel data = ExampleModel(message: "fullname");
         submit(context, data);
       },
     );
@@ -88,8 +82,6 @@ class RegisterForm extends StatelessWidget {
 
   void submit(BuildContext context, ExampleModel data) {
     final cubit = context.read<ExampleCubit>();
-    // cubit.add(const Healthcheck());
-    // cubit.register(data);
     cubit.healthcheck();
   }
 }
