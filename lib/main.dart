@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/config/route_generator.dart';
 import 'package:flutter_boilerplate/example/bloc/example_bloc.dart';
 import 'package:flutter_boilerplate/page/page.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: CustomTheme.theme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

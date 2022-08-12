@@ -9,6 +9,7 @@ import '../common/components/form_component.dart';
 
 class Pages extends StatefulWidget {
   const Pages({Key? key}) : super(key: key);
+  static const routeName = '/page';
 
   @override
   _PageState createState() => _PageState();
