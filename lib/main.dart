@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: BlocProvider(
         create: (context) => ExampleBloc(ExampleRepositoryImpl()),
-        child: Pages(),
+        child: const Pages(),
       ),
     );
   }
