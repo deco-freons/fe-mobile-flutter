@@ -6,6 +6,7 @@ import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
 import 'package:flutter_boilerplate/example/bloc/example_state.dart';
 import 'package:flutter_boilerplate/example/data/example_model.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
+import 'package:flutter_boilerplate/common/config/type.dart';
 
 class Pages extends StatefulWidget {
   const Pages({Key? key}) : super(key: key);

@@ -1,5 +1,6 @@
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
+import 'package:flutter_boilerplate/common/config/type.dart';
 
 class RegisterFormInputs {
   static List<CustomFormInput> inputList = [
