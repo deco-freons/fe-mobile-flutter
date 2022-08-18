@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
 import 'package:flutter_boilerplate/example/bloc/example_state.dart';
 import 'package:flutter_boilerplate/example/data/example_model.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
-
-import '../common/components/form_component.dart';
 
 class Pages extends StatefulWidget {
   const Pages({Key? key}) : super(key: key);
@@ -61,21 +61,25 @@ class _PageState extends State<Pages> {
 class RegisterForm extends StatelessWidget {
   RegisterForm({Key? key}) : super(key: key);
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final CustomFormInput name =
+      CustomFormInput(label: 'First Name', type: "string");
+  final CustomFormInput email =
+      CustomFormInput(label: 'Email', type: "string", errorMessage: "error");
+  final CustomFormInput password = CustomFormInput(
+      label: 'Password', type: "password", errorMessage: "error");
+  final CustomFormInput date =
+      CustomFormInput(label: 'Birth Date', type: "date", errorMessage: "error");
 
   @override
   Widget build(BuildContext context) {
     return CustomForm(
       title: 'Sign Up',
-      fieldTitles: const ['Full Name', 'Email', 'Password'],
-      controllers: [nameController, emailController, passwordController],
+      inputs: [name, email, password, date],
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
       textButton: "Sign In",
       submitHandler: () {
-        ExampleModel data = ExampleModel(message: "fullname");
+        ExampleModel data = ExampleModel(message: 'fullName');
         submit(context, data);
       },
     );

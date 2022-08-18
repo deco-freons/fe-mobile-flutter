@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/components/custom_button.dart';
-import 'package:flutter_boilerplate/common/components/custom_text_button.dart';
-import 'package:flutter_boilerplate/common/components/custom_text_field.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_text_field.dart';
 
 class CustomForm extends StatefulWidget {
   final String title;
-  final List<String> fieldTitles;
-  final List<TextEditingController> controllers;
+  final List<CustomFormInput> inputs;
   final String submitTitle;
   final String bottomText;
   final String textButton;
@@ -16,8 +16,7 @@ class CustomForm extends StatefulWidget {
   const CustomForm(
       {Key? key,
       required this.title,
-      required this.fieldTitles,
-      required this.controllers,
+      required this.inputs,
       required this.submitTitle,
       required this.submitHandler,
       this.bottomText = "",
@@ -51,14 +50,13 @@ class _CustomFormState extends State<CustomForm> {
             ),
           ),
           SizedBox(
-            height: widget.fieldTitles.length * 109.0,
+            height: widget.inputs.length * 119.0,
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: widget.fieldTitles.length,
+              itemCount: widget.inputs.length,
               itemBuilder: (context, index) {
                 return CustomTextField(
-                  label: widget.fieldTitles[index],
-                  isPassword: widget.fieldTitles[index] == "Password",
+                  input: widget.inputs[index],
                 );
               },
             ),
