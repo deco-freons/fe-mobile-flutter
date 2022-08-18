@@ -4,8 +4,15 @@ import 'package:intl/intl.dart';
 
 class CustomDatePicker extends StatefulWidget {
   final CustomFormInput input;
+  final DateTime firstDate;
+  final DateTime lastDate;
 
-  const CustomDatePicker({Key? key, required this.input}) : super(key: key);
+  const CustomDatePicker({
+    Key? key,
+    required this.input,
+    required this.firstDate,
+    required this.lastDate,
+  }) : super(key: key);
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -18,8 +25,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2015),
-      lastDate: DateTime(2101),
+      firstDate: widget.firstDate,
+      lastDate: widget.lastDate,
     );
     if (picked != null) {
       setState(() {
