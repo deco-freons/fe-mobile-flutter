@@ -4,11 +4,12 @@ import '../../page/page.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    // ignore: unused_local_variable
     final args = settings.arguments;
 
     switch (settings.name) {
       case Pages.routeName:
-        return MaterialPageRoute(builder: (context) => Pages());
+        return MaterialPageRoute(builder: (context) => const Pages());
       default:
         return _errorRoute();
     }

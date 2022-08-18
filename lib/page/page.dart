@@ -12,7 +12,7 @@ class Pages extends StatefulWidget {
   static const routeName = '/page';
 
   @override
-  _PageState createState() => _PageState();
+  State<Pages> createState() => _PageState();
 }
 
 class _PageState extends State<Pages> {
