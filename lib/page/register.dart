@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/components/forms/register_form_inputs.dart';
 import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
 import 'package:flutter_boilerplate/example/bloc/example_state.dart';
 import 'package:flutter_boilerplate/example/data/example_model.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
-import 'package:flutter_boilerplate/common/config/enum.dart';
 
-class Pages extends StatefulWidget {
-  const Pages({Key? key}) : super(key: key);
-  static const routeName = '/page';
+class Register extends StatefulWidget {
+  const Register({Key? key}) : super(key: key);
+  static const routeName = '/register';
 
   @override
-  State<Pages> createState() => _PageState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _PageState extends State<Pages> {
+class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -51,7 +50,7 @@ class _PageState extends State<Pages> {
               ),
             );
           } else {
-            return RegisterForm();
+            return const RegisterForm();
           }
         }),
       ],
@@ -60,22 +59,13 @@ class _PageState extends State<Pages> {
 }
 
 class RegisterForm extends StatelessWidget {
-  RegisterForm({Key? key}) : super(key: key);
-
-  final CustomFormInput name =
-      CustomFormInput(label: 'First Name', type: Type.string);
-  final CustomFormInput email =
-      CustomFormInput(label: 'Email', type: Type.string, errorMessage: "error");
-  final CustomFormInput password = CustomFormInput(
-      label: 'Password', type: Type.password, errorMessage: "error");
-  final CustomFormInput date = CustomFormInput(
-      label: 'Birth Date', type: Type.date, errorMessage: "error");
+  const RegisterForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomForm(
       title: 'Sign Up',
-      inputs: [name, email, password, date],
+      inputs: RegisterFormInputs.inputList,
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
       textButton: "Sign In",

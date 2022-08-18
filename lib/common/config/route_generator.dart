@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../page/page.dart';
+import '../../page/register.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -10,6 +11,8 @@ class RouteGenerator {
     switch (settings.name) {
       case Pages.routeName:
         return MaterialPageRoute(builder: (context) => const Pages());
+      case Register.routeName:
+        return MaterialPageRoute(builder: (context) => const Register());
       default:
         return _errorRoute();
     }
