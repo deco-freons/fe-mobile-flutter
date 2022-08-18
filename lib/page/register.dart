@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
-import 'package:flutter_boilerplate/common/config/regex.dart';
+import 'package:flutter_boilerplate/common/components/forms/register_form_inputs.dart';
 import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
 import 'package:flutter_boilerplate/example/bloc/example_state.dart';
 import 'package:flutter_boilerplate/example/data/example_model.dart';
@@ -51,7 +50,7 @@ class _RegisterState extends State<Register> {
               ),
             );
           } else {
-            return RegisterForm();
+            return const RegisterForm();
           }
         }),
       ],
@@ -60,30 +59,13 @@ class _RegisterState extends State<Register> {
 }
 
 class RegisterForm extends StatelessWidget {
-  RegisterForm({Key? key}) : super(key: key);
-
-  final CustomFormInput firstName =
-      CustomFormInput(label: 'First Name', type: "string");
-  final CustomFormInput lastName =
-      CustomFormInput(label: 'Last Name', type: "string");
-  final CustomFormInput email =
-      CustomFormInput(label: 'Email', type: "string", errorMessage: "error");
-  final CustomFormInput password = CustomFormInput(
-      label: 'Password',
-      type: "password",
-      pattern: passwordPattern,
-      errorMessage: "Password must be 8-20 character (including number)");
-  final CustomFormInput date = CustomFormInput(
-      label: 'Birth Date',
-      type: "date",
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now());
+  const RegisterForm({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomForm(
       title: 'Sign Up',
-      inputs: [firstName, lastName, email, password, date],
+      inputs: RegisterFormInputs.inputList,
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
       textButton: "Sign In",

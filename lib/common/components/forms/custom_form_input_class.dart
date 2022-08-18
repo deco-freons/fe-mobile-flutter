@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 
 class CustomFormInput {
   String label;
-  String type;
+  Type type;
   DateTime firstDate;
   DateTime lastDate;
   String pattern;
@@ -18,4 +18,10 @@ class CustomFormInput {
     this.errorMessage = "",
   })  : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101);
+}
+
+enum Type {
+  string,
+  password,
+  date,
 }

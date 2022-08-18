@@ -23,7 +23,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   .hasMatch(widget.input.controller.text) &&
               widget.input.errorMessage != ''
           ? true
-          : false; // Not done (need to implement regex)
+          : false;
     });
   }
 
@@ -47,7 +47,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 11.0),
-              child: widget.input.type == "date"
+              child: widget.input.type == Type.date
                   ? CustomDatePicker(
                       input: widget.input,
                       firstDate: widget.input.firstDate,
@@ -55,7 +55,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     )
                   : TextField(
                       controller: widget.input.controller,
-                      obscureText: widget.input.type == "password",
+                      obscureText: widget.input.type == Type.password,
                       style: const TextStyle(
                           fontSize: 16.0, height: 1, color: Colors.black),
                       decoration: InputDecoration(
