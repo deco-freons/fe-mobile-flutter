@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_boilerplate/common/config/type.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class CustomFormInput {
   String label;

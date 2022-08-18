@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
-import 'package:flutter_boilerplate/common/config/type.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class CustomTextField extends StatefulWidget {
   final CustomFormInput input;
