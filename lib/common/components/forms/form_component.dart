@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_text_field.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class CustomForm extends StatefulWidget {
   final String title;
@@ -12,6 +13,7 @@ class CustomForm extends StatefulWidget {
   final String textButton;
   final VoidCallback submitHandler;
   final bool hasForgotPassword;
+  final VoidCallback textButtonHandler;
 
   const CustomForm(
       {Key? key,
@@ -19,6 +21,7 @@ class CustomForm extends StatefulWidget {
       required this.inputs,
       required this.submitTitle,
       required this.submitHandler,
+      required this.textButtonHandler,
       this.bottomText = "",
       this.textButton = "",
       this.hasForgotPassword = false})
@@ -64,8 +67,12 @@ class _CustomFormState extends State<CustomForm> {
           if (widget.hasForgotPassword)
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
-                CustomTextButton(text: 'Forgot Password?', type: 'inverse'),
+              children: [
+                CustomTextButton(
+                  text: 'Forgot Password?',
+                  type: TextButtonType.tertiary,
+                  onPressedHandler: () {},
+                ),
               ],
             ),
           Padding(
@@ -73,7 +80,7 @@ class _CustomFormState extends State<CustomForm> {
                 EdgeInsets.only(top: widget.hasForgotPassword ? 0.0 : 45.0),
             child: CustomButton(
               label: widget.submitTitle,
-              type: 'primary',
+              type: ButtonType.primary,
               onPressedHandler: widget.submitHandler,
             ),
           ),
@@ -94,7 +101,10 @@ class _CustomFormState extends State<CustomForm> {
                   if (widget.textButton != '')
                     CustomTextButton(
                       text: widget.textButton,
-                      type: widget.bottomText == '' ? 'inverse' : 'primary',
+                      type: widget.bottomText == ''
+                          ? TextButtonType.tertiary
+                          : TextButtonType.primary,
+                      onPressedHandler: widget.textButtonHandler,
                     ),
                 ],
               ),
