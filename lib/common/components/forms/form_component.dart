@@ -12,6 +12,7 @@ class CustomForm extends StatefulWidget {
   final String textButton;
   final VoidCallback submitHandler;
   final bool hasForgotPassword;
+  final VoidCallback textButtonHandler;
 
   const CustomForm(
       {Key? key,
@@ -19,6 +20,7 @@ class CustomForm extends StatefulWidget {
       required this.inputs,
       required this.submitTitle,
       required this.submitHandler,
+      required this.textButtonHandler,
       this.bottomText = "",
       this.textButton = "",
       this.hasForgotPassword = false})
@@ -64,8 +66,12 @@ class _CustomFormState extends State<CustomForm> {
           if (widget.hasForgotPassword)
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: const [
-                CustomTextButton(text: 'Forgot Password?', type: 'inverse'),
+              children: [
+                CustomTextButton(
+                  text: 'Forgot Password?',
+                  type: 'inverse',
+                  onPressedHandler: widget.textButtonHandler,
+                ),
               ],
             ),
           Padding(
@@ -95,6 +101,7 @@ class _CustomFormState extends State<CustomForm> {
                     CustomTextButton(
                       text: widget.textButton,
                       type: widget.bottomText == '' ? 'inverse' : 'primary',
+                      onPressedHandler: widget.textButtonHandler,
                     ),
                 ],
               ),

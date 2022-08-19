@@ -83,6 +83,7 @@ class RegisterForm extends StatelessWidget {
         ExampleModel data = ExampleModel(message: 'fullName');
         submit(context, data);
       },
+      textButtonHandler: () {},
     );
   }
 

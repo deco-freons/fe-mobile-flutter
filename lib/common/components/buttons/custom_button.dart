@@ -4,12 +4,14 @@ class CustomButton extends StatefulWidget {
   final String label;
   final String type;
   final VoidCallback onPressedHandler;
+  final double cornerRadius;
 
   const CustomButton(
       {Key? key,
       required this.label,
       required this.type,
-      required this.onPressedHandler})
+      required this.onPressedHandler,
+      this.cornerRadius = 10.0})
       : super(key: key);
 
   @override
@@ -37,8 +39,9 @@ class _CustomButtonState extends State<CustomButton> {
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
           minimumSize: const Size.fromHeight(52),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.all(Radius.circular(widget.cornerRadius)),
           )),
       onPressed: widget.onPressedHandler,
       child: Text(
