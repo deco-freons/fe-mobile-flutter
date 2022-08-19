@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/config/route_generator.dart';
 import 'package:flutter_boilerplate/example/bloc/example_bloc.dart';
-import 'package:flutter_boilerplate/page/page.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
 
 import 'common/config/theme.dart';
@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: BlocProvider(
         create: (context) => ExampleBloc(ExampleRepositoryImpl()),
-        child: const Pages(),
+        child: const Landing(),
       ),
     );
   }

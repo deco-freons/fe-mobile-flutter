@@ -71,7 +71,7 @@ class _CustomFormState extends State<CustomForm> {
                 CustomTextButton(
                   text: 'Forgot Password?',
                   type: TextButtonType.tertiary,
-                  onPressedHandler: widget.textButtonHandler,
+                  onPressedHandler: () {},
                 ),
               ],
             ),
