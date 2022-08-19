@@ -63,13 +63,13 @@ class RegisterForm extends StatelessWidget {
   RegisterForm({Key? key}) : super(key: key);
 
   final CustomFormInput name =
-      CustomFormInput(label: 'First Name', type: Type.string);
-  final CustomFormInput email =
-      CustomFormInput(label: 'Email', type: Type.string, errorMessage: "error");
+      CustomFormInput(label: 'First Name', type: TextFieldType.string);
+  final CustomFormInput email = CustomFormInput(
+      label: 'Email', type: TextFieldType.string, errorMessage: "error");
   final CustomFormInput password = CustomFormInput(
-      label: 'Password', type: Type.password, errorMessage: "error");
+      label: 'Password', type: TextFieldType.password, errorMessage: "error");
   final CustomFormInput date = CustomFormInput(
-      label: 'Birth Date', type: Type.date, errorMessage: "error");
+      label: 'Birth Date', type: TextFieldType.date, errorMessage: "error");
 
   @override
   Widget build(BuildContext context) {

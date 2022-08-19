@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class CustomButton extends StatefulWidget {
   final String label;
-  final String type;
+  final ButtonType type;
   final VoidCallback onPressedHandler;
   final double cornerRadius;
 
@@ -32,10 +33,10 @@ class _CustomButtonState extends State<CustomButton> {
         }
       },
       style: ElevatedButton.styleFrom(
-          primary: widget.type == 'primary'
+          primary: widget.type == ButtonType.primary
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.secondary,
-          onPrimary: widget.type == 'primary'
+          onPrimary: widget.type == ButtonType.primary
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
           minimumSize: const Size.fromHeight(52),
@@ -47,7 +48,7 @@ class _CustomButtonState extends State<CustomButton> {
       child: Text(
         widget.label,
         style: TextStyle(
-          color: widget.type == 'primary'
+          color: widget.type == ButtonType.primary
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
           fontSize: 20.0,

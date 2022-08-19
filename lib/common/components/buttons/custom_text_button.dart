@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class CustomTextButton extends StatelessWidget {
   final String text;
-  final String type;
+  final TextButtonType type;
   final double fontSize;
+  final FontWeight textWeight;
   final VoidCallback onPressedHandler;
 
   const CustomTextButton(
       {Key? key,
       required this.text,
-      this.type = "primary",
+      this.type = TextButtonType.primary,
       this.fontSize = 14.0,
+      this.textWeight = FontWeight.bold,
       required this.onPressedHandler})
       : super(key: key);
 
@@ -25,12 +28,12 @@ class CustomTextButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-            color: type == 'primary'
+            color: type == TextButtonType.primary
                 ? Theme.of(context).colorScheme.primary
-                : type == 'secondary'
+                : type == TextButtonType.secondary
                     ? Theme.of(context).colorScheme.secondary
                     : Theme.of(context).colorScheme.tertiary,
-            fontWeight: FontWeight.bold,
+            fontWeight: textWeight,
             fontSize: fontSize),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
 import 'package:flutter_boilerplate/example/bloc/example_state.dart';
 import 'package:flutter_boilerplate/example/data/example_repository.dart';
@@ -95,7 +96,7 @@ class _LandingState extends State<Landing> {
                       const EdgeInsets.only(top: 56.0, right: 26.0, left: 26.0),
                   child: CustomButton(
                     label: 'Create account',
-                    type: 'secondary',
+                    type: ButtonType.inverse,
                     cornerRadius: 32.0,
                     onPressedHandler: () {
                       Navigator.pushNamed(context, Register.routeName);
@@ -106,8 +107,9 @@ class _LandingState extends State<Landing> {
                   padding: const EdgeInsets.only(top: 26.0, bottom: 54.0),
                   child: CustomTextButton(
                     text: 'Sign in',
-                    type: 'secondary',
+                    type: TextButtonType.secondary,
                     fontSize: 20.0,
+                    textWeight: FontWeight.normal,
                     onPressedHandler: () {
                       Navigator.pushNamed(context, Pages.routeName);
                     },

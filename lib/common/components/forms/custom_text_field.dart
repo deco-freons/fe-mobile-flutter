@@ -48,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 11.0),
-              child: widget.input.type == Type.date
+              child: widget.input.type == TextFieldType.date
                   ? CustomDatePicker(
                       input: widget.input,
                       firstDate: widget.input.firstDate,
@@ -56,7 +56,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     )
                   : TextField(
                       controller: widget.input.controller,
-                      obscureText: widget.input.type == Type.password,
+                      obscureText: widget.input.type == TextFieldType.password,
                       style: const TextStyle(
                           fontSize: 16.0, height: 1, color: Colors.black),
                       decoration: InputDecoration(
