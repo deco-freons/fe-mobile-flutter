@@ -4,8 +4,10 @@ import 'package:flutter_boilerplate/auth/bloc/register/register_cubit.dart';
 import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
 import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
 import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
-import 'package:flutter_boilerplate/common/components/forms/register_form_inputs.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/regex.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -50,7 +52,7 @@ class _RegisterState extends State<Register> {
               ),
             );
           } else {
-            return const RegisterForm();
+            return RegisterForm();
           }
         }),
       ],
@@ -59,23 +61,60 @@ class _RegisterState extends State<Register> {
 }
 
 class RegisterForm extends StatelessWidget {
-  const RegisterForm({Key? key}) : super(key: key);
+  RegisterForm({Key? key}) : super(key: key);
+
+  final CustomFormInput username = CustomFormInput(
+      label: 'Username',
+      type: TextFieldType.string,
+      pattern: usernamePattern,
+      errorMessage: "error");
+  final CustomFormInput firstName =
+      CustomFormInput(label: 'First Name', type: TextFieldType.string);
+  final CustomFormInput lastName =
+      CustomFormInput(label: 'Last Name', type: TextFieldType.string);
+  final CustomFormInput email = CustomFormInput(
+      label: 'Email', type: TextFieldType.string, errorMessage: "error");
+  final CustomFormInput password = CustomFormInput(
+      label: 'Password',
+      type: TextFieldType.password,
+      pattern: passwordPattern,
+      errorMessage: "Password must be 8-20 character (including number)");
+  late final CustomFormInput confirmPassword = CustomFormInput(
+      label: 'Confirm Password',
+      type: TextFieldType.password,
+      pattern: password.controller.text,
+      errorMessage: "Must be the same as Password");
+  final CustomFormInput birthDate = CustomFormInput(
+      label: 'Birth Date',
+      type: TextFieldType.date,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     return CustomForm(
       title: 'Sign Up',
-      inputs: RegisterFormInputs.inputList,
+      inputs: [
+        username,
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        birthDate
+      ],
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
       textButton: "Sign In",
       submitHandler: () {
         RegisterModel data = RegisterModel(
-            firstName: "",
-            lastName: "",
-            email: "",
-            password: "",
-            birthDate: DateTime.now());
+            username: username.controller.text,
+            firstName: firstName.controller.text,
+            lastName: lastName.controller.text,
+            email: email.controller.text,
+            password: password.controller.text,
+            confirmPassword: confirmPassword.controller.text,
+            birthDate: birthDate.controller.text);
         submit(context, data);
       },
       textButtonHandler: () {},

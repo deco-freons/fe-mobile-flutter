@@ -11,10 +11,7 @@ class RegisterCubit extends BaseCubit<RegisterState> {
   Future<void> register(RegisterModel data) async {
     try {
       emit(const RegisterLoadingState());
-      // final response = await _registerRepository.register(data);
       await _registerRepository.register(data);
-      // print(response);
-      // throw Error();
       emit(const RegisterSuccessState());
     } catch (e) {
       emit(const RegisterErrorState());

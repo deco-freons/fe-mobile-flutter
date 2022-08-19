@@ -3,6 +3,8 @@ import 'package:flutter_boilerplate/common/data/base_data_provider.dart';
 
 class RegisterDataProvider extends BaseDataProvider {
   Future<dynamic> register(RegisterModel data) async {
-    return super.networkClient.get(path: "/todos/1", body: {});
+    return await super
+        .networkClient
+        .post(path: "/auth/register", body: data.toJson());
   }
 }

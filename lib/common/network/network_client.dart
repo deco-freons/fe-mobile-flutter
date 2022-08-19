@@ -18,12 +18,13 @@ class NetworkClient {
     required String path,
     required String method,
     required Map<String, dynamic> body,
-    bool formData = true,
+    bool formData = false,
     bool authorized = false,
   }) async {
     dynamic responseData;
     try {
-      final url = env == "DEV" ? "http://localhost:8000" : "production";
+      final url =
+          env == "DEV" ? "https://deco-freons-be.devs.id" : "production";
       final uri = "$url$path";
       final sharedPreferences = await SharedPreferences.getInstance();
 
@@ -83,7 +84,7 @@ class NetworkClient {
   Future<dynamic> get({
     required String path,
     required Map<String, dynamic> body,
-    bool formData = true,
+    bool formData = false,
     bool authorized = false,
   }) async {
     try {
@@ -101,7 +102,7 @@ class NetworkClient {
   Future<dynamic> post({
     required String path,
     required Map<String, dynamic> body,
-    bool formData = true,
+    bool formData = false,
     bool authorized = false,
   }) async {
     try {
@@ -119,7 +120,7 @@ class NetworkClient {
   Future<dynamic> put({
     required String path,
     required Map<String, dynamic> body,
-    bool formData = true,
+    bool formData = false,
     bool authorized = false,
   }) async {
     try {
@@ -137,7 +138,7 @@ class NetworkClient {
   Future<dynamic> patch({
     required String path,
     required Map<String, dynamic> body,
-    bool formData = true,
+    bool formData = false,
     bool authorized = false,
   }) async {
     try {
@@ -155,7 +156,7 @@ class NetworkClient {
   Future<dynamic> delete({
     required String path,
     required Map<String, dynamic> body,
-    bool formData = true,
+    bool formData = false,
     bool authorized = false,
   }) async {
     try {
