@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/auth/bloc/register/register_cubit.dart';
+import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
+import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
+import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/components/forms/register_form_inputs.dart';
-import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
-import 'package:flutter_boilerplate/example/bloc/example_state.dart';
-import 'package:flutter_boilerplate/example/data/example_model.dart';
-import 'package:flutter_boilerplate/example/data/example_repository.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -19,7 +19,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ExampleCubit(ExampleRepositoryImpl()),
+      create: (context) => RegisterCubit(RegisterRepositoryImpl()),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
@@ -40,10 +40,10 @@ class _RegisterState extends State<Register> {
               child:
                   Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
         ),
-        BlocBuilder<ExampleCubit, ExampleState>(builder: (context, state) {
-          if (state is ExampleSuccessState) {
+        BlocBuilder<RegisterCubit, RegisterState>(builder: (context, state) {
+          if (state is RegisterSuccessState) {
             return const Text("success");
-          } else if (state is ExampleLoadingState) {
+          } else if (state is RegisterLoadingState) {
             return const Center(
               child: CircularProgressIndicator(
                 color: Colors.amber,
@@ -70,14 +70,19 @@ class RegisterForm extends StatelessWidget {
       bottomText: 'Already have an account?',
       textButton: "Sign In",
       submitHandler: () {
-        ExampleModel data = ExampleModel(message: 'fullName');
+        RegisterModel data = RegisterModel(
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: "",
+            birthDate: DateTime.now());
         submit(context, data);
       },
     );
   }
 
-  void submit(BuildContext context, ExampleModel data) {
-    final cubit = context.read<ExampleCubit>();
-    cubit.healthcheck();
+  void submit(BuildContext context, RegisterModel data) {
+    final cubit = context.read<RegisterCubit>();
+    cubit.register(data);
   }
 }
