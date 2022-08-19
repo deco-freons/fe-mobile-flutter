@@ -3,7 +3,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class CustomFormInput {
   String label;
-  Type type;
+  TextFieldType type;
   DateTime firstDate;
   DateTime lastDate;
   String pattern;

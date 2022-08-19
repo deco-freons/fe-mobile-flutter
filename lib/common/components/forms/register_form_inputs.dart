@@ -4,17 +4,18 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class RegisterFormInputs {
   static List<CustomFormInput> inputList = [
-    CustomFormInput(label: 'First Name', type: Type.string),
-    CustomFormInput(label: 'Last Name', type: Type.string),
-    CustomFormInput(label: 'Email', type: Type.string, errorMessage: "error"),
+    CustomFormInput(label: 'First Name', type: TextFieldType.string),
+    CustomFormInput(label: 'Last Name', type: TextFieldType.string),
+    CustomFormInput(
+        label: 'Email', type: TextFieldType.string, errorMessage: "error"),
     CustomFormInput(
         label: 'Password',
-        type: Type.password,
+        type: TextFieldType.password,
         pattern: passwordPattern,
         errorMessage: "Password must be 8-20 character (including number)"),
     CustomFormInput(
         label: 'Birth Date',
-        type: Type.date,
+        type: TextFieldType.date,
         firstDate: DateTime(1900),
         lastDate: DateTime.now())
   ];

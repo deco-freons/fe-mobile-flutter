@@ -78,6 +78,7 @@ class RegisterForm extends StatelessWidget {
             birthDate: DateTime.now());
         submit(context, data);
       },
+      textButtonHandler: () {},
     );
   }
 
