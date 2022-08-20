@@ -17,3 +17,13 @@ enum AuthStatus {
   authenticated,
   unauthenticated,
 }
+
+enum PrefButtonType {
+  gaming,
+  movie,
+  dancing,
+  culinary,
+  basketball,
+  nature,
+  football,
+}

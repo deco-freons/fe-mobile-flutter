@@ -10,6 +10,7 @@ import '../../page/register.dart';
 import '../../page/landing.dart';
 import '../../page/splash.dart';
 import '../../page/forget.dart';
+import '../../page/preference.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -36,6 +37,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const EditProfile());
       case Homepage.routeName:
         return MaterialPageRoute(builder: (context) => const Homepage());
+      case Preference.routeName:
+        return MaterialPageRoute(builder: (context) => const Preference());
       default:
         return _errorRoute();
     }
