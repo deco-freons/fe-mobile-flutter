@@ -17,6 +17,13 @@ class CustomTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<CustomTextField> {
   bool _error = false;
+  bool _obscured = true;
+
+  void toggleVisibility() {
+    setState(() {
+      _obscured = !_obscured;
+    });
+  }
 
   void validateField() {
     setState(() {
@@ -56,7 +63,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     )
                   : TextField(
                       controller: widget.input.controller,
-                      obscureText: widget.input.type == TextFieldType.password,
+                      obscureText: widget.input.type == TextFieldType.password
+                          ? _obscured
+                          : false,
                       style: const TextStyle(
                           fontSize: 16.0, height: 1, color: Colors.black),
                       decoration: InputDecoration(
@@ -84,7 +93,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           fillColor: Theme.of(context)
                               .colorScheme
                               .primary
-                              .withOpacity(0.21)),
+                              .withOpacity(0.21),
+                          suffixIcon: widget.input.type ==
+                                  TextFieldType.password
+                              ? _obscured
+                                  ? IconButton(
+                                      icon: const Icon(Icons.visibility_off),
+                                      onPressed: () {
+                                        toggleVisibility();
+                                      },
+                                    )
+                                  : IconButton(
+                                      icon: const Icon(Icons.visibility),
+                                      onPressed: () {
+                                        toggleVisibility();
+                                      },
+                                    )
+                              : null),
                       onChanged: (value) {
                         validateField();
                       },
