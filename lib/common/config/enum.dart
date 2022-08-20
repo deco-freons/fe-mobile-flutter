@@ -14,3 +14,13 @@ enum TextButtonType {
   secondary,
   tertiary,
 }
+
+enum PrefButtonType {
+  gaming,
+  movie,
+  dancing,
+  culinary,
+  basketball,
+  nature,
+  football,
+}
