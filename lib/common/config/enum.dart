@@ -14,3 +14,5 @@ enum TextButtonType {
   secondary,
   tertiary,
 }
+
+enum AuthStatus { unknown, authenticated, unauthenticated }

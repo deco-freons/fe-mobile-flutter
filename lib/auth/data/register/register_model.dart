@@ -26,4 +26,7 @@ class RegisterModel implements BaseModel {
       _$RegisterModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$RegisterModelToJson(this);
+
+  @override
+  List<Object?> get props => [];
 }
