@@ -68,6 +68,7 @@ flutter:
     - lib/common/assets/images/GlobeIconLarge.png
     - lib/common/assets/images/GlobeIconMedium.png
     - lib/common/assets/images/GlobeIconSmall.png
+    - lib/common/assets/images/EmailDelivered.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

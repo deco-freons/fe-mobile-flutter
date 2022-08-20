@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/page/email_confirmation.dart';
 
 import '../../page/register.dart';
 import '../../page/landing.dart';
@@ -11,6 +12,9 @@ class RouteGenerator {
     switch (settings.name) {
       case Register.routeName:
         return MaterialPageRoute(builder: (context) => const Register());
+      case EmailConfirmation.routeName:
+        return MaterialPageRoute(
+            builder: (context) => const EmailConfirmation());
       case Landing.routeName:
         return MaterialPageRoute(builder: (context) => const Landing());
       default:

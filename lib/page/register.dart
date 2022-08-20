@@ -8,6 +8,7 @@ import 'package:flutter_boilerplate/common/components/forms/custom_form_input_cl
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
+import 'package:flutter_boilerplate/page/email_confirmation.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -42,21 +43,26 @@ class _RegisterState extends State<Register> {
               child:
                   Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
         ),
-        BlocBuilder<RegisterCubit, RegisterState>(builder: (context, state) {
-          if (state is RegisterSuccessState) {
-            return const Text("success");
-          } else if (state is RegisterLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
-              ),
-            );
-          } else if (state is RegisterErrorState) {
-            return RegisterForm(errorMessage: state.error.message);
-          } else {
-            return RegisterForm();
-          }
-        }),
+        BlocConsumer<RegisterCubit, RegisterState>(
+          builder: (context, state) {
+            if (state is RegisterLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              );
+            } else if (state is RegisterErrorState) {
+              return RegisterForm(errorMessage: state.error.message);
+            } else {
+              return RegisterForm();
+            }
+          },
+          listener: (context, state) {
+            if (state is RegisterSuccessState) {
+              Navigator.pushNamed(context, EmailConfirmation.routeName);
+            }
+          },
+        ),
       ],
     );
   }
