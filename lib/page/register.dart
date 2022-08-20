@@ -51,6 +51,8 @@ class _RegisterState extends State<Register> {
                 color: Colors.amber,
               ),
             );
+          } else if (state is RegisterErrorState) {
+            return RegisterForm(errorMessage: state.error.message);
           } else {
             return RegisterForm();
           }
@@ -61,19 +63,26 @@ class _RegisterState extends State<Register> {
 }
 
 class RegisterForm extends StatelessWidget {
-  RegisterForm({Key? key}) : super(key: key);
+  final String errorMessage;
 
+  RegisterForm({Key? key, this.errorMessage = ""}) : super(key: key);
+
+  final CustomFormInput firstName =
+      CustomFormInput(label: 'First Name', type: TextFieldType.string);
+  final CustomFormInput lastName =
+      CustomFormInput(label: 'Last Name', type: TextFieldType.string);
   final CustomFormInput username = CustomFormInput(
       label: 'Username',
       type: TextFieldType.string,
       pattern: usernamePattern,
       errorMessage: "error");
-  final CustomFormInput firstName =
-      CustomFormInput(label: 'First Name', type: TextFieldType.string);
-  final CustomFormInput lastName =
-      CustomFormInput(label: 'Last Name', type: TextFieldType.string);
   final CustomFormInput email = CustomFormInput(
       label: 'Email', type: TextFieldType.string, errorMessage: "error");
+  final CustomFormInput birthDate = CustomFormInput(
+      label: 'Birth Date',
+      type: TextFieldType.date,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now());
   final CustomFormInput password = CustomFormInput(
       label: 'Password',
       type: TextFieldType.password,
@@ -84,24 +93,19 @@ class RegisterForm extends StatelessWidget {
       type: TextFieldType.password,
       pattern: password.controller.text,
       errorMessage: "Must be the same as Password");
-  final CustomFormInput birthDate = CustomFormInput(
-      label: 'Birth Date',
-      type: TextFieldType.date,
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now());
 
   @override
   Widget build(BuildContext context) {
     return CustomForm(
       title: 'Sign Up',
       inputs: [
-        username,
         firstName,
         lastName,
+        username,
         email,
+        birthDate,
         password,
         confirmPassword,
-        birthDate
       ],
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
@@ -118,6 +122,7 @@ class RegisterForm extends StatelessWidget {
         submit(context, data);
       },
       textButtonHandler: () {},
+      errorMessage: errorMessage,
     );
   }
 

@@ -14,6 +14,7 @@ class CustomForm extends StatefulWidget {
   final VoidCallback submitHandler;
   final bool hasForgotPassword;
   final VoidCallback textButtonHandler;
+  final String errorMessage;
 
   const CustomForm(
       {Key? key,
@@ -22,6 +23,7 @@ class CustomForm extends StatefulWidget {
       required this.submitTitle,
       required this.submitHandler,
       required this.textButtonHandler,
+      this.errorMessage = "",
       this.bottomText = "",
       this.textButton = "",
       this.hasForgotPassword = false})
@@ -52,6 +54,21 @@ class _CustomFormState extends State<CustomForm> {
               fontWeight: FontWeight.bold,
             ),
           ),
+          widget.errorMessage != ""
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 5.0),
+                  child: Text(
+                    widget.errorMessage,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0),
+                  ),
+                )
+              : const SizedBox(
+                  width: 0,
+                  height: 0,
+                ),
           SizedBox(
             height: widget.inputs.length * 119.0,
             child: ListView.builder(
