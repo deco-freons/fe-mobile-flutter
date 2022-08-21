@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/bloc/auth_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/page/login.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/register.dart';
 
 import 'common/config/route_generator.dart';
@@ -59,7 +59,7 @@ class _AppViewState extends State<AppView> {
                   Register.routeName, (route) => false);
             } else if (state is AuthUnauthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
-                  Login.routeName, (route) => false);
+                  Landing.routeName, (route) => false);
             }
           },
           child: child,

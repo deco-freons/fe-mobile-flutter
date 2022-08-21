@@ -43,9 +43,12 @@ class _LandingState extends State<Landing> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 87.0),
-          child: Center(
-              child:
-                  Image.asset('lib/common/assets/images/GlobeIconLarge.png')),
+          child: Hero(
+            tag: "Logo",
+            child: Center(
+                child: Image.asset(
+                    'lib/common/assets/images/GlobeIconMedium.png')),
+          ),
         ),
         Column(
           children: [

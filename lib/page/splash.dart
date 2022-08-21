@@ -12,8 +12,14 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Image.asset('lib/common/assets/images/GlobeIconLarge.png')),
+      body: Container(
+        color: Theme.of(context).colorScheme.primary,
+        child: Center(
+            child: Hero(
+                tag: "Logo",
+                child: Image.asset(
+                    'lib/common/assets/images/GlobeIconMedium.png'))),
+      ),
     );
   }
 }

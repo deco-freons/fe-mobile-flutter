@@ -39,9 +39,16 @@ class _RegisterState extends State<Register> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 29.0, bottom: 45.0),
-          child: Center(
-              child:
-                  Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
+          child: Hero(
+            tag: "Logo",
+            child: Center(
+              child: Image.asset(
+                'lib/common/assets/images/GlobeIconMedium.png',
+                width: 192.0,
+                height: 192.0,
+              ),
+            ),
+          ),
         ),
         BlocBuilder<RegisterCubit, RegisterState>(builder: (context, state) {
           if (state is RegisterSuccessState) {

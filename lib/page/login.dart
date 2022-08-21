@@ -40,8 +40,15 @@ class _LoginState extends State<Login> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 29.0, bottom: 23.0),
-          child: Center(
-            child: Image.asset('lib/common/assets/images/GlobeIconSmall.png'),
+          child: Hero(
+            tag: "Logo",
+            child: Center(
+              child: Image.asset(
+                'lib/common/assets/images/GlobeIconMedium.png',
+                width: 192.0,
+                height: 192.0,
+              ),
+            ),
           ),
         ),
         Padding(
