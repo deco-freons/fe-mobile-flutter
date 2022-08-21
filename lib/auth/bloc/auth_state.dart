@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/common/config/enum.dart';
-
-import '../data/user_model.dart';
+part of 'auth_bloc.dart';
 
 @immutable
 abstract class AuthState implements BaseState {

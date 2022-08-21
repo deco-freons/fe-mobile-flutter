@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_data_provider.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_data_provider.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_model.dart';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
 
 @immutable

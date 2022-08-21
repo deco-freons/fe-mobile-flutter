@@ -1,4 +1,4 @@
-import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_model.dart';
 import 'package:flutter_boilerplate/common/data/base_data_provider.dart';
 
 class RegisterDataProvider extends BaseDataProvider {

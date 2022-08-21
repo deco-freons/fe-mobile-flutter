@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/auth/bloc/register/register_cubit.dart';
-import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
+import 'package:flutter_boilerplate/auth/register/bloc/register_cubit.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_model.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
+
+import '../auth/register/bloc/register_state.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);

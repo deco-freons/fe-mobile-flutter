@@ -9,9 +9,8 @@ class AuthRepository {
 
   Stream<AuthModel> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));
-    // yield AuthStatus.unauthenticated;
-    yield const AuthModel(null, AuthStatus.unknown);
 
+    yield const AuthModel(null, AuthStatus.unknown);
     yield* _controller.stream;
   }
 
@@ -22,6 +21,13 @@ class AuthRepository {
     await Future.delayed(const Duration(milliseconds: 300), () {
       UserModel user = const UserModel('1', 'yafi', 'mantap');
       return _controller.add(AuthModel(user, AuthStatus.authenticated));
+    });
+  }
+
+  Future<void> checkAuth() async {
+    await Future.delayed(const Duration(milliseconds: 300), () {
+      UserModel user = const UserModel('1', 'yafi', 'mantap');
+      return _controller.add(AuthModel(user, AuthStatus.unauthenticated));
     });
   }
 

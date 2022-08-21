@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
+import 'package:flutter_boilerplate/auth/register/bloc/register_state.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_model.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_repository.dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/data/error_model.dart';
 
