@@ -20,10 +20,12 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final RegisterRepositoryImpl registerRepository = RegisterRepositoryImpl();
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RegisterCubit(RegisterRepositoryImpl()),
+      create: (context) => RegisterCubit(registerRepository),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
@@ -101,12 +103,8 @@ class RegisterForm extends StatelessWidget {
       label: 'Password',
       type: TextFieldType.password,
       pattern: passwordPattern,
-      errorMessage: "Password must be 8-20 character (including number)");
-  late final CustomFormInput confirmPassword = CustomFormInput(
-      label: 'Confirm Password',
-      type: TextFieldType.password,
-      pattern: password.controller.text,
-      errorMessage: "Must be the same as Password");
+      errorMessage: "Password must be 8-20 character (including number)",
+      confirmField: true);
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +117,6 @@ class RegisterForm extends StatelessWidget {
         email,
         birthDate,
         password,
-        confirmPassword,
       ],
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
@@ -131,7 +128,7 @@ class RegisterForm extends StatelessWidget {
             lastName: lastName.controller.text,
             email: email.controller.text,
             password: password.controller.text,
-            confirmPassword: confirmPassword.controller.text,
+            confirmPassword: password.confirmController.text,
             birthDate: birthDate.controller.text);
         submit(context, data);
       },
