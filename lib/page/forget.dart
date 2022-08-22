@@ -42,21 +42,26 @@ class _ForgetState extends State<Forget> {
               child:
                   Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
         ),
-        BlocBuilder<ForgetCubit, ForgetState>(builder: (context, state) {
-          if (state is ForgetSuccessState) {
-            return const Text("success");
-          } else if (state is ForgetLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
-              ),
-            );
-          } else if (state is ForgetErrorState) {
-            return ForgetForm(errorMessage: state.errorMessage);
-          } else {
-            return ForgetForm();
-          }
-        }),
+        BlocConsumer<ForgetCubit, ForgetState>(
+          builder: (context, state) {
+            if (state is ForgetLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              );
+            } else if (state is ForgetErrorState) {
+              return ForgetForm(errorMessage: state.errorMessage);
+            } else {
+              return ForgetForm();
+            }
+          },
+          listener: (context, state) {
+            if (state is ForgetSuccessState) {
+              Navigator.pushNamed(context, Register.routeName);
+            }
+          },
+        ),
       ],
     );
   }
