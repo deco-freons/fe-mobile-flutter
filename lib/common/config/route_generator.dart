@@ -4,6 +4,7 @@ import 'package:flutter_boilerplate/page/login.dart';
 import '../../page/register.dart';
 import '../../page/landing.dart';
 import '../../page/splash.dart';
+import '../../page/forget.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -19,6 +20,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const Register());
       case Login.routeName:
         return MaterialPageRoute(builder: (context) => const Login());
+      case Forget.routeName:
+        return MaterialPageRoute(builder: (context) => const Forget());
       default:
         return _errorRoute();
     }
