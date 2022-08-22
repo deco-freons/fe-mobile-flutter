@@ -81,7 +81,7 @@ class _LandingState extends State<Landing> {
               padding:
                   const EdgeInsets.only(top: 56.0, right: 26.0, left: 26.0),
               child: CustomButton(
-                label: 'Create account',
+                label: 'Create Account',
                 type: ButtonType.inverse,
                 cornerRadius: 32.0,
                 onPressedHandler: () {

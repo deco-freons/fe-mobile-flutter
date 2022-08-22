@@ -11,11 +11,12 @@ import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 import 'package:flutter_boilerplate/common/exception/receive_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/send_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/unauthorized_exception.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 
 class NetworkClient {
   final Dio dio = Dio();
   final String env = "DEV";
+  final secureStorage = SecureStorage.getInstance;
 
   Future<dynamic> _request({
     required String path,
@@ -25,17 +26,17 @@ class NetworkClient {
     bool authorized = false,
   }) async {
     dynamic responseData;
+
     try {
       final url =
           env == "DEV" ? "https://deco-freons-be.devs.id" : "production";
       final uri = "$url$path";
-      final sharedPreferences = await SharedPreferences.getInstance();
 
       dio.options.method = method;
       dio.options.headers['content-type'] = 'application/json';
       if (authorized) {
-        dio.options.headers['Authorization'] =
-            "Bearer ${sharedPreferences.getString('token')}";
+        String? accessToken = await secureStorage.get(key: "accessToken");
+        dio.options.headers['Authorization'] = "$accessToken";
       }
 
       final response = await dio.request(

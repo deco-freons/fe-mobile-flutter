@@ -1,3 +1,4 @@
+import 'package:flutter_boilerplate/auth/data/preference_model.dart';
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -5,15 +6,21 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel extends BaseModel {
-  final String id;
+  final int userID;
   final String username;
   final String email;
   final String firstName;
   final String lastName;
   final String birthDate;
+  final bool isVerified;
+  final bool isFirstLogin;
+  final List<PreferenceModel> preferences;
 
   const UserModel({
-    required this.id,
+    required this.isVerified,
+    required this.isFirstLogin,
+    required this.preferences,
+    required this.userID,
     required this.username,
     required this.email,
     required this.firstName,
@@ -27,5 +34,5 @@ class UserModel extends BaseModel {
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [userID];
 }
