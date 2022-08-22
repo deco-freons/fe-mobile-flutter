@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/page/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -179,7 +180,9 @@ class _ProfileState extends State<Profile> {
         CustomButton(
           label: "Edit Profile",
           type: ButtonType.primary,
-          onPressedHandler: () {},
+          onPressedHandler: () {
+            Navigator.pushNamed(context, EditProfile.routeName);
+          },
           cornerRadius: 32.0,
         ),
         const SizedBox(height: 20.0),

@@ -18,7 +18,7 @@ class CustomForm extends StatefulWidget {
 
   const CustomForm(
       {Key? key,
-      required this.title,
+      this.title = "",
       required this.inputs,
       required this.submitTitle,
       required this.submitHandler,
