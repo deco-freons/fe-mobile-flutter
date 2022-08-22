@@ -60,7 +60,7 @@ class _RegisterState extends State<Register> {
               ),
             );
           } else if (state is RegisterErrorState) {
-            return RegisterForm(errorMessage: state.error.message);
+            return RegisterForm(errorMessage: state.errorMessage);
           } else {
             return RegisterForm();
           }

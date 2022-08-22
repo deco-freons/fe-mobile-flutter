@@ -9,7 +9,6 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/bloc/base_event.dart';
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-
 import '../data/user_model.dart';
 
 part 'auth_event.dart';

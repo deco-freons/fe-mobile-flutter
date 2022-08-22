@@ -1,12 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_boilerplate/common/exception/bad_request_exception.dart';
+import 'package:flutter_boilerplate/common/exception/cancelled_exception.dart';
+import 'package:flutter_boilerplate/common/exception/connection_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/forbidden_exception.dart';
 import 'package:flutter_boilerplate/common/exception/internal_error_exception.dart';
+import 'package:flutter_boilerplate/common/exception/internet_connection_exception.dart';
 import 'package:flutter_boilerplate/common/exception/method_not_allowed_exception.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
+import 'package:flutter_boilerplate/common/exception/receive_timeout_exception.dart';
+import 'package:flutter_boilerplate/common/exception/send_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/unauthorized_exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -39,45 +42,51 @@ class NetworkClient {
         uri,
         data: formData ? FormData.fromMap(body) : json.encode(body),
       );
-      responseData = _response(response);
-    } on BadRequestException {
-      throw BadRequestException();
-    } on ForbiddenException {
-      throw ForbiddenException();
-    } on InternalServerErrorException {
+      responseData = response.data;
+    } catch (e) {
+      if (e is DioError) {
+        _handleDioError(e);
+      }
       throw InternalServerErrorException();
-    } on MethodNotAllowedException {
-      throw MethodNotAllowedException();
-    } on NotFoundException {
-      throw NotFoundException();
-    } on SocketException {
-      throw InternalServerErrorException("No Internet Connection");
-    } on UnauthorizedException {
-      throw UnauthorizedException();
     }
     return responseData;
   }
 
-  dynamic _response(Response response) {
-    switch (response.statusCode) {
-      case 200:
-        return response.data;
-      case 201:
-        return response.data;
-      case 400:
-        throw BadRequestException();
-      case 401:
-        throw UnauthorizedException();
-      case 403:
-        throw ForbiddenException();
-      case 404:
-        throw NotFoundException();
-      case 405:
-        throw MethodNotAllowedException();
-      case 500:
-        throw InternalServerErrorException(response.data.toString());
+  _handleDioError(DioError e) {
+    switch (e.type) {
+      case DioErrorType.response:
+        _handleResponseError(e.response?.statusCode, e.response?.data);
+        break;
+      case DioErrorType.cancel:
+        throw CancelledException();
+      case DioErrorType.connectTimeout:
+        throw ConnectionTimeoutException();
+      case DioErrorType.receiveTimeout:
+        throw ReceiveTimeoutException();
+      case DioErrorType.sendTimeout:
+        throw SendTimeoutException();
+      case DioErrorType.other:
+        throw InternetConnectionException();
       default:
         throw InternalServerErrorException();
+    }
+  }
+
+  _handleResponseError(int? statusCode, dynamic errorData) {
+    String? message = errorData['message'];
+    switch (statusCode) {
+      case 400:
+        throw BadRequestException(message);
+      case 401:
+        throw UnauthorizedException(message);
+      case 403:
+        throw ForbiddenException(message);
+      case 404:
+        throw NotFoundException(message);
+      case 405:
+        throw MethodNotAllowedException(message);
+      default:
+        throw InternalServerErrorException(message);
     }
   }
 

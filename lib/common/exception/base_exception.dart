@@ -1,11 +1,8 @@
 class BaseException implements Exception {
-  final num statusCode;
+  final int statusCode;
   final String message;
 
-  BaseException({
-    required this.statusCode,
-    required this.message
-  });
+  BaseException({required this.statusCode, required this.message});
 
   @override
   String toString() {

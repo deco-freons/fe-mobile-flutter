@@ -11,8 +11,7 @@ class LoginCubit extends BaseCubit<LoginState> {
   Future<void> login(LoginModel data) async {
     try {
       emit(const LoginLoadingState());
-      await _authRepository.logIn(
-          username: data.username, password: data.password);
+      await _authRepository.logIn(data);
       emit(const LoginSuccessState());
     } catch (_) {
       emit(const LoginErrorState());

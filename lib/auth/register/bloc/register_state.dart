@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/common/data/error_model.dart';
 
-@immutable
 abstract class RegisterState implements BaseState {
   const RegisterState();
 }
@@ -20,6 +17,6 @@ class RegisterSuccessState extends RegisterState {
 }
 
 class RegisterErrorState extends RegisterState {
-  final ErrorModel error;
-  const RegisterErrorState({required this.error});
+  final String errorMessage;
+  const RegisterErrorState({required this.errorMessage});
 }

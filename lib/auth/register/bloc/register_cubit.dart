@@ -1,9 +1,8 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_boilerplate/auth/register/bloc/register_state.dart';
 import 'package:flutter_boilerplate/auth/register/data/register_model.dart';
 import 'package:flutter_boilerplate/auth/register/data/register_repository.dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
-import 'package:flutter_boilerplate/common/data/error_model.dart';
+import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 
 class RegisterCubit extends BaseCubit<RegisterState> {
   final RegisterRepository _registerRepository;
@@ -16,14 +15,8 @@ class RegisterCubit extends BaseCubit<RegisterState> {
       await _registerRepository.register(data);
       emit(const RegisterSuccessState());
     } catch (e) {
-      ErrorModel error;
-      if (e is DioError) {
-        error = ErrorModel.fromJson(e.response?.data);
-      } else {
-        error = ErrorModel(
-            statusCode: 500, message: "Something went wrong", requestTime: 0);
-      }
-      emit(RegisterErrorState(error: error));
+      String message = ErrorHandler.handle(e);
+      emit(RegisterErrorState(errorMessage: message));
     }
   }
 }

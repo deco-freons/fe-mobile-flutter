@@ -2,10 +2,7 @@ part of 'auth_bloc.dart';
 
 @immutable
 abstract class AuthState implements BaseState {
-  const AuthState({
-    status = AuthStatus.unknown,
-    user = const UserModel('-', '-', '-'),
-  });
+  const AuthState();
 }
 
 class AuthUnknownState extends AuthState {
