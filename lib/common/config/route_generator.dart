@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/page/login.dart';
 
 import '../../page/register.dart';
 import '../../page/landing.dart';
+import '../../page/splash.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -9,10 +11,14 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case Register.routeName:
-        return MaterialPageRoute(builder: (context) => const Register());
+      case Splash.routeName:
+        return MaterialPageRoute(builder: (context) => const Splash());
       case Landing.routeName:
         return MaterialPageRoute(builder: (context) => const Landing());
+      case Register.routeName:
+        return MaterialPageRoute(builder: (context) => const Register());
+      case Login.routeName:
+        return MaterialPageRoute(builder: (context) => const Login());
       default:
         return _errorRoute();
     }

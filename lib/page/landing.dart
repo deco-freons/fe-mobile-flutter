@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/register.dart';
+import 'package:flutter_boilerplate/page/login.dart';
 
 import '../common/components/buttons/custom_button.dart';
 import '../common/components/buttons/custom_text_button.dart';
 
 class Landing extends StatefulWidget {
   const Landing({Key? key}) : super(key: key);
-  static const routeName = '/';
+  static const routeName = '/landing';
 
   @override
   State<Landing> createState() => _LandingState();
@@ -42,9 +43,12 @@ class _LandingState extends State<Landing> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 87.0),
-          child: Center(
-              child:
-                  Image.asset('lib/common/assets/images/GlobeIconLarge.png')),
+          child: Hero(
+            tag: "Logo",
+            child: Center(
+                child: Image.asset(
+                    'lib/common/assets/images/GlobeIconMedium.png')),
+          ),
         ),
         Column(
           children: [
@@ -92,7 +96,9 @@ class _LandingState extends State<Landing> {
                 type: TextButtonType.secondary,
                 fontSize: 20.0,
                 textWeight: FontWeight.normal,
-                onPressedHandler: () {},
+                onPressedHandler: () {
+                  Navigator.pushNamed(context, Login.routeName);
+                },
               ),
             )
           ],

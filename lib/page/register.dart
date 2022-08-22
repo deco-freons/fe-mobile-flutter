@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/auth/bloc/register/register_cubit.dart';
-import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
-import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
+import 'package:flutter_boilerplate/auth/register/bloc/register_cubit.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_model.dart';
+import 'package:flutter_boilerplate/auth/register/data/register_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
+
+import '../auth/register/bloc/register_state.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -38,9 +39,16 @@ class _RegisterState extends State<Register> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 29.0, bottom: 45.0),
-          child: Center(
-              child:
-                  Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
+          child: Hero(
+            tag: "Logo",
+            child: Center(
+              child: Image.asset(
+                'lib/common/assets/images/GlobeIconMedium.png',
+                width: 192.0,
+                height: 192.0,
+              ),
+            ),
+          ),
         ),
         BlocBuilder<RegisterCubit, RegisterState>(builder: (context, state) {
           if (state is RegisterSuccessState) {
@@ -52,7 +60,7 @@ class _RegisterState extends State<Register> {
               ),
             );
           } else if (state is RegisterErrorState) {
-            return RegisterForm(errorMessage: state.error.message);
+            return RegisterForm(errorMessage: state.errorMessage);
           } else {
             return RegisterForm();
           }

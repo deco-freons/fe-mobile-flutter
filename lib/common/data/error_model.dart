@@ -5,11 +5,11 @@ part 'error_model.g.dart';
 
 @JsonSerializable()
 class ErrorModel extends BaseModel {
-  int statusCode;
-  String message;
-  int requestTime;
+  final int statusCode;
+  final String message;
+  final int requestTime;
 
-  ErrorModel(
+  const ErrorModel(
       {required this.statusCode,
       required this.message,
       required this.requestTime});
