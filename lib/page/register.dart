@@ -8,6 +8,7 @@ import 'package:flutter_boilerplate/common/components/forms/form_component.dart'
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
+import 'package:flutter_boilerplate/page/login.dart';
 import '../auth/register/bloc/register_state.dart';
 
 class Register extends StatefulWidget {
@@ -131,7 +132,9 @@ class RegisterForm extends StatelessWidget {
             birthDate: birthDate.controller.text);
         submit(context, data);
       },
-      textButtonHandler: () {},
+      textButtonHandler: () {
+        Navigator.pushNamed(context, Login.routeName);
+      },
       errorMessage: errorMessage,
     );
   }
