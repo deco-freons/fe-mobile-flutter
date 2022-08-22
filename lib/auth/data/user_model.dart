@@ -1,3 +1,4 @@
+import 'package:flutter_boilerplate/auth/data/preference_model.dart';
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -11,8 +12,14 @@ class UserModel extends BaseModel {
   final String firstName;
   final String lastName;
   final String birthDate;
+  final bool isVerified;
+  final bool isFirstLogin;
+  final List<PreferenceModel> preferences;
 
   const UserModel({
+    required this.isVerified,
+    required this.isFirstLogin,
+    required this.preferences,
     required this.userID,
     required this.username,
     required this.email,

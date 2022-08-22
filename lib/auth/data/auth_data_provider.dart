@@ -7,4 +7,10 @@ class AuthDataProvider extends BaseDataProvider {
         .networkClient
         .post(path: "/auth/login", body: data.toJson());
   }
+
+  Future<dynamic> checkAuth() async {
+    return await super
+        .networkClient
+        .post(path: "/auth/access-token", body: {}, authorized: true);
+  }
 }

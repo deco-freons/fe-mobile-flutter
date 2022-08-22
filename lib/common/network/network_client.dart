@@ -11,12 +11,12 @@ import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 import 'package:flutter_boilerplate/common/exception/receive_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/send_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/unauthorized_exception.dart';
-import 'package:flutter_boilerplate/common/service/secure_storage_service.dart';
+import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 
 class NetworkClient {
   final Dio dio = Dio();
   final String env = "DEV";
-  final secureStorage = SecureStorageService.getInstance;
+  final secureStorage = SecureStorage.getInstance;
 
   Future<dynamic> _request({
     required String path,
@@ -36,8 +36,7 @@ class NetworkClient {
       dio.options.headers['content-type'] = 'application/json';
       if (authorized) {
         String? accessToken = await secureStorage.get(key: "accessToken");
-
-        dio.options.headers['Authorization'] = "Bearer $accessToken";
+        dio.options.headers['Authorization'] = "$accessToken";
       }
 
       final response = await dio.request(

@@ -5,7 +5,7 @@ import 'package:flutter_boilerplate/auth/login/data/login_model.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
-import 'package:flutter_boilerplate/common/service/secure_storage_service.dart';
+import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 
 abstract class AuthRepository implements BaseRepository {
   Future logIn(LoginModel model);
@@ -17,7 +17,7 @@ abstract class AuthRepository implements BaseRepository {
 class AuthRepositoryImpl extends AuthRepository {
   final _controller = StreamController<AuthModel>();
   final AuthDataProvider _authDataProvider = AuthDataProvider();
-  final secureStorage = SecureStorageService.getInstance;
+  final secureStorage = SecureStorage.getInstance;
 
   @override
   Stream<AuthModel> get status async* {
@@ -35,6 +35,7 @@ class AuthRepositoryImpl extends AuthRepository {
       String accessToken = data["accessToken"];
       String refreshToken = data["refreshToken"];
       UserModel user = UserModel.fromJson(data["user"]);
+
       await secureStorage.set(key: "accessToken", value: accessToken);
       await secureStorage.set(key: "refreshToken", value: refreshToken);
       await secureStorage.set(key: "user", value: userMap.toString());
@@ -47,9 +48,22 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<void> checkAuth() async {
-    await Future.delayed(const Duration(milliseconds: 300), () {
-      _controller.add(const AuthModel(null, AuthStatus.unauthenticated));
-    });
+    try {
+      final data = await _authDataProvider.checkAuth();
+      bool isAuthenticated = data["isAuthenticated"];
+      if (!isAuthenticated) {
+        return _controller
+            .add(const AuthModel(null, AuthStatus.unauthenticated));
+      }
+      Map<String, dynamic> userMap = data["user"];
+      UserModel user = UserModel.fromJson(userMap);
+
+      await secureStorage.set(key: "user", value: userMap.toString());
+      _controller.add(AuthModel(user, AuthStatus.authenticated));
+    } catch (e) {
+      //  Handle refresh token
+      return _controller.add(const AuthModel(null, AuthStatus.unauthenticated));
+    }
   }
 
   @override
