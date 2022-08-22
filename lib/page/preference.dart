@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/example/bloc/example_cubit.dart';
-import 'package:flutter_boilerplate/example/bloc/example_state.dart';
-import 'package:flutter_boilerplate/example/data/example_model.dart';
-import 'package:flutter_boilerplate/example/data/example_repository.dart';
 
+import '../common/bloc/preference_cubit.dart';
+import '../common/bloc/preference_state.dart';
 import '../common/components/buttons/custom_button.dart';
 import '../common/components/buttons/custom_text_button.dart';
 import '../common/components/buttons/preference_button.dart';
+import '../common/data/preference_model.dart';
+import '../common/data/preference_repository.dart';
 
 class Preference extends StatefulWidget {
   const Preference({Key? key}) : super(key: key);
   static const routeName = '/preference';
 
   @override
-  _PreferenceState createState() => _PreferenceState();
+  State<Preference> createState() => _PreferenceState();
 }
 
 class _PreferenceState extends State<Preference> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ExampleCubit(ExampleRepositoryImpl()),
+      create: (context) => PreferenceCubit(PreferenceRepositoryImpl()),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
@@ -52,17 +52,18 @@ class _PreferenceState extends State<Preference> {
             ],
           ),
         ),
-        BlocBuilder<ExampleCubit, ExampleState>(builder: (context, state) {
-          if (state is ExampleSuccessState) {
+        BlocBuilder<PreferenceCubit, PreferenceState>(
+            builder: (context, state) {
+          if (state is PreferenceSuccessState) {
             return const Text("success");
-          } else if (state is ExampleLoadingState) {
+          } else if (state is PreferenceLoadingState) {
             return const Center(
               child: CircularProgressIndicator(
                 color: Colors.amber,
               ),
             );
           } else {
-            return PreferenceForm();
+            return const PreferenceForm();
           }
         }),
       ],
@@ -71,7 +72,9 @@ class _PreferenceState extends State<Preference> {
 }
 
 class PreferenceForm extends StatefulWidget {
-  PreferenceForm({Key? key}) : super(key: key);
+  final String errorMessage;
+
+  const PreferenceForm({Key? key, this.errorMessage = ''}) : super(key: key);
 
   @override
   State<PreferenceForm> createState() => _PreferenceFormState();
@@ -79,6 +82,7 @@ class PreferenceForm extends StatefulWidget {
 
 class _PreferenceFormState extends State<PreferenceForm> {
   List<bool> clickCheck = List.filled(PrefButtonType.values.length, true);
+  List<String> preferenceList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +102,11 @@ class _PreferenceFormState extends State<PreferenceForm> {
                     setState(() {
                       clickCheck[pref.index] = !clickCheck[pref.index];
                     });
+                    if (!clickCheck[pref.index]) {
+                      preferenceList.add(pref.name);
+                    } else if (clickCheck[pref.index]) {
+                      preferenceList.remove(pref.name);
+                    }
                   },
                   click: clickCheck[pref.index],
                 ),
@@ -110,7 +119,8 @@ class _PreferenceFormState extends State<PreferenceForm> {
             label: 'Done',
             type: ButtonType.primary,
             onPressedHandler: () {
-              ExampleModel data = ExampleModel(message: "preference");
+              PreferenceModel data =
+                  PreferenceModel(preferenceList: preferenceList);
               submit(context, data);
             },
             cornerRadius: 32.0,
@@ -127,8 +137,8 @@ class _PreferenceFormState extends State<PreferenceForm> {
     );
   }
 
-  void submit(BuildContext context, ExampleModel data) {
-    final cubit = context.read<ExampleCubit>();
-    cubit.healthcheck();
+  void submit(BuildContext context, PreferenceModel data) {
+    final cubit = context.read<PreferenceCubit>();
+    cubit.preference(data);
   }
 }
