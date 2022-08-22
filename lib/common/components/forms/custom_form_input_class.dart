@@ -8,7 +8,9 @@ class CustomFormInput {
   DateTime lastDate;
   String pattern;
   String errorMessage;
+  bool confirmField;
   TextEditingController controller = TextEditingController();
+  TextEditingController confirmController = TextEditingController();
 
   CustomFormInput({
     required this.label,
@@ -17,6 +19,7 @@ class CustomFormInput {
     DateTime? lastDate,
     this.pattern = "",
     this.errorMessage = "",
+    this.confirmField = false,
   })  : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101);
 }

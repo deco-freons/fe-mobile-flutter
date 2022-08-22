@@ -20,22 +20,15 @@ class CustomButton extends StatefulWidget {
 }
 
 class _CustomButtonState extends State<CustomButton> {
-  String type = 'primary';
-
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onFocusChange: (value) {
-        if (type == 'primary') {
-          type = 'inverse';
-        } else {
-          type = 'primary';
-        }
-      },
       style: ElevatedButton.styleFrom(
           primary: widget.type == ButtonType.primary
               ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.secondary,
+              : widget.type == ButtonType.inverse
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.error,
           onPrimary: widget.type == ButtonType.primary
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
@@ -48,9 +41,9 @@ class _CustomButtonState extends State<CustomButton> {
       child: Text(
         widget.label,
         style: TextStyle(
-          color: widget.type == ButtonType.primary
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.primary,
+          color: widget.type == ButtonType.inverse
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.secondary,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
         ),

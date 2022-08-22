@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 // theme data options: https://api.flutter.dev/flutter/material/ThemeData-class.html
 class CustomTheme {
-  static ThemeData get theme =>
-      ThemeData(
+  static ThemeData get theme => ThemeData(
         primarySwatch: primary,
         fontFamily: 'NunitoSans',
         backgroundColor: neutral,
@@ -24,7 +23,8 @@ const ColorScheme colorScheme = ColorScheme(
     onSecondary: primary,
     error: error,
     brightness: Brightness.light,
-    onError: neutral);
+    onError: neutral,
+    onSurfaceVariant: black);
 
 const MaterialColor primary = MaterialColor(0xFF0AA1DD, <int, Color>{
   50: Color(0xFF0AA1DD),
@@ -76,4 +76,17 @@ const MaterialColor error = MaterialColor(0xFFFC1313, <int, Color>{
   700: Color(0xFFFC1313),
   800: Color(0xFFFC1313),
   900: Color(0xFFFC1313),
+});
+
+const MaterialColor black = MaterialColor(0xFF1E1E1E, <int, Color>{
+  50: Color(0xFF1E1E1E),
+  100: Color(0xFF1E1E1E),
+  200: Color(0xFF1E1E1E),
+  300: Color(0xFF404852),
+  400: Color(0xFF1E1E1E),
+  500: Color(0xFF1E1E1E),
+  600: Color(0xFF1E1E1E),
+  700: Color(0xFF1E1E1E),
+  800: Color(0xFF1E1E1E),
+  900: Color(0xFF1E1E1E),
 });

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/page/register.dart';
 import '../auth/login/bloc/login_cubit.dart';
 import '../auth/login/bloc/login_state.dart';
 import '../auth/login/data/login_model.dart';
@@ -114,7 +115,9 @@ class LoginForm extends StatelessWidget {
             password: password.controller.text);
         submit(context, data);
       },
-      textButtonHandler: () {},
+      textButtonHandler: () {
+        Navigator.pushNamed(context, Register.routeName);
+      },
       errorMessage: errorMessage,
     );
   }
