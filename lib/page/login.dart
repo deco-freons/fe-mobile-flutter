@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-
 import '../auth/login/bloc/login_cubit.dart';
 import '../auth/login/bloc/login_state.dart';
 import '../auth/login/data/login_model.dart';
@@ -62,18 +61,35 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-        BlocConsumer<LoginCubit, LoginState>(
-            listener: ((context, state) {}),
-            builder: (context, state) {
-              return LoginForm();
-            }),
+        BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+          if (state is LoginSuccessState) {
+            return const Center(
+              child: Text("Login successful, you will be redirected soon"),
+            );
+          }
+          if (state is LoginLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            );
+          }
+          if (state is LoginErrorState) {
+            return LoginForm(
+              errorMessage: state.errorMessage,
+            );
+          } else {
+            return LoginForm();
+          }
+        }),
       ],
     );
   }
 }
 
 class LoginForm extends StatelessWidget {
-  LoginForm({Key? key}) : super(key: key);
+  final String errorMessage;
+  LoginForm({Key? key, this.errorMessage = ""}) : super(key: key);
 
   final CustomFormInput username =
       CustomFormInput(label: 'Username', type: TextFieldType.string);
@@ -99,6 +115,7 @@ class LoginForm extends StatelessWidget {
         submit(context, data);
       },
       textButtonHandler: () {},
+      errorMessage: errorMessage,
     );
   }
 

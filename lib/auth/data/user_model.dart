@@ -5,7 +5,7 @@ part 'user_model.g.dart';
 
 @JsonSerializable()
 class UserModel extends BaseModel {
-  final String id;
+  final int userID;
   final String username;
   final String email;
   final String firstName;
@@ -13,7 +13,7 @@ class UserModel extends BaseModel {
   final String birthDate;
 
   const UserModel({
-    required this.id,
+    required this.userID,
     required this.username,
     required this.email,
     required this.firstName,
@@ -27,5 +27,5 @@ class UserModel extends BaseModel {
   Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
   @override
-  List<Object> get props => [id];
+  List<Object> get props => [userID];
 }
