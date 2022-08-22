@@ -20,7 +20,7 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
             onPressed: () {
-              Navigator.pushNamed(context, Landing.routeName);
+              Navigator.pushReplacementNamed(context, Landing.routeName);
             },
           ),
         ),
