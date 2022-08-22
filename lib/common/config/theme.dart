@@ -82,7 +82,7 @@ const MaterialColor black = MaterialColor(0xFF1E1E1E, <int, Color>{
   50: Color(0xFF1E1E1E),
   100: Color(0xFF1E1E1E),
   200: Color(0xFF1E1E1E),
-  300: Color(0xFF1E1E1E),
+  300: Color(0xFF404852),
   400: Color(0xFF1E1E1E),
   500: Color(0xFF1E1E1E),
   600: Color(0xFF1E1E1E),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
+import 'package:flutter_boilerplate/page/profile.dart';
 
 import '../../page/register.dart';
 import '../../page/landing.dart';
@@ -15,6 +16,8 @@ class RouteGenerator {
       case EmailConfirmation.routeName:
         return MaterialPageRoute(
             builder: (context) => const EmailConfirmation());
+      case Profile.routeName:
+        return MaterialPageRoute(builder: (context) => const Profile());
       case Landing.routeName:
         return MaterialPageRoute(builder: (context) => const Landing());
       default:

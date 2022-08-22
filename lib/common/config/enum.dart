@@ -4,10 +4,7 @@ enum TextFieldType {
   date,
 }
 
-enum ButtonType {
-  primary,
-  inverse,
-}
+enum ButtonType { primary, inverse, red }
 
 enum TextButtonType {
   primary,
