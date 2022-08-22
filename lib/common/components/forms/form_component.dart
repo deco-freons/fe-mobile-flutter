@@ -15,6 +15,9 @@ class CustomForm extends StatefulWidget {
   final bool hasForgotPassword;
   final VoidCallback textButtonHandler;
   final String errorMessage;
+  final double submitPadding;
+  final double textButtonPadding;
+  final double bottomPadding;
 
   const CustomForm(
       {Key? key,
@@ -26,7 +29,10 @@ class CustomForm extends StatefulWidget {
       this.errorMessage = "",
       this.bottomText = "",
       this.textButton = "",
-      this.hasForgotPassword = false})
+      this.hasForgotPassword = false,
+      this.submitPadding = 45.0,
+      this.textButtonPadding = 48.0,
+      this.bottomPadding = 40.0})
       : super(key: key);
 
   @override
@@ -93,8 +99,8 @@ class _CustomFormState extends State<CustomForm> {
               ],
             ),
           Padding(
-            padding:
-                EdgeInsets.only(top: widget.hasForgotPassword ? 0.0 : 45.0),
+            padding: EdgeInsets.only(
+                top: widget.hasForgotPassword ? 0.0 : widget.submitPadding),
             child: CustomButton(
               label: widget.submitTitle,
               type: ButtonType.primary,
@@ -103,7 +109,8 @@ class _CustomFormState extends State<CustomForm> {
           ),
           if (widget.bottomText != '' || widget.textButton != '')
             Padding(
-              padding: const EdgeInsets.only(top: 48.0, bottom: 40.0),
+              padding: EdgeInsets.only(
+                  top: widget.textButtonPadding, bottom: widget.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
