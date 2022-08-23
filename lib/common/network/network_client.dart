@@ -12,41 +12,44 @@ import 'package:flutter_boilerplate/common/exception/receive_timeout_exception.d
 import 'package:flutter_boilerplate/common/exception/send_timeout_exception.dart';
 import 'package:flutter_boilerplate/common/exception/unauthorized_exception.dart';
 import 'package:flutter_boilerplate/common/network/network_logging.dart';
+import 'package:flutter_boilerplate/common/network/network_refresh.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/get_it.dart';
 
 class NetworkClient {
-  final Dio _dio = Dio(
+  final Dio dio = Dio(
     BaseOptions(
         baseUrl: "https://deco-freons-be.devs.id",
         connectTimeout: 5000,
-        receiveTimeout: 3000),
-  )..interceptors.addAll([
-      Logging(),
-    ]);
+        receiveTimeout: 3000,
+        contentType: "application/json"),
+  )..interceptors.addAll([Logging(), Refresh()]);
   final String env = "DEV";
   final secureStorage = getIt.get<SecureStorage>();
 
   Future<dynamic> _request({
     required String path,
     required String method,
-    required Map<String, dynamic> body,
+    Map<String, dynamic>? body,
     bool formData = false,
     bool authorized = false,
   }) async {
     dynamic responseData;
 
     try {
-      _dio.options.method = method;
-      _dio.options.headers['content-type'] = 'application/json';
+      dio.options.method = method;
       if (authorized) {
         String? accessToken = await secureStorage.get(key: "accessToken");
-        _dio.options.headers['Authorization'] = "$accessToken";
+        dio.options.headers['Authorization'] = "$accessToken";
       }
 
-      final response = await _dio.request(
+      final response = await dio.request(
         path,
-        data: formData ? FormData.fromMap(body) : json.encode(body),
+        data: body != null
+            ? formData
+                ? FormData.fromMap(body)
+                : json.encode(body)
+            : null,
       );
       responseData = response.data;
     } catch (e) {
@@ -98,7 +101,6 @@ class NetworkClient {
 
   Future<dynamic> get({
     required String path,
-    required Map<String, dynamic> body,
     bool formData = false,
     bool authorized = false,
   }) async {
@@ -106,7 +108,6 @@ class NetworkClient {
       return _request(
           path: path,
           method: "GET",
-          body: body,
           formData: formData,
           authorized: authorized);
     } catch (e) {

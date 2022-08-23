@@ -14,4 +14,8 @@ class SecureStorage {
   Future<String?> get({required String key}) async {
     return flutterSecureStorage.read(key: key);
   }
+
+  Future<void> clear({required String key}) async {
+    return flutterSecureStorage.delete(key: key);
+  }
 }
