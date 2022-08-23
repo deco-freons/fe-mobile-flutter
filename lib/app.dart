@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/get_started.dart';
 
 import 'common/config/route_generator.dart';
 
@@ -60,6 +61,9 @@ class _AppViewState extends State<AppView> {
             } else if (state is AuthUnauthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
                   Landing.routeName, (route) => false);
+            } else if (state is AuthFirstLoginState) {
+              _navigator.pushNamedAndRemoveUntil(
+                  GetStarted.routeName, (route) => false);
             }
           },
           child: child,

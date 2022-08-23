@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/common/config/enum.dart';
-
-import '../common/bloc/preference_cubit.dart';
-import '../common/bloc/preference_state.dart';
+import '../../common/config/enum.dart';
+import '../auth/bloc/preference_cubit.dart';
+import '../auth/bloc/preference_state.dart';
+import '../auth/data/preference_repository.dart';
 import '../common/components/buttons/custom_button.dart';
 import '../common/components/buttons/custom_text_button.dart';
 import '../common/components/buttons/preference_button.dart';
-import '../common/data/preference_model.dart';
-import '../common/data/preference_repository.dart';
+import 'register.dart';
 
 class Preference extends StatefulWidget {
   const Preference({Key? key}) : super(key: key);
@@ -52,20 +51,26 @@ class _PreferenceState extends State<Preference> {
             ],
           ),
         ),
-        BlocBuilder<PreferenceCubit, PreferenceState>(
-            builder: (context, state) {
-          if (state is PreferenceSuccessState) {
-            return const Text("success");
-          } else if (state is PreferenceLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: Colors.amber,
-              ),
-            );
-          } else {
-            return const PreferenceForm();
-          }
-        }),
+        BlocConsumer<PreferenceCubit, PreferenceState>(
+          builder: (context, state) {
+            if (state is PreferenceLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                ),
+              );
+            } else if (state is PreferenceErrorState) {
+              return PreferenceForm(errorMessage: state.errorMessage);
+            } else {
+              return const PreferenceForm();
+            }
+          },
+          listener: (context, state) {
+            if (state is PreferenceSuccessState) {
+              Navigator.pushNamed(context, Register.routeName);
+            }
+          },
+        ),
       ],
     );
   }
@@ -81,7 +86,7 @@ class PreferenceForm extends StatefulWidget {
 }
 
 class _PreferenceFormState extends State<PreferenceForm> {
-  List<bool> clickCheck = List.filled(PrefButtonType.values.length, true);
+  List<bool> clickCheck = List.filled(PrefType.values.length, true);
   List<String> preferenceList = [];
 
   @override
@@ -95,7 +100,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
             runSpacing: 15.0,
             alignment: WrapAlignment.center,
             children: [
-              for (var pref in PrefButtonType.values)
+              for (var pref in PrefType.values)
                 PreferenceButton(
                   type: pref,
                   onPressedHandler: () {
@@ -107,6 +112,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
                     } else if (clickCheck[pref.index]) {
                       preferenceList.remove(pref.name);
                     }
+                    print(preferenceList);
                   },
                   click: clickCheck[pref.index],
                 ),
@@ -119,8 +125,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
             label: 'Done',
             type: ButtonType.primary,
             onPressedHandler: () {
-              PreferenceModel data =
-                  PreferenceModel(preferenceList: preferenceList);
+              List<String> data = preferenceList;
               submit(context, data);
             },
             cornerRadius: 32.0,
@@ -137,7 +142,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
     );
   }
 
-  void submit(BuildContext context, PreferenceModel data) {
+  void submit(BuildContext context, List<String> data) {
     final cubit = context.read<PreferenceCubit>();
     cubit.preference(data);
   }

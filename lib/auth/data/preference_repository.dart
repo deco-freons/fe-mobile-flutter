@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../common/data/base_repository.dart';
-import '../../common/data/preference_data_provider.dart';
-import '../../common/data/preference_model.dart';
+import 'preference_data_provider.dart';
 
 @immutable
 abstract class PreferenceRepository implements BaseRepository {
-  Future<dynamic> preference(PreferenceModel data);
+  Future<dynamic> preference(List<String> data);
 }
 
 class PreferenceRepositoryImpl extends PreferenceRepository {
@@ -13,8 +12,8 @@ class PreferenceRepositoryImpl extends PreferenceRepository {
       PreferenceDataProvider();
 
   @override
-  Future<dynamic> preference(PreferenceModel data) async {
-    final response = await _preferenceDataProvider.preference(data);
+  Future<dynamic> preference(List<String> data) async {
+    final response = await _preferenceDataProvider.firstPreference(data);
     return response;
   }
 }

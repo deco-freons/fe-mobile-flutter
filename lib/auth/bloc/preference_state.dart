@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../common/bloc/base_state.dart';
-import '../../common/data/error_model.dart';
 
 @immutable
 abstract class PreferenceState implements BaseState {
@@ -20,6 +19,6 @@ class PreferenceSuccessState extends PreferenceState {
 }
 
 class PreferenceErrorState extends PreferenceState {
-  final ErrorModel error;
-  const PreferenceErrorState({required this.error});
+  final String errorMessage;
+  const PreferenceErrorState({required this.errorMessage});
 }
