@@ -13,4 +13,11 @@ class AuthDataProvider extends BaseDataProvider {
         .networkClient
         .post(path: "/auth/access-token", body: {}, authorized: true);
   }
+
+  Future<dynamic> logout(String refreshToken) async {
+    return await super.networkClient.delete(
+        path: "/auth/logout",
+        body: {"refreshToken": refreshToken},
+        authorized: true);
+  }
 }

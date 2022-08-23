@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
+import 'package:flutter_boilerplate/auth/logout/bloc/logout_cubit.dart';
+import 'package:flutter_boilerplate/auth/logout/bloc/logout_state.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -24,42 +29,71 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: Text(
-            "My Profile",
-            style: TextStyle(
-              fontSize: 26.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+    return BlocProvider(
+      create: (context) {
+        return LogoutCubit(RepositoryProvider.of<AuthRepository>(context));
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            child: IconButton(
+              icon:
+                  const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Text(
+              "My Profile",
+              style: TextStyle(
+                fontSize: 26.0,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          elevation: 0.0,
         ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        elevation: 0.0,
-      ),
-      body: Container(
-        decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.secondary),
-        child: SafeArea(child: buildProfile()),
+        body: Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.secondary),
+          child: SafeArea(
+              child: BlocConsumer<LogoutCubit, LogoutState>(
+            bloc: LogoutCubit(RepositoryProvider.of<AuthRepository>(context)),
+            builder: (context, state) {
+              if (state is LogoutLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.amber,
+                  ),
+                );
+              } else if (state is LogoutErrorState) {
+                return Text(state.errorMessage);
+              } else {
+                return Container(
+                  child: buildProfile(context),
+                );
+              }
+            },
+            listener: (context, state) {
+              if (state is LogoutSuccessState) {
+                Navigator.pushReplacementNamed(context, Landing.routeName);
+              }
+            },
+          )),
+        ),
       ),
     );
   }
 
-  Widget buildProfile() {
+  Widget buildProfile(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
       children: [
@@ -189,7 +223,9 @@ class _ProfileState extends State<Profile> {
         CustomButton(
           label: "Sign Out",
           type: ButtonType.red,
-          onPressedHandler: () {},
+          onPressedHandler: () {
+            submit(context);
+          },
           cornerRadius: 32.0,
         ),
       ],
@@ -248,5 +284,10 @@ class _ProfileState extends State<Profile> {
       widgets.add(card);
     }
     return widgets;
+  }
+
+  void submit(BuildContext context) async {
+    final cubit = context.read<LogoutCubit>();
+    await cubit.logout();
   }
 }
