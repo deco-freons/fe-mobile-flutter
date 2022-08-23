@@ -13,16 +13,19 @@ import 'package:flutter_boilerplate/common/exception/send_timeout_exception.dart
 import 'package:flutter_boilerplate/common/exception/unauthorized_exception.dart';
 import 'package:flutter_boilerplate/common/network/network_logging.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
+import 'package:flutter_boilerplate/get_it.dart';
 
 class NetworkClient {
-  final Dio dio = Dio(
+  final Dio _dio = Dio(
     BaseOptions(
         baseUrl: "https://deco-freons-be.devs.id",
         connectTimeout: 5000,
         receiveTimeout: 3000),
-  )..interceptors.addAll([Logging()]);
+  )..interceptors.addAll([
+      Logging(),
+    ]);
   final String env = "DEV";
-  final secureStorage = SecureStorage.getInstance;
+  final secureStorage = getIt.get<SecureStorage>();
 
   Future<dynamic> _request({
     required String path,
@@ -34,14 +37,14 @@ class NetworkClient {
     dynamic responseData;
 
     try {
-      dio.options.method = method;
-      dio.options.headers['content-type'] = 'application/json';
+      _dio.options.method = method;
+      _dio.options.headers['content-type'] = 'application/json';
       if (authorized) {
         String? accessToken = await secureStorage.get(key: "accessToken");
-        dio.options.headers['Authorization'] = "$accessToken";
+        _dio.options.headers['Authorization'] = "$accessToken";
       }
 
-      final response = await dio.request(
+      final response = await _dio.request(
         path,
         data: formData ? FormData.fromMap(body) : json.encode(body),
       );

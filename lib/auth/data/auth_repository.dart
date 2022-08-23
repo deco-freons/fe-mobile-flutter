@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
+import 'package:flutter_boilerplate/get_it.dart';
 
 abstract class AuthRepository implements BaseRepository {
   Future logIn(LoginModel model);
@@ -21,7 +22,7 @@ abstract class AuthRepository implements BaseRepository {
 class AuthRepositoryImpl extends AuthRepository {
   final _controller = StreamController<AuthModel>();
   final AuthDataProvider _authDataProvider = AuthDataProvider();
-  final secureStorage = SecureStorage.getInstance;
+  final secureStorage = getIt.get<SecureStorage>();
 
   @override
   Stream<AuthModel> get status async* {
