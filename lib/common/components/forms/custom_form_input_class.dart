@@ -9,8 +9,10 @@ class CustomFormInput {
   String pattern;
   String errorMessage;
   bool confirmField;
+  String initialValue;
   TextEditingController controller = TextEditingController();
   TextEditingController confirmController = TextEditingController();
+  bool disable;
 
   CustomFormInput({
     required this.label,
@@ -20,6 +22,14 @@ class CustomFormInput {
     this.pattern = "",
     this.errorMessage = "",
     this.confirmField = false,
+    String? initialValue,
+    this.disable = false,
   })  : firstDate = firstDate ?? DateTime(1900),
-        lastDate = lastDate ?? DateTime(2101);
+        lastDate = lastDate ?? DateTime(2101),
+        initialValue = initialValue ?? "",
+        controller = TextEditingController(text: initialValue);
+
+  void initState() {
+    controller.text = initialValue;
+  }
 }

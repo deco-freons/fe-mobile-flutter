@@ -18,22 +18,31 @@ class CustomForm extends StatefulWidget {
   final double submitPadding;
   final double textButtonPadding;
   final double bottomPadding;
+  final double sidePadding;
+  final Color labelColor;
+  final TextStyle inputStyle;
 
-  const CustomForm(
-      {Key? key,
-      this.title = "",
-      required this.inputs,
-      required this.submitTitle,
-      required this.submitHandler,
-      required this.textButtonHandler,
-      this.errorMessage = "",
-      this.bottomText = "",
-      this.textButton = "",
-      this.hasForgotPassword = false,
-      this.submitPadding = 45.0,
-      this.textButtonPadding = 48.0,
-      this.bottomPadding = 40.0})
-      : super(key: key);
+  const CustomForm({
+    Key? key,
+    this.title = "",
+    required this.inputs,
+    required this.submitTitle,
+    required this.submitHandler,
+    required this.textButtonHandler,
+    this.errorMessage = "",
+    this.bottomText = "",
+    this.textButton = "",
+    this.hasForgotPassword = false,
+    this.submitPadding = 45.0,
+    this.textButtonPadding = 48.0,
+    this.bottomPadding = 40.0,
+    this.sidePadding = 22.0,
+    Color? labelColor,
+    TextStyle? inputStyle,
+  })  : labelColor = labelColor ?? const Color(0xFF404852),
+        inputStyle = inputStyle ??
+            const TextStyle(fontSize: 16.0, height: 1, color: Colors.black),
+        super(key: key);
 
   @override
   State<CustomForm> createState() => _CustomFormState();
@@ -56,7 +65,8 @@ class _CustomFormState extends State<CustomForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 34.0),
+      padding: EdgeInsets.only(
+          left: widget.sidePadding, right: widget.sidePadding, top: 34.0),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0)),
@@ -99,6 +109,8 @@ class _CustomFormState extends State<CustomForm> {
                   return CustomTextField(
                     formKey: _formKey,
                     input: widget.inputs[index],
+                    labelColor: widget.labelColor,
+                    inputStyle: widget.inputStyle,
                   );
                 },
               ),

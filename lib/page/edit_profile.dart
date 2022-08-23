@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class EditProfile extends StatefulWidget {
@@ -72,23 +74,65 @@ class _EditProfileState extends State<EditProfile> {
         const SizedBox(
           height: 41.0,
         ),
-        buildField("First Name", "Zahra"),
-        buildField("Last Name", "Abraara"),
-        buildField("Username", "Abraara"),
-        buildField("Email", "zahra@gmail.com"),
-        buildField("Birth Date", "06 February 2002"),
-        const SizedBox(height: 38.0),
-        Text(
-          "Interest",
-          style: TextStyle(
-            fontSize: 16.0,
+        CustomForm(
+          inputs: [
+            CustomFormInput(
+              label: "First Name",
+              type: TextFieldType.string,
+              initialValue: "Zahra",
+            ),
+            CustomFormInput(
+              label: "Last Name",
+              type: TextFieldType.string,
+              initialValue: "Abraara",
+            ),
+            CustomFormInput(
+              label: "Username",
+              type: TextFieldType.string,
+              initialValue: "Abraara",
+            ),
+            CustomFormInput(
+              label: "Email",
+              type: TextFieldType.string,
+              initialValue: "zahra@gmail.com",
+              disable: true,
+            ),
+            CustomFormInput(
+              label: "Birth Date",
+              type: TextFieldType.date,
+              initialValue: "2022-02-06",
+              firstDate: DateTime(1900),
+              lastDate: DateTime.now(),
+            ),
+          ],
+          submitTitle: "Save",
+          submitHandler: () {},
+          textButtonHandler: () {},
+          sidePadding: 0.0,
+          labelColor: Theme.of(context).colorScheme.tertiary,
+          inputStyle: TextStyle(
+            fontSize: 20.0,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.tertiary,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        const SizedBox(
-          height: 7.0,
-        ),
+        // TextButton(
+        //     onPressed: () {
+        //       showDialog(
+        //           context: context,
+        //           builder: (BuildContext context) => Dialog(
+        //                   child: Column(
+        //                 children: [
+        //                   IconButton(
+        //                       icon: const Icon(Icons.close),
+        //                       onPressed: () {
+        //                         Navigator.pop(context);
+        //                       })
+        //                 ],
+        //               )));
+        //     },
+        //     child: const Text("add")),
+
         Wrap(spacing: 10.0, runSpacing: 16.0, children: buildInterest()),
         const SizedBox(height: 34.0),
         CustomButton(
