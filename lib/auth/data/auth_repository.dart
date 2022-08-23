@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter_boilerplate/auth/data/auth_data_provider.dart';
 import 'package:flutter_boilerplate/auth/data/auth_model.dart';
 import 'package:flutter_boilerplate/auth/login/data/login_model.dart';
@@ -34,11 +35,13 @@ class AuthRepositoryImpl extends AuthRepository {
       Map<String, dynamic> userMap = data["user"];
       String accessToken = data["accessToken"];
       String refreshToken = data["refreshToken"];
+      print(userMap);
       UserModel user = UserModel.fromJson(data["user"]);
+      print(user);
 
       await secureStorage.set(key: "accessToken", value: accessToken);
       await secureStorage.set(key: "refreshToken", value: refreshToken);
-      await secureStorage.set(key: "user", value: userMap.toString());
+      await secureStorage.set(key: "user", value: json.encode(userMap));
       _controller.add(AuthModel(user, AuthStatus.authenticated));
     } catch (e) {
       _controller.add(const AuthModel(null, AuthStatus.unauthenticated));
@@ -58,7 +61,7 @@ class AuthRepositoryImpl extends AuthRepository {
       Map<String, dynamic> userMap = data["user"];
       UserModel user = UserModel.fromJson(userMap);
 
-      await secureStorage.set(key: "user", value: userMap.toString());
+      await secureStorage.set(key: "user", value: json.encode(userMap));
       _controller.add(AuthModel(user, AuthStatus.authenticated));
     } catch (e) {
       //  Handle refresh token

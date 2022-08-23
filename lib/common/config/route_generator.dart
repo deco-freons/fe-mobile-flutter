@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../page/get_started.dart';
 import '../../page/login.dart';
 import '../../page/email_confirmation.dart';
 import '../../page/edit_profile.dart';
@@ -37,6 +38,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const Homepage());
       case Preference.routeName:
         return MaterialPageRoute(builder: (context) => const Preference());
+      case GetStarted.routeName:
+        return MaterialPageRoute(builder: (context) => const GetStarted());
       default:
         return _errorRoute();
     }
