@@ -14,7 +14,7 @@ class PreferenceCubit extends BaseCubit<PreferenceState> {
   PreferenceCubit(this._preferenceRepository)
       : super(const PreferenceInitialState());
 
-  Future<void> preference(List<String> data) async {
+  Future<void> setFirstPreference(List<String> data) async {
     try {
       emit(const PreferenceLoadingState());
 
@@ -24,12 +24,30 @@ class PreferenceCubit extends BaseCubit<PreferenceState> {
       }
       Map<String, dynamic> userMap = json.decode(user);
       List<String> preferenceList = data;
-      await secureStorage.set(key: 'user', value: json.encode(userMap));
 
       userMap['preferences'] = preferenceList;
       userMap['isFirstLogin'] = false;
       await secureStorage.set(key: 'user', value: json.encode(userMap));
       await _preferenceRepository.setFirstPreference(data);
+      emit(const PreferenceSuccessState());
+    } catch (e) {
+      String message = ErrorHandler.handle(e);
+      emit(PreferenceErrorState(errorMessage: message));
+    }
+  }
+
+  Future<void> skipFirstPreference() async {
+    try {
+      emit(const PreferenceLoadingState());
+
+      String? user = await secureStorage.get(key: 'user');
+      if (user == null) {
+        throw NotFoundException();
+      }
+      Map<String, dynamic> userMap = json.decode(user);
+
+      userMap['isFirstLogin'] = false;
+      await secureStorage.set(key: 'user', value: json.encode(userMap));
       emit(const PreferenceSuccessState());
     } catch (e) {
       String message = ErrorHandler.handle(e);

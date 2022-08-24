@@ -8,7 +8,6 @@ import '../preference/bloc/preference_state.dart';
 import '../common/components/buttons/custom_button.dart';
 import '../common/components/buttons/custom_text_button.dart';
 import '../preference/components/preference_button.dart';
-import 'register.dart';
 
 class Preference extends StatefulWidget {
   const Preference({Key? key}) : super(key: key);
@@ -55,9 +54,9 @@ class _PreferenceState extends State<Preference> {
         BlocConsumer<PreferenceCubit, PreferenceState>(
           builder: (context, state) {
             if (state is PreferenceLoadingState) {
-              return const Center(
+              return Center(
                 child: CircularProgressIndicator(
-                  color: Colors.amber,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               );
             } else if (state is PreferenceErrorState) {
@@ -68,7 +67,7 @@ class _PreferenceState extends State<Preference> {
           },
           listener: (context, state) {
             if (state is PreferenceSuccessState) {
-              Navigator.pushNamed(context, Register.routeName);
+              Navigator.pushNamed(context, Homepage.routeName);
             }
           },
         ),
@@ -136,7 +135,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
               text: 'Skip',
               type: TextButtonType.tertiary,
               onPressedHandler: () {
-                Navigator.pushNamed(context, Homepage.routeName);
+                skip(context);
               }),
         )
       ],
@@ -145,6 +144,11 @@ class _PreferenceFormState extends State<PreferenceForm> {
 
   void submit(BuildContext context, List<String> data) {
     final cubit = context.read<PreferenceCubit>();
-    cubit.preference(data);
+    cubit.setFirstPreference(data);
+  }
+
+  void skip(BuildContext context) {
+    final cubit = context.read<PreferenceCubit>();
+    cubit.skipFirstPreference();
   }
 }
