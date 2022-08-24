@@ -60,9 +60,9 @@ class _ProfileState extends State<Profile> {
             child: BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
                 if (state is UserLoadingState) {
-                  return const Center(
+                  return Center(
                     child: CircularProgressIndicator(
-                      color: Colors.amber,
+                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   );
                 } else if (state is UserErrorState) {
@@ -70,7 +70,7 @@ class _ProfileState extends State<Profile> {
                 } else if (state is UserSuccessState) {
                   return buildProfile(state.user);
                 } else {
-                  return const Text("initial");
+                  return const Text("");
                 }
               },
             ),
@@ -246,9 +246,8 @@ class _ProfileState extends State<Profile> {
   }
 
   List<Widget> buildInterest(List<PreferenceModel> preferences) {
-    List<Widget> widgets = [];
-    for (PreferenceModel preference in preferences) {
-      Widget card = IntrinsicWidth(
+    List<Widget> widgets = preferences.map((preference) {
+      return IntrinsicWidth(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           height: 36.0,
@@ -269,8 +268,7 @@ class _ProfileState extends State<Profile> {
           ),
         ),
       );
-      widgets.add(card);
-    }
+    }).toList();
     return widgets;
   }
 }

@@ -116,23 +116,6 @@ class _EditProfileState extends State<EditProfile> {
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        // TextButton(
-        //     onPressed: () {
-        //       showDialog(
-        //           context: context,
-        //           builder: (BuildContext context) => Dialog(
-        //                   child: Column(
-        //                 children: [
-        //                   IconButton(
-        //                       icon: const Icon(Icons.close),
-        //                       onPressed: () {
-        //                         Navigator.pop(context);
-        //                       })
-        //                 ],
-        //               )));
-        //     },
-        //     child: const Text("add")),
-
         Wrap(spacing: 10.0, runSpacing: 16.0, children: buildInterest()),
         const SizedBox(height: 34.0),
         CustomButton(
