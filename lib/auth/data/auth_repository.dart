@@ -6,7 +6,7 @@ import 'package:flutter_boilerplate/auth/login/data/login_model.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
-import 'package:flutter_boilerplate/common/exception/internal_error_exception.dart';
+import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 
 abstract class AuthRepository implements BaseRepository {
@@ -54,7 +54,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       String? refreshToken = await secureStorage.get(key: "refreshToken");
       if (refreshToken == null) {
-        throw InternalServerErrorException();
+        throw NotFoundException();
       }
       await _authDataProvider.logout(refreshToken);
       await secureStorage.set(key: "accessToken", value: "");
