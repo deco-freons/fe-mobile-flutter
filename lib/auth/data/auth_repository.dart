@@ -59,7 +59,6 @@ class AuthRepositoryImpl extends AuthRepository {
       Map<String, dynamic> userMap = data["user"];
       UserModel user = UserModel.fromJson(userMap);
 
-
       await secureStorage.set(key: "user", value: json.encode(userMap));
       _controller.add(AuthModel(user, AuthStatus.authenticated));
     } catch (e) {
