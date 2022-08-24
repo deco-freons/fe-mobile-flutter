@@ -6,11 +6,15 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 class CustomTextField extends StatefulWidget {
   final CustomFormInput input;
   final GlobalKey<FormState> formKey;
+  final Color labelColor;
+  final TextStyle inputStyle;
 
   const CustomTextField({
     Key? key,
     required this.input,
     required this.formKey,
+    required this.labelColor,
+    required this.inputStyle,
   }) : super(key: key);
 
   @override
@@ -57,9 +61,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           children: [
             Text(
               widget.input.label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
+                color: widget.labelColor,
               ),
             ),
             Padding(
@@ -69,14 +74,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       input: widget.input,
                       firstDate: widget.input.firstDate,
                       lastDate: widget.input.lastDate,
+                      inputStyle: widget.inputStyle,
                     )
                   : TextFormField(
                       controller: widget.input.controller,
                       obscureText: widget.input.type == TextFieldType.password
                           ? _obscured
                           : false,
-                      style: const TextStyle(
-                          fontSize: 16.0, height: 1, color: Colors.black),
+                      readOnly: widget.input.disable,
+                      style: widget.inputStyle,
                       decoration: InputDecoration(
                           errorBorder: OutlineInputBorder(
                             borderRadius:
@@ -99,10 +105,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                 color: Theme.of(context).colorScheme.error),
                           ),
                           filled: true,
-                          fillColor: Theme.of(context)
-                              .colorScheme
-                              .primary
-                              .withOpacity(0.21),
+                          fillColor: widget.input.disable
+                              ? Theme.of(context)
+                                  .colorScheme
+                                  .tertiary
+                                  .withOpacity(0.41)
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withOpacity(0.21),
                           suffixIcon: widget.input.type ==
                                   TextFieldType.password
                               ? _obscured

@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/auth/data/preference_model.dart';
+import 'package:flutter_boilerplate/auth/data/user_model.dart';
+import 'package:flutter_boilerplate/auth/user/bloc/user_cubit.dart';
+import 'package:flutter_boilerplate/auth/user/bloc/user_state.dart';
+import 'package:flutter_boilerplate/auth/user/data/user_repository.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
@@ -12,54 +18,69 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  final UserRepositoryImpl userRepository = UserRepositoryImpl();
   int eventCount = 12;
-  List<String> interests = [
-    "Gaming",
-    "Movie",
-    "Dancing",
-    "Culinary",
-    "Basketball",
-    "⚽️ Football"
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+    return BlocProvider(
+      create: (context) => UserCubit(userRepository)..getUser(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            child: IconButton(
+              icon:
+                  const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Text(
+              "My Profile",
+              style: TextStyle(
+                fontSize: 26.0,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          elevation: 0.0,
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: Text(
-            "My Profile",
-            style: TextStyle(
-              fontSize: 26.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+        body: Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.secondary),
+          child: SafeArea(
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state is UserLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  );
+                } else if (state is UserErrorState) {
+                  return Text(state.errorMessage);
+                } else if (state is UserSuccessState) {
+                  return buildProfile(state.user);
+                } else {
+                  return const Text("");
+                }
+              },
             ),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        elevation: 0.0,
-      ),
-      body: Container(
-        decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.secondary),
-        child: SafeArea(child: buildProfile()),
       ),
     );
   }
 
-  Widget buildProfile() {
+  Widget buildProfile(UserModel user) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
       children: [
@@ -77,7 +98,7 @@ class _ProfileState extends State<Profile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Zahra Abraara",
+                  "${user.firstName} ${user.lastName}",
                   style: TextStyle(
                     fontSize: 26.0,
                     fontWeight: FontWeight.bold,
@@ -158,11 +179,11 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-        buildField("First Name", "Zahra"),
-        buildField("Last Name", "Abraara"),
-        buildField("Username", "Abraara"),
-        buildField("Email", "zahra@gmail.com"),
-        buildField("Birth Date", "06 February 2002"),
+        buildField("First Name", user.firstName),
+        buildField("Last Name", user.lastName),
+        buildField("Username", user.username),
+        buildField("Email", user.email),
+        buildField("Birth Date", user.birthDate),
         const SizedBox(height: 38.0),
         Text(
           "Interest",
@@ -175,7 +196,10 @@ class _ProfileState extends State<Profile> {
         const SizedBox(
           height: 7.0,
         ),
-        Wrap(spacing: 10.0, runSpacing: 16.0, children: buildInterest()),
+        Wrap(
+            spacing: 10.0,
+            runSpacing: 16.0,
+            children: buildInterest(user.preferences)),
         const SizedBox(height: 34.0),
         CustomButton(
           label: "Edit Profile",
@@ -196,7 +220,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget buildField(label, value) {
+  Widget buildField(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -221,10 +245,9 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  List<Widget> buildInterest() {
-    List<Widget> widgets = [];
-    for (String interest in interests) {
-      Widget card = IntrinsicWidth(
+  List<Widget> buildInterest(List<PreferenceModel> preferences) {
+    List<Widget> widgets = preferences.map((preference) {
+      return IntrinsicWidth(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           height: 36.0,
@@ -238,15 +261,14 @@ class _ProfileState extends State<Profile> {
           child: Row(
             children: [
               Text(
-                interest,
+                preference.preferenceName,
                 style: const TextStyle(fontSize: 15.0),
               )
             ],
           ),
         ),
       );
-      widgets.add(card);
-    }
+    }).toList();
     return widgets;
   }
 }

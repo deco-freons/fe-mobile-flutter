@@ -6,13 +6,17 @@ class CustomDatePicker extends StatefulWidget {
   final CustomFormInput input;
   final DateTime firstDate;
   final DateTime lastDate;
+  final TextStyle inputStyle;
 
   const CustomDatePicker({
     Key? key,
     required this.input,
     required this.firstDate,
     required this.lastDate,
-  }) : super(key: key);
+    TextStyle? inputStyle,
+  })  : inputStyle = inputStyle ??
+            const TextStyle(fontSize: 16.0, height: 1, color: Colors.black),
+        super(key: key);
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -41,7 +45,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     return TextField(
         controller: widget.input.controller,
         readOnly: true,
-        style: const TextStyle(fontSize: 16.0, height: 1, color: Colors.black),
+        style: widget.inputStyle,
         decoration: InputDecoration(
             border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),

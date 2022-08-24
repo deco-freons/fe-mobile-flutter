@@ -15,10 +15,23 @@ class _SplashState extends State<Splash> {
       body: Container(
         color: Theme.of(context).colorScheme.primary,
         child: Center(
-            child: Hero(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Hero(
                 tag: "Logo",
                 child: Image.asset(
-                    'lib/common/assets/images/GlobeIconMedium.png'))),
+                    'lib/common/assets/images/GlobeIconMedium.png')),
+            const SizedBox(
+              height: 40.0,
+            ),
+            Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
