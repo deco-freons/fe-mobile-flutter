@@ -3,8 +3,8 @@ import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
-import '../data/preference_repository.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
+import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import 'preference_state.dart';
 
 class PreferenceCubit extends BaseCubit<PreferenceState> {
@@ -29,7 +29,7 @@ class PreferenceCubit extends BaseCubit<PreferenceState> {
       userMap['preferences'] = preferenceList;
       userMap['isFirstLogin'] = false;
       await secureStorage.set(key: 'user', value: json.encode(userMap));
-      await _preferenceRepository.preference(data);
+      await _preferenceRepository.setFirstPreference(data);
       emit(const PreferenceSuccessState());
     } catch (e) {
       String message = ErrorHandler.handle(e);

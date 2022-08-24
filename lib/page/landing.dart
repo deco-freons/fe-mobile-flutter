@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/register.dart';
 import 'package:flutter_boilerplate/page/login.dart';
 
@@ -29,8 +30,8 @@ class _LandingState extends State<Landing> {
               1.0
             ],
                 colors: [
-              Theme.of(context).colorScheme.primary,
-              const Color(0xFF184B5F),
+              primary.shade500,
+              primary.shade600,
             ])),
         child: SafeArea(child: buildLanding()),
       ),

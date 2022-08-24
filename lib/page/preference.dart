@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import '../../common/config/enum.dart';
-import '../auth/bloc/preference_cubit.dart';
-import '../auth/bloc/preference_state.dart';
-import '../auth/data/preference_repository.dart';
+import '../preference/bloc/preference_cubit.dart';
+import '../preference/bloc/preference_state.dart';
 import '../common/components/buttons/custom_button.dart';
 import '../common/components/buttons/custom_text_button.dart';
-import '../common/components/buttons/preference_button.dart';
+import '../preference/components/preference_button.dart';
 import 'register.dart';
 
 class Preference extends StatefulWidget {
@@ -109,10 +110,9 @@ class _PreferenceFormState extends State<PreferenceForm> {
                     });
                     if (!clickCheck[pref.index]) {
                       preferenceList.add(pref.name);
-                    } else if (clickCheck[pref.index]) {
+                    } else {
                       preferenceList.remove(pref.name);
                     }
-                    print(preferenceList);
                   },
                   click: clickCheck[pref.index],
                 ),
@@ -125,8 +125,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
             label: 'Done',
             type: ButtonType.primary,
             onPressedHandler: () {
-              List<String> data = preferenceList;
-              submit(context, data);
+              submit(context, preferenceList);
             },
             cornerRadius: 32.0,
           ),
@@ -136,7 +135,9 @@ class _PreferenceFormState extends State<PreferenceForm> {
           child: CustomTextButton(
               text: 'Skip',
               type: TextButtonType.tertiary,
-              onPressedHandler: () {}),
+              onPressedHandler: () {
+                Navigator.pushNamed(context, Homepage.routeName);
+              }),
         )
       ],
     );

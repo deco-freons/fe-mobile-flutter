@@ -4,7 +4,7 @@ import 'preference_data_provider.dart';
 
 @immutable
 abstract class PreferenceRepository implements BaseRepository {
-  Future<dynamic> preference(List<String> data);
+  Future<dynamic> setFirstPreference(List<String> data);
 }
 
 class PreferenceRepositoryImpl extends PreferenceRepository {
@@ -12,7 +12,7 @@ class PreferenceRepositoryImpl extends PreferenceRepository {
       PreferenceDataProvider();
 
   @override
-  Future<dynamic> preference(List<String> data) async {
+  Future<dynamic> setFirstPreference(List<String> data) async {
     final response = await _preferenceDataProvider.firstPreference(data);
     return response;
   }

@@ -46,7 +46,7 @@ class AuthBloc extends BaseBloc<AuthEvent, AuthState> {
         if (user == null) {
           return emit(AuthUnauthenticatedState(status: status));
         }
-        if (!user.isFirstLogin) {
+        if (user.isFirstLogin) {
           return emit(AuthFirstLoginState(status: status));
         }
         return emit(AuthAuthenticatedState(user: user, status: status));

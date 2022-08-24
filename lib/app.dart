@@ -6,7 +6,6 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/login.dart';
-import 'package:flutter_boilerplate/page/register.dart';
 
 import 'common/config/route_generator.dart';
 
