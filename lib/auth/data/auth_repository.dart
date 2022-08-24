@@ -7,6 +7,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
+
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 
 abstract class AuthRepository implements BaseRepository {
