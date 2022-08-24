@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_boilerplate/page/forget.dart';
+import 'package:flutter_boilerplate/page/get_started.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/login.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
-
-import '../../page/register.dart';
-import '../../page/landing.dart';
-import '../../page/splash.dart';
-import '../../page/forget.dart';
+import 'package:flutter_boilerplate/page/register.dart';
+import 'package:flutter_boilerplate/page/splash.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -36,6 +36,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const EditProfile());
       case Homepage.routeName:
         return MaterialPageRoute(builder: (context) => const Homepage());
+      case Preference.routeName:
+        return MaterialPageRoute(builder: (context) => const Preference());
+      case GetStarted.routeName:
+        return MaterialPageRoute(builder: (context) => const GetStarted());
       default:
         return _errorRoute();
     }

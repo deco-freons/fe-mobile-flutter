@@ -45,9 +45,9 @@ class _ForgetState extends State<Forget> {
         BlocConsumer<ForgetCubit, ForgetState>(
           builder: (context, state) {
             if (state is ForgetLoadingState) {
-              return const Center(
+              return Center(
                 child: CircularProgressIndicator(
-                  color: Colors.amber,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               );
             } else if (state is ForgetErrorState) {

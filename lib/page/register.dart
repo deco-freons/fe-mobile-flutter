@@ -56,9 +56,9 @@ class _RegisterState extends State<Register> {
         BlocConsumer<RegisterCubit, RegisterState>(
           builder: (context, state) {
             if (state is RegisterLoadingState) {
-              return const Center(
+              return Center(
                 child: CircularProgressIndicator(
-                  color: Colors.amber,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               );
             } else if (state is RegisterErrorState) {

@@ -22,3 +22,9 @@ class AuthUnauthenticatedState extends AuthState {
     status = AuthStatus.unauthenticated,
   });
 }
+
+class AuthFirstLoginState extends AuthState {
+  const AuthFirstLoginState({
+    status = AuthStatus.authenticated,
+  });
+}
