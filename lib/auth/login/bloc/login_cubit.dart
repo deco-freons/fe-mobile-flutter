@@ -15,7 +15,6 @@ class LoginCubit extends BaseCubit<LoginState> {
       await _authRepository.logIn(data);
       emit(const LoginSuccessState());
     } catch (e) {
-      print(e);
       String message = ErrorHandler.handle(e);
       emit(LoginErrorState(errorMessage: message));
     }

@@ -35,9 +35,7 @@ class AuthRepositoryImpl extends AuthRepository {
       Map<String, dynamic> userMap = data["user"];
       String accessToken = data["accessToken"];
       String refreshToken = data["refreshToken"];
-      print(userMap);
       UserModel user = UserModel.fromJson(data["user"]);
-      print(user);
 
       await secureStorage.set(key: "accessToken", value: accessToken);
       await secureStorage.set(key: "refreshToken", value: refreshToken);

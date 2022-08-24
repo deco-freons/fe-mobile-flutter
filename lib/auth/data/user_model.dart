@@ -1,5 +1,5 @@
-import 'package:flutter_boilerplate/auth/data/preference_model.dart';
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
