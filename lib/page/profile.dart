@@ -4,14 +4,14 @@ import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/auth/logout/bloc/logout_cubit.dart';
 import 'package:flutter_boilerplate/auth/logout/bloc/logout_state.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
-import 'package:flutter_boilerplate/auth/user/bloc/user_cubit.dart';
-import 'package:flutter_boilerplate/auth/user/bloc/user_state.dart';
-import 'package:flutter_boilerplate/auth/user/data/user_repository.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/user_state.dart';
+import 'package:flutter_boilerplate/user/data/user_repository.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -82,9 +82,8 @@ class _ProfileState extends State<Profile> {
                   return Text(state.errorMessage);
                 } else if (state is UserSuccessState) {
                   return buildProfile(context, state.user);
-                } else {
-                  return const Text("");
                 }
+                return const SizedBox.shrink();
               },
             ),
           ),
