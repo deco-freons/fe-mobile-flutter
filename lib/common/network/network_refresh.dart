@@ -32,7 +32,12 @@ class Refresh extends QueuedInterceptor {
       final response = await refreshDio.fetch(origin);
       handler.resolve(response);
     } catch (e) {
-      getIt.get<AuthRepository>().forceLogout();
+      if (e is DioError) {
+        if (e.response?.statusCode == 401) {
+          getIt.get<AuthRepository>().forceLogout();
+        }
+      }
+
       return super.onError(err, handler);
     }
   }

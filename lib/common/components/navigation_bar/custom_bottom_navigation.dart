@@ -24,7 +24,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
       decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: <BoxShadow>[
-          BoxShadow(blurRadius: 5.0, offset: Offset(0.0, 1.5))
+          BoxShadow(blurRadius: 5.0, offset: Offset(0.0, 2.0))
         ],
       ),
       child: Row(
@@ -46,13 +46,22 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                         ? const [
                             BoxShadow(
                               color: primary,
-                              offset: Offset(0, -2.5),
+                              spreadRadius: -0.5,
+                              offset: Offset(0, -1.75),
                             ),
+                            BoxShadow(
+                              color: primary,
+                              spreadRadius: -7,
+                              blurRadius: 5,
+                              offset: Offset(0, -9),
+                            )
                           ]
                         : null,
                     color: Theme.of(context).colorScheme.background,
                   ),
                   child: IconButton(
+                    splashColor: primary,
+                    highlightColor: primary,
                     iconSize: 40,
                     color: widget.currentIndex == key ? primary : grey,
                     onPressed: () {

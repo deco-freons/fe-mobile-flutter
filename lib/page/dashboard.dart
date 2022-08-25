@@ -29,14 +29,29 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       _selectedPageIndex = idx;
       _pageController.animateToPage(idx,
-          duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+          duration: const Duration(milliseconds: 250), curve: Curves.easeInOut);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () {}),
+        resizeToAvoidBottomInset: false,
+        floatingActionButton: Container(
+          padding: const EdgeInsets.only(top: 20),
+          width: 80,
+          height: 80,
+          child: FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              child: Icon(
+                Icons.add,
+                size: 50,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              onPressed: () {
+                // GOTO CREATE EVENT PAGE
+              }),
+        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: PageView(
           controller: _pageController,
