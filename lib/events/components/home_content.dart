@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/popular_events.dart';
 
 class HomeContent extends StatefulWidget {
   final String title;
@@ -46,7 +46,8 @@ class _HomeContentState extends State<HomeContent> {
                           fontSize: 14.0,
                           type: TextButtonType.tertiary,
                           onPressedHandler: () {
-                            Navigator.pushNamed(context, Landing.routeName);
+                            Navigator.pushNamed(
+                                context, PopularEvents.routeName);
                           })
                     ],
                   )
@@ -55,14 +56,12 @@ class _HomeContentState extends State<HomeContent> {
                     style: const TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold),
                   )),
-        Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: EdgeInsets.only(left: widget.contentPadding),
-              child: Row(
-                children: widget.contentWidgets,
-              ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: EdgeInsets.only(left: widget.contentPadding),
+            child: Row(
+              children: widget.contentWidgets,
             ),
           ),
         ),
