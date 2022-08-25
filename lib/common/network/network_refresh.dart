@@ -23,7 +23,7 @@ class Refresh extends QueuedInterceptor {
       }
       String? oldRefreshToken = await _secureStorage.get(key: "refreshToken");
       Response<dynamic> res = await refreshDio
-          .post("/auth/refresh", data: {"refreshToken": oldRefreshToken});
+          .post("/auth/refresh-token", data: {"refreshToken": oldRefreshToken});
       String accessToken = res.data["accessToken"];
       String refreshToken = res.data["refreshToken"];
       await _secureStorage.set(key: "accessToken", value: accessToken);

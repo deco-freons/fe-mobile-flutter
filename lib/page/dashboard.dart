@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/navigation_bar/custom_bottom_navigation.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 
 class Dashboard extends StatefulWidget {
@@ -35,17 +36,22 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[_homePage, _searchPage, _eventPage, _historyPage],
-      ),
-      bottomNavigationBar: NavigationBar(
-        height: 60,
-        selectedIndex: _selectedPageIndex,
-        onDestinationSelected: handlePageChanged,
-        destinations: const [],
-      ),
-    );
+        floatingActionButton: FloatingActionButton(onPressed: () {}),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: <Widget>[_homePage, _searchPage, _eventPage, _historyPage],
+        ),
+        bottomNavigationBar: CustomBottomNavigation(
+          currentIndex: _selectedPageIndex,
+          onTap: handlePageChanged,
+          children: const <Icon>[
+            Icon(Icons.home_outlined),
+            Icon(Icons.search_outlined),
+            Icon(Icons.edit_calendar_outlined),
+            Icon(Icons.history_outlined)
+          ],
+        ));
   }
 }

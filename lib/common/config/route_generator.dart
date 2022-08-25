@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
@@ -17,6 +18,8 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
+      case Dashboard.routeName:
+        return MaterialPageRoute(builder: (context) => const Dashboard());
       case Splash.routeName:
         return MaterialPageRoute(builder: (context) => const Splash());
       case Register.routeName:

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/register.dart';
 import '../auth/login/bloc/login_cubit.dart';
 import '../auth/login/bloc/login_state.dart';
@@ -63,7 +62,7 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-        BlocConsumer<LoginCubit, LoginState>(
+        BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
             if (state is LoginLoadingState) {
               return Center(
@@ -78,11 +77,6 @@ class _LoginState extends State<Login> {
               );
             } else {
               return LoginForm();
-            }
-          },
-          listener: (context, state) {
-            if (state is LoginSuccessState) {
-              Navigator.pushNamed(context, GetStarted.routeName);
             }
           },
         ),
