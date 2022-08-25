@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
+import 'package:flutter_boilerplate/auth/logout/bloc/logout_cubit.dart';
+import 'package:flutter_boilerplate/auth/logout/bloc/logout_state.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/auth/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/auth/user/bloc/user_state.dart';
@@ -7,8 +10,8 @@ import 'package:flutter_boilerplate/auth/user/data/user_repository.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
-
-import '../preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -24,8 +27,17 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserCubit(userRepository)..getUser(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LogoutCubit>(
+          create: (BuildContext context) =>
+              LogoutCubit(RepositoryProvider.of<AuthRepository>(context)),
+        ),
+        BlocProvider<UserCubit>(
+          create: (BuildContext context) =>
+              UserCubit(userRepository)..getUser(),
+        ),
+      ],
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
@@ -69,7 +81,7 @@ class _ProfileState extends State<Profile> {
                 } else if (state is UserErrorState) {
                   return Text(state.errorMessage);
                 } else if (state is UserSuccessState) {
-                  return buildProfile(state.user);
+                  return buildProfile(context, state.user);
                 } else {
                   return const Text("");
                 }
@@ -81,7 +93,7 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget buildProfile(UserModel user) {
+  Widget buildProfile(BuildContext context, UserModel user) {
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
       children: [
@@ -211,11 +223,20 @@ class _ProfileState extends State<Profile> {
           cornerRadius: 32.0,
         ),
         const SizedBox(height: 20.0),
-        CustomButton(
-          label: "Sign Out",
-          type: ButtonType.red,
-          onPressedHandler: () {},
-          cornerRadius: 32.0,
+        BlocListener<LogoutCubit, LogoutState>(
+          listener: (context, state) {
+            if (state is LogoutSuccessState) {
+              Navigator.pushReplacementNamed(context, Landing.routeName);
+            }
+          },
+          child: CustomButton(
+            label: "Sign Out",
+            type: ButtonType.red,
+            onPressedHandler: () {
+              logout(context);
+            },
+            cornerRadius: 32.0,
+          ),
         ),
       ],
     );
@@ -271,5 +292,10 @@ class _ProfileState extends State<Profile> {
       );
     }).toList();
     return widgets;
+  }
+
+  void logout(BuildContext context) async {
+    final cubit = context.read<LogoutCubit>();
+    await cubit.logout();
   }
 }
