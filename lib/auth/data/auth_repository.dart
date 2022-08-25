@@ -9,11 +9,13 @@ import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
+import 'package:flutter_boilerplate/get_it.dart';
 
 abstract class AuthRepository implements BaseRepository {
   Future logIn(LoginModel model);
   Future<void> logOut();
   Future<void> checkAuth();
+  Future<void> forceLogout();
   Stream<AuthModel> get status async* {}
   void dispose();
 }
@@ -21,7 +23,7 @@ abstract class AuthRepository implements BaseRepository {
 class AuthRepositoryImpl extends AuthRepository {
   final _controller = StreamController<AuthModel>();
   final AuthDataProvider _authDataProvider = AuthDataProvider();
-  final secureStorage = SecureStorage.getInstance;
+  final secureStorage = getIt.get<SecureStorage>();
 
   @override
   Stream<AuthModel> get status async* {
@@ -39,7 +41,6 @@ class AuthRepositoryImpl extends AuthRepository {
       String accessToken = data["accessToken"];
       String refreshToken = data["refreshToken"];
       UserModel user = UserModel.fromJson(data["user"]);
-
       await secureStorage.set(key: "accessToken", value: accessToken);
       await secureStorage.set(key: "refreshToken", value: refreshToken);
       await secureStorage.set(key: "user", value: json.encode(userMap));
@@ -85,6 +86,14 @@ class AuthRepositoryImpl extends AuthRepository {
       //  Handle refresh token
       return _controller.add(const AuthModel(null, AuthStatus.unauthenticated));
     }
+  }
+
+  @override
+  Future<void> forceLogout() async {
+    await secureStorage.clear(key: "accessToken");
+    await secureStorage.clear(key: "refreshToken");
+    await secureStorage.clear(key: "user");
+    return _controller.add(const AuthModel(null, AuthStatus.unauthenticated));
   }
 
   @override

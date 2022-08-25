@@ -4,12 +4,13 @@ import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
+import 'package:flutter_boilerplate/get_it.dart';
 import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import 'preference_state.dart';
 
 class PreferenceCubit extends BaseCubit<PreferenceState> {
   final PreferenceRepository _preferenceRepository;
-  final secureStorage = SecureStorage.getInstance;
+  final SecureStorage secureStorage = getIt.get<SecureStorage>();
 
   PreferenceCubit(this._preferenceRepository)
       : super(const PreferenceInitialState());

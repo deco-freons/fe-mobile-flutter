@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
-import 'package:flutter_boilerplate/auth/user/bloc/user_state.dart';
-import 'package:flutter_boilerplate/auth/user/data/user_repository.dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
+import 'package:flutter_boilerplate/user/bloc/user_state.dart';
+import 'package:flutter_boilerplate/user/data/user_repository.dart';
 
 class UserCubit extends BaseCubit<UserState> {
   final UserRepository _userRepository;
