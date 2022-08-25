@@ -4,7 +4,7 @@ import 'package:flutter_boilerplate/page/landing.dart';
 
 class EventCardSmall extends StatefulWidget {
   final String title;
-  final String distance;
+  final double distance;
   final String month;
   final String date;
   final String image;
@@ -26,6 +26,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 3.0,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
       child: InkWell(
@@ -71,15 +72,17 @@ class _EventCardSmallState extends State<EventCardSmall> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          widget.title,
-                          style: const TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
+                        FittedBox(
+                          child: Text(
+                            widget.title,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         Text(
-                          widget.distance,
+                          '${widget.distance}km',
                           style: TextStyle(
                             fontSize: 12.0,
                             color: Theme.of(context).colorScheme.tertiary,

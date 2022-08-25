@@ -7,8 +7,8 @@ import 'package:flutter_boilerplate/page/landing.dart';
 
 class EventCardLarge extends StatefulWidget {
   final String title;
-  final String author;
-  final String distance;
+  final String? author;
+  final double distance;
   final String location;
   final String month;
   final String date;
@@ -33,6 +33,7 @@ class _EventCardLargeState extends State<EventCardLarge> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 5.0,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0))),
@@ -71,11 +72,13 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      widget.title,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.bold,
+                                    FittedBox(
+                                      child: Text(
+                                        widget.title,
+                                        style: const TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                     Text(
@@ -98,8 +101,8 @@ class _EventCardLargeState extends State<EventCardLarge> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(widget.distance),
-                                  Text(widget.location),
+                                  Text('${widget.distance} km'),
+                                  FittedBox(child: Text(widget.location)),
                                 ],
                               )
                             ],
