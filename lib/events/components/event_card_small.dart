@@ -42,6 +42,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Card(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
@@ -51,7 +52,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                       decoration: BoxDecoration(
                           image: DecorationImage(
                         image: AssetImage(widget.image),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.cover,
                       )),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 9.0, right: 9.0),

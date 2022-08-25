@@ -65,7 +65,7 @@ class _HomepageState extends State<Homepage> {
                 width: 322.0,
                 height: 343.0,
                 child: DecoratedBox(
-                    decoration: BoxDecoration(color: grey.shade400)),
+                    decoration: BoxDecoration(color: neutral.shade400)),
               ),
             ),
           ]),
@@ -104,41 +104,43 @@ class _HomepageState extends State<Homepage> {
         const HomeContent(
             title: 'Popular events',
             isPopular: true,
+            contentPadding: 17.0,
+            titlePadding: 0.0,
             contentWidgets: [
               EventCardSmall(
                 title: 'Live music at city hall',
                 distance: '2 km',
                 month: 'Mar',
                 date: '24',
-                image: 'lib/common/assets/images/GlobeIconMedium.png',
+                image: 'lib/common/assets/images/SmallEventTest.png',
               ),
               EventCardSmall(
                 title: 'Live music at city hall',
                 distance: '2 km',
                 month: 'Mar',
                 date: '24',
-                image: 'lib/common/assets/images/GlobeIconMedium.png',
+                image: 'lib/common/assets/images/SmallEventTest.png',
               ),
               EventCardSmall(
                 title: 'Live music at city hall',
                 distance: '2 km',
                 month: 'Mar',
                 date: '24',
-                image: 'lib/common/assets/images/GlobeIconMedium.png',
+                image: 'lib/common/assets/images/SmallEventTest.png',
               ),
               EventCardSmall(
                 title: 'Live music at city hall',
                 distance: '2 km',
                 month: 'Mar',
                 date: '24',
-                image: 'lib/common/assets/images/GlobeIconMedium.png',
+                image: 'lib/common/assets/images/SmallEventTest.png',
               ),
               EventCardSmall(
                 title: 'Live music at city hall',
                 distance: '2 km',
                 month: 'Mar',
                 date: '24',
-                image: 'lib/common/assets/images/GlobeIconMedium.png',
+                image: 'lib/common/assets/images/SmallEventTest.png',
               ),
             ])
       ],

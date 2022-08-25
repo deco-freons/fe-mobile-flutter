@@ -7,6 +7,7 @@ class HomeContent extends StatefulWidget {
   final String title;
   final List<Widget> contentWidgets;
   final double contentPadding;
+  final double titlePadding;
   final bool isPopular;
 
   const HomeContent({
@@ -14,6 +15,7 @@ class HomeContent extends StatefulWidget {
     required this.title,
     required this.contentWidgets,
     this.contentPadding = 0.0,
+    this.titlePadding = 22.0,
     this.isPopular = false,
   }) : super(key: key);
 
@@ -28,8 +30,8 @@ class _HomeContentState extends State<HomeContent> {
       padding: const EdgeInsets.only(bottom: 25.0),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
-            padding:
-                const EdgeInsets.only(left: 30.0, bottom: 22.0, right: 15.0),
+            padding: EdgeInsets.only(
+                left: 30.0, bottom: widget.titlePadding, right: 15.0),
             child: (widget.isPopular)
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
