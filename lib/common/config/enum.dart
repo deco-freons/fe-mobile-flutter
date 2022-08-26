@@ -7,7 +7,8 @@ enum TextFieldType {
   category,
   eventTime,
   textArea,
-  location
+  location,
+  image,
 }
 
 enum ButtonType { primary, inverse, red }
@@ -51,6 +52,25 @@ extension PrefExtension on PrefType {
         return '🍃️ Nature';
       case PrefType.FB:
         return '⚽️ Football';
+    }
+  }
+
+  String get id {
+    switch (this) {
+      case PrefType.GM:
+        return 'GM';
+      case PrefType.MV:
+        return 'MV';
+      case PrefType.DC:
+        return 'DC';
+      case PrefType.CL:
+        return 'CL';
+      case PrefType.BB:
+        return 'BB';
+      case PrefType.NT:
+        return 'NT';
+      case PrefType.FB:
+        return 'FB';
     }
   }
 }

@@ -11,6 +11,7 @@ import 'package:flutter_boilerplate/page/homepage.dart';
 import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/register.dart';
+import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/page/splash.dart';
 
 class RouteGenerator {

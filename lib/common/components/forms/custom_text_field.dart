@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/page/create_event.dart';
+import 'package:flutter_boilerplate/event/components/place_model.dart';
+import 'package:flutter_boilerplate/page/search_location.dart';
 
 class CustomTextField extends StatefulWidget {
   final CustomFormInput input;
@@ -120,7 +121,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           ),
                           items: PrefType.values.map((preference) {
                             return DropdownMenuItem(
-                              value: preference,
+                              value: preference.id,
                               child: Text(preference.desc),
                             );
                           }).toList(),
@@ -165,99 +166,121 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                         const Icon(Icons.place_outlined),
                                   ),
                                   onTap: () async {
-                                    Place location = await Navigator.pushNamed(
+                                    PlaceModel location =
+                                        await Navigator.pushNamed(
                                       context,
                                       SearchLocation.routeName,
-                                    ) as Place;
+                                    ) as PlaceModel;
                                     widget.input.controller.text =
                                         location.name;
                                     widget.input.lat = location.lat;
                                     widget.input.lng = location.lng;
                                   },
                                 )
-                              : TextFormField(
-                                  controller: widget.input.controller,
-                                  obscureText: widget.input.type ==
-                                          TextFieldType.password
-                                      ? _obscured
-                                      : false,
-                                  readOnly: widget.input.disable,
-                                  keyboardType: widget.input.type ==
-                                          TextFieldType.textArea
-                                      ? TextInputType.multiline
-                                      : TextInputType.text,
-                                  maxLines: widget.input.type ==
-                                          TextFieldType.textArea
-                                      ? 4
-                                      : 1,
-                                  style: widget.inputStyle,
-                                  decoration: InputDecoration(
-                                      hintText: widget.input.type ==
-                                              TextFieldType.textArea
-                                          ? 'Please enter ${widget.input.label} here...'
-                                          : "",
-                                      errorBorder: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10.0)),
-                                        borderSide: BorderSide(
-                                            width: 1.0,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .error),
-                                      ),
-                                      border: const OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10.0)),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      errorText: _error
-                                          ? widget.input.errorMessage
-                                          : null,
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10.0)),
-                                        borderSide: BorderSide(
-                                            width: 1.0,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .error),
-                                      ),
-                                      filled: true,
-                                      fillColor: widget.input.disable
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .tertiary
-                                              .withOpacity(0.41)
-                                          : Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                              .withOpacity(0.21),
-                                      suffixIcon: widget.input.type ==
+                              : widget.input.type == TextFieldType.image
+                                  ? TextFormField(
+                                      controller: widget.input.controller,
+                                      readOnly: true,
+                                      maxLines: 6,
+                                      style: widget.inputStyle,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0)),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        filled: true,
+                                        fillColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.21),
+                                      ))
+                                  : TextFormField(
+                                      controller: widget.input.controller,
+                                      obscureText: widget.input.type ==
                                               TextFieldType.password
                                           ? _obscured
-                                              ? IconButton(
-                                                  icon: const Icon(
-                                                      Icons.visibility_off),
-                                                  onPressed: () {
-                                                    toggleVisibility();
-                                                  },
-                                                )
-                                              : IconButton(
-                                                  icon: const Icon(
-                                                      Icons.visibility),
-                                                  onPressed: () {
-                                                    toggleVisibility();
-                                                  },
-                                                )
-                                          : null),
-                                  onChanged: (value) {
-                                    widget.input.confirmField
-                                        ? widget.formKey.currentState!
-                                            .validate()
-                                        : null;
-                                    validateField();
-                                  },
-                                ),
+                                          : false,
+                                      readOnly: widget.input.disable,
+                                      keyboardType: widget.input.type ==
+                                              TextFieldType.textArea
+                                          ? TextInputType.multiline
+                                          : TextInputType.text,
+                                      maxLines: widget.input.type ==
+                                              TextFieldType.textArea
+                                          ? 4
+                                          : 1,
+                                      style: widget.inputStyle,
+                                      decoration: InputDecoration(
+                                          hintText: widget.input.type ==
+                                                  TextFieldType.textArea
+                                              ? 'Please enter ${widget.input.label} here...'
+                                              : "",
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10.0)),
+                                            borderSide: BorderSide(
+                                                width: 1.0,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          errorText: _error
+                                              ? widget.input.errorMessage
+                                              : null,
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10.0)),
+                                            borderSide: BorderSide(
+                                                width: 1.0,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error),
+                                          ),
+                                          filled: true,
+                                          fillColor: widget.input.disable
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary
+                                                  .withOpacity(0.41)
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withOpacity(0.21),
+                                          suffixIcon: widget.input.type ==
+                                                  TextFieldType.password
+                                              ? _obscured
+                                                  ? IconButton(
+                                                      icon: const Icon(
+                                                          Icons.visibility_off),
+                                                      onPressed: () {
+                                                        toggleVisibility();
+                                                      },
+                                                    )
+                                                  : IconButton(
+                                                      icon: const Icon(
+                                                          Icons.visibility),
+                                                      onPressed: () {
+                                                        toggleVisibility();
+                                                      },
+                                                    )
+                                              : null),
+                                      onChanged: (value) {
+                                        widget.input.confirmField
+                                            ? widget.formKey.currentState!
+                                                .validate()
+                                            : null;
+                                        validateField();
+                                      },
+                                    ),
             ),
             widget.input.confirmField
                 ? Column(
