@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 
 class Homepage extends StatefulWidget {
@@ -43,9 +42,7 @@ class _HomepageState extends State<Homepage> {
             ),
             IconButton(
               iconSize: 45.0,
-              onPressed: () {
-                Navigator.pushNamed(context, CreateEvent.routeName);
-              },
+              onPressed: () {},
               icon: const Icon(Icons.notifications_outlined),
             ),
           ],
