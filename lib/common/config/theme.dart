@@ -15,7 +15,7 @@ const ColorScheme colorScheme = ColorScheme(
     primary: primary,
     secondary: neutral,
     tertiary: grey,
-    surface: black,
+    surface: neutral,
     onPrimary: neutral,
     background: neutral,
     onSurface: primary,

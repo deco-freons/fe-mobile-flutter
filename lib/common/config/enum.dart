@@ -4,6 +4,12 @@ enum TextFieldType {
   string,
   password,
   date,
+  category,
+  eventTime,
+  textArea,
+  location,
+  image,
+  interest,
 }
 
 enum ButtonType { primary, inverse, red }

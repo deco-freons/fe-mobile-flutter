@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/event/components/place_model.dart';
+import 'package:flutter_boilerplate/page/search_location.dart';
 
 class CustomTextField extends StatefulWidget {
   final CustomFormInput input;
@@ -38,6 +40,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
     });
   }
 
+  void _selectTime(TextEditingController controller) async {
+    final TimeOfDay? newTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        initialEntryMode: TimePickerEntryMode.input,
+        builder: (context, childWidget) {
+          return MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: childWidget!);
+        });
+    if (newTime != null) {
+      String hour = newTime.hour < 10 ? "0${newTime.hour}" : "${newTime.hour}";
+      String minute =
+          newTime.minute < 10 ? "0${newTime.minute}" : "${newTime.minute}";
+      controller.text = "$hour:$minute";
+    }
+  }
+
   void validateField() {
     setState(() {
       _error = !RegExp(widget.input.pattern)
@@ -59,14 +80,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.input.label,
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: widget.labelColor,
-              ),
-            ),
+            widget.input.type != TextFieldType.eventTime
+                ? Text(
+                    widget.input.label,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: widget.labelColor,
+                    ),
+                  )
+                : const SizedBox.shrink(),
             Padding(
               padding: const EdgeInsets.only(top: 11.0),
               child: widget.input.type == TextFieldType.date
@@ -76,67 +99,188 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       lastDate: widget.input.lastDate,
                       inputStyle: widget.inputStyle,
                     )
-                  : TextFormField(
-                      controller: widget.input.controller,
-                      obscureText: widget.input.type == TextFieldType.password
-                          ? _obscured
-                          : false,
-                      readOnly: widget.input.disable,
-                      style: widget.inputStyle,
-                      decoration: InputDecoration(
-                          errorBorder: OutlineInputBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                width: 1.0,
-                                color: Theme.of(context).colorScheme.error),
+                  : widget.input.type == TextFieldType.category
+                      ? DropdownButtonFormField(
+                          style: widget.inputStyle,
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10.0)),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: widget.input.disable
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .tertiary
+                                    .withOpacity(0.41)
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.21),
                           ),
-                          border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide.none,
-                          ),
-                          errorText: _error ? widget.input.errorMessage : null,
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(
-                                width: 1.0,
-                                color: Theme.of(context).colorScheme.error),
-                          ),
-                          filled: true,
-                          fillColor: widget.input.disable
-                              ? Theme.of(context)
-                                  .colorScheme
-                                  .tertiary
-                                  .withOpacity(0.41)
-                              : Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withOpacity(0.21),
-                          suffixIcon: widget.input.type ==
-                                  TextFieldType.password
-                              ? _obscured
-                                  ? IconButton(
-                                      icon: const Icon(Icons.visibility_off),
-                                      onPressed: () {
-                                        toggleVisibility();
+                          items: PrefType.values.map((preference) {
+                            return DropdownMenuItem(
+                              value: preference.name,
+                              child: Text(preference.desc),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            widget.input.controller.text = value.toString();
+                          },
+                        )
+                      : widget.input.type == TextFieldType.eventTime
+                          ? Row(
+                              children: [
+                                buildtimeField(
+                                    "Start time", widget.input.controller),
+                                const SizedBox(
+                                  width: 25.0,
+                                ),
+                                buildtimeField(
+                                    "End time", widget.input.secondController!),
+                              ],
+                            )
+                          : widget.input.type == TextFieldType.location
+                              ? TextFormField(
+                                  controller: widget.input.controller,
+                                  readOnly: true,
+                                  style: widget.inputStyle,
+                                  decoration: InputDecoration(
+                                    border: const OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                      borderSide: BorderSide.none,
+                                    ),
+                                    filled: true,
+                                    fillColor: widget.input.disable
+                                        ? Theme.of(context)
+                                            .colorScheme
+                                            .tertiary
+                                            .withOpacity(0.41)
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.21),
+                                    suffixIcon:
+                                        const Icon(Icons.place_outlined),
+                                  ),
+                                  onTap: () async {
+                                    PlaceModel location =
+                                        await Navigator.pushNamed(
+                                      context,
+                                      SearchLocation.routeName,
+                                    ) as PlaceModel;
+                                    widget.input.controller.text =
+                                        location.name;
+                                    widget.input.lat = location.lat;
+                                    widget.input.lng = location.lng;
+                                  },
+                                )
+                              : widget.input.type == TextFieldType.image
+                                  ? TextFormField(
+                                      controller: widget.input.controller,
+                                      readOnly: true,
+                                      maxLines: 6,
+                                      style: widget.inputStyle,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10.0)),
+                                          borderSide: BorderSide.none,
+                                        ),
+                                        filled: true,
+                                        fillColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withOpacity(0.21),
+                                      ))
+                                  : TextFormField(
+                                      controller: widget.input.controller,
+                                      obscureText: widget.input.type ==
+                                              TextFieldType.password
+                                          ? _obscured
+                                          : false,
+                                      readOnly: widget.input.disable,
+                                      keyboardType: widget.input.type ==
+                                              TextFieldType.textArea
+                                          ? TextInputType.multiline
+                                          : TextInputType.text,
+                                      maxLines: widget.input.type ==
+                                              TextFieldType.textArea
+                                          ? 4
+                                          : 1,
+                                      style: widget.inputStyle,
+                                      decoration: InputDecoration(
+                                          hintText: widget.input.type ==
+                                                  TextFieldType.textArea
+                                              ? 'Please enter ${widget.input.label} here...'
+                                              : "",
+                                          errorBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10.0)),
+                                            borderSide: BorderSide(
+                                                width: 1.0,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error),
+                                          ),
+                                          border: const OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0)),
+                                            borderSide: BorderSide.none,
+                                          ),
+                                          errorText: _error
+                                              ? widget.input.errorMessage
+                                              : null,
+                                          focusedErrorBorder:
+                                              OutlineInputBorder(
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(10.0)),
+                                            borderSide: BorderSide(
+                                                width: 1.0,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .error),
+                                          ),
+                                          filled: true,
+                                          fillColor: widget.input.disable
+                                              ? Theme.of(context)
+                                                  .colorScheme
+                                                  .tertiary
+                                                  .withOpacity(0.41)
+                                              : Theme.of(context)
+                                                  .colorScheme
+                                                  .primary
+                                                  .withOpacity(0.21),
+                                          suffixIcon: widget.input.type ==
+                                                  TextFieldType.password
+                                              ? _obscured
+                                                  ? IconButton(
+                                                      icon: const Icon(
+                                                          Icons.visibility_off),
+                                                      onPressed: () {
+                                                        toggleVisibility();
+                                                      },
+                                                    )
+                                                  : IconButton(
+                                                      icon: const Icon(
+                                                          Icons.visibility),
+                                                      onPressed: () {
+                                                        toggleVisibility();
+                                                      },
+                                                    )
+                                              : null),
+                                      onChanged: (value) {
+                                        widget.input.confirmField
+                                            ? widget.formKey.currentState!
+                                                .validate()
+                                            : null;
+                                        validateField();
                                       },
-                                    )
-                                  : IconButton(
-                                      icon: const Icon(Icons.visibility),
-                                      onPressed: () {
-                                        toggleVisibility();
-                                      },
-                                    )
-                              : null),
-                      onChanged: (value) {
-                        widget.input.confirmField
-                            ? widget.formKey.currentState!.validate()
-                            : null;
-                        validateField();
-                      },
-                    ),
+                                    ),
             ),
             widget.input.confirmField
                 ? Column(
@@ -218,6 +362,42 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : const SizedBox(height: 0.0),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildtimeField(String label, TextEditingController controller) {
+    return Flexible(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: widget.labelColor,
+            ),
+          ),
+          TextFormField(
+            controller: controller,
+            style: widget.inputStyle,
+            decoration: InputDecoration(
+              border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor:
+                  Theme.of(context).colorScheme.primary.withOpacity(0.21),
+              suffixIcon: const Icon(Icons.arrow_drop_down),
+            ),
+            readOnly: true,
+            onTap: () {
+              _selectTime(controller);
+            },
+          ),
+        ],
       ),
     );
   }

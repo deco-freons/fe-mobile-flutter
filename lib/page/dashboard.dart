@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/navigation_bar/custom_bottom_navigation.dart';
+import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 
 class Dashboard extends StatefulWidget {
@@ -49,7 +50,7 @@ class _DashboardState extends State<Dashboard> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
-                // GOTO CREATE EVENT PAGE
+                Navigator.pushNamed(context, CreateEvent.routeName);
               }),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

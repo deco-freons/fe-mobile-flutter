@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
+import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_boilerplate/page/homepage.dart';
 import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/register.dart';
+import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/page/splash.dart';
 
 class RouteGenerator {
@@ -43,6 +45,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const Preference());
       case GetStarted.routeName:
         return MaterialPageRoute(builder: (context) => const GetStarted());
+      case CreateEvent.routeName:
+        return MaterialPageRoute(builder: (context) => const CreateEvent());
+      case SearchLocation.routeName:
+        return MaterialPageRoute(builder: (context) => const SearchLocation());
       default:
         return _errorRoute();
     }

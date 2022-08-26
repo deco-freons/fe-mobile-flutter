@@ -17,6 +17,7 @@ class CustomForm extends StatefulWidget {
   final String errorMessage;
   final double submitPadding;
   final double textButtonPadding;
+  final double topPadding;
   final double bottomPadding;
   final double sidePadding;
   final Color labelColor;
@@ -35,6 +36,7 @@ class CustomForm extends StatefulWidget {
     this.hasForgotPassword = false,
     this.submitPadding = 45.0,
     this.textButtonPadding = 48.0,
+    this.topPadding = 34.0,
     this.bottomPadding = 40.0,
     this.sidePadding = 22.0,
     Color? labelColor,
@@ -57,6 +59,10 @@ class _CustomFormState extends State<CustomForm> {
       height = height + 119.0;
       if (input.confirmField) {
         height = height + 119.0;
+      } else if (input.type == TextFieldType.textArea) {
+        height = height + 60.0;
+      } else if (input.type == TextFieldType.image) {
+        height = height + 120.0;
       }
     }
     return height;
@@ -66,7 +72,10 @@ class _CustomFormState extends State<CustomForm> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          left: widget.sidePadding, right: widget.sidePadding, top: 34.0),
+          left: widget.sidePadding,
+          right: widget.sidePadding,
+          top: widget.topPadding,
+          bottom: widget.bottomPadding),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0)),

@@ -6,7 +6,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
-  static const routeName = '/edit_profile';
+  static const routeName = '/edit-profile';
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -103,6 +103,10 @@ class _EditProfileState extends State<EditProfile> {
               initialValue: "2022-02-06",
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
+            ),
+            CustomFormInput(
+              label: "Interests",
+              type: TextFieldType.interest,
             ),
           ],
           submitTitle: "Save",

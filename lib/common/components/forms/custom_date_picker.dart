@@ -52,7 +52,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               borderSide: BorderSide.none,
             ),
             filled: true,
-            fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.21)),
+            fillColor: Theme.of(context).colorScheme.primary.withOpacity(0.21),
+            suffixIcon: const Icon(Icons.calendar_today_outlined)),
         onTap: () {
           _selectDate(context);
         });
