@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
+import 'package:flutter_boilerplate/event/components/see_more.dart';
 
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";
@@ -96,6 +97,10 @@ class _EventDetailState extends State<EventDetail> {
                             color: neutral.shade700,
                             fontSize: 22,
                             fontWeight: FontWeight.bold),
+                      ),
+                      const SeeMore(
+                        text:
+                            "Harry Styles Love On Tour Melbourne concert for you Harry Style’s fan Harry Styles Love On Tour Melbourne concert for you Harry Style’s fan Harry Styles Love On Tour Melbourne concert for you Harry Style’s fan",
                       ),
                     ],
                   ),
