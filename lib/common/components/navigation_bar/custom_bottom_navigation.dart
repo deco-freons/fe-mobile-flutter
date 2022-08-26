@@ -63,7 +63,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                     splashColor: primary,
                     highlightColor: primary,
                     iconSize: 40,
-                    color: widget.currentIndex == key ? primary : grey,
+                    color: widget.currentIndex == key ? primary : neutral,
                     onPressed: () {
                       widget.onTap(key);
                     },
