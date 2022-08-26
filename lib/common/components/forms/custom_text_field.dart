@@ -121,7 +121,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           ),
                           items: PrefType.values.map((preference) {
                             return DropdownMenuItem(
-                              value: preference.id,
+                              value: preference.name,
                               child: Text(preference.desc),
                             );
                           }).toList(),

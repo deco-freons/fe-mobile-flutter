@@ -104,6 +104,10 @@ class _EditProfileState extends State<EditProfile> {
               firstDate: DateTime(1900),
               lastDate: DateTime.now(),
             ),
+            CustomFormInput(
+              label: "Interests",
+              type: TextFieldType.interest,
+            ),
           ],
           submitTitle: "Save",
           submitHandler: () {},
