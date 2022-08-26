@@ -6,7 +6,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
-  static const routeName = '/edit_profile';
+  static const routeName = '/edit-profile';
 
   @override
   State<EditProfile> createState() => _EditProfileState();

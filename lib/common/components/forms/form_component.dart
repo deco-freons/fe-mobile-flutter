@@ -57,6 +57,8 @@ class _CustomFormState extends State<CustomForm> {
       height = height + 119.0;
       if (input.confirmField) {
         height = height + 119.0;
+      } else if (input.type == TextFieldType.textArea) {
+        height = height + 60.0;
       }
     }
     return height;

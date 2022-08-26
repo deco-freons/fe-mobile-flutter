@@ -36,6 +36,8 @@
                 <data  android:host="app" android:scheme="decofreonsfe" />
             </intent-filter>
         </activity>
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCqdmcfMfqGHkNWmpm6y02zA_pqZjD6Ccs"/>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

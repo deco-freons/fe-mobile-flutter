@@ -3,7 +3,7 @@ import 'package:flutter_boilerplate/page/landing.dart';
 
 class EmailConfirmation extends StatefulWidget {
   const EmailConfirmation({Key? key}) : super(key: key);
-  static const routeName = '/email_confirmation';
+  static const routeName = '/email-confirmation';
 
   @override
   State<EmailConfirmation> createState() => _EmailConfirmationState();
