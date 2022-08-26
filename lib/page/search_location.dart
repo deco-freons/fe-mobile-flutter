@@ -29,8 +29,8 @@ class _SearchLocationState extends State<SearchLocation> {
   final Mode _mode = Mode.overlay;
   final TextEditingController searchController = TextEditingController();
 
-  double lat = 0;
-  double lng = 0;
+  double? lat = 0;
+  double? lng = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +73,8 @@ class _SearchLocationState extends State<SearchLocation> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(
-                          context, PlaceModel(searchController.text, lat, lng));
+                      Navigator.pop(context,
+                          PlaceModel(searchController.text, lat!, lng!));
                     },
                     child: const Text("Select")),
               ],
@@ -88,20 +88,28 @@ class _SearchLocationState extends State<SearchLocation> {
   Future<void> _handleTap(LatLng latlng) async {
     geocode.GeocodingResponse? response = await googleGeocoding.geocoding
         .getReverse(geocode.LatLon(latlng.latitude, latlng.longitude));
-    geocode.GeocodingResult? place = response!.results![0];
-    String? placeName = place.formattedAddress!;
-    lat = place.geometry!.location!.lat!;
-    lng = place.geometry!.location!.lng!;
+    if (response != null && response.results != null) {
+      geocode.GeocodingResult place = response.results![0];
+      String placeName = place.formattedAddress!;
 
-    markerList.clear();
-    markerList.add(Marker(
-        markerId: const MarkerId("0"),
-        position: LatLng(lat, lng),
-        infoWindow: InfoWindow(title: placeName)));
+      lat = place.geometry?.location?.lat;
+      lng = place.geometry?.location?.lng;
 
-    setState(() {});
+      markerList.clear();
 
-    searchController.text = placeName;
+      if (lat != null || lng != null) {
+        markerList.add(Marker(
+            markerId: const MarkerId("0"),
+            position: LatLng(lat!, lng!),
+            infoWindow: InfoWindow(title: placeName)));
+        setState(() {});
+      }
+
+      searchController.text = placeName;
+    } else {
+      markerList.clear();
+      setState(() {});
+    }
   }
 
   Future<void> _handlePressButton() async {
@@ -135,19 +143,20 @@ class _SearchLocationState extends State<SearchLocation> {
     PlacesDetailsResponse detail =
         await places.getDetailsByPlaceId(prediction.placeId!);
 
-    lat = detail.result.geometry!.location.lat;
-    lng = detail.result.geometry!.location.lng;
+    if (detail.result.geometry != null) {
+      lat = detail.result.geometry!.location.lat;
+      lng = detail.result.geometry!.location.lng;
+      markerList.clear();
+      markerList.add(Marker(
+          markerId: const MarkerId("0"),
+          position: LatLng(lat!, lng!),
+          infoWindow: InfoWindow(title: detail.result.name)));
 
-    markerList.clear();
-    markerList.add(Marker(
-        markerId: const MarkerId("0"),
-        position: LatLng(lat, lng),
-        infoWindow: InfoWindow(title: detail.result.name)));
+      searchController.text = detail.result.name;
+      setState(() {});
 
-    searchController.text = detail.result.name;
-    setState(() {});
-
-    googleMapController
-        .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0));
+      googleMapController
+          .animateCamera(CameraUpdate.newLatLngZoom(LatLng(lat!, lng!), 14.0));
+    }
   }
 }
