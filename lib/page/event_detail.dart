@@ -1,168 +1,326 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
+import 'package:flutter_boilerplate/common/components/shimmer_widget.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/build_loading.dart';
+import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
+import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
+import 'package:intl/intl.dart';
 
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";
-  const EventDetail({Key? key}) : super(key: key);
+  final int eventID;
+  const EventDetail({Key? key, required this.eventID}) : super(key: key);
 
   @override
   State<EventDetail> createState() => _EventDetailState();
 }
 
 class _EventDetailState extends State<EventDetail> {
-  // REMEMBER TO REVERSE GEO LOCATE TO GET THE LOCATION FORM LONG LAT IN INIT STATE
-
+  final EventDetailRepository _eventDetailRepository =
+      EventDetailRepositoryImpl();
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Container(
-              color: Theme.of(context).backgroundColor,
-            ),
-            Image.asset(
-              "lib/common/assets/images/eventBG.png",
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 300,
-            ),
-            Positioned.fill(
-              top: 255,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 35, vertical: 17),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(40),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        "Music",
-                        style: TextStyle(
-                          color: neutral.shade400,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "Harry Styles with Jennie",
-                        style: TextStyle(
-                          color: neutral.shade700,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      buildEventCreatorDetail(),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      buildParticipantsDetail(),
-                      const SizedBox(
-                        height: 35,
-                      ),
-                      const EventInfo(
-                        icon: Icons.access_time_outlined,
-                        title: "March 24, 2023",
-                        body: "8:00 - 11:00 PM",
-                      ),
-                      const SizedBox(
-                        height: 36,
-                      ),
-                      EventInfo(
-                        icon: Icons.location_on_outlined,
-                        title: "Melbourne, VIC",
-                        body: "Marvel Stadium",
-                        onTap: () {
-                          // OPEN GOOGLE MAP
+  Widget build(BuildContext buildContext) {
+    return BlocProvider(
+      create: (context) => EventDetailCubit(_eventDetailRepository)
+        ..getEventDetail(widget.eventID),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
+          child: BlocConsumer<EventDetailCubit, EventDetailState>(
+            listener: (context, state) {
+              // REVERSE GEO LOCATE HERE
+            },
+            builder: (context, state) {
+              if (state is EventDetailErrorState) {
+                return Center(
+                  child: Text(state.errorMessage),
+                );
+              }
+              bool isSuccessState = state is EventDetailSuccessState;
+              return SingleChildScrollView(
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    _buildImage(state),
+                    Positioned(
+                      left: 24,
+                      top: 32,
+                      child: CircleIconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: () {
+                          Navigator.of(buildContext, rootNavigator: true).pop();
                         },
                       ),
-                      const SizedBox(
-                        height: 36,
+                    ),
+                    Positioned(
+                      right: 24,
+                      top: 32,
+                      child: CircleIconButton(
+                        icon: const Icon(Icons.more_horiz_outlined),
+                        onPressed: () {
+                          // OPEN MORE HERE
+                        },
                       ),
-                      Text(
-                        "About Event",
-                        style: TextStyle(
-                            color: neutral.shade700,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 250),
+                      padding: const EdgeInsets.all(27),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).backgroundColor,
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(40),
+                        ),
                       ),
-                      const SeeMore(
-                        text:
-                            "Harry Styles Love On Tour Melbourne concert for you Harry Style’s fan Harry Styles Love On Tour Melbourne concert for you Harry Style’s fan Harry Styles Love On Tour Melbourne concert for you Harry Style’s fan",
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildEventCategory(state),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          _buildEventName(state),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          _buildEventCreatorDetail(state),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          _buildParticipantsDetail(state),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          isSuccessState
+                              ? EventInfo(
+                                  icon: Icons.access_time_outlined,
+                                  title: DateFormat('MMMM dd, yyyy').format(
+                                      DateTime.parse(state
+                                          .eventDetailResponseModel
+                                          .event
+                                          .date)),
+                                  body:
+                                      '${state.eventDetailResponseModel.event.startTime} - ${state.eventDetailResponseModel.event.endTime}',
+                                )
+                              : const EventInfo.loading(),
+                          const SizedBox(
+                            height: 36,
+                          ),
+                          isSuccessState
+                              ? EventInfo(
+                                  icon: Icons.location_on_outlined,
+                                  title: "Melbourne, VIC",
+                                  body: "Marvel Stadium",
+                                  onTap: () {
+                                    // OPEN GOOGLE MAP
+                                  },
+                                )
+                              : const EventInfo.loading(),
+                          const SizedBox(
+                            height: 36,
+                          ),
+                          isSuccessState
+                              ? Text(
+                                  "About Event",
+                                  style: TextStyle(
+                                      color: neutral.shade700,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : BuildLoading.buildRectangularLoading(
+                                  height: 22, width: 100, verticalPadding: 3),
+                          _buildEventDescription(state),
+                          const SizedBox(
+                            height: 25,
+                          ),
+                          _buildJoinButton(state)
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget buildEventCreatorDetail() {
+  Widget _buildJoinButton(state) {
+    return state is EventDetailSuccessState
+        ? CustomButton(
+            label: !state.eventDetailResponseModel.event.participated
+                ? "Join event"
+                : "Event Joined",
+            type: ButtonType.primary,
+            cornerRadius: 32,
+            onPressedHandler: !state.eventDetailResponseModel.event.participated
+                ? () {
+                    // JOIN HERE
+                  }
+                : null)
+        : ShimmerWidget.rectangular(
+            height: 52,
+            shapeBorder: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32),
+            ),
+          );
+  }
+
+  Widget _buildEventDescription(EventDetailState state) {
+    return state is EventDetailSuccessState
+        ? SeeMore(
+            text: state.eventDetailResponseModel.event.description == "-"
+                ? "No description"
+                : state.eventDetailResponseModel.event.description,
+          )
+        : BuildLoading.buildRectangularLoading(
+            height: 16, count: 3, verticalPadding: 3);
+  }
+
+  Widget _buildEventName(EventDetailState state) {
+    return state is EventDetailSuccessState
+        ? Text(
+            state.eventDetailResponseModel.event.eventName,
+            style: TextStyle(
+              color: neutral.shade700,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        : BuildLoading.buildRectangularLoading(height: 20, verticalPadding: 5);
+  }
+
+  Widget _buildEventCategory(EventDetailState state) {
+    return state is EventDetailSuccessState
+        ? SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Wrap(
+              direction: Axis.horizontal,
+              spacing: 15,
+              children: state.eventDetailResponseModel.event.categories
+                  .map(
+                    (category) => Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: primary.shade400,
+                      ),
+                      child: Text(
+                        category.preferenceName,
+                        style: TextStyle(
+                          color: neutral.shade400,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          )
+        : BuildLoading.buildRectangularLoading(
+            height: 16, width: 70, verticalPadding: 5);
+  }
+
+  Widget _buildImage(EventDetailState state) {
+    return state is EventDetailSuccessState
+        ? Image.asset(
+            "lib/common/assets/images/eventBG.png",
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 300,
+          )
+        : const ShimmerWidget.rectangular(height: 300);
+  }
+
+  Widget _buildEventCreatorDetail(EventDetailState state) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      children: const [
-        CircleAvatar(
-          radius: 12.5,
-          backgroundImage:
-              AssetImage("lib/common/assets/images/CircleAvatarDefault.png"),
+      children: [
+        state is EventDetailSuccessState
+            ? const CircleAvatar(
+                radius: 15,
+                backgroundImage: AssetImage(
+                    "lib/common/assets/images/CircleAvatarDefault.png"),
+              )
+            : const ShimmerWidget.circular(width: 30, height: 30),
+        const SizedBox(
+          width: 13,
         ),
-        SizedBox(
-          width: 20,
-        ),
-        Text(
-          "Jennie Kim",
-          style: TextStyle(
-              color: neutral, fontWeight: FontWeight.bold, fontSize: 16),
-        )
+        state is EventDetailSuccessState
+            ? Text(
+                '${state.eventDetailResponseModel.event.eventCreator.firstName} ${state.eventDetailResponseModel.event.eventCreator.lastName}',
+                style: const TextStyle(
+                  color: neutral,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              )
+            : BuildLoading.buildRectangularLoading(height: 16, width: 100),
       ],
     );
   }
 
-  Widget buildParticipantsDetail() {
+  Widget _buildParticipantsDetail(EventDetailState state) {
     return Row(
       children: [
-        RichText(
-          text: TextSpan(
-            text: "15",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: neutral.shade900,
-              fontSize: 16,
-            ),
-            children: const <TextSpan>[
-              TextSpan(
-                text: " people are going",
-                style: TextStyle(
-                  color: neutral,
+        state is EventDetailSuccessState
+            ? RichText(
+                text: TextSpan(
+                  text: state.eventDetailResponseModel.event.participants
+                      .toString(),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: neutral.shade900,
+                    fontSize: 16,
+                  ),
+                  children: const <TextSpan>[
+                    TextSpan(
+                      text: " people are going:",
+                      style: TextStyle(
+                        color: neutral,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              )
+            : BuildLoading.buildRectangularLoading(
+                height: 16, width: 150, verticalPadding: 3),
+        const SizedBox(
+          width: 15,
+        ),
+        ...List.filled(
+          3,
+          const Padding(
+            padding: EdgeInsets.all(1),
+            child: CircleAvatar(
+              radius: 10,
+              backgroundImage: AssetImage(
+                  "lib/common/assets/images/CircleAvatarDefault.png"),
+            ),
           ),
         ),
         const Spacer(),
-        CustomTextButton(
-          text: "View All",
-          fontSize: 16,
-          onPressedHandler: () {
-            // GO TO VIEW ALL PARTICIPANTS PAGE
-          },
-        ),
+        state is EventDetailSuccessState
+            ? CustomTextButton(
+                text: "View All",
+                fontSize: 16,
+                onPressedHandler: () {
+                  // GO TO VIEW ALL PARTICIPANTS PAGE
+                },
+              )
+            : BuildLoading.buildRectangularLoading(
+                height: 25, width: 65, verticalPadding: 3)
       ],
     );
   }

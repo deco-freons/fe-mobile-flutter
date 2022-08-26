@@ -15,7 +15,6 @@ import 'package:flutter_boilerplate/page/splash.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    // ignore: unused_local_variable
     final args = settings.arguments;
 
     switch (settings.name) {
@@ -45,7 +44,11 @@ class RouteGenerator {
       case GetStarted.routeName:
         return MaterialPageRoute(builder: (context) => const GetStarted());
       case EventDetail.routeName:
-        return MaterialPageRoute(builder: (context) => const EventDetail());
+        int eventID = args as int;
+        return MaterialPageRoute(
+            builder: (context) => EventDetail(
+                  eventID: eventID,
+                ));
       default:
         return _errorRoute();
     }
