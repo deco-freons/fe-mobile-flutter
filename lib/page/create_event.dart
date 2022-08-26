@@ -6,7 +6,7 @@ import 'package:flutter_boilerplate/event/bloc/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_state.dart';
 import 'package:flutter_boilerplate/event/data/create_event_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event_repository.dart';
-import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/page/dashboard.dart';
 
 import '../../common/config/enum.dart';
 
@@ -79,7 +79,7 @@ class _CreateEventState extends State<CreateEvent> {
           },
           listener: (context, state) {
             if (state is CreateEventSuccessState) {
-              Navigator.pushReplacementNamed(context, Homepage.routeName);
+              Navigator.pushReplacementNamed(context, Dashboard.routeName);
             }
           },
         ),
