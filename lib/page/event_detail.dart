@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/event/components/event_info.dart';
 
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";
@@ -69,6 +70,22 @@ class _EventDetailState extends State<EventDetail> {
                       buildParticipantsDetail(),
                       const SizedBox(
                         height: 35,
+                      ),
+                      const EventInfo(
+                        icon: Icons.access_time_outlined,
+                        title: "March 24, 2023",
+                        body: "8:00 - 11:00 PM",
+                      ),
+                      const SizedBox(
+                        height: 36,
+                      ),
+                      EventInfo(
+                        icon: Icons.location_on_outlined,
+                        title: "Melbourne, VIC",
+                        body: "Marvel Stadium",
+                        onTap: () {
+                          // OPEN GOOGLE MAP
+                        },
                       ),
                       const SizedBox(
                         height: 36,
