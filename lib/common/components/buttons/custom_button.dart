@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 
 class CustomButton extends StatefulWidget {
   final String label;
   final ButtonType type;
-  final VoidCallback onPressedHandler;
+  final VoidCallback? onPressedHandler;
   final double cornerRadius;
 
   const CustomButton(
       {Key? key,
       required this.label,
       required this.type,
-      required this.onPressedHandler,
+      this.onPressedHandler,
       this.cornerRadius = 10.0})
       : super(key: key);
 
@@ -24,26 +25,29 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: widget.type == ButtonType.primary
-              ? Theme.of(context).colorScheme.primary
-              : widget.type == ButtonType.inverse
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.error,
-          onPrimary: widget.type == ButtonType.primary
-              ? Theme.of(context).colorScheme.secondary
-              : Theme.of(context).colorScheme.primary,
-          minimumSize: const Size.fromHeight(52),
-          shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.all(Radius.circular(widget.cornerRadius)),
-          )),
+        onSurface: neutral,
+        primary: widget.type == ButtonType.primary
+            ? Theme.of(context).colorScheme.primary
+            : widget.type == ButtonType.inverse
+                ? Theme.of(context).colorScheme.secondary
+                : Theme.of(context).colorScheme.error,
+        onPrimary: widget.type == ButtonType.primary
+            ? Theme.of(context).colorScheme.secondary
+            : Theme.of(context).colorScheme.primary,
+        minimumSize: const Size.fromHeight(52),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius)),
+        ),
+      ),
       onPressed: widget.onPressedHandler,
       child: Text(
         widget.label,
         style: TextStyle(
-          color: widget.type == ButtonType.inverse
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.secondary,
+          color: widget.onPressedHandler == null
+              ? neutral.shade600
+              : widget.type == ButtonType.inverse
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.secondary,
           fontSize: 20.0,
           fontWeight: FontWeight.bold,
         ),
