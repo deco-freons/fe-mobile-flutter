@@ -8,6 +8,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
@@ -209,9 +210,10 @@ class _ProfileState extends State<Profile> {
           height: 7.0,
         ),
         Wrap(
-            spacing: 10.0,
-            runSpacing: 16.0,
-            children: buildInterest(user.preferences)),
+          spacing: 8.0,
+          runSpacing: 0.0,
+          children: buildInterest(user.preferences),
+        ),
         const SizedBox(height: 34.0),
         CustomButton(
           label: "Edit Profile",
@@ -268,26 +270,11 @@ class _ProfileState extends State<Profile> {
 
   List<Widget> buildInterest(List<PreferenceModel> preferences) {
     List<Widget> widgets = preferences.map((preference) {
-      return IntrinsicWidth(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          height: 36.0,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.21),
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-          ),
-          child: Row(
-            children: [
-              Text(
-                preference.preferenceName,
-                style: const TextStyle(fontSize: 15.0),
-              )
-            ],
-          ),
-        ),
+      return PreferenceButton(
+        stringInput: preference.preferenceName,
+        useStringInput: true,
+        cancelIcon: true,
+        onPressedHandler: () {},
       );
     }).toList();
     return widgets;

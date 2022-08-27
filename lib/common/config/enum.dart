@@ -14,11 +14,7 @@ enum TextFieldType {
 
 enum ButtonType { primary, inverse, red }
 
-enum TextButtonType {
-  primary,
-  secondary,
-  tertiary,
-}
+enum TextButtonType { primary, secondary, tertiary, red }
 
 enum AuthStatus {
   unknown,

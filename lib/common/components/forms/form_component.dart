@@ -63,6 +63,8 @@ class _CustomFormState extends State<CustomForm> {
         height = height + 60.0;
       } else if (input.type == TextFieldType.image) {
         height = height + 120.0;
+      } else if (input.type == TextFieldType.interest) {
+        height = height + 160.0;
       }
     }
     return height;

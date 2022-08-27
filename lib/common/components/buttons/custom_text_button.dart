@@ -32,7 +32,9 @@ class CustomTextButton extends StatelessWidget {
                 ? Theme.of(context).colorScheme.primary
                 : type == TextButtonType.secondary
                     ? Theme.of(context).colorScheme.secondary
-                    : Theme.of(context).colorScheme.tertiary,
+                    : type == TextButtonType.red
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.tertiary,
             fontWeight: textWeight,
             fontSize: fontSize),
       ),
