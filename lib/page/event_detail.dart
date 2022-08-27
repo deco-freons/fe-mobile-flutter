@@ -10,22 +10,59 @@ import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
+import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
+import 'package:flutter_boilerplate/page/show_location.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
+import 'package:google_geocoding/google_geocoding.dart' as geocode;
 
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";
   final int eventID;
+
   const EventDetail({Key? key, required this.eventID}) : super(key: key);
 
   @override
   State<EventDetail> createState() => _EventDetailState();
 }
 
+final googleApiKey = dotenv.env['googleApiKey'];
+
 class _EventDetailState extends State<EventDetail> {
+  geocode.GoogleGeocoding googleGeocoding =
+      geocode.GoogleGeocoding(googleApiKey!);
   final EventDetailRepository _eventDetailRepository =
       EventDetailRepositoryImpl();
+  String locationName = "";
+  String locationArea = "";
+  String formattedAddress = "";
+  bool isGeoCodeReady = false;
+
+  Future<void> _handleReverseGeoCoding(double lat, double long) async {
+    try {
+      geocode.GeocodingResponse? response =
+          await googleGeocoding.geocoding.getReverse(geocode.LatLon(lat, long));
+      if (response != null) {
+        setState(() {
+          formattedAddress = response.results?[0].formattedAddress ?? "";
+          locationName =
+              response.results?[0].addressComponents?[0].longName ?? "";
+          locationArea =
+              '${response.results?[0].addressComponents?[1].longName ?? ""}, ${response.results?[0].addressComponents?[2].shortName}';
+          isGeoCodeReady = true;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        locationName = "";
+        locationArea = "";
+        formattedAddress = "";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext buildContext) {
     return BlocProvider(
@@ -37,6 +74,11 @@ class _EventDetailState extends State<EventDetail> {
           child: BlocConsumer<EventDetailCubit, EventDetailState>(
             listener: (context, state) {
               // REVERSE GEO LOCATE HERE
+              if (state is EventDetailSuccessState) {
+                _handleReverseGeoCoding(
+                    state.eventDetailResponseModel.event.latitude,
+                    state.eventDetailResponseModel.event.longitude);
+              }
             },
             builder: (context, state) {
               if (state is EventDetailErrorState) {
@@ -117,10 +159,21 @@ class _EventDetailState extends State<EventDetail> {
                           isSuccessState
                               ? EventInfo(
                                   icon: Icons.location_on_outlined,
-                                  title: "Melbourne, VIC",
-                                  body: "Marvel Stadium",
+                                  title: locationArea,
+                                  body: locationName,
                                   onTap: () {
                                     // OPEN GOOGLE MAP
+                                    if (isGeoCodeReady) {
+                                      Navigator.of(context).pushNamed(
+                                        ShowLocation.routeName,
+                                        arguments: PlaceModel(
+                                            formattedAddress,
+                                            state.eventDetailResponseModel.event
+                                                .latitude,
+                                            state.eventDetailResponseModel.event
+                                                .longitude),
+                                      );
+                                    }
                                   },
                                 )
                               : const EventInfo.loading(),
@@ -182,6 +235,7 @@ class _EventDetailState extends State<EventDetail> {
             text: state.eventDetailResponseModel.event.description == "-"
                 ? "No description"
                 : state.eventDetailResponseModel.event.description,
+            characterLimit: (MediaQuery.of(context).size.width / 5).floor(),
           )
         : BuildLoading.buildRectangularLoading(
             height: 16, count: 3, verticalPadding: 3);
@@ -301,13 +355,15 @@ class _EventDetailState extends State<EventDetail> {
         ),
         ...List.filled(
           3,
-          const Padding(
-            padding: EdgeInsets.all(1),
-            child: CircleAvatar(
-              radius: 10,
-              backgroundImage: AssetImage(
-                  "lib/common/assets/images/CircleAvatarDefault.png"),
-            ),
+          Padding(
+            padding: const EdgeInsets.all(1),
+            child: state is EventDetailSuccessState
+                ? const CircleAvatar(
+                    radius: 10,
+                    backgroundImage: AssetImage(
+                        "lib/common/assets/images/CircleAvatarDefault.png"),
+                  )
+                : const ShimmerWidget.circular(width: 20, height: 20),
           ),
         ),
         const Spacer(),

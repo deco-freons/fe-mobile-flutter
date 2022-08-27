@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/register.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
+import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_boilerplate/page/splash.dart';
 
 class RouteGenerator {
@@ -45,7 +47,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const Preference());
       case GetStarted.routeName:
         return MaterialPageRoute(builder: (context) => const GetStarted());
-
       case CreateEvent.routeName:
         return MaterialPageRoute(builder: (context) => const CreateEvent());
       case SearchLocation.routeName:
@@ -53,8 +54,14 @@ class RouteGenerator {
       case EventDetail.routeName:
         int eventID = args as int;
         return MaterialPageRoute(
-            builder: (context) => EventDetail(
-                  eventID: eventID,
+            builder: (context) => EventDetail(eventID: eventID));
+      case ShowLocation.routeName:
+        PlaceModel placeModel = args as PlaceModel;
+        return MaterialPageRoute(
+            builder: (context) => ShowLocation(
+                  lat: placeModel.lat,
+                  long: placeModel.lng,
+                  address: placeModel.name,
                 ));
 
       default:
