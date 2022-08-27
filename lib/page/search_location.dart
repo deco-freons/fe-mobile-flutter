@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/event/components/place_model.dart';
+import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_geocoding/google_geocoding.dart' as geocode;

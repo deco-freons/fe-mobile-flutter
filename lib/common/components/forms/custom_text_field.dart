@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/event/components/place_model.dart';
+import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 
 class CustomTextField extends StatefulWidget {
