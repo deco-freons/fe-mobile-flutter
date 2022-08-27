@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/events/data/empty_nearby_model.dart';
 import 'package:flutter_boilerplate/events/data/event_model.dart';
 import 'package:flutter_boilerplate/events/data/event_repository.dart';
 import 'package:flutter_boilerplate/events/data/nearby_model.dart';
+import 'package:geolocator/geolocator.dart';
 
 class EventCubit extends BaseCubit<PopularEventsState> {
   final EventRepository _eventRepository;
@@ -14,15 +15,16 @@ class EventCubit extends BaseCubit<PopularEventsState> {
   Future<void> getPopularEvents(List<String> data) async {
     try {
       emit(const PopularEventsLoadingState());
+      Position position = await Geolocator.getCurrentPosition();
 
       NearbyModel nearby = NearbyModel(
           categories: data,
-          longitude: 153.02693600277516,
-          latitude: -27.479314117787727,
+          longitude: position.longitude,
+          latitude: position.latitude,
           radius: 10.0);
-      EmptyNearbyModel emptyNearby = const EmptyNearbyModel(
-          longitude: 153.02693600277516,
-          latitude: -27.479314117787727,
+      EmptyNearbyModel emptyNearby = EmptyNearbyModel(
+          longitude: position.longitude,
+          latitude: position.latitude,
           radius: 10.0);
       Map res = {};
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/page/dashboard.dart';
+import 'package:flutter_boilerplate/page/location_permission.dart';
 import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import '../../common/config/enum.dart';
 import '../preference/bloc/preference_cubit.dart';
@@ -67,7 +67,7 @@ class _PreferenceState extends State<Preference> {
           },
           listener: (context, state) {
             if (state is PreferenceSuccessState) {
-              Navigator.pushNamed(context, Dashboard.routeName);
+              Navigator.pushNamed(context, LocationPermission.routeName);
             }
           },
         ),

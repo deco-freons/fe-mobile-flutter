@@ -6,6 +6,8 @@ import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/location_denied.dart';
+import 'package:flutter_boilerplate/page/location_permission.dart';
 import 'package:flutter_boilerplate/page/login.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
@@ -66,6 +68,11 @@ class RouteGenerator {
                 ));
       case PopularEvents.routeName:
         return MaterialPageRoute(builder: (context) => const PopularEvents());
+      case LocationPermission.routeName:
+        return MaterialPageRoute(
+            builder: (context) => const LocationPermission());
+      case LocationDenied.routeName:
+        return MaterialPageRoute(builder: (context) => const LocationDenied());
       default:
         return _errorRoute();
     }
