@@ -6,6 +6,7 @@ abstract class EventDetailRepository implements BaseRepository {
   Future<EventDetailResponseModel> getEventDetail(int eventID);
   Future<dynamic> joinEvent(int eventID);
   Future<dynamic> leaveEvent(int eventID);
+  Future<dynamic> deleteEvent(int eventID);
 }
 
 class EventDetailRepositoryImpl extends EventDetailRepository {
@@ -29,5 +30,10 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
   @override
   Future leaveEvent(int eventID) async {
     return await _eventDetailDataProvider.leaveEvent(eventID);
+  }
+
+  @override
+  Future deleteEvent(int eventID) async {
+    return await _eventDetailDataProvider.deleteEvent(eventID);
   }
 }

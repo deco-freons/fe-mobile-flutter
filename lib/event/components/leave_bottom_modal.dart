@@ -4,6 +4,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_text_button
 import 'package:flutter_boilerplate/common/components/confirmation_modal_bottom.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
 
 class LeaveBottomModal extends StatelessWidget {
@@ -12,11 +13,6 @@ class LeaveBottomModal extends StatelessWidget {
   const LeaveBottomModal(
       {Key? key, required this.eventID, required this.blocContext})
       : super(key: key);
-
-  void goBackTwoTimes(context) {
-    int count = 0;
-    Navigator.of(context).popUntil((_) => count++ >= 2);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +43,13 @@ class LeaveBottomModal extends StatelessWidget {
                           .read<EventDetailCubit>()
                           .leaveEvent(eventID)
                           .then((value) {
-                        goBackTwoTimes(context);
+                        NavigatorUtil.goBacknTimes(context, 2);
                       });
                     },
                     cancelText: "Cancel",
                     cancelButtonType: TextButtonType.tertiaryDark,
                     onCancelPressed: () {
-                      goBackTwoTimes(context);
+                      NavigatorUtil.goBacknTimes(context, 2);
                     },
                   );
                 },

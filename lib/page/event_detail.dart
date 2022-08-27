@@ -7,8 +7,10 @@ import 'package:flutter_boilerplate/common/components/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
+import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
+import 'package:flutter_boilerplate/event/components/edit_bottom_modal.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
 import 'package:flutter_boilerplate/event/components/leave_bottom_modal.dart';
 
@@ -82,6 +84,10 @@ class _EventDetailState extends State<EventDetail> {
                     state.eventDetailResponseModel.event.latitude,
                     state.eventDetailResponseModel.event.longitude);
               }
+              if (state is EventDetailDeletedState) {
+                NavigatorUtil.goBacknTimes(context, 2);
+                Navigator.pop(context, state.eventID);
+              }
             },
             builder: (blocContext, state) {
               if (state is EventDetailErrorState) {
@@ -113,8 +119,10 @@ class _EventDetailState extends State<EventDetail> {
                         onPressed: () {
                           // OPEN MORE HERE
                           if (state is EventDetailSuccessState) {
-                            showLeaveBottomModal(blocContext,
-                                state.eventDetailResponseModel.event.eventID);
+                            showLeaveOrEditBottomModal(
+                                blocContext,
+                                state.eventDetailResponseModel.event.eventID,
+                                state.eventDetailResponseModel.isEventCreator);
                           }
                         },
                       ),
@@ -215,7 +223,8 @@ class _EventDetailState extends State<EventDetail> {
     );
   }
 
-  showLeaveBottomModal(BuildContext blocContext, int eventID) {
+  showLeaveOrEditBottomModal(
+      BuildContext blocContext, int eventID, bool isEventCreator) {
     showModalBottomSheet(
       context: blocContext,
       shape: const RoundedRectangleBorder(
@@ -224,10 +233,12 @@ class _EventDetailState extends State<EventDetail> {
         ),
       ),
       builder: (context) {
-        return LeaveBottomModal(
-          eventID: eventID,
-          blocContext: blocContext,
-        );
+        return isEventCreator
+            ? EditBottomModal(eventID: eventID, blocContext: blocContext)
+            : LeaveBottomModal(
+                eventID: eventID,
+                blocContext: blocContext,
+              );
       },
     );
   }

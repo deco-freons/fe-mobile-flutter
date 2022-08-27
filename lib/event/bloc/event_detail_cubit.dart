@@ -72,6 +72,16 @@ class EventDetailCubit extends BaseCubit<EventDetailState> {
     }
   }
 
+  Future<void> deleteEvent(int eventID) async {
+    try {
+      await _eventDetailRepository.deleteEvent(eventID);
+      emit(EventDetailDeletedState(eventID: eventID));
+    } catch (e) {
+      String errorMessage = ErrorHandler.handle(e);
+      emit(EventDetailErrorState(errorMessage: errorMessage));
+    }
+  }
+
   Future<EventParticipantModel> _loadUserFromStorage() async {
     String? userString = await _secureStorage.get(key: "user");
     if (userString == null) {

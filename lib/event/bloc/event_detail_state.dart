@@ -13,6 +13,11 @@ class EventDetailLoadingState extends EventDetailState {
   const EventDetailLoadingState();
 }
 
+class EventDetailDeletedState extends EventDetailState {
+  final int eventID;
+  const EventDetailDeletedState({required this.eventID});
+}
+
 class EventDetailSuccessState extends EventDetailState {
   final EventDetailResponseModel eventDetailResponseModel;
   const EventDetailSuccessState({required this.eventDetailResponseModel});
