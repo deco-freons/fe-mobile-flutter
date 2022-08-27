@@ -3,13 +3,17 @@ import 'package:flutter_boilerplate/common/components/forms/custom_form_input_cl
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
-import 'package:flutter_boilerplate/auth/logout/bloc/logout_cubit.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/user/bloc/edit_user_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/edit_user_state.dart';
 import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
+import 'package:flutter_boilerplate/user/data/edit_user_model.dart';
+import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
+
+import '../common/config/theme.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -21,15 +25,15 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   final UserRepositoryImpl userRepository = UserRepositoryImpl();
+  final EditUserRepositoryImpl editUserRepository = EditUserRepositoryImpl();
   int eventCount = 12;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LogoutCubit>(
-          create: (BuildContext context) =>
-              LogoutCubit(RepositoryProvider.of<AuthRepository>(context)),
+        BlocProvider<EditUserCubit>(
+          create: (BuildContext context) => EditUserCubit(editUserRepository),
         ),
         BlocProvider<UserCubit>(
           create: (BuildContext context) =>
@@ -42,8 +46,7 @@ class _EditProfileState extends State<EditProfile> {
           leading: Padding(
             padding: const EdgeInsets.only(top: 10.0, left: 10.0),
             child: IconButton(
-              icon:
-                  const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
+              icon: Icon(Icons.arrow_back, color: neutral.shade800, size: 35.0),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -79,7 +82,7 @@ class _EditProfileState extends State<EditProfile> {
                 } else if (state is UserErrorState) {
                   return Text(state.errorMessage);
                 } else if (state is UserSuccessState) {
-                  return buildProfile(context, state.user);
+                  return buildEditProfile(context, state.user);
                 }
                 return const SizedBox.shrink();
               },
@@ -90,7 +93,7 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget buildProfile(BuildContext context, UserModel user) {
+  Widget buildEditProfile(BuildContext context, UserModel user) {
     CustomFormInput firstName = CustomFormInput(
       label: "First Name",
       type: TextFieldType.string,
@@ -138,18 +141,35 @@ class _EditProfileState extends State<EditProfile> {
         const SizedBox(
           height: 41.0,
         ),
-        CustomForm(
-          inputs: [firstName, lastName, username, email, birthDate, interest],
-          submitTitle: "Save",
-          submitHandler: () {},
-          textButtonHandler: () {},
-          sidePadding: 0.0,
-          topPadding: 0.0,
-          labelColor: Theme.of(context).colorScheme.tertiary,
-          inputStyle: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+        BlocListener<EditUserCubit, EditUserState>(
+          listener: (context, state) {
+            if (state is EditUserSuccessState) {
+              Navigator.pop(context, state.user);
+            }
+          },
+          child: CustomForm(
+            inputs: [firstName, lastName, username, email, birthDate, interest],
+            submitTitle: "Save",
+            submitHandler: () {
+              List<String> newPreferences = interest.preferences
+                  .map((pref) => pref.preferenceID)
+                  .toList();
+              EditUserModel data = EditUserModel(
+                  firstName: firstName.controller.text,
+                  lastName: lastName.controller.text,
+                  birthDate: birthDate.controller.text,
+                  preferences: newPreferences);
+              submit(context, data, interest.preferences);
+            },
+            textButtonHandler: () {},
+            sidePadding: 0.0,
+            topPadding: 0.0,
+            labelColor: Theme.of(context).colorScheme.tertiary,
+            inputStyle: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
       ],
@@ -208,8 +228,9 @@ class _EditProfileState extends State<EditProfile> {
     return widgets;
   }
 
-  void logout(BuildContext context) async {
-    final cubit = context.read<LogoutCubit>();
-    await cubit.logout();
+  void submit(BuildContext context, EditUserModel data,
+      List<PreferenceModel> preferences) async {
+    final cubit = context.read<EditUserCubit>();
+    await cubit.editUser(data, preferences);
   }
 }
