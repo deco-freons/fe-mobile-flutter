@@ -18,6 +18,8 @@ enum TextButtonType {
   primary,
   secondary,
   tertiary,
+  error,
+  tertiaryDark,
 }
 
 enum AuthStatus {

@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
+import 'package:flutter_boilerplate/event/components/leave_bottom_modal.dart';
 
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
@@ -111,6 +112,10 @@ class _EventDetailState extends State<EventDetail> {
                         icon: const Icon(Icons.more_horiz_outlined),
                         onPressed: () {
                           // OPEN MORE HERE
+                          if (state is EventDetailSuccessState) {
+                            showLeaveBottomModal(blocContext,
+                                state.eventDetailResponseModel.event.eventID);
+                          }
                         },
                       ),
                     ),
@@ -207,6 +212,23 @@ class _EventDetailState extends State<EventDetail> {
           ),
         ),
       ),
+    );
+  }
+
+  showLeaveBottomModal(BuildContext blocContext, int eventID) {
+    showModalBottomSheet(
+      context: blocContext,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
+        ),
+      ),
+      builder: (context) {
+        return LeaveBottomModal(
+          eventID: eventID,
+          blocContext: blocContext,
+        );
+      },
     );
   }
 

@@ -33,13 +33,8 @@ class EventDetailCubit extends BaseCubit<EventDetailState> {
 
   Future<void> joinEvent(int eventID) async {
     try {
-      String? userString = await _secureStorage.get(key: "user");
-      if (userString == null) {
-        throw NotFoundException();
-      }
-      Map<String, dynamic> userMap = jsonDecode(userString);
-      EventParticipantModel user = EventParticipantModel.fromJson(userMap);
       await _eventDetailRepository.joinEvent(eventID);
+      EventParticipantModel user = await _loadUserFromStorage();
       _eventDetailResponseModel = _eventDetailResponseModel.copyWith(
           event: _eventDetailResponseModel.event.copyWith(
               participated: true,
@@ -54,5 +49,36 @@ class EventDetailCubit extends BaseCubit<EventDetailState> {
       String errorMessage = ErrorHandler.handle(e);
       emit(EventDetailErrorState(errorMessage: errorMessage));
     }
+  }
+
+  Future<void> leaveEvent(int eventID) async {
+    try {
+      await _eventDetailRepository.leaveEvent(eventID);
+      EventParticipantModel user = await _loadUserFromStorage();
+      _eventDetailResponseModel = _eventDetailResponseModel.copyWith(
+        event: _eventDetailResponseModel.event.copyWith(
+          participated: false,
+          participants: _eventDetailResponseModel.event.participants - 1,
+          participantList: _eventDetailResponseModel.event.participantsList
+              .where((participant) => participant.userID != user.userID)
+              .toList(),
+        ),
+      );
+      emit(EventDetailSuccessState(
+          eventDetailResponseModel: _eventDetailResponseModel));
+    } catch (e) {
+      String errorMessage = ErrorHandler.handle(e);
+      emit(EventDetailErrorState(errorMessage: errorMessage));
+    }
+  }
+
+  Future<EventParticipantModel> _loadUserFromStorage() async {
+    String? userString = await _secureStorage.get(key: "user");
+    if (userString == null) {
+      throw NotFoundException();
+    }
+    Map<String, dynamic> userMap = jsonDecode(userString);
+    EventParticipantModel user = EventParticipantModel.fromJson(userMap);
+    return user;
   }
 }

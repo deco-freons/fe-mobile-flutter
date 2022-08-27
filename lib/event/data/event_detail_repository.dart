@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart'
 abstract class EventDetailRepository implements BaseRepository {
   Future<EventDetailResponseModel> getEventDetail(int eventID);
   Future<dynamic> joinEvent(int eventID);
+  Future<dynamic> leaveEvent(int eventID);
 }
 
 class EventDetailRepositoryImpl extends EventDetailRepository {
@@ -23,5 +24,10 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
   @override
   Future<dynamic> joinEvent(int eventID) async {
     return await _eventDetailDataProvider.joinEvent(eventID);
+  }
+
+  @override
+  Future leaveEvent(int eventID) async {
+    return await _eventDetailDataProvider.leaveEvent(eventID);
   }
 }

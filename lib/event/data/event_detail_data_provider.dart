@@ -12,4 +12,9 @@ class EventDetailDataProvider extends BaseDataProvider {
     return super.networkClient.post(
         path: "/event/join", body: {"eventID": eventID}, authorized: true);
   }
+
+  Future<dynamic> leaveEvent(int eventID) async {
+    return super.networkClient.delete(
+        path: "/event/cancel", body: {"eventID": eventID}, authorized: true);
+  }
 }
