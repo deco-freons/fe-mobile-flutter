@@ -63,7 +63,6 @@ class RouteGenerator {
                   long: placeModel.lng,
                   address: placeModel.name,
                 ));
-
       default:
         return _errorRoute();
     }

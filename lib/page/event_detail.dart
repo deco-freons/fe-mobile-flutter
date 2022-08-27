@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
+
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
