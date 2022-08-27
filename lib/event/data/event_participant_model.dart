@@ -15,6 +15,15 @@ class EventParticipantModel extends BaseModel {
       required this.lastName,
       this.userID});
 
+  EventParticipantModel copyWith(
+      {int? userID, String? username, String? firstName, String? lastName}) {
+    return EventParticipantModel(
+        userID: userID ?? this.userID,
+        username: username ?? this.username,
+        firstName: firstName ?? this.firstName,
+        lastName: lastName ?? this.lastName);
+  }
+
   factory EventParticipantModel.fromJson(Map<String, dynamic> json) =>
       _$EventParticipantModelFromJson(json);
 

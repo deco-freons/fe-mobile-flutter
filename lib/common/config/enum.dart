@@ -56,3 +56,10 @@ extension PrefExtension on PrefType {
     }
   }
 }
+
+enum LoadingType {
+  INITIAL,
+  LOADING,
+  SUCCESS,
+  ERROR,
+}

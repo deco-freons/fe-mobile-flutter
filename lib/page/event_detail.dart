@@ -39,7 +39,7 @@ class _EventDetailState extends State<EventDetail> {
   String locationName = "";
   String locationArea = "";
   String formattedAddress = "";
-  bool isGeoCodeReady = false;
+  LoadingType geoCodeStatus = LoadingType.INITIAL;
 
   Future<void> _handleReverseGeoCoding(double lat, double long) async {
     try {
@@ -52,7 +52,7 @@ class _EventDetailState extends State<EventDetail> {
               response.results?[0].addressComponents?[0].longName ?? "";
           locationArea =
               '${response.results?[0].addressComponents?[1].longName ?? ""}, ${response.results?[0].addressComponents?[2].shortName}';
-          isGeoCodeReady = true;
+          geoCodeStatus = LoadingType.SUCCESS;
         });
       }
     } catch (e) {
@@ -73,15 +73,16 @@ class _EventDetailState extends State<EventDetail> {
         resizeToAvoidBottomInset: false,
         body: SafeArea(
           child: BlocConsumer<EventDetailCubit, EventDetailState>(
-            listener: (context, state) {
+            listener: (listenerContext, state) {
               // REVERSE GEO LOCATE HERE
-              if (state is EventDetailSuccessState) {
+              if (state is EventDetailSuccessState &&
+                  geoCodeStatus == LoadingType.INITIAL) {
                 _handleReverseGeoCoding(
                     state.eventDetailResponseModel.event.latitude,
                     state.eventDetailResponseModel.event.longitude);
               }
             },
-            builder: (context, state) {
+            builder: (blocContext, state) {
               if (state is EventDetailErrorState) {
                 return Center(
                   child: Text(state.errorMessage),
@@ -164,7 +165,7 @@ class _EventDetailState extends State<EventDetail> {
                                   body: locationName,
                                   onTap: () {
                                     // OPEN GOOGLE MAP
-                                    if (isGeoCodeReady) {
+                                    if (geoCodeStatus == LoadingType.SUCCESS) {
                                       Navigator.of(context).pushNamed(
                                         ShowLocation.routeName,
                                         arguments: PlaceModel(
@@ -195,7 +196,7 @@ class _EventDetailState extends State<EventDetail> {
                           const SizedBox(
                             height: 25,
                           ),
-                          _buildJoinButton(state)
+                          _buildJoinButton(state, blocContext)
                         ],
                       ),
                     ),
@@ -209,7 +210,7 @@ class _EventDetailState extends State<EventDetail> {
     );
   }
 
-  Widget _buildJoinButton(state) {
+  Widget _buildJoinButton(state, BuildContext context) {
     return state is EventDetailSuccessState
         ? CustomButton(
             label: !state.eventDetailResponseModel.event.participated
@@ -218,8 +219,11 @@ class _EventDetailState extends State<EventDetail> {
             type: ButtonType.primary,
             cornerRadius: 32,
             onPressedHandler: !state.eventDetailResponseModel.event.participated
-                ? () {
+                ? () async {
                     // JOIN HERE
+                    final cubit = context.read<EventDetailCubit>();
+                    await cubit.joinEvent(
+                        state.eventDetailResponseModel.event.eventID);
                   }
                 : null)
         : ShimmerWidget.rectangular(

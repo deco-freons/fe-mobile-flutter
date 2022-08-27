@@ -7,4 +7,9 @@ class EventDetailDataProvider extends BaseDataProvider {
         body: {"eventID": eventID},
         authorized: true);
   }
+
+  Future<dynamic> joinEvent(int eventID) async {
+    return super.networkClient.post(
+        path: "/event/join", body: {"eventID": eventID}, authorized: true);
+  }
 }

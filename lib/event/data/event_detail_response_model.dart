@@ -12,6 +12,15 @@ class EventDetailResponseModel extends BaseModel {
   const EventDetailResponseModel(
       {required this.event, required this.isEventCreator});
 
+  EventDetailResponseModel copyWith({
+    bool? isEventCreator,
+    EventDetailModel? event,
+  }) {
+    return EventDetailResponseModel(
+        event: event ?? this.event,
+        isEventCreator: isEventCreator ?? this.isEventCreator);
+  }
+
   factory EventDetailResponseModel.fromJson(Map<String, dynamic> json) =>
       _$EventDetailResponseModelFromJson(json);
 
