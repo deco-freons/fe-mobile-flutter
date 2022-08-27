@@ -13,7 +13,7 @@ class EventDataProvider extends BaseDataProvider {
 
   Future<dynamic> getAllPopularEvents(EmptyNearbyModel data) async {
     return await super.networkClient.post(
-        path: "/event/read?skip=0&take=5",
+        path: "/event/read?skip=0&take=10",
         body: data.toJson(),
         authorized: true);
   }
