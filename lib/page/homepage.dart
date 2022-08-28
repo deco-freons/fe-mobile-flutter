@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
+import 'package:intl/intl.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -190,13 +191,16 @@ class _ShowCategoriesState extends State<ShowCategories> {
 
   List<Widget> buildEvents(List<PopularEventModel> events) {
     List<Widget> widgets = events.map((event) {
+      String formattedDate =
+          DateFormat('MMMM dd, yyyy').format(DateTime.parse(event.date));
+      List<String> splittedDate = formattedDate.split(' ');
       return Padding(
         padding: const EdgeInsets.only(right: 25.0),
         child: EventCardSmall(
             title: event.eventName,
             distance: event.distance,
-            month: 'Mar',
-            date: '24',
+            month: splittedDate[0].substring(0, 3),
+            date: splittedDate[1].substring(0, 2),
             image: 'lib/common/assets/images/SmallEventTest.png'),
       );
     }).toList();

@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
+import 'package:intl/intl.dart';
 
 class PopularEvents extends StatefulWidget {
   const PopularEvents({Key? key}) : super(key: key);
@@ -185,6 +186,9 @@ class _ShowCategoriesState extends State<ShowCategories> {
                         }
                       }),
                     children: eventList.map((event) {
+                      String formattedDate = DateFormat('MMMM dd, yyyy')
+                          .format(DateTime.parse(event.date));
+                      List<String> splittedDate = formattedDate.split(' ');
                       return Padding(
                           padding: const EdgeInsets.only(bottom: 15.0),
                           child: EventCardLarge(
@@ -193,8 +197,8 @@ class _ShowCategoriesState extends State<ShowCategories> {
                               distance: event.distance,
                               location:
                                   '${event.location[0]}, ${event.location[1]}',
-                              month: 'Mar',
-                              date: '24',
+                              month: splittedDate[0].substring(0, 3),
+                              date: splittedDate[1].substring(0, 2),
                               image:
                                   'lib/common/assets/images/LargeEventTest.png'));
                     }).toList(),
