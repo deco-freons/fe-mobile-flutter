@@ -18,6 +18,8 @@ enum TextButtonType {
   primary,
   secondary,
   tertiary,
+  error,
+  tertiaryDark,
 }
 
 enum AuthStatus {
@@ -55,4 +57,11 @@ extension PrefExtension on PrefType {
         return '⚽️ Football';
     }
   }
+}
+
+enum LoadingType {
+  INITIAL,
+  LOADING,
+  SUCCESS,
+  ERROR,
 }

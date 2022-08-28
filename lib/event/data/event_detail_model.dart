@@ -36,6 +36,51 @@ class EventDetailModel extends BaseModel {
       required this.participantsList,
       required this.participated});
 
+  const EventDetailModel.empty(
+      {this.eventID = 0,
+      this.eventName = "",
+      this.categories = const [],
+      this.date = "",
+      this.startTime = "",
+      this.endTime = "",
+      this.longitude = 0,
+      this.latitude = 0,
+      this.description = "-",
+      this.eventCreator = const EventParticipantModel.empty(),
+      this.participants = 0,
+      this.participantsList = const [],
+      this.participated = false});
+
+  EventDetailModel copyWith(
+      {int? eventID,
+      String? eventName,
+      List<PreferenceModel>? categories,
+      String? date,
+      String? startTime,
+      String? endTime,
+      double? longitude,
+      double? latitude,
+      String? description,
+      EventParticipantModel? eventCreator,
+      int? participants,
+      List<EventParticipantModel>? participantList,
+      bool? participated}) {
+    return EventDetailModel(
+        eventID: eventID ?? this.eventID,
+        eventName: eventName ?? this.eventName,
+        categories: categories ?? this.categories,
+        date: date ?? this.date,
+        startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
+        longitude: longitude ?? this.longitude,
+        latitude: latitude ?? this.latitude,
+        description: description ?? this.description,
+        eventCreator: eventCreator ?? this.eventCreator,
+        participants: participants ?? this.participants,
+        participantsList: participantsList,
+        participated: participated ?? this.participated);
+  }
+
   factory EventDetailModel.fromJson(Map<String, dynamic> json) =>
       _$EventDetailModelFromJson(json);
 

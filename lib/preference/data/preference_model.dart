@@ -11,6 +11,15 @@ class PreferenceModel extends BaseModel {
   const PreferenceModel(
       {required this.preferenceID, required this.preferenceName});
 
+  PreferenceModel copyWith({
+    String? preferenceID,
+    String? preferenceName,
+  }) {
+    return PreferenceModel(
+        preferenceID: preferenceID ?? this.preferenceID,
+        preferenceName: preferenceName ?? this.preferenceName);
+  }
+
   factory PreferenceModel.fromJson(Map<String, dynamic> json) =>
       _$PreferenceModelFromJson(json);
 

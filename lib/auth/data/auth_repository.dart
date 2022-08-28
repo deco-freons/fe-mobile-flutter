@@ -27,8 +27,6 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Stream<AuthModel> get status async* {
-    await Future<void>.delayed(const Duration(seconds: 1));
-
     yield const AuthModel(null, AuthStatus.unknown);
     yield* _controller.stream;
   }
