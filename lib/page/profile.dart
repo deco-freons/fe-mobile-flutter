@@ -224,8 +224,9 @@ class _ProfileState extends State<Profile> {
             UserModel updatedUser =
                 await Navigator.pushNamed(context, EditProfile.routeName)
                     as UserModel;
-            passedUser = updatedUser;
-            setState(() {});
+            setState(() {
+              passedUser = updatedUser;
+            });
           },
           cornerRadius: 32.0,
         ),
