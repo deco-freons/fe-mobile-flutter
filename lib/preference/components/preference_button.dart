@@ -56,7 +56,7 @@ class _PreferenceButtonState extends State<PreferenceButton> {
             widget.cancelIcon
                 ? Icon(
                     Icons.close_rounded,
-                    color: grey.shade500,
+                    color: neutral.shade500,
                   )
                 : const SizedBox.shrink(),
           ],
