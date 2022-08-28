@@ -30,9 +30,7 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           latitude: position.latitude,
           radius: 10.0);
       Map res = {};
-      List<List<String>> locationNames = [
-        ['a', 'a']
-      ];
+      List<List<String>> locationNames = [];
       if (data.isEmpty) {
         res = await _popularEventsRepository.getPopularEventsByAll(emptyNearby);
       } else {

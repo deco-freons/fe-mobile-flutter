@@ -162,52 +162,58 @@ class _ShowCategoriesState extends State<ShowCategories> {
               }
             }
           }, builder: (context, state) {
-            if (state is PopularEventsLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-              );
-            } else if (state is PopularEventsErrorState) {
+            if (state is PopularEventsErrorState) {
               return Text(state.errorMessage);
-            } else if (state is PopularEventsSuccessState) {
-              return Expanded(
-                child: SizedBox(
-                  width: 350.0,
-                  child: ListView(
-                    shrinkWrap: true,
-                    controller: scrollController
-                      ..addListener(() {
-                        if (scrollController.offset ==
-                            scrollController.position.maxScrollExtent) {
-                          context
-                              .read<PopularEventsCubit>()
-                              .getMoreEvents(categoriesData, state.pageCount);
-                        }
-                      }),
-                    children: eventList.map((event) {
-                      String formattedDate = DateFormat('MMMM dd, yyyy')
-                          .format(DateTime.parse(event.date));
-                      List<String> splittedDate = formattedDate.split(' ');
-                      return Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
-                          child: EventCardLarge(
-                              title: event.eventName,
-                              author: event.eventCreator['username'],
-                              distance: event.distance,
-                              location:
-                                  '${event.location[0]}, ${event.location[1]}',
-                              month: splittedDate[0].substring(0, 3),
-                              date: splittedDate[1].substring(0, 2),
-                              image:
-                                  'lib/common/assets/images/LargeEventTest.png'));
-                    }).toList(),
-                  ),
-                ),
-              );
-            } else {
-              return const Text('');
             }
+            bool isSuccessState = state is PopularEventsSuccessState;
+            return Expanded(
+              child: SizedBox(
+                width: 350.0,
+                child: isSuccessState
+                    ? ListView(
+                        shrinkWrap: true,
+                        controller: scrollController
+                          ..addListener(() {
+                            if (scrollController.offset ==
+                                scrollController.position.maxScrollExtent) {
+                              context.read<PopularEventsCubit>().getMoreEvents(
+                                  categoriesData, state.pageCount);
+                            }
+                          }),
+                        children: eventList.map((event) {
+                          String formattedDate = DateFormat('MMMM dd, yyyy')
+                              .format(DateTime.parse(event.date));
+                          List<String> splittedDate = formattedDate.split(' ');
+                          return Padding(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              child: EventCardLarge(
+                                  title: event.eventName,
+                                  author: event.eventCreator['username'],
+                                  distance: event.distance,
+                                  location:
+                                      '${event.location[0]}, ${event.location[1]}',
+                                  month: splittedDate[0].substring(0, 3),
+                                  date: splittedDate[1].substring(0, 2),
+                                  image:
+                                      'lib/common/assets/images/LargeEventTest.png'));
+                        }).toList(),
+                      )
+                    : ListView(
+                        shrinkWrap: true,
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 25.0),
+                            child: EventCardLarge.loading(),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 25.0),
+                            child: EventCardLarge.loading(),
+                          ),
+                          EventCardLarge.loading()
+                        ],
+                      ),
+              ),
+            );
           }),
         ],
       ),

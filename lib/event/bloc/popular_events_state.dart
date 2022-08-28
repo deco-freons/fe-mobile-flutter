@@ -25,10 +25,6 @@ class PopularEventsSuccessState extends PopularEventsState {
       required this.pageCount});
 }
 
-class PopularEventsLocationLoaded extends PopularEventsState {
-  const PopularEventsLocationLoaded();
-}
-
 class PopularEventsErrorState extends PopularEventsState {
   final String errorMessage;
   const PopularEventsErrorState({required this.errorMessage});

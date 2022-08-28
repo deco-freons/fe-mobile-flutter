@@ -6,7 +6,6 @@ import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_small.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
-import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -162,49 +161,42 @@ class _ShowCategoriesState extends State<ShowCategories> {
         ]),
         BlocBuilder<PopularEventsCubit, PopularEventsState>(
             builder: (context, state) {
-          if (state is PopularEventsLoadingState) {
-            return Center(
-              child: CircularProgressIndicator(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            );
-          } else if (state is PopularEventsErrorState) {
-            return Text(state.errorMessage);
-          } else if (state is PopularEventsSuccessState) {
-            return buildPopular(context, state.events);
-          } else {
-            return const Text('');
+          if (state is PopularEventsErrorState) {
+            return Center(child: Text(state.errorMessage));
           }
+          bool isSuccessState = state is PopularEventsSuccessState;
+          return HomeContent(
+              title: 'Popular events',
+              isPopular: true,
+              contentPadding: 30.0,
+              titlePadding: 0.0,
+              contentWidgets: isSuccessState
+                  ? state.events.map((event) {
+                      String formattedDate = DateFormat('MMMM dd, yyyy')
+                          .format(DateTime.parse(event.date));
+                      List<String> splittedDate = formattedDate.split(' ');
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 25.0),
+                        child: EventCardSmall(
+                            title: event.eventName,
+                            distance: event.distance,
+                            month: splittedDate[0].substring(0, 3),
+                            date: splittedDate[1].substring(0, 2),
+                            image:
+                                'lib/common/assets/images/SmallEventTest.png'),
+                      );
+                    }).toList()
+                  : const [
+                      Padding(
+                        padding:
+                            EdgeInsets.only(left: 4.0, top: 5.0, right: 32.0),
+                        child: EventCardSmall.loading(),
+                      ),
+                      EventCardSmall.loading(),
+                    ]);
         })
       ],
     );
-  }
-
-  Widget buildPopular(BuildContext context, List<PopularEventModel> events) {
-    return HomeContent(
-        title: 'Popular events',
-        isPopular: true,
-        contentPadding: 30.0,
-        titlePadding: 0.0,
-        contentWidgets: buildEvents(events));
-  }
-
-  List<Widget> buildEvents(List<PopularEventModel> events) {
-    List<Widget> widgets = events.map((event) {
-      String formattedDate =
-          DateFormat('MMMM dd, yyyy').format(DateTime.parse(event.date));
-      List<String> splittedDate = formattedDate.split(' ');
-      return Padding(
-        padding: const EdgeInsets.only(right: 25.0),
-        child: EventCardSmall(
-            title: event.eventName,
-            distance: event.distance,
-            month: splittedDate[0].substring(0, 3),
-            date: splittedDate[1].substring(0, 2),
-            image: 'lib/common/assets/images/SmallEventTest.png'),
-      );
-    }).toList();
-    return widgets;
   }
 
   void getPopularEvents(BuildContext context, List<String> data) {
