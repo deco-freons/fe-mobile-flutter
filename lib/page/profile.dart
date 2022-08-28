@@ -83,7 +83,6 @@ class _ProfileState extends State<Profile> {
                 } else if (state is UserErrorState) {
                   return Text(state.errorMessage);
                 } else if (state is UserSuccessState) {
-                  // return buildProfile(context, state.user);
                   return BuildProfilePage(user: state.user);
                 }
                 return const SizedBox.shrink();
@@ -174,8 +173,7 @@ class _ProfileState extends State<Profile> {
                       BoxShadow(
                         color: Colors.black.withOpacity(0.25),
                         blurRadius: 4,
-                        offset:
-                            const Offset(0, 4), // changes position of shadow
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -295,7 +293,6 @@ class _ProfileState extends State<Profile> {
 
 class BuildProfilePage extends StatefulWidget {
   final UserModel user;
-  // final BuildContext context;
 
   const BuildProfilePage({Key? key, required this.user}) : super(key: key);
 
