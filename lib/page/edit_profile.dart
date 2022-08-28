@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/auth/data/user_model.dart';
+import 'package:flutter_boilerplate/preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/user/bloc/edit_user_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/edit_user_state.dart';
+import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/user_state.dart';
+import 'package:flutter_boilerplate/user/data/edit_user_model.dart';
+import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
+import 'package:flutter_boilerplate/user/data/user_repository.dart';
+
+import '../common/config/theme.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -13,54 +24,110 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final UserRepositoryImpl userRepository = UserRepositoryImpl();
+  final EditUserRepositoryImpl editUserRepository = EditUserRepositoryImpl();
   int eventCount = 12;
-  List<String> interests = [
-    "Gaming",
-    "Movie",
-    "Dancing",
-    "Culinary",
-    "Basketball",
-    "⚽️ Football"
-  ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<EditUserCubit>(
+          create: (BuildContext context) => EditUserCubit(editUserRepository),
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: Text(
-            "Edit Profile",
-            style: TextStyle(
-              fontSize: 26.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
+        BlocProvider<UserCubit>(
+          create: (BuildContext context) =>
+              UserCubit(userRepository)..getUser(),
+        ),
+      ],
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: neutral.shade800, size: 35.0),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 12.0),
+            child: Text(
+              "Edit Profile",
+              style: TextStyle(
+                fontSize: 26.0,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+          centerTitle: true,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          elevation: 0.0,
+        ),
+        body: Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.secondary),
+          child: SafeArea(
+            child: BlocBuilder<UserCubit, UserState>(
+              builder: (context, state) {
+                if (state is UserLoadingState) {
+                  return Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  );
+                } else if (state is UserErrorState) {
+                  return Text(state.errorMessage);
+                } else if (state is UserSuccessState) {
+                  return buildEditProfile(context, state.user);
+                }
+                return const SizedBox.shrink();
+              },
             ),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        elevation: 0.0,
-      ),
-      body: Container(
-        decoration:
-            BoxDecoration(color: Theme.of(context).colorScheme.secondary),
-        child: SafeArea(child: buildProfile()),
       ),
     );
   }
 
-  Widget buildProfile() {
+  Widget buildEditProfile(BuildContext context, UserModel user) {
+    CustomFormInput firstName = CustomFormInput(
+      label: "First Name",
+      type: TextFieldType.string,
+      initialValue: user.firstName,
+    );
+    CustomFormInput lastName = CustomFormInput(
+      label: "Last Name",
+      type: TextFieldType.string,
+      initialValue: user.lastName,
+    );
+    CustomFormInput username = CustomFormInput(
+      label: "Username",
+      type: TextFieldType.string,
+      initialValue: user.username,
+      disable: true,
+    );
+    CustomFormInput email = CustomFormInput(
+      label: "Email",
+      type: TextFieldType.string,
+      initialValue: user.email,
+      disable: true,
+    );
+    CustomFormInput birthDate = CustomFormInput(
+      label: "Birth Date",
+      type: TextFieldType.date,
+      initialValue: user.birthDate,
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    CustomFormInput interest = CustomFormInput(
+        label: "Interests",
+        type: TextFieldType.interest,
+        preferences: user.preferences);
+
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
       children: [
@@ -74,66 +141,42 @@ class _EditProfileState extends State<EditProfile> {
         const SizedBox(
           height: 41.0,
         ),
-        CustomForm(
-          inputs: [
-            CustomFormInput(
-              label: "First Name",
-              type: TextFieldType.string,
-              initialValue: "Zahra",
+        BlocListener<EditUserCubit, EditUserState>(
+          listener: (context, state) {
+            if (state is EditUserSuccessState) {
+              Navigator.pop(context, state.user);
+            }
+          },
+          child: CustomForm(
+            inputs: [firstName, lastName, username, email, birthDate, interest],
+            submitTitle: "Save",
+            submitHandler: () {
+              List<String> newPreferences = interest.preferences
+                  .map((pref) => pref.preferenceID)
+                  .toList();
+              EditUserModel data = EditUserModel(
+                  firstName: firstName.controller.text,
+                  lastName: lastName.controller.text,
+                  birthDate: birthDate.controller.text,
+                  preferences: newPreferences);
+              submit(context, data, interest.preferences);
+            },
+            textButtonHandler: () {},
+            sidePadding: 0.0,
+            topPadding: 0.0,
+            labelColor: Theme.of(context).colorScheme.tertiary,
+            inputStyle: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-            CustomFormInput(
-              label: "Last Name",
-              type: TextFieldType.string,
-              initialValue: "Abraara",
-            ),
-            CustomFormInput(
-              label: "Username",
-              type: TextFieldType.string,
-              initialValue: "Abraara",
-            ),
-            CustomFormInput(
-              label: "Email",
-              type: TextFieldType.string,
-              initialValue: "zahra@gmail.com",
-              disable: true,
-            ),
-            CustomFormInput(
-              label: "Birth Date",
-              type: TextFieldType.date,
-              initialValue: "2022-02-06",
-              firstDate: DateTime(1900),
-              lastDate: DateTime.now(),
-            ),
-            CustomFormInput(
-              label: "Interests",
-              type: TextFieldType.interest,
-            ),
-          ],
-          submitTitle: "Save",
-          submitHandler: () {},
-          textButtonHandler: () {},
-          sidePadding: 0.0,
-          labelColor: Theme.of(context).colorScheme.tertiary,
-          inputStyle: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        Wrap(spacing: 10.0, runSpacing: 16.0, children: buildInterest()),
-        const SizedBox(height: 34.0),
-        CustomButton(
-          label: "Save",
-          type: ButtonType.primary,
-          onPressedHandler: () {},
-          cornerRadius: 32.0,
-        ),
-        const SizedBox(height: 20.0),
       ],
     );
   }
 
-  Widget buildField(label, value) {
+  Widget buildField(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -158,10 +201,9 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  List<Widget> buildInterest() {
-    List<Widget> widgets = [];
-    for (String interest in interests) {
-      Widget card = IntrinsicWidth(
+  List<Widget> buildInterest(List<PreferenceModel> preferences) {
+    List<Widget> widgets = preferences.map((preference) {
+      return IntrinsicWidth(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           height: 36.0,
@@ -175,15 +217,20 @@ class _EditProfileState extends State<EditProfile> {
           child: Row(
             children: [
               Text(
-                interest,
+                preference.preferenceName,
                 style: const TextStyle(fontSize: 15.0),
               )
             ],
           ),
         ),
       );
-      widgets.add(card);
-    }
+    }).toList();
     return widgets;
+  }
+
+  void submit(BuildContext context, EditUserModel data,
+      List<PreferenceModel> preferences) async {
+    final cubit = context.read<EditUserCubit>();
+    await cubit.editUser(data, preferences);
   }
 }

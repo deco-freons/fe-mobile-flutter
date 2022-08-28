@@ -8,10 +8,13 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
+
+import '../common/config/theme.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -44,8 +47,7 @@ class _ProfileState extends State<Profile> {
           leading: Padding(
             padding: const EdgeInsets.only(top: 10.0, left: 10.0),
             child: IconButton(
-              icon:
-                  const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
+              icon: Icon(Icons.arrow_back, color: neutral.shade800, size: 35.0),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -81,7 +83,7 @@ class _ProfileState extends State<Profile> {
                 } else if (state is UserErrorState) {
                   return Text(state.errorMessage);
                 } else if (state is UserSuccessState) {
-                  return buildProfile(context, state.user);
+                  return BuildProfilePage(user: state.user);
                 }
                 return const SizedBox.shrink();
               },
@@ -92,7 +94,9 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  Widget buildProfile(BuildContext context, UserModel user) {
+  Widget buildProfile(BuildContext context, UserModel passedUser) {
+    UserModel user = passedUser;
+
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
       children: [
@@ -111,6 +115,225 @@ class _ProfileState extends State<Profile> {
               children: [
                 Text(
                   "${user.firstName} ${user.lastName}",
+                  style: TextStyle(
+                    fontSize: 26.0,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5.0,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 4,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      ImageIcon(
+                          const AssetImage(
+                              'lib/common/assets/images/TrophyIcon.png'),
+                          color: Theme.of(context).colorScheme.secondary),
+                      const SizedBox(
+                        width: 5.0,
+                      ),
+                      Text(
+                        "$eventCount events",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 12.0,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: eventCount > 20
+                        ? Colors.amber
+                        : eventCount > 10
+                            ? const Color(0xFFC0C0C0)
+                            : const Color.fromARGB(255, 189, 52, 2),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 4,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Text(
+                    eventCount > 20
+                        ? "Gold"
+                        : eventCount > 10
+                            ? "Silver"
+                            : "Bronze",
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        buildField("First Name", user.firstName),
+        buildField("Last Name", user.lastName),
+        buildField("Username", user.username),
+        buildField("Email", user.email),
+        buildField("Birth Date", user.birthDate),
+        const SizedBox(height: 38.0),
+        Text(
+          "Interest",
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+        const SizedBox(
+          height: 7.0,
+        ),
+        Wrap(
+          spacing: 8.0,
+          runSpacing: 0.0,
+          children: buildInterest(user.preferences),
+        ),
+        const SizedBox(height: 34.0),
+        CustomButton(
+          label: "Edit Profile",
+          type: ButtonType.primary,
+          onPressedHandler: () async {
+            UserModel updatedUser =
+                await Navigator.pushNamed(context, EditProfile.routeName)
+                    as UserModel;
+            setState(() {
+              passedUser = updatedUser;
+            });
+          },
+          cornerRadius: 32.0,
+        ),
+        const SizedBox(height: 20.0),
+        BlocListener<LogoutCubit, LogoutState>(
+          listener: (context, state) {
+            if (state is LogoutSuccessState) {
+              Navigator.pushReplacementNamed(context, Landing.routeName);
+            }
+          },
+          child: CustomButton(
+            label: "Sign Out",
+            type: ButtonType.red,
+            onPressedHandler: () {
+              logout(context);
+            },
+            cornerRadius: 32.0,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildField(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 38.0),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.tertiary,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
+    );
+  }
+
+  List<Widget> buildInterest(List<PreferenceModel> preferences) {
+    List<Widget> widgets = preferences.map((preference) {
+      return PreferenceButton(
+        stringInput: preference.preferenceName,
+        useStringInput: true,
+        onPressedHandler: () {},
+      );
+    }).toList();
+    return widgets;
+  }
+
+  void logout(BuildContext context) async {
+    final cubit = context.read<LogoutCubit>();
+    await cubit.logout();
+  }
+}
+
+class BuildProfilePage extends StatefulWidget {
+  final UserModel user;
+
+  const BuildProfilePage({Key? key, required this.user}) : super(key: key);
+
+  @override
+  State<BuildProfilePage> createState() => _BuildProfilePageState();
+}
+
+class _BuildProfilePageState extends State<BuildProfilePage> {
+  int eventCount = 12;
+  late UserModel updatedUser;
+  bool updated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    updatedUser = widget.user;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
+      children: [
+        Row(
+          children: [
+            CircleAvatar(
+              radius: 52.5,
+              child: Image.asset(
+                  'lib/common/assets/images/CircleAvatarDefault.png'),
+            ),
+            const SizedBox(
+              width: 22.0,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  updated
+                      ? "${updatedUser.firstName} ${updatedUser.lastName}"
+                      : "${widget.user.firstName} ${widget.user.lastName}",
                   style: TextStyle(
                     fontSize: 26.0,
                     fontWeight: FontWeight.bold,
@@ -191,11 +414,14 @@ class _ProfileState extends State<Profile> {
             ),
           ],
         ),
-        buildField("First Name", user.firstName),
-        buildField("Last Name", user.lastName),
-        buildField("Username", user.username),
-        buildField("Email", user.email),
-        buildField("Birth Date", user.birthDate),
+        buildField("First Name",
+            updated ? updatedUser.firstName : widget.user.firstName),
+        buildField(
+            "Last Name", updated ? updatedUser.lastName : widget.user.lastName),
+        buildField("Username", widget.user.username),
+        buildField("Email", widget.user.email),
+        buildField("Birth Date",
+            updated ? updatedUser.birthDate : widget.user.birthDate),
         const SizedBox(height: 38.0),
         Text(
           "Interest",
@@ -209,15 +435,23 @@ class _ProfileState extends State<Profile> {
           height: 7.0,
         ),
         Wrap(
-            spacing: 10.0,
-            runSpacing: 16.0,
-            children: buildInterest(user.preferences)),
+          spacing: 8.0,
+          runSpacing: 0.0,
+          children: buildInterest(
+              updated ? updatedUser.preferences : widget.user.preferences),
+        ),
         const SizedBox(height: 34.0),
         CustomButton(
           label: "Edit Profile",
           type: ButtonType.primary,
-          onPressedHandler: () {
-            Navigator.pushNamed(context, EditProfile.routeName);
+          onPressedHandler: () async {
+            UserModel response =
+                await Navigator.pushNamed(context, EditProfile.routeName)
+                    as UserModel;
+            setState(() {
+              updatedUser = response;
+              updated = true;
+            });
           },
           cornerRadius: 32.0,
         ),
@@ -268,26 +502,10 @@ class _ProfileState extends State<Profile> {
 
   List<Widget> buildInterest(List<PreferenceModel> preferences) {
     List<Widget> widgets = preferences.map((preference) {
-      return IntrinsicWidth(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
-          height: 36.0,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.21),
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-          ),
-          child: Row(
-            children: [
-              Text(
-                preference.preferenceName,
-                style: const TextStyle(fontSize: 15.0),
-              )
-            ],
-          ),
-        ),
+      return PreferenceButton(
+        stringInput: preference.preferenceName,
+        useStringInput: true,
+        onPressedHandler: () {},
       );
     }).toList();
     return widgets;
