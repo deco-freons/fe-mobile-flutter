@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/events/data/event_model.dart';
+import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import '../../common/bloc/base_state.dart';
 
 @immutable
@@ -16,8 +16,17 @@ class PopularEventsLoadingState extends PopularEventsState {
 }
 
 class PopularEventsSuccessState extends PopularEventsState {
-  final List<EventModel> events;
-  const PopularEventsSuccessState({required this.events});
+  final List<List<String>> locationNames;
+  final List<PopularEventModel> events;
+  final int pageCount;
+  const PopularEventsSuccessState(
+      {required this.events,
+      required this.locationNames,
+      required this.pageCount});
+}
+
+class PopularEventsLocationLoaded extends PopularEventsState {
+  const PopularEventsLocationLoaded();
 }
 
 class PopularEventsErrorState extends PopularEventsState {

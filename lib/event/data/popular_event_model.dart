@@ -1,10 +1,10 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'event_model.g.dart';
+part 'popular_event_model.g.dart';
 
 @JsonSerializable()
-class EventModel extends BaseModel {
+class PopularEventModel extends BaseModel {
   final int eventID;
   final String eventName;
   final String date;
@@ -12,8 +12,9 @@ class EventModel extends BaseModel {
   final double longitude;
   final double latitude;
   final Map<String, String> eventCreator;
+  final List<String> location;
 
-  const EventModel({
+  const PopularEventModel({
     required this.eventID,
     required this.eventName,
     required this.date,
@@ -21,12 +22,13 @@ class EventModel extends BaseModel {
     required this.longitude,
     required this.latitude,
     required this.eventCreator,
+    required this.location,
   });
 
-  factory EventModel.fromJson(Map<String, dynamic> json) =>
-      _$EventModelFromJson(json);
+  factory PopularEventModel.fromJson(Map<String, dynamic> json) =>
+      _$PopularEventModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$EventModelToJson(this);
+  Map<String, dynamic> toJson() => _$PopularEventModelToJson(this);
 
   @override
   List<Object> get props => [eventID];

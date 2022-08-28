@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/events/components/date_card.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/event/components/date_card.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 
 class EventCardSmall extends StatefulWidget {
@@ -73,11 +74,14 @@ class _EventCardSmallState extends State<EventCardSmall> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         FittedBox(
-                          child: Text(
-                            widget.title,
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 5.0),
+                            child: Text(
+                              widget.title,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
@@ -85,7 +89,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                           '${widget.distance}km',
                           style: TextStyle(
                             fontSize: 12.0,
-                            color: Theme.of(context).colorScheme.tertiary,
+                            color: neutral.shade700,
                           ),
                         ),
                       ],

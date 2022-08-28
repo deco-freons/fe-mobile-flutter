@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/events/components/date_card.dart';
+import 'package:flutter_boilerplate/event/components/date_card.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 
 class EventCardLarge extends StatefulWidget {
@@ -94,18 +94,28 @@ class _EventCardLargeState extends State<EventCardLarge> {
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                  'lib/common/assets/images/LocationIcon.png'),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('${widget.distance} km'),
-                                  FittedBox(child: Text(widget.location)),
-                                ],
-                              )
-                            ],
+                          Expanded(
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                    'lib/common/assets/images/LocationIcon.png'),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('${widget.distance} km'),
+                                      Expanded(
+                                        child: Text(
+                                          widget.location,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ]),
                       ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/events/bloc/event_cubit.dart';
-import 'package:flutter_boilerplate/events/bloc/popular_events_state.dart';
-import 'package:flutter_boilerplate/events/components/event_card_small.dart';
-import 'package:flutter_boilerplate/events/components/home_content.dart';
-import 'package:flutter_boilerplate/events/data/event_model.dart';
-import 'package:flutter_boilerplate/events/data/event_repository.dart';
+import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
+import 'package:flutter_boilerplate/event/components/event_card_small.dart';
+import 'package:flutter_boilerplate/event/components/home_content.dart';
+import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -23,8 +23,8 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          EventCubit(EventRepositoryImpl())..getPopularEvents([]),
+      create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
+        ..getPopularEvents([]),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
@@ -159,7 +159,8 @@ class _ShowCategoriesState extends State<ShowCategories> {
               ),
             )
         ]),
-        BlocBuilder<EventCubit, PopularEventsState>(builder: (context, state) {
+        BlocBuilder<PopularEventsCubit, PopularEventsState>(
+            builder: (context, state) {
           if (state is PopularEventsLoadingState) {
             return Center(
               child: CircularProgressIndicator(
@@ -178,7 +179,7 @@ class _ShowCategoriesState extends State<ShowCategories> {
     );
   }
 
-  Widget buildPopular(BuildContext context, List<EventModel> events) {
+  Widget buildPopular(BuildContext context, List<PopularEventModel> events) {
     return HomeContent(
         title: 'Popular events',
         isPopular: true,
@@ -187,7 +188,7 @@ class _ShowCategoriesState extends State<ShowCategories> {
         contentWidgets: buildEvents(events));
   }
 
-  List<Widget> buildEvents(List<EventModel> events) {
+  List<Widget> buildEvents(List<PopularEventModel> events) {
     List<Widget> widgets = events.map((event) {
       return Padding(
         padding: const EdgeInsets.only(right: 25.0),
@@ -203,7 +204,7 @@ class _ShowCategoriesState extends State<ShowCategories> {
   }
 
   void getPopularEvents(BuildContext context, List<String> data) {
-    final cubit = context.read<EventCubit>();
+    final cubit = context.read<PopularEventsCubit>();
     cubit.getPopularEvents(data);
   }
 }

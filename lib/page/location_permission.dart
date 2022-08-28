@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/location_denied.dart';
 import 'package:flutter_boilerplate/user/bloc/location_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/location_state.dart';
@@ -44,7 +44,8 @@ class _LocationPermissionState extends State<LocationPermission> {
 class ShowLocationPermission extends StatefulWidget {
   final String errorMessage;
 
-  const ShowLocationPermission({Key? key, this.errorMessage = ''}) : super(key: key);
+  const ShowLocationPermission({Key? key, this.errorMessage = ''})
+      : super(key: key);
 
   @override
   State<ShowLocationPermission> createState() => _ShowLocationPermissionState();
@@ -56,7 +57,7 @@ class _ShowLocationPermissionState extends State<ShowLocationPermission> {
     return BlocConsumer<LocationCubit, LocationState>(
       listener: (context, state) {
         if (state is LocationAllowedState) {
-          Navigator.pushNamed(context, Homepage.routeName);
+          Navigator.pushNamed(context, Dashboard.routeName);
         } else if (state is LocationDeniedState) {
           Navigator.pushNamedAndRemoveUntil(
               context, LocationDenied.routeName, (route) => false);
