@@ -6,7 +6,8 @@ class BuildLoading {
       {required double height,
       double width = double.infinity,
       double verticalPadding = 0,
-      int count = 1}) {
+      int count = 1,
+      double borderRadius = 5}) {
     if (count > 1) {
       return Column(
         children: List.filled(
@@ -17,7 +18,7 @@ class BuildLoading {
               height: height,
               width: width,
               shapeBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(borderRadius),
               ),
             ),
           ),
@@ -31,7 +32,7 @@ class BuildLoading {
         height: height,
         width: width,
         shapeBorder: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(borderRadius),
         ),
       ),
     );

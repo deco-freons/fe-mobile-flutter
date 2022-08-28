@@ -6,10 +6,13 @@ import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/location_denied.dart';
+import 'package:flutter_boilerplate/page/location_permission.dart';
 import 'package:flutter_boilerplate/page/login.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/page/popular_events.dart';
 import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/register.dart';
@@ -63,6 +66,13 @@ class RouteGenerator {
                   long: placeModel.lng,
                   address: placeModel.name,
                 ));
+      case PopularEvents.routeName:
+        return MaterialPageRoute(builder: (context) => const PopularEvents());
+      case LocationPermission.routeName:
+        return MaterialPageRoute(
+            builder: (context) => const LocationPermission());
+      case LocationDenied.routeName:
+        return MaterialPageRoute(builder: (context) => const LocationDenied());
       default:
         return _errorRoute();
     }

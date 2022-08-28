@@ -10,6 +10,9 @@ class PreferenceButton extends StatefulWidget {
   final String stringInput;
   final bool useStringInput;
   final bool cancelIcon;
+  final double elevation;
+  final double clickedElevation;
+  final bool isAll;
 
   const PreferenceButton({
     Key? key,
@@ -20,6 +23,9 @@ class PreferenceButton extends StatefulWidget {
     this.stringInput = "",
     this.useStringInput = false,
     this.cancelIcon = false,
+    this.elevation = 0.0,
+    this.clickedElevation = 0.0,
+    this.isAll = false,
   }) : super(key: key);
 
   @override
@@ -31,9 +37,11 @@ class _PreferenceButtonState extends State<PreferenceButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          elevation: 0.0,
+          elevation:
+              (widget.click) ? widget.elevation : widget.clickedElevation,
+          side: BorderSide(width: 1.0, color: primary.shade400),
           primary: (widget.click)
-              ? Theme.of(context).colorScheme.primary.withOpacity(0.3)
+              ? primary.shade300
               : Theme.of(context).colorScheme.primary,
           onPrimary: (widget.click)
               ? neutral.shade800
@@ -47,7 +55,11 @@ class _PreferenceButtonState extends State<PreferenceButton> {
         child: Row(
           children: [
             Text(
-              widget.useStringInput ? widget.stringInput : widget.type.desc,
+              widget.useStringInput
+                  ? widget.stringInput
+                  : widget.isAll
+                      ? 'All'
+                      : widget.type.desc,
               style: const TextStyle(
                 fontSize: 15.0,
                 fontWeight: FontWeight.bold,
