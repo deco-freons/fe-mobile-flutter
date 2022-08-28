@@ -12,6 +12,10 @@ class EventDetailResponseModel extends BaseModel {
   const EventDetailResponseModel(
       {required this.event, required this.isEventCreator});
 
+  const EventDetailResponseModel.empty(
+      {this.event = const EventDetailModel.empty(),
+      this.isEventCreator = false});
+
   EventDetailResponseModel copyWith({
     bool? isEventCreator,
     EventDetailModel? event,

@@ -10,13 +10,15 @@ import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
+import 'package:flutter_boilerplate/event/bloc/update_event_detail_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/edit_bottom_modal.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
 import 'package:flutter_boilerplate/event/components/leave_bottom_modal.dart';
-
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
+import 'package:flutter_boilerplate/get_it.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -37,8 +39,7 @@ final googleApiKey = dotenv.env['googleApiKey'];
 class _EventDetailState extends State<EventDetail> {
   geocode.GoogleGeocoding googleGeocoding =
       geocode.GoogleGeocoding(googleApiKey!);
-  final EventDetailRepository _eventDetailRepository =
-      EventDetailRepositoryImpl();
+
   String locationName = "";
   String locationArea = "";
   String formattedAddress = "";
@@ -69,154 +70,175 @@ class _EventDetailState extends State<EventDetail> {
 
   @override
   Widget build(BuildContext buildContext) {
-    return BlocProvider(
-      create: (context) => EventDetailCubit(_eventDetailRepository)
-        ..getEventDetail(widget.eventID),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              EventDetailCubit(getIt.get<EventDetailRepository>())
+                ..onSubscriptionRequested(widget.eventID),
+        ),
+        BlocProvider(
+            create: (context) =>
+                UpdateEventDetailCubit(getIt.get<EventDetailRepository>()))
+      ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: BlocConsumer<EventDetailCubit, EventDetailState>(
-            listener: (listenerContext, state) {
-              // REVERSE GEO LOCATE HERE
-              if (state is EventDetailSuccessState &&
-                  geoCodeStatus == LoadingType.INITIAL) {
-                _handleReverseGeoCoding(
-                    state.eventDetailResponseModel.event.latitude,
-                    state.eventDetailResponseModel.event.longitude);
-              }
-              if (state is EventDetailDeletedState) {
-                NavigatorUtil.goBacknTimes(context, 2);
-                Navigator.pop(context, state.eventID);
-              }
-            },
-            builder: (blocContext, state) {
-              if (state is EventDetailErrorState) {
-                return Center(
-                  child: Text(state.errorMessage),
-                );
-              }
-              bool isSuccessState = state is EventDetailSuccessState;
-              return SingleChildScrollView(
-                child: Stack(
-                  alignment: Alignment.topCenter,
-                  children: [
-                    _buildImage(state),
-                    Positioned(
-                      left: 24,
-                      top: 32,
-                      child: CircleIconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: () {
-                          Navigator.of(buildContext, rootNavigator: true).pop();
-                        },
+          child: MultiBlocListener(
+            listeners: [
+              BlocListener<UpdateEventDetailCubit, UpdateEventDetailState>(
+                listener: (context, state) {
+                  if (state is UpdateEventDetailDeletedState) {
+                    NavigatorUtil.goBacknTimes(context, 2);
+                    Navigator.pop(context, state.eventID);
+                  } else if (state is UpdateEventDetailErrorState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.errorMessage),
                       ),
-                    ),
-                    Positioned(
-                      right: 24,
-                      top: 32,
-                      child: CircleIconButton(
-                        icon: const Icon(Icons.more_horiz_outlined),
-                        onPressed: () {
-                          // OPEN MORE HERE
-                          if (state is EventDetailSuccessState) {
-                            showLeaveOrEditBottomModal(
-                                blocContext,
-                                state.eventDetailResponseModel.event.eventID,
-                                state.eventDetailResponseModel.isEventCreator);
-                          }
-                        },
+                    );
+                  }
+                },
+              ),
+              BlocListener<EventDetailCubit, EventDetailState>(
+                listener: (context, state) {
+                  // REVERSE GEO LOCATE HERE
+                  if (state.status == LoadingType.SUCCESS &&
+                      geoCodeStatus == LoadingType.INITIAL) {
+                    _handleReverseGeoCoding(state.model.event.latitude,
+                        state.model.event.longitude);
+                  } else if (state.status == LoadingType.ERROR) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
                       ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(top: 250),
-                      padding: const EdgeInsets.all(27),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(40),
+                    );
+                  }
+                },
+              ),
+            ],
+            child: BlocBuilder<EventDetailCubit, EventDetailState>(
+              builder: (blocContext, state) {
+                bool isSuccessState = state.status == LoadingType.SUCCESS;
+                return SingleChildScrollView(
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: [
+                      _buildImage(state),
+                      Positioned(
+                        left: 24,
+                        top: 32,
+                        child: CircleIconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () {
+                            Navigator.of(buildContext, rootNavigator: true)
+                                .pop();
+                          },
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildEventCategory(state),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          _buildEventName(state),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          _buildEventCreatorDetail(state),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          _buildParticipantsDetail(state),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          isSuccessState
-                              ? EventInfo(
-                                  icon: Icons.access_time_outlined,
-                                  title: DateFormat('MMMM dd, yyyy').format(
-                                      DateTime.parse(state
-                                          .eventDetailResponseModel
-                                          .event
-                                          .date)),
-                                  body:
-                                      '${state.eventDetailResponseModel.event.startTime} - ${state.eventDetailResponseModel.event.endTime}',
-                                )
-                              : const EventInfo.loading(),
-                          const SizedBox(
-                            height: 36,
-                          ),
-                          isSuccessState
-                              ? EventInfo(
-                                  icon: Icons.location_on_outlined,
-                                  title: locationArea,
-                                  body: locationName,
-                                  onTap: () {
-                                    // OPEN GOOGLE MAP
-                                    if (geoCodeStatus == LoadingType.SUCCESS) {
-                                      Navigator.of(context).pushNamed(
-                                        ShowLocation.routeName,
-                                        arguments: PlaceModel(
-                                            formattedAddress,
-                                            state.eventDetailResponseModel.event
-                                                .latitude,
-                                            state.eventDetailResponseModel.event
-                                                .longitude),
-                                      );
-                                    }
-                                  },
-                                )
-                              : const EventInfo.loading(),
-                          const SizedBox(
-                            height: 36,
-                          ),
-                          isSuccessState
-                              ? Text(
-                                  "About Event",
-                                  style: TextStyle(
-                                      color: neutral.shade700,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              : BuildLoading.buildRectangularLoading(
-                                  height: 22, width: 100, verticalPadding: 3),
-                          _buildEventDescription(state),
-                          const SizedBox(
-                            height: 25,
-                          ),
-                          _buildJoinButton(state, blocContext)
-                        ],
+                      Positioned(
+                        right: 24,
+                        top: 32,
+                        child: CircleIconButton(
+                          icon: const Icon(Icons.more_horiz_outlined),
+                          onPressed: () {
+                            // OPEN MORE HERE
+                            if (isSuccessState) {
+                              showLeaveOrEditBottomModal(
+                                  blocContext,
+                                  state.model.event.eventID,
+                                  state.model.isEventCreator);
+                            }
+                          },
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            },
+                      Container(
+                        margin: const EdgeInsets.only(top: 250),
+                        padding: const EdgeInsets.all(27),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(40),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildEventCategory(state),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            _buildEventName(state),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            _buildEventCreatorDetail(state),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            _buildParticipantsDetail(state),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            isSuccessState
+                                ? EventInfo(
+                                    icon: Icons.access_time_outlined,
+                                    title: DateFormat('MMMM dd, yyyy').format(
+                                        DateTime.parse(state.model.event.date)),
+                                    body:
+                                        '${state.model.event.startTime} - ${state.model.event.endTime}',
+                                  )
+                                : const EventInfo.loading(),
+                            const SizedBox(
+                              height: 36,
+                            ),
+                            isSuccessState
+                                ? EventInfo(
+                                    icon: Icons.location_on_outlined,
+                                    title: locationArea,
+                                    body: locationName,
+                                    onTap: () {
+                                      // OPEN GOOGLE MAP
+                                      if (geoCodeStatus ==
+                                          LoadingType.SUCCESS) {
+                                        Navigator.of(context).pushNamed(
+                                          ShowLocation.routeName,
+                                          arguments: PlaceModel(
+                                              formattedAddress,
+                                              state.model.event.latitude,
+                                              state.model.event.longitude),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : const EventInfo.loading(),
+                            const SizedBox(
+                              height: 36,
+                            ),
+                            isSuccessState
+                                ? Text(
+                                    "About Event",
+                                    style: TextStyle(
+                                        color: neutral.shade700,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : BuildLoading.buildRectangularLoading(
+                                    height: 22, width: 100, verticalPadding: 3),
+                            _buildEventDescription(state),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            _buildJoinButton(state, blocContext)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -234,31 +256,34 @@ class _EventDetailState extends State<EventDetail> {
       ),
       builder: (context) {
         return isEventCreator
-            ? EditBottomModal(eventID: eventID, blocContext: blocContext)
+            ? EditBottomModal(eventID: eventID)
             : LeaveBottomModal(
                 eventID: eventID,
-                blocContext: blocContext,
               );
       },
     );
   }
 
-  Widget _buildJoinButton(state, BuildContext context) {
-    return state is EventDetailSuccessState
-        ? CustomButton(
-            label: !state.eventDetailResponseModel.event.participated
-                ? "Join event"
-                : "Event Joined",
-            type: ButtonType.primary,
-            cornerRadius: 32,
-            onPressedHandler: !state.eventDetailResponseModel.event.participated
-                ? () async {
-                    // JOIN HERE
-                    final cubit = context.read<EventDetailCubit>();
-                    await cubit.joinEvent(
-                        state.eventDetailResponseModel.event.eventID);
-                  }
-                : null)
+  Widget _buildJoinButton(
+      EventDetailState eventDetailState, BuildContext context) {
+    return eventDetailState.status == LoadingType.SUCCESS
+        ? BlocBuilder<UpdateEventDetailCubit, UpdateEventDetailState>(
+            builder: (context, state) {
+              return CustomButton(
+                  label: !eventDetailState.model.event.participated
+                      ? "Join event"
+                      : "Event Joined",
+                  type: ButtonType.primary,
+                  cornerRadius: 32,
+                  onPressedHandler: !eventDetailState.model.event.participated
+                      ? () async {
+                          final cubit = context.read<UpdateEventDetailCubit>();
+                          await cubit
+                              .joinEvent(eventDetailState.model.event.eventID);
+                        }
+                      : null);
+            },
+          )
         : ShimmerWidget.rectangular(
             height: 52,
             shapeBorder: RoundedRectangleBorder(
@@ -268,11 +293,11 @@ class _EventDetailState extends State<EventDetail> {
   }
 
   Widget _buildEventDescription(EventDetailState state) {
-    return state is EventDetailSuccessState
+    return state.status == LoadingType.SUCCESS
         ? SeeMore(
-            text: state.eventDetailResponseModel.event.description == "-"
+            text: state.model.event.description == "-"
                 ? "No description"
-                : state.eventDetailResponseModel.event.description,
+                : state.model.event.description,
             characterLimit: (MediaQuery.of(context).size.width / 5).floor(),
           )
         : BuildLoading.buildRectangularLoading(
@@ -280,9 +305,9 @@ class _EventDetailState extends State<EventDetail> {
   }
 
   Widget _buildEventName(EventDetailState state) {
-    return state is EventDetailSuccessState
+    return state.status == LoadingType.SUCCESS
         ? Text(
-            state.eventDetailResponseModel.event.eventName,
+            state.model.event.eventName,
             style: TextStyle(
               color: neutral.shade700,
               fontSize: 20,
@@ -293,13 +318,13 @@ class _EventDetailState extends State<EventDetail> {
   }
 
   Widget _buildEventCategory(EventDetailState state) {
-    return state is EventDetailSuccessState
+    return state.status == LoadingType.SUCCESS
         ? SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Wrap(
               direction: Axis.horizontal,
               spacing: 15,
-              children: state.eventDetailResponseModel.event.categories
+              children: state.model.event.categories
                   .map(
                     (category) => Container(
                       padding: const EdgeInsets.all(8),
@@ -325,7 +350,7 @@ class _EventDetailState extends State<EventDetail> {
   }
 
   Widget _buildImage(EventDetailState state) {
-    return state is EventDetailSuccessState
+    return state.status == LoadingType.SUCCESS
         ? Image.asset(
             "lib/common/assets/images/eventBG.png",
             fit: BoxFit.cover,
@@ -339,7 +364,7 @@ class _EventDetailState extends State<EventDetail> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        state is EventDetailSuccessState
+        state.status == LoadingType.SUCCESS
             ? const CircleAvatar(
                 radius: 15,
                 backgroundImage: AssetImage(
@@ -349,9 +374,9 @@ class _EventDetailState extends State<EventDetail> {
         const SizedBox(
           width: 13,
         ),
-        state is EventDetailSuccessState
+        state.status == LoadingType.SUCCESS
             ? Text(
-                '${state.eventDetailResponseModel.event.eventCreator.firstName} ${state.eventDetailResponseModel.event.eventCreator.lastName}',
+                '${state.model.event.eventCreator.firstName} ${state.model.event.eventCreator.lastName}',
                 style: const TextStyle(
                   color: neutral,
                   fontWeight: FontWeight.bold,
@@ -366,11 +391,10 @@ class _EventDetailState extends State<EventDetail> {
   Widget _buildParticipantsDetail(EventDetailState state) {
     return Row(
       children: [
-        state is EventDetailSuccessState
+        state.status == LoadingType.SUCCESS
             ? RichText(
                 text: TextSpan(
-                  text: state.eventDetailResponseModel.event.participants
-                      .toString(),
+                  text: state.model.event.participants.toString(),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: neutral.shade900,
@@ -395,7 +419,7 @@ class _EventDetailState extends State<EventDetail> {
           3,
           Padding(
             padding: const EdgeInsets.all(1),
-            child: state is EventDetailSuccessState
+            child: state.status == LoadingType.SUCCESS
                 ? const CircleAvatar(
                     radius: 10,
                     backgroundImage: AssetImage(
@@ -405,7 +429,7 @@ class _EventDetailState extends State<EventDetail> {
           ),
         ),
         const Spacer(),
-        state is EventDetailSuccessState
+        state.status == LoadingType.SUCCESS
             ? CustomTextButton(
                 text: "View All",
                 fontSize: 16,

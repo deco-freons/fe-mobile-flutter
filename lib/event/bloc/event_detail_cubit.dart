@@ -1,94 +1,42 @@
-import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
-import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
-import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/event/bloc/event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
-import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
-import 'package:flutter_boilerplate/get_it.dart';
 
 class EventDetailCubit extends BaseCubit<EventDetailState> {
   final EventDetailRepository _eventDetailRepository;
-  late EventDetailResponseModel _eventDetailResponseModel;
-  final SecureStorage _secureStorage = getIt.get<SecureStorage>();
+  late StreamSubscription<EventDetailResponseModel> _streamSubscription;
 
   EventDetailCubit(this._eventDetailRepository)
-      : super(const EventDetailInitialState());
+      : super(const EventDetailState()) {
+    _streamSubscription =
+        _eventDetailRepository.data.listen((data) => onDataChanged(data));
+  }
 
-  Future<void> getEventDetail(int eventID) async {
+  Future<void> onSubscriptionRequested(int eventID) async {
     try {
-      emit(const EventDetailLoadingState());
-      _eventDetailResponseModel =
-          await _eventDetailRepository.getEventDetail(eventID);
-      emit(EventDetailSuccessState(
-          eventDetailResponseModel: _eventDetailResponseModel));
+      emit(state.copyWith(status: LoadingType.LOADING));
+      await _eventDetailRepository.getEventDetail(eventID);
+      emit(state.copyWith(status: LoadingType.SUCCESS, message: ""));
     } catch (e) {
       String errorMessage = ErrorHandler.handle(e);
-      emit(EventDetailErrorState(errorMessage: errorMessage));
+      state.copyWith(status: LoadingType.ERROR, message: errorMessage);
     }
   }
 
-  Future<void> joinEvent(int eventID) async {
-    try {
-      await _eventDetailRepository.joinEvent(eventID);
-      EventParticipantModel user = await _loadUserFromStorage();
-      _eventDetailResponseModel = _eventDetailResponseModel.copyWith(
-          event: _eventDetailResponseModel.event.copyWith(
-              participated: true,
-              participants: _eventDetailResponseModel.event.participants + 1,
-              participantList: [
-            ..._eventDetailResponseModel.event.participantsList,
-            user
-          ]));
-      emit(EventDetailSuccessState(
-          eventDetailResponseModel: _eventDetailResponseModel));
-    } catch (e) {
-      String errorMessage = ErrorHandler.handle(e);
-      emit(EventDetailErrorState(errorMessage: errorMessage));
-    }
+  Future<void> onDataChanged(EventDetailResponseModel model) async {
+    emit(state.copyWith(model: model));
   }
 
-  Future<void> leaveEvent(int eventID) async {
-    try {
-      await _eventDetailRepository.leaveEvent(eventID);
-      EventParticipantModel user = await _loadUserFromStorage();
-      _eventDetailResponseModel = _eventDetailResponseModel.copyWith(
-        event: _eventDetailResponseModel.event.copyWith(
-          participated: false,
-          participants: _eventDetailResponseModel.event.participants - 1,
-          participantList: _eventDetailResponseModel.event.participantsList
-              .where((participant) => participant.userID != user.userID)
-              .toList(),
-        ),
-      );
-      emit(EventDetailSuccessState(
-          eventDetailResponseModel: _eventDetailResponseModel));
-    } catch (e) {
-      String errorMessage = ErrorHandler.handle(e);
-      emit(EventDetailErrorState(errorMessage: errorMessage));
-    }
+  @override
+  Future<void> close() {
+    _streamSubscription.cancel();
+    _eventDetailRepository.dispose();
+    return super.close();
   }
 
-  Future<void> deleteEvent(int eventID) async {
-    try {
-      await _eventDetailRepository.deleteEvent(eventID);
-      emit(EventDetailDeletedState(eventID: eventID));
-    } catch (e) {
-      String errorMessage = ErrorHandler.handle(e);
-      emit(EventDetailErrorState(errorMessage: errorMessage));
-    }
-  }
-
-  Future<EventParticipantModel> _loadUserFromStorage() async {
-    String? userString = await _secureStorage.get(key: "user");
-    if (userString == null) {
-      throw NotFoundException();
-    }
-    Map<String, dynamic> userMap = jsonDecode(userString);
-    EventParticipantModel user = EventParticipantModel.fromJson(userMap);
-    return user;
-  }
+  deleteEvent(int eventID) {}
 }

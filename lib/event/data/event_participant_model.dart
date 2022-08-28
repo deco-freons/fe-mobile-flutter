@@ -15,6 +15,12 @@ class EventParticipantModel extends BaseModel {
       required this.lastName,
       this.userID});
 
+  const EventParticipantModel.empty(
+      {this.firstName = "",
+      this.lastName = "",
+      this.username = "",
+      this.userID = 0});
+
   EventParticipantModel copyWith(
       {int? userID, String? username, String? firstName, String? lastName}) {
     return EventParticipantModel(

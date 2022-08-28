@@ -36,6 +36,21 @@ class EventDetailModel extends BaseModel {
       required this.participantsList,
       required this.participated});
 
+  const EventDetailModel.empty(
+      {this.eventID = 0,
+      this.eventName = "",
+      this.categories = const [],
+      this.date = "",
+      this.startTime = "",
+      this.endTime = "",
+      this.longitude = 0,
+      this.latitude = 0,
+      this.description = "-",
+      this.eventCreator = const EventParticipantModel.empty(),
+      this.participants = 0,
+      this.participantsList = const [],
+      this.participated = false});
+
   EventDetailModel copyWith(
       {int? eventID,
       String? eventName,

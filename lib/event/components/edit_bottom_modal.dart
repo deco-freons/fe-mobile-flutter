@@ -4,16 +4,16 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_text_button
 import 'package:flutter_boilerplate/common/components/confirmation_modal_bottom.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
-import 'package:flutter_boilerplate/event/bloc/event_detail_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/update_event_detail_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
+import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
+import 'package:flutter_boilerplate/get_it.dart';
 
 import '../../common/components/buttons/custom_button.dart';
 
 class EditBottomModal extends StatelessWidget {
   final int eventID;
-  final BuildContext blocContext;
-  const EditBottomModal(
-      {Key? key, required this.eventID, required this.blocContext})
-      : super(key: key);
+  const EditBottomModal({Key? key, required this.eventID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,21 +64,28 @@ class EditBottomModal extends StatelessWidget {
       ),
       context: context,
       builder: (context) {
-        return ConfirmationModalBottom(
-          description: "Are you sure you want to delete this event?",
-          confirmText: "Delete",
-          confirmButtonType: TextButtonType.error,
-          onConfirmPressed: () {
-            blocContext
-                .read<EventDetailCubit>()
-                .deleteEvent(eventID)
-                .then((value) {});
-          },
-          cancelText: "Cancel",
-          cancelButtonType: TextButtonType.tertiaryDark,
-          onCancelPressed: () {
-            NavigatorUtil.goBacknTimes(context, 2);
-          },
+        return BlocProvider(
+          create: (context) =>
+              UpdateEventDetailCubit(getIt.get<EventDetailRepository>()),
+          child: BlocBuilder<UpdateEventDetailCubit, UpdateEventDetailState>(
+            builder: (blocContext, state) {
+              return ConfirmationModalBottom(
+                description: "Are you sure you want to delete this event?",
+                confirmText: "Delete",
+                confirmButtonType: TextButtonType.error,
+                onConfirmPressed: () async {
+                  await blocContext
+                      .read<UpdateEventDetailCubit>()
+                      .deleteEvent(eventID);
+                },
+                cancelText: "Cancel",
+                cancelButtonType: TextButtonType.tertiaryDark,
+                onCancelPressed: () {
+                  NavigatorUtil.goBacknTimes(context, 2);
+                },
+              );
+            },
+          ),
         );
       },
     );
