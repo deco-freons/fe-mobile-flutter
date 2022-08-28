@@ -19,26 +19,3 @@ class EventDetailState implements BaseState {
         message: message ?? this.message);
   }
 }
-
-// class EventDetailInitialState extends EventDetailState {
-//   const EventDetailInitialState();
-// }
-
-// class EventDetailLoadingState extends EventDetailState {
-//   const EventDetailLoadingState();
-// }
-
-// class EventDetailDeletedState extends EventDetailState {
-//   final int eventID;
-//   const EventDetailDeletedState({required this.eventID});
-// }
-
-// class EventDetailSuccessState extends EventDetailState {
-//   final EventDetailResponseModel eventDetailResponseModel;
-//   const EventDetailSuccessState({required this.eventDetailResponseModel});
-// }
-
-// class EventDetailErrorState extends EventDetailState {
-//   final BaseException error;
-//   const EventDetailErrorState({required this.error});
-// }

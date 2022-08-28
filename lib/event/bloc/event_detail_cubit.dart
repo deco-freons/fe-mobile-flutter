@@ -37,6 +37,4 @@ class EventDetailCubit extends BaseCubit<EventDetailState> {
     _eventDetailRepository.dispose();
     return super.close();
   }
-
-  deleteEvent(int eventID) {}
 }
