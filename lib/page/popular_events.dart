@@ -198,10 +198,9 @@ class _ShowCategoriesState extends State<ShowCategories> {
                                 image:
                                     'lib/common/assets/images/LargeEventTest.png',
                                 onTapHandler: () {
-                                  Navigator.of(context)
-                                      .pushNamed(EventDetail.routeName,
-                                          arguments: event.eventID)
-                                      .then((_) => setState(() {}));
+                                  Navigator.of(context).pushNamed(
+                                      EventDetail.routeName,
+                                      arguments: event.eventID);
                                 },
                               ));
                         }).toList(),

@@ -34,55 +34,39 @@ class _LocationPermissionState extends State<LocationPermission> {
                 primary.shade500,
                 primary.shade600,
               ])),
-          child: const SafeArea(child: ShowLocationPermission()),
+          child: SafeArea(
+              child: BlocConsumer<LocationCubit, LocationState>(
+            listener: (context, state) {
+              if (state is LocationAllowedState) {
+                Navigator.pushNamed(context, Dashboard.routeName);
+              } else if (state is LocationDeniedState) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, LocationDenied.routeName, (route) => false);
+              }
+            },
+            builder: (context, state) {
+              if (state is LocationErrorState) {
+                return Text(state.errorMessage);
+              } else {
+                return Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: const [
+                        0.55,
+                        1.0
+                      ],
+                          colors: [
+                        primary.shade500,
+                        primary.shade600,
+                      ])),
+                );
+              }
+            },
+          )),
         ),
       ),
-    );
-  }
-}
-
-class ShowLocationPermission extends StatefulWidget {
-  final String errorMessage;
-
-  const ShowLocationPermission({Key? key, this.errorMessage = ''})
-      : super(key: key);
-
-  @override
-  State<ShowLocationPermission> createState() => _ShowLocationPermissionState();
-}
-
-class _ShowLocationPermissionState extends State<ShowLocationPermission> {
-  @override
-  Widget build(BuildContext context) {
-    return BlocConsumer<LocationCubit, LocationState>(
-      listener: (context, state) {
-        if (state is LocationAllowedState) {
-          Navigator.pushNamed(context, Dashboard.routeName);
-        } else if (state is LocationDeniedState) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, LocationDenied.routeName, (route) => false);
-        }
-      },
-      builder: (context, state) {
-        if (state is LocationErrorState) {
-          return Text(state.errorMessage);
-        } else {
-          return Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [
-                  0.55,
-                  1.0
-                ],
-                    colors: [
-                  primary.shade500,
-                  primary.shade600,
-                ])),
-          );
-        }
-      },
     );
   }
 }
