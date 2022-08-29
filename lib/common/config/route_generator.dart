@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
@@ -54,9 +55,9 @@ class RouteGenerator {
       case CreateEvent.routeName:
         return MaterialPageRoute(builder: (context) => const CreateEvent());
       case EditEvent.routeName:
-        int eventID = args as int;
+        EventDetailResponseModel eventDetail = args as EventDetailResponseModel;
         return MaterialPageRoute(
-            builder: (context) => EditEvent(eventID: eventID));
+            builder: (context) => EditEvent(eventDetail: eventDetail));
       case SearchLocation.routeName:
         return MaterialPageRoute(builder: (context) => const SearchLocation());
       case EventDetail.routeName:

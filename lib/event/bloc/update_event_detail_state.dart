@@ -21,6 +21,10 @@ class UpdateEventDetailDeletedState extends UpdateEventDetailState {
   const UpdateEventDetailDeletedState({required this.eventID});
 }
 
+class UpdateEventDetailEditedState extends UpdateEventDetailState {
+  const UpdateEventDetailEditedState();
+}
+
 class UpdateEventDetailErrorState extends UpdateEventDetailState {
   final String errorMessage;
   const UpdateEventDetailErrorState({required this.errorMessage});

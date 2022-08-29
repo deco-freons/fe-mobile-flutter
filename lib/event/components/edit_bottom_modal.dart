@@ -7,13 +7,16 @@ import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
+import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
+import 'package:flutter_boilerplate/page/edit_event.dart';
 
 import '../../common/components/buttons/custom_button.dart';
 
 class EditBottomModal extends StatelessWidget {
-  final int eventID;
-  const EditBottomModal({Key? key, required this.eventID}) : super(key: key);
+  final EventDetailResponseModel eventDetail;
+  const EditBottomModal({Key? key, required this.eventDetail})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,8 @@ class EditBottomModal extends StatelessWidget {
               fontSize: 20,
               type: TextButtonType.tertiaryDark,
               onPressedHandler: () {
-                // GO TO EDIT PAGE
+                Navigator.pushNamed(context, EditEvent.routeName,
+                    arguments: eventDetail);
               }),
           CustomTextButton(
             text: "Delete",
@@ -76,7 +80,7 @@ class EditBottomModal extends StatelessWidget {
                 onConfirmPressed: () async {
                   await blocContext
                       .read<UpdateEventDetailCubit>()
-                      .deleteEvent(eventID);
+                      .deleteEvent(eventDetail.event.eventID);
                 },
                 cancelText: "Cancel",
                 cancelButtonType: TextButtonType.tertiaryDark,

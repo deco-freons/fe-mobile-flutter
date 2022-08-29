@@ -15,6 +15,7 @@ import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/edit_bottom_modal.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
 import 'package:flutter_boilerplate/event/components/leave_bottom_modal.dart';
+import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
@@ -144,10 +145,8 @@ class _EventDetailState extends State<EventDetail> {
                           onPressed: () {
                             // OPEN MORE HERE
                             if (isSuccessState) {
-                              showLeaveOrEditBottomModal(
-                                  blocContext,
-                                  state.model.event.eventID,
-                                  state.model.isEventCreator);
+                              showLeaveOrEditBottomModal(blocContext,
+                                  state.model, state.model.isEventCreator);
                             }
                           },
                         ),
@@ -245,8 +244,8 @@ class _EventDetailState extends State<EventDetail> {
     );
   }
 
-  showLeaveOrEditBottomModal(
-      BuildContext blocContext, int eventID, bool isEventCreator) {
+  showLeaveOrEditBottomModal(BuildContext blocContext,
+      EventDetailResponseModel eventDetail, bool isEventCreator) {
     showModalBottomSheet(
       context: blocContext,
       shape: const RoundedRectangleBorder(
@@ -256,9 +255,9 @@ class _EventDetailState extends State<EventDetail> {
       ),
       builder: (context) {
         return isEventCreator
-            ? EditBottomModal(eventID: eventID)
+            ? EditBottomModal(eventDetail: eventDetail)
             : LeaveBottomModal(
-                eventID: eventID,
+                eventID: eventDetail.event.eventID,
               );
       },
     );
