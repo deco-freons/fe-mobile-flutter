@@ -2,6 +2,7 @@ import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
+import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 
 class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
   final EventDetailRepository _eventDetailRepository;
@@ -34,6 +35,16 @@ class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
     try {
       await _eventDetailRepository.deleteEvent(eventID);
       emit(UpdateEventDetailDeletedState(eventID: eventID));
+    } catch (e) {
+      emit(UpdateEventDetailErrorState(errorMessage: ErrorHandler.handle(e)));
+    }
+  }
+
+  Future<void> editEvent(EventDetailResponseModel data) async {
+    try {
+      emit(const UpdateEventDetailLoadingState());
+      await _eventDetailRepository.editEvent(data);
+      emit(const UpdateEventDetailEditedState());
     } catch (e) {
       emit(UpdateEventDetailErrorState(errorMessage: ErrorHandler.handle(e)));
     }

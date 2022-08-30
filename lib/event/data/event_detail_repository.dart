@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
+import 'package:flutter_boilerplate/event/data/edit_event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_data_provider.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
@@ -15,6 +16,7 @@ abstract class EventDetailRepository implements BaseRepository {
   Future<void> joinEvent(int eventID);
   Future<void> leaveEvent(int eventID);
   Future<void> deleteEvent(int eventID);
+  Future<void> editEvent(EventDetailResponseModel updatedModel);
   Stream<EventDetailResponseModel> get data async* {}
   void dispose();
 }
@@ -76,6 +78,24 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
     await _eventDetailDataProvider.deleteEvent(eventID);
     _model = const EventDetailResponseModel.empty();
     return _controller.add(_model);
+  }
+
+  @override
+  Future<void> editEvent(EventDetailResponseModel updatedModel) async {
+    EditEventModel requestData = EditEventModel(
+        eventID: updatedModel.event.eventID,
+        eventName: updatedModel.event.eventName,
+        categories: updatedModel.event.categories
+            .map((pref) => pref.preferenceID)
+            .toList(),
+        date: updatedModel.event.date,
+        startTime: updatedModel.event.startTime,
+        endTime: updatedModel.event.endTime,
+        longitude: updatedModel.event.longitude.toString(),
+        latitude: updatedModel.event.latitude.toString(),
+        description: updatedModel.event.description);
+    await _eventDetailDataProvider.editEvent(requestData);
+    return _controller.add(updatedModel);
   }
 
   @override

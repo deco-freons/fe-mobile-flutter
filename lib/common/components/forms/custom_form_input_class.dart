@@ -11,6 +11,7 @@ class CustomFormInput {
   String errorMessage;
   bool confirmField;
   String initialValue;
+  String initialSecondValue;
   TextEditingController controller = TextEditingController();
   TextEditingController? secondController;
   TextEditingController confirmController = TextEditingController();
@@ -28,6 +29,7 @@ class CustomFormInput {
     this.errorMessage = "",
     this.confirmField = false,
     String? initialValue,
+    String? initialSecondValue,
     this.lat = 0,
     this.lng = 0,
     this.disable = false,
@@ -35,9 +37,11 @@ class CustomFormInput {
   })  : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101),
         initialValue = initialValue ?? "",
+        initialSecondValue = initialSecondValue ?? "",
         controller = TextEditingController(text: initialValue),
-        secondController =
-            (type == TextFieldType.eventTime) ? TextEditingController() : null,
+        secondController = (type == TextFieldType.eventTime)
+            ? TextEditingController(text: initialSecondValue)
+            : null,
         preferences = preferences ?? [];
 
   void initState() {
