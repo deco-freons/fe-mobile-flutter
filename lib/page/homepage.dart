@@ -178,6 +178,7 @@ class _ShowCategoriesState extends State<ShowCategories> {
                       return Padding(
                         padding: const EdgeInsets.only(right: 25.0),
                         child: EventCardSmall(
+                            eventID: event.eventID,
                             title: event.eventName,
                             distance: event.distance,
                             month: splittedDate[0].substring(0, 3),

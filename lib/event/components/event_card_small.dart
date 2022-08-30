@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/date_card.dart';
-import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/event_detail.dart';
 
 class EventCardSmall extends StatefulWidget {
+  final int eventID;
   final String title;
   final double distance;
   final String month;
@@ -14,6 +15,7 @@ class EventCardSmall extends StatefulWidget {
 
   const EventCardSmall({
     Key? key,
+    required this.eventID,
     required this.title,
     required this.distance,
     required this.month,
@@ -24,6 +26,7 @@ class EventCardSmall extends StatefulWidget {
 
   const EventCardSmall.loading({
     Key? key,
+    this.eventID = 0,
     this.title = '',
     this.distance = 0,
     this.month = '',
@@ -46,7 +49,8 @@ class _EventCardSmallState extends State<EventCardSmall> {
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Landing.routeName);
+                Navigator.pushNamed(context, EventDetail.routeName,
+                    arguments: widget.eventID);
               },
               child: SizedBox(
                 width: 192.0,

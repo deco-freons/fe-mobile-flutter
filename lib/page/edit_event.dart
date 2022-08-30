@@ -9,7 +9,6 @@ import 'package:flutter_boilerplate/event/data/event_detail_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
-import 'package:flutter_boilerplate/preference/data/preference_utils.dart';
 
 import '../../common/config/enum.dart';
 
@@ -119,7 +118,7 @@ class _EditEventFormState extends State<EditEventForm> {
         initialValue: event?.eventName);
     final CustomFormInput category = CustomFormInput(
       label: 'Category',
-      type: TextFieldType.category,
+      type: TextFieldType.interest,
     );
     final CustomFormInput date = CustomFormInput(
       label: 'Date',
@@ -146,6 +145,7 @@ class _EditEventFormState extends State<EditEventForm> {
 
     if (event != null) {
       location.setLatLng(event.latitude, event.longitude);
+      category.setPreferences(event.categories);
     }
 
     return CustomForm(
@@ -164,10 +164,7 @@ class _EditEventFormState extends State<EditEventForm> {
           EventDetailModel updatedEvent = EventDetailModel(
               eventID: event.eventID,
               eventName: eventName.controller.text,
-              categories: [
-                PreferenceUtils(preferenceId: category.controller.text)
-                    .getModel()
-              ],
+              categories: category.preferences,
               date: date.controller.text,
               startTime: eventTime.controller.text,
               endTime: eventTime.secondController != null
