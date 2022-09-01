@@ -54,9 +54,11 @@ class _ProfileState extends State<Profile> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: true,
+
         appBar: const PageAppBar(
           title: "My Profile",
           hasBackButton: true,
+
         ),
         body: Container(
           decoration:
