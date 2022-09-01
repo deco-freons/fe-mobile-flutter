@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_back_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/bloc/edit_user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/edit_user_state.dart';
@@ -13,8 +15,6 @@ import 'package:flutter_boilerplate/user/bloc/user_state.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_model.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
-
-import '../common/config/theme.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key}) : super(key: key);
@@ -46,6 +46,7 @@ class _EditProfileState extends State<EditProfile> {
         appBar: const PageAppBar(
           title: "Edit Profile",
           hasBackButton: true,
+
         ),
         body: Container(
           decoration:

@@ -66,6 +66,7 @@ const MaterialColor error = MaterialColor(0xFFFC1313, <int, Color>{
   900: Color(0xFFFC1313),
 });
 
+
 const double appBarHeight = 96.0;
 
 class CustomPadding {
@@ -109,3 +110,7 @@ const screenBodyPadding = EdgeInsets.only(
   left: CustomPadding.body,
   right: CustomPadding.body,
 );
+
+const double bodyPadding = 28;
+
+

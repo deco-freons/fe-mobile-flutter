@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_boilerplate/common/components/buttons/custom_back_button.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+
 import 'package:flutter_boilerplate/page/landing.dart';
 
 class EmailConfirmation extends StatefulWidget {
@@ -18,8 +21,7 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
+          child: CustomBackButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, Landing.routeName);
             },
