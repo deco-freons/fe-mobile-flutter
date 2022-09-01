@@ -44,7 +44,7 @@ class ConfirmationModalBottom extends StatelessWidget {
             ),
             CustomTextButton(
               text: confirmText,
-              fontSize: 20,
+              fontSize: CustomFontSize.lg,
               type: confirmButtonType,
               onPressedHandler: onConfirmPressed,
             ),
@@ -53,7 +53,7 @@ class ConfirmationModalBottom extends StatelessWidget {
             ),
             CustomTextButton(
               text: cancelText,
-              fontSize: 20,
+              fontSize: CustomFontSize.lg,
               type: cancelButtonType,
               onPressedHandler: onCancelPressed,
             ),

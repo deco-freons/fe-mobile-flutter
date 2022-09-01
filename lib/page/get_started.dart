@@ -54,7 +54,7 @@ class _GetStartedState extends State<GetStarted> {
               child: CustomButton(
                 label: 'Get started',
                 type: ButtonType.inverse,
-                cornerRadius: 32.0,
+                cornerRadius: CustomRadius.button,
                 onPressedHandler: () {
                   Navigator.pushNamed(context, Preference.routeName);
                 },

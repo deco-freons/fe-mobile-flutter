@@ -19,9 +19,13 @@ class Homepage extends StatefulWidget {
   State<Homepage> createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>
+    with AutomaticKeepAliveClientMixin<Homepage> {
+  bool keepAlive = true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
         ..getPopularEvents([]),
@@ -39,48 +43,57 @@ class _HomepageState extends State<Homepage> {
   Widget buildHome() {
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                iconSize: 50.0,
-                onPressed: () {
-                  Navigator.pushNamed(context, Profile.routeName);
-                },
-                icon: CircleAvatar(
-                  radius: 25.0,
-                  child: Image.asset(
-                      'lib/common/assets/images/CircleAvatarDefault.png'),
+        SizedBox(
+          height: appBarHeight,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: CustomPadding.body, right: CustomPadding.body),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, Profile.routeName);
+                  },
+                  child: CircleAvatar(
+                    radius: 25,
+                    child: Image.asset(
+                        'lib/common/assets/images/CircleAvatarDefault.png'),
+                  ),
                 ),
-              ),
-              IconButton(
-                iconSize: 45.0,
-                onPressed: () {},
-                icon: const Icon(Icons.notifications_outlined),
-              ),
-            ],
+                InkWell(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.notifications_outlined,
+                    size: 45.0,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 0.0),
-          child: HomeContent(
-              title: 'Featured',
-              contentPadding: 45.0,
-              contentWidgets: [
-                SizedBox(
-                  width: 322.0,
-                  height: 343.0,
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(color: neutral.shade400)),
-                ),
-              ]),
+        HomeContent(title: 'Featured', contentWidgets: [
+          Padding(
+            padding: const EdgeInsets.only(
+                left: CustomPadding.body, right: CustomPadding.body),
+            child: SizedBox(
+              width: 350,
+              height: 343.0,
+              child: DecoratedBox(
+                  decoration: BoxDecoration(color: neutral.shade400)),
+            ),
+          ),
+        ]),
+        const SizedBox(
+          height: 32,
         ),
         const ShowCategories(),
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => keepAlive;
 }
 
 class ShowCategories extends StatefulWidget {
@@ -102,9 +115,9 @@ class _ShowCategoriesState extends State<ShowCategories> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        HomeContent(title: 'Categories', contentPadding: 25.0, contentWidgets: [
+        HomeContent(title: 'Categories', contentWidgets: [
           Padding(
-            padding: const EdgeInsets.only(right: 17.0),
+            padding: const EdgeInsets.only(left: CustomPadding.body),
             child: PreferenceButton(
               type: PrefType.GM,
               isAll: true,
@@ -128,73 +141,81 @@ class _ShowCategoriesState extends State<ShowCategories> {
             ),
           ),
           for (var pref in PrefType.values)
-            Padding(
-              padding: const EdgeInsets.only(right: 17.0),
-              child: PreferenceButton(
-                type: pref,
-                elevation: 4.0,
-                onPressedHandler: () {
-                  setState(() {
-                    clickCheck[pref.index] = !clickCheck[pref.index];
-                  });
-                  if (!clickCheck[pref.index]) {
-                    categories.add(pref);
-                    categoriesData.add(pref.name);
-                    if (!allCheck) {
-                      allCheck = !allCheck;
-                    }
-                    getPopularEvents(context, categoriesData);
-                  } else if (!clickCheck.contains(false)) {
-                    allCheck = false;
-                    categories = [];
-                    categoriesData = [];
-                    getPopularEvents(context, categoriesData);
-                  } else {
-                    categories.remove(pref);
-                    categoriesData.remove(pref.name);
-                    getPopularEvents(context, categoriesData);
+            PreferenceButton(
+              type: pref,
+              elevation: 4.0,
+              onPressedHandler: () {
+                setState(() {
+                  clickCheck[pref.index] = !clickCheck[pref.index];
+                });
+                if (!clickCheck[pref.index]) {
+                  categories.add(pref);
+                  categoriesData.add(pref.name);
+                  if (!allCheck) {
+                    allCheck = !allCheck;
                   }
-                },
-                click: clickCheck[pref.index],
-              ),
+                  getPopularEvents(context, categoriesData);
+                } else if (!clickCheck.contains(false)) {
+                  allCheck = false;
+                  categories = [];
+                  categoriesData = [];
+                  getPopularEvents(context, categoriesData);
+                } else {
+                  categories.remove(pref);
+                  categoriesData.remove(pref.name);
+                  getPopularEvents(context, categoriesData);
+                }
+              },
+              click: clickCheck[pref.index],
             )
         ]),
+        const SizedBox(
+          height: 22,
+        ),
         BlocBuilder<PopularEventsCubit, PopularEventsState>(
             builder: (context, state) {
           if (state is PopularEventsErrorState) {
             return Center(child: Text(state.errorMessage));
           }
           bool isSuccessState = state is PopularEventsSuccessState;
-          return HomeContent(
-              title: 'Popular events',
-              isPopular: true,
-              contentPadding: 30.0,
-              titlePadding: 0.0,
-              contentWidgets: isSuccessState
-                  ? state.events.map((event) {
-                      String formattedDate = DateFormat('MMMM dd, yyyy')
-                          .format(DateTime.parse(event.date));
-                      List<String> splittedDate = formattedDate.split(' ');
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 25.0),
-                        child: EventCardSmall(
-                            eventID: event.eventID,
-                            title: event.eventName,
-                            distance: event.distance,
-                            month: splittedDate[0].substring(0, 3),
-                            date: splittedDate[1].substring(0, 2),
-                            image:
-                                'lib/common/assets/images/SmallEventTest.png'),
-                      );
-                    }).toList()
-                  : const [
-                      Padding(
-                        padding:
-                            EdgeInsets.only(left: 4.0, top: 5.0, right: 32.0),
-                        child: EventCardSmall.loading(),
-                      ),
-                      EventCardSmall.loading(),
-                    ]);
+          return Padding(
+            padding: const EdgeInsets.only(bottom: CustomPadding.md),
+            child: HomeContent(
+                title: 'Popular events',
+                isPopular: true,
+                titleBottomSpacing: CustomPadding.xs,
+                contentWidgets: isSuccessState
+                    ? state.events
+                        .asMap()
+                        .map((i, event) {
+                          String formattedDate = DateFormat('MMMM dd, yyyy')
+                              .format(DateTime.parse(event.date));
+                          List<String> splittedDate = formattedDate.split(' ');
+                          return MapEntry(
+                            i,
+                            Padding(
+                              padding: i == 0
+                                  ? const EdgeInsets.only(
+                                      left: CustomPadding.lg)
+                                  : EdgeInsets.zero,
+                              child: EventCardSmall(
+                                  eventID: event.eventID,
+                                  title: event.eventName,
+                                  distance: event.distance,
+                                  month: splittedDate[0].substring(0, 3),
+                                  date: splittedDate[1].substring(0, 2),
+                                  image:
+                                      'lib/common/assets/images/SmallEventTest.png'),
+                            ),
+                          );
+                        })
+                        .values
+                        .toList()
+                    : const [
+                        EventCardSmall.loading(),
+                        EventCardSmall.loading(),
+                      ]),
+          );
         })
       ],
     );

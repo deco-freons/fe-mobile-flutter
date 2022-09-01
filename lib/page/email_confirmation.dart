@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 
 class EmailConfirmation extends StatefulWidget {
@@ -36,22 +37,19 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
   }
 
   Widget buildEmailConfirmation() {
-    return ListView(
-      padding: EdgeInsets.zero,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 87.0),
-          child: Center(
-            child: Image.asset('lib/common/assets/images/EmailDelivered.png'),
-          ),
+        Center(
+          child: Image.asset('lib/common/assets/images/EmailDelivered.png'),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 59.0, left: 40.0, right: 40.0),
+          padding: const EdgeInsets.only(top: 40, left: 40.0, right: 40.0),
           child: Center(
             child: Text("Confirm your email",
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 30.0,
+                  fontSize: CustomFontSize.xxl,
                   fontWeight: FontWeight.bold,
                 )),
           ),
@@ -64,7 +62,7 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  fontSize: 18.0,
+                  fontSize: CustomFontSize.md,
                 )),
           ),
         ),

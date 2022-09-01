@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
 import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import '../../common/config/enum.dart';
@@ -46,7 +47,9 @@ class _PreferenceState extends State<Preference> {
               ),
               Text(
                 'Select Interest',
-                style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: CustomFontSize.title,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -96,8 +99,8 @@ class _PreferenceFormState extends State<PreferenceForm> {
         Padding(
           padding: const EdgeInsets.only(top: 53.0, left: 21.0, right: 21.0),
           child: Wrap(
-            spacing: 16.0,
-            runSpacing: 15.0,
+            spacing: CustomPadding.md,
+            runSpacing: CustomPadding.md,
             alignment: WrapAlignment.center,
             children: [
               for (var pref in PrefType.values)
@@ -130,7 +133,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 7.0),
+          padding: const EdgeInsets.only(top: CustomPadding.sm),
           child: CustomTextButton(
               text: 'Skip',
               type: TextButtonType.tertiary,

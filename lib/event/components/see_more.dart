@@ -16,7 +16,7 @@ class _SeeMoreState extends State<SeeMore> {
   bool isOpen = false;
 
   final TextStyle _textStyle = TextStyle(
-    fontSize: 16,
+    fontSize: CustomFontSize.base,
     color: neutral.shade700,
   );
 

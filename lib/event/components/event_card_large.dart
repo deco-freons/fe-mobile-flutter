@@ -54,7 +54,8 @@ class _EventCardLargeState extends State<EventCardLarge> {
             elevation: 5.0,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                borderRadius:
+                    BorderRadius.all(Radius.circular(CustomRadius.xxl))),
             child: InkWell(
               onTap: widget.onTapHandler,
               child: Container(
@@ -64,7 +65,7 @@ class _EventCardLargeState extends State<EventCardLarge> {
                     image: DecorationImage(
                         image: AssetImage(widget.image), fit: BoxFit.cover)),
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 15.0),
+                  padding: const EdgeInsets.only(bottom: CustomPadding.md),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: ClipRRect(
@@ -76,18 +77,18 @@ class _EventCardLargeState extends State<EventCardLarge> {
                             decoration: BoxDecoration(
                                 color: neutral.shade400.withOpacity(0.6),
                                 borderRadius: const BorderRadius.all(
-                                    Radius.circular(20.0))),
+                                    Radius.circular(CustomRadius.xxl))),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 5.0, right: 9.0),
+                              padding: const EdgeInsets.all(CustomPadding.xs),
                               child: Column(children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 9.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: CustomPadding.base),
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -95,7 +96,7 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                             child: Text(
                                               widget.title,
                                               style: const TextStyle(
-                                                fontSize: 14.0,
+                                                fontSize: CustomFontSize.sm,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -109,17 +110,19 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                           )
                                         ],
                                       ),
-                                      DateCard(
-                                          month: widget.month,
-                                          date: widget.date)
-                                    ],
-                                  ),
+                                    ),
+                                    DateCard(
+                                        month: widget.month, date: widget.date)
+                                  ],
                                 ),
                                 Expanded(
                                   child: Row(
                                     children: [
-                                      Image.asset(
-                                          'lib/common/assets/images/LocationIcon.png'),
+                                      const Icon(
+                                        Icons.location_on_outlined,
+                                        color: primary,
+                                        size: 40,
+                                      ),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:

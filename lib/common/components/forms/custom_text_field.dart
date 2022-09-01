@@ -4,6 +4,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_text_button
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -80,7 +81,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         minHeight: 109.0,
       ),
       child: Padding(
-        padding: const EdgeInsets.only(top: 12.0),
+        padding: const EdgeInsets.only(top: CustomPadding.base),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -91,7 +92,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       Text(
                         widget.input.label,
                         style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: CustomFontSize.base,
                           fontWeight: FontWeight.bold,
                           color: widget.labelColor,
                         ),
@@ -106,8 +107,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                   context: context,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(40),
-                                        topRight: Radius.circular(40)),
+                                        topLeft:
+                                            Radius.circular(CustomRadius.body),
+                                        topRight:
+                                            Radius.circular(CustomRadius.body)),
                                   ),
                                   builder: (BuildContext context) {
                                     return AddPreferenceModal(
@@ -133,7 +136,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   )
                 : const SizedBox.shrink(),
             Padding(
-              padding: const EdgeInsets.only(top: 11.0),
+              padding: const EdgeInsets.only(top: CustomPadding.base),
               child: widget.input.type == TextFieldType.date
                   ? CustomDatePicker(
                       input: widget.input,

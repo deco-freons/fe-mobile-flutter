@@ -56,8 +56,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                 width: 192.0,
                 height: 210.0,
                 child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 9.0, left: 9.0, right: 9.0, bottom: 13.0),
+                    padding: const EdgeInsets.all(CustomPadding.sm),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

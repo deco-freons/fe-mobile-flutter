@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/confirmation_modal_bottom.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
@@ -21,14 +22,15 @@ class EditBottomModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 29, vertical: 25),
+      padding: const EdgeInsets.symmetric(
+          horizontal: CustomPadding.xxl, vertical: CustomPadding.xl),
       height: 230,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomTextButton(
               text: "Edit",
-              fontSize: 20,
+              fontSize: CustomFontSize.lg,
               type: TextButtonType.tertiaryDark,
               onPressedHandler: () {
                 Navigator.pushNamed(context, EditEvent.routeName,
@@ -36,7 +38,7 @@ class EditBottomModal extends StatelessWidget {
               }),
           CustomTextButton(
             text: "Delete",
-            fontSize: 20,
+            fontSize: CustomFontSize.lg,
             type: TextButtonType.error,
             onPressedHandler: () {
               showDeleteConfirmation(context);
@@ -47,7 +49,7 @@ class EditBottomModal extends StatelessWidget {
           ),
           CustomButton(
             label: "Close",
-            cornerRadius: 32,
+            cornerRadius: CustomRadius.button,
             type: ButtonType.primary,
             onPressedHandler: () {
               Navigator.of(context).pop();

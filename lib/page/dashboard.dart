@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/navigation_bar/custom_bottom_navigation.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 
@@ -16,9 +17,9 @@ class _DashboardState extends State<Dashboard> {
   int _selectedPageIndex = 0;
 
   final Homepage _homePage = const Homepage();
-  final Homepage _searchPage = const Homepage();
-  final Homepage _eventPage = const Homepage();
-  final Homepage _historyPage = const Homepage();
+  final Widget _searchPage = const SizedBox();
+  final Widget _eventPage = const SizedBox();
+  final Widget _historyPage = const SizedBox();
 
   @override
   void dispose() {
@@ -39,7 +40,7 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         floatingActionButton: Container(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: CustomPadding.lg),
           width: 80,
           height: 80,
           child: FloatingActionButton(

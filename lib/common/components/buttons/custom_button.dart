@@ -13,7 +13,7 @@ class CustomButton extends StatefulWidget {
       required this.label,
       required this.type,
       this.onPressedHandler,
-      this.cornerRadius = 10.0})
+      this.cornerRadius = CustomRadius.lg})
       : super(key: key);
 
   @override

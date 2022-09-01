@@ -4,6 +4,8 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_text_button
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_text_field.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/page/forget.dart';
 
 class CustomForm extends StatefulWidget {
   final String title;
@@ -38,12 +40,13 @@ class CustomForm extends StatefulWidget {
     this.textButtonPadding = 48.0,
     this.topPadding = 34.0,
     this.bottomPadding = 40.0,
-    this.sidePadding = 22.0,
+    this.sidePadding = CustomPadding.xl,
     Color? labelColor,
     TextStyle? inputStyle,
   })  : labelColor = labelColor ?? const Color(0xFF404852),
         inputStyle = inputStyle ??
-            const TextStyle(fontSize: 16.0, height: 1, color: Colors.black),
+            const TextStyle(
+                fontSize: CustomFontSize.base, height: 1, color: Colors.black),
         super(key: key);
 
   @override
@@ -80,7 +83,8 @@ class _CustomFormState extends State<CustomForm> {
           bottom: widget.bottomPadding),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0)),
+            topLeft: Radius.circular(CustomRadius.body),
+            topRight: Radius.circular(CustomRadius.body)),
         color: Theme.of(context).colorScheme.secondary,
       ),
       child: Form(
@@ -98,13 +102,13 @@ class _CustomFormState extends State<CustomForm> {
             ),
             widget.errorMessage != ""
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
+                    padding: const EdgeInsets.only(top: CustomPadding.xs),
                     child: Text(
                       widget.errorMessage,
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.error,
                           fontWeight: FontWeight.bold,
-                          fontSize: 16.0),
+                          fontSize: CustomFontSize.base),
                     ),
                   )
                 : const SizedBox(
@@ -133,7 +137,9 @@ class _CustomFormState extends State<CustomForm> {
                   CustomTextButton(
                     text: 'Forgot Password?',
                     type: TextButtonType.tertiary,
-                    onPressedHandler: () {},
+                    onPressedHandler: () {
+                      Navigator.of(context).pushNamed(Forget.routeName);
+                    },
                   ),
                 ],
               ),
@@ -162,7 +168,7 @@ class _CustomFormState extends State<CustomForm> {
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.tertiary,
                             fontWeight: FontWeight.bold,
-                            fontSize: 14.0),
+                            fontSize: CustomFontSize.sm),
                       ),
                     if (widget.textButton != '')
                       CustomTextButton(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
@@ -62,7 +63,9 @@ class _EditEventState extends State<EditEvent> {
               ),
               const Text(
                 'Edit Event',
-                style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: CustomFontSize.title,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -188,7 +191,7 @@ class _EditEventFormState extends State<EditEventForm> {
       textButtonHandler: () {},
       labelColor: Theme.of(context).colorScheme.tertiary,
       inputStyle: TextStyle(
-        fontSize: 20.0,
+        fontSize: CustomFontSize.lg,
         fontWeight: FontWeight.bold,
         color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),

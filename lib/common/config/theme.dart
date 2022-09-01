@@ -65,3 +65,47 @@ const MaterialColor error = MaterialColor(0xFFFC1313, <int, Color>{
   800: Color(0xFFFC1313),
   900: Color(0xFFFC1313),
 });
+
+const double appBarHeight = 96.0;
+
+class CustomPadding {
+  static const body = 28.0;
+  static const xs = 4.0;
+  static const sm = 8.0;
+  static const base = 12.0;
+  static const md = 16.0;
+  static const lg = 20.0;
+  static const xl = 24.0;
+  static const xxl = 28.0;
+  static const xxxl = 32.0;
+}
+
+class CustomFontSize {
+  static const xs = 12.0;
+  static const sm = 14.0;
+  static const base = 16.0;
+  static const md = 18.0;
+  static const lg = 20.0;
+  static const xl = 24.0;
+  static const xxl = 30.0;
+  static const xxxl = 36.0;
+  static const title = 26.0;
+}
+
+class CustomRadius {
+  static const body = 40.0;
+  static const button = 32.0;
+  static const sm = 4.0;
+  static const base = 6.0;
+  static const md = 8.0;
+  static const lg = 12.0;
+  static const xl = 16.0;
+  static const xxl = 20.0;
+  static const xxxl = 24.0;
+}
+
+const screenBodyPadding = EdgeInsets.only(
+  top: CustomPadding.body,
+  left: CustomPadding.body,
+  right: CustomPadding.body,
+);
