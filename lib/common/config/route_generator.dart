@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
+import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/edit_event.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
+import 'package:flutter_boilerplate/page/event_participants.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
@@ -79,6 +81,13 @@ class RouteGenerator {
             builder: (context) => const LocationPermission());
       case LocationDenied.routeName:
         return MaterialPageRoute(builder: (context) => const LocationDenied());
+      case EventParticipants.routeName:
+        List<EventParticipantModel> participants =
+            args as List<EventParticipantModel>;
+        return MaterialPageRoute(
+            builder: (context) => EventParticipants(
+                  participants: participants,
+                ));
       default:
         return _errorRoute();
     }
