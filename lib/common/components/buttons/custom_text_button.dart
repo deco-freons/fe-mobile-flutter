@@ -13,7 +13,7 @@ class CustomTextButton extends StatelessWidget {
       {Key? key,
       required this.text,
       this.type = TextButtonType.primary,
-      this.fontSize = 14.0,
+      this.fontSize = CustomFontSize.sm,
       this.textWeight = FontWeight.bold,
       required this.onPressedHandler})
       : super(key: key);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
@@ -42,30 +43,9 @@ class _EditProfileState extends State<EditProfile> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back, color: neutral.shade800, size: 35.0),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(top: 12.0),
-            child: Text(
-              "Edit Profile",
-              style: TextStyle(
-                fontSize: 26.0,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
-          elevation: 0.0,
+        appBar: const PageAppBar(
+          title: "Edit Profile",
+          hasBackButton: true,
         ),
         body: Container(
           decoration:
@@ -166,7 +146,7 @@ class _EditProfileState extends State<EditProfile> {
             topPadding: 0.0,
             labelColor: Theme.of(context).colorScheme.tertiary,
             inputStyle: TextStyle(
-              fontSize: 20.0,
+              fontSize: CustomFontSize.lg,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
@@ -184,7 +164,7 @@ class _EditProfileState extends State<EditProfile> {
         Text(
           label,
           style: TextStyle(
-            fontSize: 16.0,
+            fontSize: CustomFontSize.base,
             fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.tertiary,
           ),
@@ -192,7 +172,7 @@ class _EditProfileState extends State<EditProfile> {
         Text(
           value,
           style: TextStyle(
-            fontSize: 20.0,
+            fontSize: CustomFontSize.lg,
             fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
@@ -205,7 +185,7 @@ class _EditProfileState extends State<EditProfile> {
     List<Widget> widgets = preferences.map((preference) {
       return IntrinsicWidth(
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: CustomPadding.base),
           height: 36.0,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
@@ -218,7 +198,7 @@ class _EditProfileState extends State<EditProfile> {
             children: [
               Text(
                 preference.preferenceName,
-                style: const TextStyle(fontSize: 15.0),
+                style: const TextStyle(fontSize: CustomFontSize.base),
               )
             ],
           ),

@@ -48,22 +48,26 @@ class _LocationDeniedState extends State<LocationDenied> {
                 children: [
                   Padding(
                       padding: const EdgeInsets.only(
-                          top: 60.0, right: 26.0, left: 26.0),
+                          top: 60.0,
+                          right: CustomPadding.body,
+                          left: CustomPadding.body),
                       child: Text(
                         'Sorry, please allow location permission to use the app',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: CustomFontSize.lg,
                             fontWeight: FontWeight.bold,
                             color: Theme.of(context).colorScheme.secondary),
                       )),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 20.0, right: 26.0, left: 26.0),
+                        top: 20,
+                        right: CustomPadding.body,
+                        left: CustomPadding.body),
                     child: CustomButton(
                       label: 'Change location permission',
                       type: ButtonType.inverse,
-                      cornerRadius: 32.0,
+                      cornerRadius: CustomRadius.button,
                       onPressedHandler: () {
                         Navigator.pushNamed(
                             context, LocationPermission.routeName);

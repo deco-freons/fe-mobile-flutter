@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_state.dart';
 import 'package:flutter_boilerplate/event/data/create_event_model.dart';
@@ -58,7 +59,9 @@ class _CreateEventState extends State<CreateEvent> {
               ),
               const Text(
                 'Create Event',
-                style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: CustomFontSize.title,
+                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -161,7 +164,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
       textButtonHandler: () {},
       labelColor: Theme.of(context).colorScheme.tertiary,
       inputStyle: TextStyle(
-        fontSize: 20.0,
+        fontSize: CustomFontSize.lg,
         fontWeight: FontWeight.bold,
         color: Theme.of(context).colorScheme.onSurfaceVariant,
       ),

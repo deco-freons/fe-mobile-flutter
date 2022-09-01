@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:intl/intl.dart';
 
 class CustomDatePicker extends StatefulWidget {
@@ -15,7 +16,8 @@ class CustomDatePicker extends StatefulWidget {
     required this.lastDate,
     TextStyle? inputStyle,
   })  : inputStyle = inputStyle ??
-            const TextStyle(fontSize: 16.0, height: 1, color: Colors.black),
+            const TextStyle(
+                fontSize: CustomFontSize.base, height: 1, color: Colors.black),
         super(key: key);
 
   @override

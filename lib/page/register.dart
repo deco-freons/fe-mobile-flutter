@@ -7,6 +7,7 @@ import 'package:flutter_boilerplate/common/components/forms/custom_form_input_cl
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
 import 'package:flutter_boilerplate/page/login.dart';
 import '../auth/register/bloc/register_state.dart';
@@ -41,7 +42,7 @@ class _RegisterState extends State<Register> {
       padding: EdgeInsets.zero,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 29.0, bottom: 45.0),
+          padding: const EdgeInsets.only(top: CustomPadding.xxl, bottom: 45.0),
           child: Hero(
             tag: "Logo",
             child: Center(

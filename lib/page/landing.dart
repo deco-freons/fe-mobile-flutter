@@ -40,10 +40,9 @@ class _LandingState extends State<Landing> {
 
   Widget buildLanding() {
     return ListView(
-      padding: EdgeInsets.zero,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 87.0),
+          padding: const EdgeInsets.only(top: 72.0),
           child: Hero(
             tag: "Logo",
             child: Center(
@@ -51,58 +50,64 @@ class _LandingState extends State<Landing> {
                     'lib/common/assets/images/GlobeIconMedium.png')),
           ),
         ),
-        Column(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 51.0, left: 40.0, right: 40.0),
-              child: Text(
-                'Create, Find, and Join event around you!',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
+        Padding(
+          padding: const EdgeInsets.only(
+              left: CustomPadding.body, right: CustomPadding.body, top: 55),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: CustomPadding.base, right: CustomPadding.base),
+                child: Text(
+                  'Create, Find, and Join event around you!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: CustomFontSize.xxl,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 10.0, left: 55.0, right: 55.0),
-              child: Text(
-                'Lorem ipsum dolor sit amet. Qui voluptatibus officiis et quibusdam',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.secondary,
-                  fontSize: 18,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: CustomPadding.xl,
+                  left: CustomPadding.base,
+                  right: CustomPadding.base,
+                ),
+                child: Text(
+                  'Lorem ipsum dolor sit amet. Qui voluptatibus officiis et quibusdam',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.secondary,
+                    fontSize: 18,
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 56.0, right: 26.0, left: 26.0),
-              child: CustomButton(
-                label: 'Create Account',
-                type: ButtonType.inverse,
-                cornerRadius: 32.0,
-                onPressedHandler: () {
-                  Navigator.pushNamed(context, Register.routeName);
-                },
+              Padding(
+                padding: const EdgeInsets.only(top: 56.0),
+                child: CustomButton(
+                  label: 'Create Account',
+                  type: ButtonType.inverse,
+                  cornerRadius: CustomRadius.button,
+                  onPressedHandler: () {
+                    Navigator.pushNamed(context, Register.routeName);
+                  },
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 26.0, bottom: 54.0),
-              child: CustomTextButton(
-                text: 'Sign in',
-                type: TextButtonType.secondary,
-                fontSize: 20.0,
-                textWeight: FontWeight.normal,
-                onPressedHandler: () {
-                  Navigator.pushNamed(context, Login.routeName);
-                },
-              ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.only(top: CustomPadding.xxl),
+                child: CustomTextButton(
+                  text: 'Sign in',
+                  type: TextButtonType.secondary,
+                  fontSize: CustomFontSize.lg,
+                  textWeight: FontWeight.normal,
+                  onPressedHandler: () {
+                    Navigator.pushNamed(context, Login.routeName);
+                  },
+                ),
+              )
+            ],
+          ),
         )
       ],
     );

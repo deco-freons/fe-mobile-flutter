@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/register.dart';
 import '../auth/login/bloc/login_cubit.dart';
 import '../auth/login/bloc/login_state.dart';
@@ -39,7 +40,7 @@ class _LoginState extends State<Login> {
       padding: EdgeInsets.zero,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 29.0, bottom: 23.0),
+          padding: const EdgeInsets.symmetric(vertical: CustomPadding.xl),
           child: Hero(
             tag: "Logo",
             child: Center(
@@ -52,12 +53,13 @@ class _LoginState extends State<Login> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 23.0, left: 19.0),
+          padding: const EdgeInsets.only(
+              bottom: CustomPadding.md, left: CustomPadding.body),
           child: Text(
             'Hello Again!',
             style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
-              fontSize: 30.0,
+              fontSize: CustomFontSize.xxl,
               fontWeight: FontWeight.bold,
             ),
           ),

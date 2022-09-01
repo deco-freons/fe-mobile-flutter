@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 
 class DateCard extends StatefulWidget {
   final String month;
@@ -19,25 +20,28 @@ class _DateCardState extends State<DateCard> {
   Widget build(BuildContext context) {
     return Card(
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+        borderRadius: BorderRadius.all(Radius.circular(CustomRadius.md)),
       ),
-      child: SizedBox(
-        width: 35.0,
-        height: 35.0,
-        child: Column(children: [
-          Text(
-            widget.month,
-            style: const TextStyle(fontSize: 10.0),
-          ),
-          Text(
-            widget.date,
-            style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.primary,
+      child: Container(
+        padding: const EdgeInsets.all(1),
+        width: 38.0,
+        height: 38.0,
+        child: Column(
+          children: [
+            Text(
+              widget.month,
+              style: const TextStyle(fontSize: 10.0),
             ),
-          ),
-        ]),
+            Text(
+              widget.date,
+              style: TextStyle(
+                fontSize: CustomFontSize.sm,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

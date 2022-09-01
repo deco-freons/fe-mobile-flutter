@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import '../auth/forget/bloc/forget_state.dart';
 import '../auth/forget/data/forget_repository.dart';
 import '../common/components/forms/custom_form_input_class.dart';
@@ -37,7 +38,7 @@ class _ForgetState extends State<Forget> {
       padding: EdgeInsets.zero,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 29.0, bottom: 45.0),
+          padding: const EdgeInsets.only(top: CustomPadding.xxxl, bottom: 45.0),
           child: Center(
               child:
                   Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
@@ -58,7 +59,7 @@ class _ForgetState extends State<Forget> {
           },
           listener: (context, state) {
             if (state is ForgetSuccessState) {
-              Navigator.pushNamed(context, Register.routeName);
+              Navigator.of(context).pop();
             }
           },
         ),

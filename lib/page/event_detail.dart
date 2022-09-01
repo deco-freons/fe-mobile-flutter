@@ -153,11 +153,11 @@ class _EventDetailState extends State<EventDetail> {
                       ),
                       Container(
                         margin: const EdgeInsets.only(top: 250),
-                        padding: const EdgeInsets.all(27),
+                        padding: const EdgeInsets.all(CustomPadding.body),
                         decoration: BoxDecoration(
                           color: Theme.of(context).backgroundColor,
                           borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(40),
+                            top: Radius.circular(CustomRadius.body),
                           ),
                         ),
                         child: Column(
@@ -250,7 +250,7 @@ class _EventDetailState extends State<EventDetail> {
       context: blocContext,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(40),
+          top: Radius.circular(CustomRadius.body),
         ),
       ),
       builder: (context) {
@@ -273,7 +273,7 @@ class _EventDetailState extends State<EventDetail> {
                       ? "Join event"
                       : "Event Joined",
                   type: ButtonType.primary,
-                  cornerRadius: 32,
+                  cornerRadius: CustomRadius.button,
                   onPressedHandler: !eventDetailState.model.event.participated
                       ? () async {
                           final cubit = context.read<UpdateEventDetailCubit>();
@@ -300,7 +300,7 @@ class _EventDetailState extends State<EventDetail> {
             characterLimit: (MediaQuery.of(context).size.width / 5).floor(),
           )
         : BuildLoading.buildRectangularLoading(
-            height: 16, count: 3, verticalPadding: 3);
+            height: 16, count: 3, verticalPadding: CustomPadding.xs);
   }
 
   Widget _buildEventName(EventDetailState state) {
@@ -309,11 +309,12 @@ class _EventDetailState extends State<EventDetail> {
             state.model.event.eventName,
             style: TextStyle(
               color: neutral.shade700,
-              fontSize: 20,
+              fontSize: CustomFontSize.lg,
               fontWeight: FontWeight.bold,
             ),
           )
-        : BuildLoading.buildRectangularLoading(height: 20, verticalPadding: 5);
+        : BuildLoading.buildRectangularLoading(
+            height: 20, verticalPadding: CustomPadding.xs);
   }
 
   Widget _buildEventCategory(EventDetailState state) {
@@ -322,19 +323,19 @@ class _EventDetailState extends State<EventDetail> {
             scrollDirection: Axis.horizontal,
             child: Wrap(
               direction: Axis.horizontal,
-              spacing: 15,
+              spacing: CustomPadding.md,
               children: state.model.event.categories
                   .map(
                     (category) => Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(CustomPadding.sm),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: primary.shade400,
+                        borderRadius: BorderRadius.circular(CustomRadius.xl),
+                        color: primary.shade300,
                       ),
                       child: Text(
                         category.preferenceName,
                         style: TextStyle(
-                          color: neutral.shade400,
+                          color: neutral.shade700,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -345,7 +346,7 @@ class _EventDetailState extends State<EventDetail> {
             ),
           )
         : BuildLoading.buildRectangularLoading(
-            height: 16, width: 70, verticalPadding: 5);
+            height: 16, width: 70, verticalPadding: CustomPadding.xs);
   }
 
   Widget _buildImage(EventDetailState state) {
@@ -397,7 +398,7 @@ class _EventDetailState extends State<EventDetail> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: neutral.shade900,
-                    fontSize: 16,
+                    fontSize: CustomFontSize.base,
                   ),
                   children: const <TextSpan>[
                     TextSpan(
@@ -431,7 +432,7 @@ class _EventDetailState extends State<EventDetail> {
         state.status == LoadingType.SUCCESS
             ? CustomTextButton(
                 text: "View All",
-                fontSize: 16,
+                fontSize: CustomFontSize.base,
                 onPressedHandler: () {
                   // GO TO VIEW ALL PARTICIPANTS PAGE
                 },

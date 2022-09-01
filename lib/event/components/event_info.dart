@@ -37,7 +37,7 @@ class EventInfo extends StatelessWidget {
                   height: 50,
                   width: 50,
                   decoration: BoxDecoration(
-                    color: primary.shade400,
+                    color: primary.shade300,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
@@ -58,7 +58,7 @@ class EventInfo extends StatelessWidget {
                       title,
                       style: const TextStyle(
                           color: neutral,
-                          fontSize: 16,
+                          fontSize: CustomFontSize.base,
                           fontWeight: FontWeight.bold),
                     )
                   : BuildLoading.buildRectangularLoading(
@@ -68,7 +68,7 @@ class EventInfo extends StatelessWidget {
                       body,
                       style: TextStyle(
                           color: neutral.shade700,
-                          fontSize: 18,
+                          fontSize: CustomFontSize.lg,
                           fontWeight: FontWeight.bold),
                     )
                   : BuildLoading.buildRectangularLoading(
