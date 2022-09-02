@@ -221,7 +221,7 @@ class _BuildHomeState extends State<BuildHome> {
                 isPair: true,
                 secondWidget: CustomTextButton(
                     text: 'See All >',
-                    fontSize: 14.0,
+                    fontSize: CustomFontSize.sm,
                     type: TextButtonType.tertiary,
                     onPressedHandler: () {
                       Navigator.pushNamed(context, PopularEvents.routeName);
