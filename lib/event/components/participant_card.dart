@@ -14,54 +14,60 @@ class ParticipantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(CustomRadius.xxl),
-        boxShadow: [
-          BoxShadow(blurRadius: 4, color: neutral.shade300),
-        ],
-      ),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        margin: EdgeInsets.zero,
-        elevation: 0,
-        child: Padding(
-          padding: const EdgeInsets.all(CustomPadding.md),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage(
-                    'lib/common/assets/images/CircleAvatarDefault.png'),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '$firstName $lastName',
-                      overflow: TextOverflow.fade,
-                      softWrap: false,
-                      style: TextStyle(
-                          fontSize: CustomFontSize.lg,
-                          fontWeight: FontWeight.bold,
-                          color: neutral.shade700),
-                    ),
-                    Text(
-                      location,
-                      style: TextStyle(
-                          fontSize: CustomFontSize.base,
-                          fontWeight: FontWeight.bold,
-                          color: neutral.shade300),
-                    ),
-                  ],
+    return InkWell(
+      onTap: () {
+        // GO TO FRIENDS PROFILE HERE
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(CustomRadius.xxl),
+          boxShadow: [
+            BoxShadow(blurRadius: 4, color: neutral.shade300),
+          ],
+        ),
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          margin: EdgeInsets.zero,
+          elevation: 0,
+          child: Padding(
+            padding: const EdgeInsets.all(CustomPadding.md),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const CircleAvatar(
+                  radius: 25,
+                  backgroundImage: AssetImage(
+                      'lib/common/assets/images/CircleAvatarDefault.png'),
                 ),
-              )
-            ],
+                const SizedBox(
+                  width: 12,
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$firstName $lastName',
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: TextStyle(
+                            fontSize: CustomFontSize.lg,
+                            fontWeight: FontWeight.bold,
+                            color: neutral.shade700),
+                      ),
+                      Text(
+                        location,
+                        style: TextStyle(
+                            fontSize: CustomFontSize.base,
+                            fontWeight: FontWeight.bold,
+                            color: neutral.shade300),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
