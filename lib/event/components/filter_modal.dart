@@ -11,6 +11,7 @@ import 'package:flutter_boilerplate/event/components/filter_content.dart';
 import 'package:flutter_boilerplate/event/data/filter_event_modal_model.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
+// ignore: must_be_immutable
 class FilterModal extends StatefulWidget {
   final FilterEventModalModel filter;
 
