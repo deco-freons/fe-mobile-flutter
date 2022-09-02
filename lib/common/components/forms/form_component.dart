@@ -5,7 +5,10 @@ import 'package:flutter_boilerplate/common/components/forms/custom_form_input_cl
 import 'package:flutter_boilerplate/common/components/forms/custom_text_field.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+// <<<<<<< HEAD
 import 'package:flutter_boilerplate/page/forget.dart';
+// =======
+// >>>>>>> 8e7d1fe (refactor: :recycle: added location to register)
 
 class CustomForm extends StatefulWidget {
   final String title;
@@ -25,7 +28,7 @@ class CustomForm extends StatefulWidget {
   final Color labelColor;
   final TextStyle inputStyle;
 
-  const CustomForm({
+  CustomForm({
     Key? key,
     this.title = "",
     required this.inputs,
@@ -38,15 +41,22 @@ class CustomForm extends StatefulWidget {
     this.hasForgotPassword = false,
     this.submitPadding = 45.0,
     this.textButtonPadding = 48.0,
-    this.topPadding = 34.0,
+    this.topPadding = CustomPadding.xxxl,
     this.bottomPadding = 40.0,
     this.sidePadding = CustomPadding.xl,
     Color? labelColor,
     TextStyle? inputStyle,
-  })  : labelColor = labelColor ?? const Color(0xFF404852),
+  })  : labelColor = labelColor ?? neutral.shade700,
         inputStyle = inputStyle ??
-            const TextStyle(
-                fontSize: CustomFontSize.base, height: 1, color: Colors.black),
+// <<<<<<< HEAD
+            // const TextStyle(
+            //     fontSize: CustomFontSize.base, height: 1, color: Colors.black),
+// =======
+            TextStyle(
+                fontSize: CustomFontSize.base,
+                height: 1,
+                color: neutral.shade900),
+// >>>>>>> 8e7d1fe (refactor: :recycle: added location to register)
         super(key: key);
 
   @override
@@ -55,23 +65,6 @@ class CustomForm extends StatefulWidget {
 
 class _CustomFormState extends State<CustomForm> {
   final _formKey = GlobalKey<FormState>();
-
-  double calculateHeight(List<CustomFormInput> inputs) {
-    double height = 0.0;
-    for (CustomFormInput input in inputs) {
-      height = height + 119.0;
-      if (input.confirmField) {
-        height = height + 119.0;
-      } else if (input.type == TextFieldType.textArea) {
-        height = height + 60.0;
-      } else if (input.type == TextFieldType.image) {
-        height = height + 120.0;
-      } else if (input.type == TextFieldType.interest) {
-        height = height + 160.0;
-      }
-    }
-    return height;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +89,7 @@ class _CustomFormState extends State<CustomForm> {
               widget.title,
               style: TextStyle(
                 color: Theme.of(context).colorScheme.primary,
-                fontSize: 30.0,
+                fontSize: CustomFontSize.xxl,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -115,20 +108,18 @@ class _CustomFormState extends State<CustomForm> {
                     width: 0,
                     height: 0,
                   ),
-            SizedBox(
-              height: calculateHeight(widget.inputs),
-              child: ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: widget.inputs.length,
-                itemBuilder: (context, index) {
-                  return CustomTextField(
-                    formKey: _formKey,
-                    input: widget.inputs[index],
-                    labelColor: widget.labelColor,
-                    inputStyle: widget.inputStyle,
-                  );
-                },
-              ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: widget.inputs.length,
+              itemBuilder: (context, index) {
+                return CustomTextField(
+                  formKey: _formKey,
+                  input: widget.inputs[index],
+                  labelColor: widget.labelColor,
+                  inputStyle: widget.inputStyle,
+                );
+              },
             ),
             if (widget.hasForgotPassword)
               Row(

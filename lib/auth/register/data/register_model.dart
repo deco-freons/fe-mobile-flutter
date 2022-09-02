@@ -12,6 +12,8 @@ class RegisterModel extends BaseModel {
   final String password;
   final String confirmPassword;
   final String birthDate;
+  final int location;
+  final bool isShareLocation;
 
   const RegisterModel({
     required this.username,
@@ -21,6 +23,8 @@ class RegisterModel extends BaseModel {
     required this.password,
     required this.confirmPassword,
     required this.birthDate,
+    required this.location,
+    required this.isShareLocation,
   });
 
   factory RegisterModel.fromJson(Map<String, dynamic> json) =>

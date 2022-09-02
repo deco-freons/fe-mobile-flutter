@@ -19,6 +19,7 @@ class CustomFormInput {
   double lng;
   bool disable;
   List<PreferenceModel> preferences;
+  bool checkbox;
 
   CustomFormInput({
     required this.label,
@@ -34,6 +35,7 @@ class CustomFormInput {
     this.lng = 0,
     this.disable = false,
     List<PreferenceModel>? preferences,
+    this.checkbox = false,
   })  : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101),
         initialValue = initialValue ?? "",
@@ -59,5 +61,9 @@ class CustomFormInput {
 
   void removePreferences(PreferenceModel preference) {
     preferences.removeWhere((item) => item == preference);
+  }
+
+  void toggleCheckbox() {
+    checkbox = !checkbox;
   }
 }

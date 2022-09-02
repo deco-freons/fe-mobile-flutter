@@ -50,6 +50,7 @@ dependencies:
   google_geocoding: ^0.2.0
   flutter_dotenv: ^5.0.2
   flutter_config: ^2.0.0
+  dropdown_search: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -87,6 +88,7 @@ flutter:
     - lib/common/assets/images/LocationIcon.png
     - lib/common/assets/images/LargeEventTest.png
     - lib/common/assets/images/SmallEventTest.png
+    - lib/common/assets/files/express_public_location.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
