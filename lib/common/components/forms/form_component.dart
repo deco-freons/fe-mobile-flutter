@@ -5,10 +5,7 @@ import 'package:flutter_boilerplate/common/components/forms/custom_form_input_cl
 import 'package:flutter_boilerplate/common/components/forms/custom_text_field.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-// <<<<<<< HEAD
 import 'package:flutter_boilerplate/page/forget.dart';
-// =======
-// >>>>>>> 8e7d1fe (refactor: :recycle: added location to register)
 
 class CustomForm extends StatefulWidget {
   final String title;
@@ -48,15 +45,10 @@ class CustomForm extends StatefulWidget {
     TextStyle? inputStyle,
   })  : labelColor = labelColor ?? neutral.shade700,
         inputStyle = inputStyle ??
-// <<<<<<< HEAD
-            // const TextStyle(
-            //     fontSize: CustomFontSize.base, height: 1, color: Colors.black),
-// =======
             TextStyle(
                 fontSize: CustomFontSize.base,
                 height: 1,
                 color: neutral.shade900),
-// >>>>>>> 8e7d1fe (refactor: :recycle: added location to register)
         super(key: key);
 
   @override
