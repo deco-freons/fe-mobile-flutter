@@ -8,8 +8,8 @@ import 'package:flutter_boilerplate/event/components/event_list.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
-import 'package:flutter_boilerplate/page/popular_events.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
+import 'package:flutter_boilerplate/page/search_events.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
 class Homepage extends StatefulWidget {
@@ -229,7 +229,7 @@ class _BuildHomeState extends State<BuildHome> {
                       .toList()
                   : [],
               onPressed: () {
-                Navigator.pushNamed(context, PopularEvents.routeName);
+                Navigator.pushNamed(context, SearchEvents.routeName);
               },
             ),
           );
