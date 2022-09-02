@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/components/buttons/custom_back_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
@@ -46,7 +45,6 @@ class _EditProfileState extends State<EditProfile> {
         appBar: const PageAppBar(
           title: "Edit Profile",
           hasBackButton: true,
-
         ),
         body: Container(
           decoration:
