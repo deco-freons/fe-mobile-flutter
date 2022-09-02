@@ -7,11 +7,8 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_text_button
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-
 import 'package:flutter_boilerplate/common/config/theme.dart';
-
 import 'package:flutter_boilerplate/common/data/location_model.dart';
-
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -88,79 +85,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
         minHeight: 109.0,
       ),
       child: Padding(
-// <<<<<<< HEAD
-        // padding: const EdgeInsets.only(top: CustomPadding.base),
-        // child: Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: [
-        //     widget.input.type != TextFieldType.eventTime
-        //         ? Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             children: [
-        //               Text(
-        //                 widget.input.label,
-        //                 style: TextStyle(
-        //                   fontSize: CustomFontSize.base,
-        //                   fontWeight: FontWeight.bold,
-        //                   color: widget.labelColor,
-        //                 ),
-        //               ),
-        //               widget.input.type == TextFieldType.interest
-        //                   ? CustomTextButton(
-        //                       text: "Add",
-        //                       textWeight: FontWeight.normal,
-        //                       onPressedHandler: () async {
-        //                         List<PrefType>? newPreferences =
-        //                             await showModalBottomSheet<List<PrefType>>(
-        //                           context: context,
-        //                           shape: const RoundedRectangleBorder(
-        //                             borderRadius: BorderRadius.only(
-        //                                 topLeft:
-        //                                     Radius.circular(CustomRadius.body),
-        //                                 topRight:
-        //                                     Radius.circular(CustomRadius.body)),
-        //                           ),
-        //                           builder: (BuildContext context) {
-        //                             return AddPreferenceModal(
-        //                               initialPrefs: widget.input.preferences
-        //                                   .map((pref) => pref.preferenceID)
-        //                                   .toList(),
-        //                             );
-        //                           },
-        //                         );
-        //                         if (newPreferences != null) {
-        //                           List<PreferenceModel> preferenceModels =
-        //                               newPreferences
-        //                                   .map((pref) => PreferenceModel(
-        //                                       preferenceID: pref.name,
-        //                                       preferenceName: pref.desc))
-        //                                   .toList();
-        //                           widget.input.setPreferences(preferenceModels);
-        //                           setState(() {});
-        //                         }
-        //                       })
-        //                   : const SizedBox.shrink(),
-        //             ],
-        //           )
-        //         : const SizedBox.shrink(),
-        //     Padding(
-        //       padding: const EdgeInsets.only(top: CustomPadding.base),
-        //       child: widget.input.type == TextFieldType.date
-        //           ? CustomDatePicker(
-        //               input: widget.input,
-        //               firstDate: widget.input.firstDate,
-        //               lastDate: widget.input.lastDate,
-        //               inputStyle: widget.inputStyle,
-        //             )
-        //           : widget.input.type == TextFieldType.category
-        //               ? DropdownButtonFormField(
-        //                   style: widget.inputStyle,
-        //                   decoration: InputDecoration(
-        //                     border: const OutlineInputBorder(
-        //                       borderRadius:
-        //                           BorderRadius.all(Radius.circular(10.0)),
-        //                       borderSide: BorderSide.none,
-// =======
         padding: const EdgeInsets.only(top: CustomPadding.base),
         child: widget.input.type == TextFieldType.checkbox
             ? CheckboxListTile(
@@ -194,7 +118,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                 fontWeight: FontWeight.bold,
                                 color: widget.labelColor,
                               ),
-// >>>>>>> 8e7d1fe (refactor: :recycle: added location to register)
                             ),
                             widget.input.type == TextFieldType.interest
                                 ? CustomTextButton(
@@ -682,7 +605,8 @@ class _AddPreferenceModalState extends State<AddPreferenceModal> {
       padding: const EdgeInsets.symmetric(horizontal: CustomPadding.lg),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(CustomRadius.body), topRight: Radius.circular(CustomRadius.body)),
+            topLeft: Radius.circular(CustomRadius.body),
+            topRight: Radius.circular(CustomRadius.body)),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
