@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_small.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
+import 'package:flutter_boilerplate/page/popular_events.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:intl/intl.dart';
@@ -22,25 +24,47 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage>
     with AutomaticKeepAliveClientMixin<Homepage> {
   bool keepAlive = true;
+  double radiusValue = 10.0;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocProvider(
       create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
-        ..getPopularEvents([]),
+        ..getPopularEvents([], radiusValue),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.secondary),
-          child: SafeArea(child: buildHome()),
+          child: const SafeArea(child: BuildHome()),
         ),
       ),
     );
   }
 
-  Widget buildHome() {
+  @override
+  bool get wantKeepAlive => keepAlive;
+}
+
+class BuildHome extends StatefulWidget {
+  final String errorMessage;
+
+  const BuildHome({Key? key, this.errorMessage = ''}) : super(key: key);
+
+  @override
+  State<BuildHome> createState() => _BuildHomeState();
+}
+
+class _BuildHomeState extends State<BuildHome> {
+  List<bool> clickCheck = List.filled(PrefType.values.length, true);
+  bool allCheck = false;
+  List<PrefType> categories = [];
+  List<String> categoriesData = [];
+  double radiusValue = 10.0;
+
+  @override
+  Widget build(BuildContext context) {
     return ListView(
       children: [
         SizedBox(
@@ -72,70 +96,84 @@ class _HomepageState extends State<Homepage>
             ),
           ),
         ),
-        HomeContent(title: 'Featured', contentWidgets: [
-          Padding(
-            padding: const EdgeInsets.only(
-                left: CustomPadding.body, right: CustomPadding.body),
-            child: SizedBox(
-              width: 350,
-              height: 343.0,
-              child: DecoratedBox(
-                  decoration: BoxDecoration(color: neutral.shade400)),
+        HomeContent(
+            title: 'Featured',
+            isPair: true,
+            secondWidget: DecoratedBox(
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  border: Border.all(color: neutral.shade500)),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: DropdownButton(
+                  items: const [
+                    DropdownMenuItem(
+                      value: 5.0,
+                      child: Text('5 km'),
+                    ),
+                    DropdownMenuItem(
+                      value: 10.0,
+                      child: Text('10 km'),
+                    ),
+                    DropdownMenuItem(
+                      value: 20.0,
+                      child: Text('20 km'),
+                    ),
+                  ],
+                  value: radiusValue,
+                  onChanged: (double? selectedRadius) {
+                    setState(() {
+                      radiusValue = selectedRadius!;
+                    });
+                    getPopularEvents(context, categoriesData, radiusValue);
+                  },
+                  iconSize: 40.0,
+                  iconEnabledColor: neutral.shade900,
+                  underline: Container(
+                    color: neutral.shade100,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ]),
+            contentWidgets: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: CustomPadding.body, right: CustomPadding.body),
+                child: SizedBox(
+                  width: 350,
+                  height: 343.0,
+                  child: DecoratedBox(
+                      decoration: BoxDecoration(color: neutral.shade400)),
+                ),
+              ),
+            ]),
         const SizedBox(
           height: 32,
         ),
-        const ShowCategories(),
-      ],
-    );
-  }
-
-  @override
-  bool get wantKeepAlive => keepAlive;
-}
-
-class ShowCategories extends StatefulWidget {
-  final String errorMessage;
-
-  const ShowCategories({Key? key, this.errorMessage = ''}) : super(key: key);
-
-  @override
-  State<ShowCategories> createState() => _ShowCategoriesState();
-}
-
-class _ShowCategoriesState extends State<ShowCategories> {
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  bool allCheck = false;
-  List<PrefType> categories = [];
-  List<String> categoriesData = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
         HomeContent(title: 'Categories', contentWidgets: [
-          PreferenceButton(
-            type: PrefType.GM,
-            isAll: true,
-            elevation: 4.0,
-            onPressedHandler: () {
-              setState(() {
-                if (clickCheck.contains(false)) {
-                  allCheck = !allCheck;
+          Padding(
+            padding: const EdgeInsets.only(left: CustomPadding.body),
+            child: PreferenceButton(
+              type: PrefType.GM,
+              isAll: true,
+              elevation: 4.0,
+              onPressedHandler: () {
+                setState(() {
+                  if (clickCheck.contains(false)) {
+                    allCheck = !allCheck;
+                  }
+                });
+                if (!allCheck) {
+                  for (var category in categories) {
+                    clickCheck[category.index] = !clickCheck[category.index];
+                  }
+                  categories = [];
+                  categoriesData = [];
+                  getPopularEvents(context, categoriesData, radiusValue);
                 }
-              });
-              if (!allCheck) {
-                for (var category in categories) {
-                  clickCheck[category.index] = !clickCheck[category.index];
-                }
-                categories = [];
-                categoriesData = [];
-                getPopularEvents(context, categoriesData);
-              }
-            },
-            click: allCheck,
+              },
+              click: allCheck,
+            ),
           ),
           for (var pref in PrefType.values)
             PreferenceButton(
@@ -151,16 +189,16 @@ class _ShowCategoriesState extends State<ShowCategories> {
                   if (!allCheck) {
                     allCheck = !allCheck;
                   }
-                  getPopularEvents(context, categoriesData);
+                  getPopularEvents(context, categoriesData, radiusValue);
                 } else if (!clickCheck.contains(false)) {
                   allCheck = false;
                   categories = [];
                   categoriesData = [];
-                  getPopularEvents(context, categoriesData);
+                  getPopularEvents(context, categoriesData, radiusValue);
                 } else {
                   categories.remove(pref);
                   categoriesData.remove(pref.name);
-                  getPopularEvents(context, categoriesData);
+                  getPopularEvents(context, categoriesData, radiusValue);
                 }
               },
               click: clickCheck[pref.index],
@@ -179,8 +217,15 @@ class _ShowCategoriesState extends State<ShowCategories> {
             padding: const EdgeInsets.only(bottom: CustomPadding.md),
             child: HomeContent(
                 title: 'Popular events',
-                isSeeAll: true,
                 titleBottomSpacing: CustomPadding.xs,
+                isPair: true,
+                secondWidget: CustomTextButton(
+                    text: 'See All >',
+                    fontSize: CustomFontSize.sm,
+                    type: TextButtonType.tertiary,
+                    onPressedHandler: () {
+                      Navigator.pushNamed(context, PopularEvents.routeName);
+                    }),
                 contentWidgets: isSuccessState
                     ? state.events.map((event) {
                         String formattedDate = DateFormat('MMMM dd, yyyy')
@@ -200,13 +245,14 @@ class _ShowCategoriesState extends State<ShowCategories> {
                         EventCardSmall.loading(),
                       ]),
           );
-        })
+        }),
       ],
     );
   }
 
-  void getPopularEvents(BuildContext context, List<String> data) {
+  void getPopularEvents(
+      BuildContext context, List<String> data, double radius) {
     final cubit = context.read<PopularEventsCubit>();
-    cubit.getPopularEvents(data);
+    cubit.getPopularEvents(data, radius);
   }
 }
