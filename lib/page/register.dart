@@ -100,12 +100,21 @@ class RegisterForm extends StatelessWidget {
       type: TextFieldType.date,
       firstDate: DateTime(1900),
       lastDate: DateTime.now());
+  final CustomFormInput location = CustomFormInput(
+    label: 'Location',
+    type: TextFieldType.suburbDropdown,
+  );
   final CustomFormInput password = CustomFormInput(
       label: 'Password',
       type: TextFieldType.password,
       pattern: passwordPattern,
       errorMessage: "Password must be 8-20 character (including number)",
       confirmField: true);
+  final CustomFormInput showLocationPermission = CustomFormInput(
+    label:
+        'If you agree to share location with other users, please tick this box.',
+    type: TextFieldType.checkbox,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -117,24 +126,31 @@ class RegisterForm extends StatelessWidget {
         username,
         email,
         birthDate,
+        location,
         password,
+        showLocationPermission
       ],
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
       textButton: "Sign In",
       submitHandler: () {
         RegisterModel data = RegisterModel(
-            username: username.controller.text,
-            firstName: firstName.controller.text,
-            lastName: lastName.controller.text,
-            email: email.controller.text,
-            password: password.controller.text,
-            confirmPassword: password.confirmController.text,
-            birthDate: birthDate.controller.text);
+          username: username.controller.text,
+          firstName: firstName.controller.text,
+          lastName: lastName.controller.text,
+          email: email.controller.text,
+          password: password.controller.text,
+          confirmPassword: password.confirmController.text,
+          birthDate: birthDate.controller.text,
+          location: location.controller.text == ""
+              ? 0
+              : int.parse(location.controller.text),
+          isShareLocation: showLocationPermission.checkbox,
+        );
         submit(context, data);
       },
       textButtonHandler: () {
-        Navigator.pushNamed(context, Login.routeName);
+        Navigator.pushReplacementNamed(context, Login.routeName);
       },
       errorMessage: errorMessage,
     );

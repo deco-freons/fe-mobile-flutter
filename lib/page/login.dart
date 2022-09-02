@@ -115,7 +115,7 @@ class LoginForm extends StatelessWidget {
         submit(context, data);
       },
       textButtonHandler: () {
-        Navigator.pushNamed(context, Register.routeName);
+        Navigator.pushReplacementNamed(context, Register.routeName);
       },
       errorMessage: errorMessage,
     );

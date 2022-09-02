@@ -15,6 +15,8 @@ RegisterModel _$RegisterModelFromJson(Map<String, dynamic> json) =>
       password: json['password'] as String,
       confirmPassword: json['confirmPassword'] as String,
       birthDate: json['birthDate'] as String,
+      location: json['location'] as int,
+      isShareLocation: json['isShareLocation'] as bool,
     );
 
 Map<String, dynamic> _$RegisterModelToJson(RegisterModel instance) =>
@@ -26,4 +28,6 @@ Map<String, dynamic> _$RegisterModelToJson(RegisterModel instance) =>
       'password': instance.password,
       'confirmPassword': instance.confirmPassword,
       'birthDate': instance.birthDate,
+      'location': instance.location,
+      'isShareLocation': instance.isShareLocation,
     };

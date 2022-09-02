@@ -15,6 +15,8 @@ class UserModel extends BaseModel {
   final bool isVerified;
   final bool isFirstLogin;
   final List<PreferenceModel> preferences;
+  final String? location;
+  final bool isShareLocation;
 
   const UserModel({
     required this.isVerified,
@@ -26,6 +28,8 @@ class UserModel extends BaseModel {
     required this.firstName,
     required this.lastName,
     required this.birthDate,
+    this.location,
+    required this.isShareLocation,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
