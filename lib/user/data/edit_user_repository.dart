@@ -8,11 +8,11 @@ import 'package:flutter_boilerplate/get_it.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_data_provider.dart';
 import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
-import 'package:flutter_boilerplate/user/data/models/location_model.dart';
+import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 
 abstract class EditUserRepository implements BaseRepository {
   Future<dynamic> editUser(EditUserModel data,
-      List<PreferenceModel> preferenceModels, LocationModel location);
+      List<PreferenceModel> preferenceModels, UserLocationModel location);
 }
 
 class EditUserRepositoryImpl extends EditUserRepository {
@@ -21,7 +21,7 @@ class EditUserRepositoryImpl extends EditUserRepository {
 
   @override
   Future<dynamic> editUser(EditUserModel data,
-      List<PreferenceModel> preferenceModels, LocationModel location) async {
+      List<PreferenceModel> preferenceModels, UserLocationModel location) async {
     String? user = await secureStorage.get(key: 'user');
     if (user == null) {
       throw NotFoundException();

@@ -5,7 +5,7 @@ import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/bloc/edit_user_state.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
 import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
-import 'package:flutter_boilerplate/user/data/models/location_model.dart';
+import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 
 class EditUserCubit extends BaseCubit<EditUserState> {
   final EditUserRepository _editUserRepository;
@@ -13,7 +13,7 @@ class EditUserCubit extends BaseCubit<EditUserState> {
   EditUserCubit(this._editUserRepository) : super(const EditUserInitialState());
 
   Future<void> editUser(EditUserModel data,
-      List<PreferenceModel> preferenceModels, LocationModel location) async {
+      List<PreferenceModel> preferenceModels, UserLocationModel location) async {
     try {
       emit(const EditUserLoadingState());
       UserModel updatedUser =

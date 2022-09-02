@@ -7,7 +7,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
-import 'package:flutter_boilerplate/common/components/shimmer_widget.dart';
+import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
@@ -15,7 +15,7 @@ import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
-import 'package:flutter_boilerplate/user/data/models/location_model.dart';
+import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 
 class CustomTextField extends StatefulWidget {
   final CustomFormInput input;
@@ -169,7 +169,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           widget.input.controller.text =
                                               initialLocation.locationID
                                                   .toString();
-                                          widget.input.suburb = LocationModel(
+                                          widget.input.suburb = UserLocationModel(
                                               suburb: initialLocation.suburb);
                                         }
                                       }
@@ -248,7 +248,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           if (value != null) {
                                             widget.input.controller.text =
                                                 value.locationID.toString();
-                                            widget.input.suburb = LocationModel(
+                                            widget.input.suburb = UserLocationModel(
                                                 suburb: value.suburb);
                                           }
                                         },
