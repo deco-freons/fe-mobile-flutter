@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
-import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/page/popular_events.dart';
 
 class HomeContent extends StatefulWidget {
   final String title;
   final List<Widget> contentWidgets;
-  final bool isPopular;
+  final bool isPair;
   final double contentSpacing;
   final double titleBottomSpacing;
   final double titleLeftSpacing;
+  final double titleRightSpacing;
+  final Widget secondWidget;
 
   const HomeContent({
     Key? key,
     required this.title,
     required this.contentWidgets,
-    this.isPopular = false,
+    this.isPair = false,
     this.contentSpacing = CustomPadding.md,
     this.titleBottomSpacing = CustomPadding.md,
     this.titleLeftSpacing = CustomPadding.body,
+    this.titleRightSpacing = CustomPadding.body,
+    this.secondWidget = const Text(''),
   }) : super(key: key);
 
   @override
@@ -35,8 +36,9 @@ class _HomeContentState extends State<HomeContent> {
         Padding(
             padding: EdgeInsets.only(
                 bottom: widget.titleBottomSpacing,
-                left: widget.titleLeftSpacing),
-            child: (widget.isPopular)
+                left: widget.titleLeftSpacing,
+                right: widget.titleRightSpacing),
+            child: (widget.isPair)
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -46,14 +48,7 @@ class _HomeContentState extends State<HomeContent> {
                             fontSize: CustomFontSize.lg,
                             fontWeight: FontWeight.bold),
                       ),
-                      CustomTextButton(
-                          text: 'See All >',
-                          fontSize: CustomFontSize.sm,
-                          type: TextButtonType.tertiary,
-                          onPressedHandler: () {
-                            Navigator.pushNamed(
-                                context, PopularEvents.routeName);
-                          })
+                      widget.secondWidget,
                     ],
                   )
                 : Text(

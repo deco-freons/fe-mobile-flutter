@@ -15,7 +15,7 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
   PopularEventsCubit(this._popularEventsRepository)
       : super(const PopularEventsInitialState());
 
-  Future<void> getPopularEvents(List<String> data) async {
+  Future<void> getPopularEvents(List<String> data, double radius) async {
     try {
       emit(const PopularEventsLoadingState());
       Position position = await Geolocator.getCurrentPosition();
@@ -24,11 +24,11 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           categories: data,
           longitude: position.longitude,
           latitude: position.latitude,
-          radius: 10.0);
+          radius: radius);
       EmptyNearbyModel emptyNearby = EmptyNearbyModel(
           longitude: position.longitude,
           latitude: position.latitude,
-          radius: 10.0);
+          radius: radius);
       Map res = {};
       List<List<String>> locationNames = [];
       if (data.isEmpty) {
