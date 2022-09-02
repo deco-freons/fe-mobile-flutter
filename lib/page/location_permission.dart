@@ -23,17 +23,8 @@ class _LocationPermissionState extends State<LocationPermission> {
         resizeToAvoidBottomInset: true,
         body: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [
-                0.55,
-                1.0
-              ],
-                  colors: [
-                primary.shade500,
-                primary.shade600,
-              ])),
+            color: neutral.shade100,
+          ),
           child: SafeArea(
               child: BlocConsumer<LocationCubit, LocationState>(
             listener: (context, state) {
@@ -50,17 +41,8 @@ class _LocationPermissionState extends State<LocationPermission> {
               } else {
                 return Container(
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: const [
-                        0.55,
-                        1.0
-                      ],
-                          colors: [
-                        primary.shade500,
-                        primary.shade600,
-                      ])),
+                    color: neutral.shade100,
+                  ),
                 );
               }
             },
