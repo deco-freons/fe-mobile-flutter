@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
+import 'package:flutter_boilerplate/event/components/filter_modal.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/components/search_bar.dart';
 import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
@@ -76,7 +77,18 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               label: 'Search event...',
               hasSecondIcon: true,
               secondIcon: const Icon(Icons.filter_list),
-              iconOnPressedHandler: () {},
+              iconOnPressedHandler: () {
+                showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(CustomRadius.body),
+                      ),
+                    ),
+                    builder: (context) {
+                      return const FilterModal();
+                    });
+              },
             ),
           ),
           const SizedBox(

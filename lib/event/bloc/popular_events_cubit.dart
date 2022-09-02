@@ -90,6 +90,7 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
               '${response.results?[0].addressComponents?[1].longName ?? ""}, ${response.results?[0].addressComponents?[2].shortName}';
           resEvent['location'] = [locationName, locationArea];
         }
+        resEvent['location'] = [];
         PopularEventModel event = PopularEventModel.fromJson(resEvent);
         events.add(event);
       }
