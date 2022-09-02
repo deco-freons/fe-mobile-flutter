@@ -254,8 +254,16 @@ class _BuildHomeState extends State<BuildHome> {
                         .values
                         .toList()
                     : const [
-                        EventCardSmall.loading(),
-                        EventCardSmall.loading(),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: CustomPadding.xl, top: CustomPadding.xs),
+                          child: EventCardSmall.loading(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: CustomPadding.sm, top: CustomPadding.xs),
+                          child: EventCardSmall.loading(),
+                        ),
                       ]),
           );
         }),
