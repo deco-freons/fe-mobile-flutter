@@ -6,6 +6,7 @@ import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
+import 'package:flutter_boilerplate/event/components/search_bar.dart';
 import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
@@ -13,15 +14,15 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:intl/intl.dart';
 
-class PopularEvents extends StatefulWidget {
-  const PopularEvents({Key? key}) : super(key: key);
-  static const routeName = '/popular-events';
+class SearchEvents extends StatefulWidget {
+  const SearchEvents({Key? key}) : super(key: key);
+  static const routeName = '/search-events';
 
   @override
-  State<PopularEvents> createState() => _PopularEventsState();
+  State<SearchEvents> createState() => _SearchEventsState();
 }
 
-class _PopularEventsState extends State<PopularEvents> {
+class _SearchEventsState extends State<SearchEvents> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -29,7 +30,7 @@ class _PopularEventsState extends State<PopularEvents> {
         ..getAllPopularEvents([]),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: const PageAppBar(title: "Popular Events"),
+        appBar: const PageAppBar(title: "Search Events"),
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: SafeArea(
@@ -37,7 +38,7 @@ class _PopularEventsState extends State<PopularEvents> {
             padding: const EdgeInsets.only(top: CustomPadding.sm),
             child: Column(
               children: const [
-                ShowCategories(),
+                BuildSearchEvents(),
               ],
             ),
           )),
@@ -47,16 +48,16 @@ class _PopularEventsState extends State<PopularEvents> {
   }
 }
 
-class ShowCategories extends StatefulWidget {
+class BuildSearchEvents extends StatefulWidget {
   final String errorMessage;
 
-  const ShowCategories({Key? key, this.errorMessage = ''}) : super(key: key);
+  const BuildSearchEvents({Key? key, this.errorMessage = ''}) : super(key: key);
 
   @override
-  State<ShowCategories> createState() => _ShowCategoriesState();
+  State<BuildSearchEvents> createState() => _BuildSearchEventsState();
 }
 
-class _ShowCategoriesState extends State<ShowCategories> {
+class _BuildSearchEventsState extends State<BuildSearchEvents> {
   final scrollController = ScrollController();
   List<bool> clickCheck = List.filled(PrefType.values.length, true);
   bool allCheck = false;
@@ -69,6 +70,18 @@ class _ShowCategoriesState extends State<ShowCategories> {
     return Expanded(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: CustomPadding.body),
+            child: SearchBar(
+              label: 'Search event...',
+              hasSecondIcon: true,
+              secondIcon: const Icon(Icons.filter_list),
+              iconOnPressedHandler: () {},
+            ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
           HomeContent(
             title: 'Categories',
             contentWidgets: [

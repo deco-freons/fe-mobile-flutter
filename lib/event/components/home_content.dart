@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/page/popular_events.dart';
+import 'package:flutter_boilerplate/page/search_events.dart';
 
 class HomeContent extends StatefulWidget {
   final String title;
@@ -52,7 +52,7 @@ class _HomeContentState extends State<HomeContent> {
                           type: TextButtonType.tertiary,
                           onPressedHandler: () {
                             Navigator.pushNamed(
-                                context, PopularEvents.routeName);
+                                context, SearchEvents.routeName);
                           })
                     ],
                   )
