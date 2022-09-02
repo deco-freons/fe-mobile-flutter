@@ -66,3 +66,38 @@ enum LoadingType {
   SUCCESS,
   ERROR,
 }
+
+enum WeekFilter {
+  thisWeek,
+  nextWeek,
+}
+
+extension WeekExtension on WeekFilter {
+  String get desc {
+    switch (this) {
+      case WeekFilter.thisWeek:
+        return 'This Week';
+      case WeekFilter.nextWeek:
+        return 'Next Week';
+    }
+  }
+}
+
+enum DistanceFilter {
+  belowFive,
+  fiveToTen,
+  aboveTen,
+}
+
+extension DistanceExtension on DistanceFilter {
+  String get desc {
+    switch (this) {
+      case DistanceFilter.belowFive:
+        return '< 5 km';
+      case DistanceFilter.fiveToTen:
+        return '5 <= km < 10';
+      case DistanceFilter.aboveTen:
+        return '>= 10 km';
+    }
+  }
+}

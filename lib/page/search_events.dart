@@ -6,13 +6,11 @@ import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
 import 'package:flutter_boilerplate/event/components/filter_modal.dart';
-import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/components/search_bar.dart';
 import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:intl/intl.dart';
 
 class SearchEvents extends StatefulWidget {
@@ -23,9 +21,13 @@ class SearchEvents extends StatefulWidget {
   State<SearchEvents> createState() => _SearchEventsState();
 }
 
-class _SearchEventsState extends State<SearchEvents> {
+class _SearchEventsState extends State<SearchEvents>
+    with AutomaticKeepAliveClientMixin<SearchEvents> {
+  bool keepAlive = true;
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
         ..getAllPopularEvents([]),
@@ -47,6 +49,9 @@ class _SearchEventsState extends State<SearchEvents> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => keepAlive;
 }
 
 class BuildSearchEvents extends StatefulWidget {
@@ -60,14 +65,24 @@ class BuildSearchEvents extends StatefulWidget {
 
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
   final scrollController = ScrollController();
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  bool allCheck = false;
   List<PrefType> categories = [];
   List<String> categoriesData = [];
   List<PopularEventModel> eventList = [];
+  List<bool> prefCheck = [];
+  bool allCheck = false;
 
   @override
   Widget build(BuildContext context) {
+    for (var pref in PrefType.values) {
+      if (categoriesData.contains(pref.name)) {
+        prefCheck.add(false);
+      } else {
+        prefCheck.add(true);
+      }
+    }
+    if (prefCheck.contains(false)) {
+      allCheck = true;
+    }
     return Expanded(
       child: Column(
         children: [
@@ -77,80 +92,28 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               label: 'Search event...',
               hasSecondIcon: true,
               secondIcon: const Icon(Icons.filter_list),
-              iconOnPressedHandler: () {
-                showModalBottomSheet(
+              iconOnPressedHandler: () async {
+                await showModalBottomSheet(
                     context: context,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(CustomRadius.body),
                       ),
                     ),
-                    builder: (context) {
-                      return const FilterModal();
-                    });
+                    builder: (context) => FilterModal(
+                          initialCategories: categoriesData,
+                          prefCheck: prefCheck,
+                          allCheck: allCheck,
+                        )).then((value) => setState(() {
+                      categoriesData = value;
+                    }));
+                // ignore: use_build_context_synchronously
+                context.read<PopularEventsCubit>().emitFilterState();
               },
             ),
           ),
           const SizedBox(
             height: 25,
-          ),
-          HomeContent(
-            title: 'Categories',
-            contentWidgets: [
-              Padding(
-                padding: const EdgeInsets.only(left: CustomPadding.body),
-                child: PreferenceButton(
-                  type: PrefType.GM,
-                  isAll: true,
-                  elevation: 4.0,
-                  onPressedHandler: () {
-                    setState(() {
-                      if (clickCheck.contains(false)) {
-                        allCheck = !allCheck;
-                      }
-                    });
-                    if (!allCheck) {
-                      for (var category in categories) {
-                        clickCheck[category.index] =
-                            !clickCheck[category.index];
-                      }
-                      categories = [];
-                      categoriesData = [];
-                      getAllPopularEvents(context, categoriesData);
-                    }
-                  },
-                  click: allCheck,
-                ),
-              ),
-              for (var pref in PrefType.values)
-                PreferenceButton(
-                  type: pref,
-                  elevation: 4.0,
-                  onPressedHandler: () {
-                    setState(() {
-                      clickCheck[pref.index] = !clickCheck[pref.index];
-                    });
-                    if (!clickCheck[pref.index]) {
-                      categories.add(pref);
-                      categoriesData.add(pref.name);
-                      if (!allCheck) {
-                        allCheck = !allCheck;
-                      }
-                      getAllPopularEvents(context, categoriesData);
-                    } else if (!clickCheck.contains(false)) {
-                      allCheck = false;
-                      categories = [];
-                      categoriesData = [];
-                      getAllPopularEvents(context, categoriesData);
-                    } else {
-                      categories.remove(pref);
-                      categoriesData.remove(pref.name);
-                      getAllPopularEvents(context, categoriesData);
-                    }
-                  },
-                  click: clickCheck[pref.index],
-                )
-            ],
           ),
           const SizedBox(
             height: 28,
@@ -166,6 +129,8 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 }
                 eventList.removeWhere((event) => !state.events.contains(event));
               }
+            } else if (state is PopularEventsFilterState) {
+              getAllPopularEvents(context, categoriesData);
             }
           }, builder: (context, state) {
             if (state is PopularEventsErrorState) {
