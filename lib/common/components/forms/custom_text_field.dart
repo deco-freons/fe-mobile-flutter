@@ -172,10 +172,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           )
                         : widget.input.type == TextFieldType.suburbDropdown
                             ? DropdownSearch<dynamic>(
-                                popupProps: const PopupProps.menu(
+                                dropdownBuilder: (context, selectedItem) =>
+                                    Text(
+                                  selectedItem.suburb,
+                                  style: widget.inputStyle,
+                                ),
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) =>
+                                      Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: CustomPadding.body,
+                                      vertical: CustomPadding.base,
+                                    ),
+                                    child: Text(
+                                      item.suburb,
+                                      style: widget.inputStyle,
+                                    ),
+                                  ),
                                   showSearchBox: true,
                                   searchFieldProps: TextFieldProps(
-                                    decoration: InputDecoration(
+                                    style: widget.inputStyle,
+                                    decoration: const InputDecoration(
                                       hintText: "Search",
                                       border: OutlineInputBorder(),
                                       suffixIcon: Icon(Icons.search),
@@ -204,6 +221,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                   return loc.suburb;
                                 },
                                 dropdownDecoratorProps: DropDownDecoratorProps(
+                                  baseStyle: widget.inputStyle,
                                   dropdownSearchDecoration: InputDecoration(
                                     border: const OutlineInputBorder(
                                       borderRadius: BorderRadius.all(

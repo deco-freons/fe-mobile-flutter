@@ -133,7 +133,10 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                       overflow: TextOverflow.fade,
                       softWrap: false,
                       style: TextStyle(
+
                         fontSize: CustomFontSize.title,
+
+                       
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -160,7 +163,10 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Email", widget.user.email),
         buildField("Birth Date",
             updated ? updatedUser.birthDate : widget.user.birthDate),
+        buildField("Location",
+            widget.user.location.suburb),
         const SizedBox(height: 38.0),
+
         buildInterests(),
         const SizedBox(height: 28.0),
         BlocBuilder<EventsByMeCubit, EventsByMeState>(
@@ -174,6 +180,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         }),
         const SizedBox(
           height: 20,
+
         ),
         Padding(
           padding: bodyPadding,

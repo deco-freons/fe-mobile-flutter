@@ -103,9 +103,14 @@ class _EditProfileState extends State<EditProfile> {
       lastDate: DateTime.now(),
     );
     CustomFormInput interest = CustomFormInput(
-        label: "Interests",
-        type: TextFieldType.interest,
-        preferences: user.preferences);
+      label: "Interests",
+      type: TextFieldType.interest,
+      preferences: user.preferences,
+    );
+    CustomFormInput location = CustomFormInput(
+      label: "Location",
+      type: TextFieldType.suburbDropdown,
+    );
 
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
@@ -127,7 +132,15 @@ class _EditProfileState extends State<EditProfile> {
             }
           },
           child: CustomForm(
-            inputs: [firstName, lastName, username, email, birthDate, interest],
+            inputs: [
+              firstName,
+              lastName,
+              username,
+              email,
+              birthDate,
+              location,
+              interest
+            ],
             submitTitle: "Save",
             submitHandler: () {
               List<String> newPreferences = interest.preferences
