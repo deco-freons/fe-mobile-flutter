@@ -330,9 +330,7 @@ class _EventDetailState extends State<EventDetail> {
                     (category) => Container(
                       padding: const EdgeInsets.all(CustomPadding.sm),
                       decoration: BoxDecoration(
-
                         borderRadius: BorderRadius.circular(CustomRadius.xl),
-
                         color: primary.shade300,
                       ),
                       child: Text(

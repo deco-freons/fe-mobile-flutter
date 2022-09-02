@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/components/buttons/custom_back_button.dart';
+import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/event/components/participant_card.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 
 class EventParticipants extends StatelessWidget {
@@ -13,35 +14,28 @@ class EventParticipants extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: neutral.shade100,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        toolbarHeight: 96,
-        backgroundColor: neutral.shade700,
-        titleSpacing: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: bodyPadding - 4.5),
-          child: CustomBackButton(onPressed: () {
-            Navigator.of(context).pop();
-          }),
-        ),
-        title: Text(
-          "Participants",
-          style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: neutral.shade900),
-        ),
+      appBar: const PageAppBar(
+        title: "Participants",
+        hasBackButton: true,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: screenBodyPadding,
-          child: ListView.builder(
-              itemCount: participants.length,
-              itemBuilder: (context, index) {
-                return const Text("AAA");
-              }),
-        ),
+        child: ListView.separated(
+            separatorBuilder: (context, index) {
+              return const SizedBox(height: 37);
+            },
+            itemCount: participants.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                    left: CustomPadding.body,
+                    right: CustomPadding.body,
+                    top: index == 0 ? CustomPadding.body : 0),
+                child: ParticipantCard(
+                    firstName: participants[index].firstName,
+                    lastName: participants[index].lastName,
+                    location: "Brisbane City"),
+              );
+            }),
       ),
     );
   }
