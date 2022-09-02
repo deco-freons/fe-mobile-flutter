@@ -116,29 +116,26 @@ class _ShowCategoriesState extends State<ShowCategories> {
     return Column(
       children: [
         HomeContent(title: 'Categories', contentWidgets: [
-          Padding(
-            padding: const EdgeInsets.only(left: CustomPadding.body),
-            child: PreferenceButton(
-              type: PrefType.GM,
-              isAll: true,
-              elevation: 4.0,
-              onPressedHandler: () {
-                setState(() {
-                  if (clickCheck.contains(false)) {
-                    allCheck = !allCheck;
-                  }
-                });
-                if (!allCheck) {
-                  for (var category in categories) {
-                    clickCheck[category.index] = !clickCheck[category.index];
-                  }
-                  categories = [];
-                  categoriesData = [];
-                  getPopularEvents(context, categoriesData);
+          PreferenceButton(
+            type: PrefType.GM,
+            isAll: true,
+            elevation: 4.0,
+            onPressedHandler: () {
+              setState(() {
+                if (clickCheck.contains(false)) {
+                  allCheck = !allCheck;
                 }
-              },
-              click: allCheck,
-            ),
+              });
+              if (!allCheck) {
+                for (var category in categories) {
+                  clickCheck[category.index] = !clickCheck[category.index];
+                }
+                categories = [];
+                categoriesData = [];
+                getPopularEvents(context, categoriesData);
+              }
+            },
+            click: allCheck,
           ),
           for (var pref in PrefType.values)
             PreferenceButton(
@@ -182,35 +179,22 @@ class _ShowCategoriesState extends State<ShowCategories> {
             padding: const EdgeInsets.only(bottom: CustomPadding.md),
             child: HomeContent(
                 title: 'Popular events',
-                isPopular: true,
+                isSeeAll: true,
                 titleBottomSpacing: CustomPadding.xs,
                 contentWidgets: isSuccessState
-                    ? state.events
-                        .asMap()
-                        .map((i, event) {
-                          String formattedDate = DateFormat('MMMM dd, yyyy')
-                              .format(DateTime.parse(event.date));
-                          List<String> splittedDate = formattedDate.split(' ');
-                          return MapEntry(
-                            i,
-                            Padding(
-                              padding: i == 0
-                                  ? const EdgeInsets.only(
-                                      left: CustomPadding.lg)
-                                  : EdgeInsets.zero,
-                              child: EventCardSmall(
-                                  eventID: event.eventID,
-                                  title: event.eventName,
-                                  distance: event.distance,
-                                  month: splittedDate[0].substring(0, 3),
-                                  date: splittedDate[1].substring(0, 2),
-                                  image:
-                                      'lib/common/assets/images/SmallEventTest.png'),
-                            ),
-                          );
-                        })
-                        .values
-                        .toList()
+                    ? state.events.map((event) {
+                        String formattedDate = DateFormat('MMMM dd, yyyy')
+                            .format(DateTime.parse(event.date));
+                        List<String> splittedDate = formattedDate.split(' ');
+                        return EventCardSmall(
+                            eventID: event.eventID,
+                            title: event.eventName,
+                            distance: event.distance,
+                            month: splittedDate[0].substring(0, 3),
+                            date: splittedDate[1].substring(0, 2),
+                            image:
+                                'lib/common/assets/images/SmallEventTest.png');
+                      }).toList()
                     : const [
                         EventCardSmall.loading(),
                         EventCardSmall.loading(),
