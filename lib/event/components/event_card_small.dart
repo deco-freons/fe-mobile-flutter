@@ -44,6 +44,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
   Widget build(BuildContext context) {
     return !widget.loading
         ? Card(
+            margin: const EdgeInsets.symmetric(vertical: 4.0),
             elevation: 3.0,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),

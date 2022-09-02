@@ -7,6 +7,13 @@ import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/date_parser.dart';
+import 'package:flutter_boilerplate/event/bloc/events_by_me_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/events_by_me_state.dart';
+import 'package:flutter_boilerplate/event/components/event_card_small.dart';
+import 'package:flutter_boilerplate/event/components/home_content.dart';
+import 'package:flutter_boilerplate/event/data/events_by_me_repository.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -24,7 +31,8 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  final UserRepositoryImpl userRepository = UserRepositoryImpl();
+  final UserRepository userRepository = UserRepositoryImpl();
+  final EventsByMeRepository _eventsByMeRepository = EventsByMeRepositoryImpl();
   int eventCount = 12;
 
   @override
@@ -38,6 +46,10 @@ class _ProfileState extends State<Profile> {
         BlocProvider<UserCubit>(
           create: (BuildContext context) =>
               UserCubit(userRepository)..getUser(),
+        ),
+        BlocProvider<EventsByMeCubit>(
+          create: (BuildContext context) =>
+              EventsByMeCubit(_eventsByMeRepository)..getEventsByMe(),
         ),
       ],
       child: Scaffold(
@@ -96,109 +108,117 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
+      padding: const EdgeInsets.symmetric(vertical: CustomPadding.body),
       children: [
-        Row(
-          children: [
-            CircleAvatar(
-              radius: 52.5,
-              child: Image.asset(
-                  'lib/common/assets/images/CircleAvatarDefault.png'),
-            ),
-            const SizedBox(
-              width: 22.0,
-            ),
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    updated
-                        ? "${updatedUser.firstName} ${updatedUser.lastName}"
-                        : "${widget.user.firstName} ${widget.user.lastName}",
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                    style: TextStyle(
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5.0,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          blurRadius: 4,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ImageIcon(
-                            const AssetImage(
-                                'lib/common/assets/images/TrophyIcon.png'),
-                            color: Theme.of(context).colorScheme.secondary),
-                        const SizedBox(
-                          width: 5.0,
-                        ),
-                        Text(
-                          "$eventCount events",
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12.0,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: eventCount > 20
-                          ? Colors.amber
-                          : eventCount > 10
-                              ? const Color(0xFFC0C0C0)
-                              : const Color.fromARGB(255, 189, 52, 2),
-                      borderRadius: const BorderRadius.all(Radius.circular(20)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.25),
-                          blurRadius: 4,
-                          offset:
-                              const Offset(0, 4), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      eventCount > 20
-                          ? "Gold"
-                          : eventCount > 10
-                              ? "Silver"
-                              : "Bronze",
+        Padding(
+          padding: const EdgeInsets.only(
+            left: CustomPadding.body,
+            right: CustomPadding.body,
+          ),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 52.5,
+                child: Image.asset(
+                    'lib/common/assets/images/CircleAvatarDefault.png'),
+              ),
+              const SizedBox(
+                width: 22.0,
+              ),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      updated
+                          ? "${updatedUser.firstName} ${updatedUser.lastName}"
+                          : "${widget.user.firstName} ${widget.user.lastName}",
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
                       style: TextStyle(
-                        fontSize: 16.0,
+                        fontSize: 26.0,
                         fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.primary,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            blurRadius: 4,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ImageIcon(
+                              const AssetImage(
+                                  'lib/common/assets/images/TrophyIcon.png'),
+                              color: Theme.of(context).colorScheme.secondary),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Text(
+                            "$eventCount events",
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.secondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12.0,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      decoration: BoxDecoration(
+                        color: eventCount > 20
+                            ? Colors.amber
+                            : eventCount > 10
+                                ? const Color(0xFFC0C0C0)
+                                : const Color.fromARGB(255, 189, 52, 2),
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.25),
+                            blurRadius: 4,
+                            offset: const Offset(
+                                0, 4), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        eventCount > 20
+                            ? "Gold"
+                            : eventCount > 10
+                                ? "Silver"
+                                : "Bronze",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         buildField("First Name",
             updated ? updatedUser.firstName : widget.user.firstName),
@@ -209,52 +229,101 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Birth Date",
             updated ? updatedUser.birthDate : widget.user.birthDate),
         const SizedBox(height: 38.0),
-        Text(
-          "Interest",
-          style: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.tertiary,
+        Padding(
+          padding: const EdgeInsets.only(
+            left: CustomPadding.body,
+            right: CustomPadding.body,
+          ),
+          child: Text(
+            "Interest",
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
           ),
         ),
         const SizedBox(
           height: 7.0,
         ),
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 0.0,
-          children: buildInterest(
-              updated ? updatedUser.preferences : widget.user.preferences),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: CustomPadding.body,
+            right: CustomPadding.body,
+          ),
+          child: Wrap(
+            spacing: 8.0,
+            runSpacing: 0.0,
+            children: buildInterest(
+                updated ? updatedUser.preferences : widget.user.preferences),
+          ),
         ),
         const SizedBox(height: 34.0),
-        CustomButton(
-          label: "Edit Profile",
-          type: ButtonType.primary,
-          onPressedHandler: () async {
-            UserModel response =
-                await Navigator.pushNamed(context, EditProfile.routeName)
-                    as UserModel;
-            setState(() {
-              updatedUser = response;
-              updated = true;
-            });
-          },
-          cornerRadius: 32.0,
+        BlocBuilder<EventsByMeCubit, EventsByMeState>(
+            builder: (context, state) {
+          return HomeContent(
+            title: "Events by Me",
+            contentWidgets: state is EventsByMeSuccessState
+                ? state.events.events.map((event) {
+                    List<String> splittedDate =
+                        DateParser.parseEventDate(event.date);
+                    return EventCardSmall(
+                        eventID: event.eventID,
+                        title: event.eventName,
+                        distance: event.distance,
+                        month: splittedDate[0].substring(0, 3),
+                        date: splittedDate[1].substring(0, 2),
+                        image: 'lib/common/assets/images/SmallEventTest.png');
+                  }).toList()
+                : List.filled(
+                    3,
+                    const EventCardSmall.loading(),
+                  ),
+          );
+        }),
+        const SizedBox(
+          height: 20,
         ),
-        const SizedBox(height: 20.0),
-        BlocListener<LogoutCubit, LogoutState>(
-          listener: (context, state) {
-            if (state is LogoutSuccessState) {
-              Navigator.pushReplacementNamed(context, Landing.routeName);
-            }
-          },
+        Padding(
+          padding: const EdgeInsets.only(
+            left: CustomPadding.body,
+            right: CustomPadding.body,
+          ),
           child: CustomButton(
-            label: "Sign Out",
-            type: ButtonType.red,
-            onPressedHandler: () {
-              logout(context);
+            label: "Edit Profile",
+            type: ButtonType.primary,
+            onPressedHandler: () async {
+              UserModel response =
+                  await Navigator.pushNamed(context, EditProfile.routeName)
+                      as UserModel;
+              setState(() {
+                updatedUser = response;
+                updated = true;
+              });
             },
             cornerRadius: 32.0,
+          ),
+        ),
+        const SizedBox(height: 20.0),
+        Padding(
+          padding: const EdgeInsets.only(
+            left: CustomPadding.body,
+            right: CustomPadding.body,
+          ),
+          child: BlocListener<LogoutCubit, LogoutState>(
+            listener: (context, state) {
+              if (state is LogoutSuccessState) {
+                Navigator.pushReplacementNamed(context, Landing.routeName);
+              }
+            },
+            child: CustomButton(
+              label: "Sign Out",
+              type: ButtonType.red,
+              onPressedHandler: () {
+                logout(context);
+              },
+              cornerRadius: 32.0,
+            ),
           ),
         ),
       ],
@@ -262,27 +331,33 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
   }
 
   Widget buildField(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 38.0),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 16.0,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.tertiary,
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: CustomPadding.body,
+        right: CustomPadding.body,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 38.0),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
           ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

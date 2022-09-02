@@ -7,7 +7,7 @@ import 'package:flutter_boilerplate/page/popular_events.dart';
 class HomeContent extends StatefulWidget {
   final String title;
   final List<Widget> contentWidgets;
-  final bool isPopular;
+  final bool isSeeAll;
   final double contentSpacing;
   final double titleBottomSpacing;
   final double titleLeftSpacing;
@@ -16,7 +16,7 @@ class HomeContent extends StatefulWidget {
     Key? key,
     required this.title,
     required this.contentWidgets,
-    this.isPopular = false,
+    this.isSeeAll = false,
     this.contentSpacing = CustomPadding.md,
     this.titleBottomSpacing = CustomPadding.md,
     this.titleLeftSpacing = CustomPadding.body,
@@ -36,7 +36,7 @@ class _HomeContentState extends State<HomeContent> {
             padding: EdgeInsets.only(
                 bottom: widget.titleBottomSpacing,
                 left: widget.titleLeftSpacing),
-            child: (widget.isPopular)
+            child: (widget.isSeeAll)
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -46,14 +46,18 @@ class _HomeContentState extends State<HomeContent> {
                             fontSize: CustomFontSize.lg,
                             fontWeight: FontWeight.bold),
                       ),
-                      CustomTextButton(
-                          text: 'See All >',
-                          fontSize: CustomFontSize.sm,
-                          type: TextButtonType.tertiary,
-                          onPressedHandler: () {
-                            Navigator.pushNamed(
-                                context, PopularEvents.routeName);
-                          })
+                      Padding(
+                        padding:
+                            EdgeInsets.only(right: widget.titleLeftSpacing),
+                        child: CustomTextButton(
+                            text: 'See All >',
+                            fontSize: CustomFontSize.sm,
+                            type: TextButtonType.tertiary,
+                            onPressedHandler: () {
+                              Navigator.pushNamed(
+                                  context, PopularEvents.routeName);
+                            }),
+                      )
                     ],
                   )
                 : Text(
@@ -66,7 +70,20 @@ class _HomeContentState extends State<HomeContent> {
           scrollDirection: Axis.horizontal,
           child: Wrap(
             spacing: widget.contentSpacing,
-            children: widget.contentWidgets,
+            children: widget.contentWidgets
+                .asMap()
+                .map((i, element) => MapEntry(
+                    i,
+                    Padding(
+                      padding: i == 0
+                          ? const EdgeInsets.only(left: CustomPadding.body)
+                          : i == widget.contentWidgets.length - 1
+                              ? const EdgeInsets.only(right: CustomPadding.body)
+                              : EdgeInsets.zero,
+                      child: element,
+                    )))
+                .values
+                .toList(),
           ),
         ),
       ],
