@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/components/navigation_bar/custom_bott
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/page/search_events.dart';
 
 class Dashboard extends StatefulWidget {
   static const routeName = "/dashboard";
@@ -17,7 +18,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedPageIndex = 0;
 
   final Homepage _homePage = const Homepage();
-  final Widget _searchPage = const SizedBox();
+  final SearchEvents _searchPage = const SearchEvents();
   final Widget _eventPage = const SizedBox();
   final Widget _historyPage = const SizedBox();
 
