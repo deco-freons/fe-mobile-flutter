@@ -15,6 +15,10 @@ class PopularEventsLoadingState extends PopularEventsState {
   const PopularEventsLoadingState();
 }
 
+class PopularEventsFilterState extends PopularEventsState {
+  const PopularEventsFilterState();
+}
+
 class PopularEventsSuccessState extends PopularEventsState {
   final List<List<String>> locationNames;
   final List<PopularEventModel> events;
