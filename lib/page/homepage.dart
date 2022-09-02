@@ -241,8 +241,16 @@ class _BuildHomeState extends State<BuildHome> {
                                 'lib/common/assets/images/SmallEventTest.png');
                       }).toList()
                     : const [
-                        EventCardSmall.loading(),
-                        EventCardSmall.loading(),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: CustomPadding.xl, top: CustomPadding.xs),
+                          child: EventCardSmall.loading(),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: CustomPadding.sm, top: CustomPadding.xs),
+                          child: EventCardSmall.loading(),
+                        ),
                       ]),
           );
         }),
