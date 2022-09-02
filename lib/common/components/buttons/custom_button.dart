@@ -7,13 +7,15 @@ class CustomButton extends StatefulWidget {
   final ButtonType type;
   final VoidCallback? onPressedHandler;
   final double cornerRadius;
+  final double labelFontSize;
 
   const CustomButton(
       {Key? key,
       required this.label,
       required this.type,
       this.onPressedHandler,
-      this.cornerRadius = CustomRadius.lg})
+      this.cornerRadius = CustomRadius.lg,
+      this.labelFontSize = CustomFontSize.lg})
       : super(key: key);
 
   @override
@@ -48,7 +50,7 @@ class _CustomButtonState extends State<CustomButton> {
               : widget.type == ButtonType.inverse
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.secondary,
-          fontSize: 20.0,
+          fontSize: widget.labelFontSize,
           fontWeight: FontWeight.bold,
         ),
       ),
