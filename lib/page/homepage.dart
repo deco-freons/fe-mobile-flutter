@@ -8,8 +8,8 @@ import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_small.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
-import 'package:flutter_boilerplate/page/popular_events.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
+import 'package:flutter_boilerplate/page/search_events.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:intl/intl.dart';
 
@@ -224,7 +224,7 @@ class _BuildHomeState extends State<BuildHome> {
                     fontSize: CustomFontSize.sm,
                     type: TextButtonType.tertiary,
                     onPressedHandler: () {
-                      Navigator.pushNamed(context, PopularEvents.routeName);
+                      Navigator.pushNamed(context, SearchEvents.routeName);
                     }),
                 contentWidgets: isSuccessState
                     ? state.events.map((event) {
