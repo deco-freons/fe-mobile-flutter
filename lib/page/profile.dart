@@ -133,10 +133,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                       overflow: TextOverflow.fade,
                       softWrap: false,
                       style: TextStyle(
-
                         fontSize: CustomFontSize.title,
-
-                       
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -166,7 +163,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Location",
             widget.user.location.suburb),
         const SizedBox(height: 38.0),
-
         buildInterests(),
         const SizedBox(height: 28.0),
         BlocBuilder<EventsByMeCubit, EventsByMeState>(
@@ -180,7 +176,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         }),
         const SizedBox(
           height: 20,
-
         ),
         Padding(
           padding: bodyPadding,
@@ -188,13 +183,15 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
             label: "Edit Profile",
             type: ButtonType.primary,
             onPressedHandler: () async {
-              UserModel response =
+              UserModel? response =
                   await Navigator.pushNamed(context, EditProfile.routeName)
-                      as UserModel;
-              setState(() {
-                updatedUser = response;
-                updated = true;
-              });
+                      as UserModel?;
+              if (response != null) {
+                setState(() {
+                  updatedUser = response;
+                  updated = true;
+                });
+              }
             },
             cornerRadius: CustomRadius.button,
           ),
