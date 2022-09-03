@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
-import 'package:flutter_boilerplate/common/components/confirmation_modal_bottom.dart';
+import 'package:flutter_boilerplate/common/components/layout/confirmation_modal_bottom.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';

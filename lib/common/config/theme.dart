@@ -14,7 +14,7 @@ class CustomTheme {
 ColorScheme colorScheme = ColorScheme(
   primary: primary,
   secondary: neutral.shade100,
-  tertiary: neutral.shade400,
+  tertiary: neutral.shade500,
   surface: neutral.shade800,
   onPrimary: neutral.shade100,
   background: neutral.shade100,
@@ -111,6 +111,4 @@ const screenBodyPadding = EdgeInsets.only(
   right: CustomPadding.body,
 );
 
-const double bodyPadding = 28;
-
-
+const bodyPadding = EdgeInsets.symmetric(horizontal: CustomPadding.body);

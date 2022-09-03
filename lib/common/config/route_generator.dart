@@ -8,6 +8,7 @@ import 'package:flutter_boilerplate/page/edit_event.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/page/event_participants.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
+import 'package:flutter_boilerplate/page/friend_profile.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/location_denied.dart';
@@ -85,9 +86,15 @@ class RouteGenerator {
         List<EventParticipantModel> participants =
             args as List<EventParticipantModel>;
         return MaterialPageRoute(
-            builder: (context) => EventParticipants(
-                  participants: participants,
+            builder: (context) =>
+                EventParticipants(participants: participants));
+       case FriendProfile.routeName:
+        int userID = args as int;
+        return MaterialPageRoute(
+            builder: (context) => FriendProfile(
+                  userID: userID,
                 ));
+
       default:
         return _errorRoute();
     }
