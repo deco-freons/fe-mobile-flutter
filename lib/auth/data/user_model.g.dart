@@ -18,6 +18,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       birthDate: json['birthDate'] as String,
+      location: json['location'] as String?,
+      isShareLocation: json['isShareLocation'] as bool,
     );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -30,4 +32,6 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'isVerified': instance.isVerified,
       'isFirstLogin': instance.isFirstLogin,
       'preferences': instance.preferences,
+      'location': instance.location,
+      'isShareLocation': instance.isShareLocation,
     };

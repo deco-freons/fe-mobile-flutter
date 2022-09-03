@@ -110,7 +110,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
       CustomFormInput(label: 'Event Name', type: TextFieldType.string);
   final CustomFormInput category = CustomFormInput(
     label: 'Category',
-    type: TextFieldType.category,
+    type: TextFieldType.interest,
   );
   final CustomFormInput date = CustomFormInput(
     label: 'Date',
@@ -147,7 +147,8 @@ class _CreateEventFormState extends State<CreateEventForm> {
       submitHandler: () {
         CreateEventModel data = CreateEventModel(
             eventName: eventName.controller.text,
-            categories: [category.controller.text],
+            categories:
+                category.preferences.map((pref) => pref.preferenceID).toList(),
             date: date.controller.text,
             startTime: eventTime.controller.text,
             endTime: eventTime.secondController != null
