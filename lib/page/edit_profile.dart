@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
-import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';

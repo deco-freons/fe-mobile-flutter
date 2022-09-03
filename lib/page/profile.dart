@@ -5,7 +5,7 @@ import 'package:flutter_boilerplate/auth/logout/bloc/logout_cubit.dart';
 import 'package:flutter_boilerplate/auth/logout/bloc/logout_state.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
-import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/date_parser.dart';
@@ -16,8 +16,10 @@ import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/events_by_me_repository.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
-import 'package:flutter_boilerplate/preference/components/preference_button.dart';
-import 'package:flutter_boilerplate/preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/profile/components/event_count_badge.dart';
+import 'package:flutter_boilerplate/profile/components/profile_field.dart';
+import 'package:flutter_boilerplate/profile/components/tier_badge.dart';
+import 'package:flutter_boilerplate/profile/components/user_interests_chips.dart';
 import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
@@ -108,18 +110,15 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(vertical: CustomPadding.body),
+      padding: const EdgeInsets.symmetric(vertical: CustomPadding.base),
       children: [
         Padding(
-          padding: const EdgeInsets.only(
-            left: CustomPadding.body,
-            right: CustomPadding.body,
-          ),
+          padding: bodyPadding,
           child: Row(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 52.5,
-                child: Image.asset(
+                backgroundImage: AssetImage(
                     'lib/common/assets/images/CircleAvatarDefault.png'),
               ),
               const SizedBox(
@@ -136,7 +135,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                       overflow: TextOverflow.fade,
                       softWrap: false,
                       style: TextStyle(
-                        fontSize: 26.0,
+                        fontSize: CustomFontSize.title,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -144,76 +143,11 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                     const SizedBox(
                       height: 5.0,
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 4,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ImageIcon(
-                              const AssetImage(
-                                  'lib/common/assets/images/TrophyIcon.png'),
-                              color: Theme.of(context).colorScheme.secondary),
-                          const SizedBox(
-                            width: 5.0,
-                          ),
-                          Text(
-                            "$eventCount events",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    EventCountBadge(eventCount: eventCount),
                     const SizedBox(
                       height: 12.0,
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      decoration: BoxDecoration(
-                        color: eventCount > 20
-                            ? Colors.amber
-                            : eventCount > 10
-                                ? const Color(0xFFC0C0C0)
-                                : const Color.fromARGB(255, 189, 52, 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 4,
-                            offset: const Offset(
-                                0, 4), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        eventCount > 20
-                            ? "Gold"
-                            : eventCount > 10
-                                ? "Silver"
-                                : "Bronze",
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                    ),
+                    TierBadge(eventCount: eventCount),
                   ],
                 ),
               ),
@@ -229,40 +163,14 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Birth Date",
             updated ? updatedUser.birthDate : widget.user.birthDate),
         const SizedBox(height: 38.0),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: CustomPadding.body,
-            right: CustomPadding.body,
-          ),
-          child: Text(
-            "Interest",
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.tertiary,
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 7.0,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(
-            left: CustomPadding.body,
-            right: CustomPadding.body,
-          ),
-          child: Wrap(
-            spacing: 8.0,
-            runSpacing: 0.0,
-            children: buildInterest(
-                updated ? updatedUser.preferences : widget.user.preferences),
-          ),
-        ),
-        const SizedBox(height: 34.0),
+        buildInterests(),
+        const SizedBox(height: 28.0),
         BlocBuilder<EventsByMeCubit, EventsByMeState>(
             builder: (context, state) {
           return HomeContent(
             title: "Events by Me",
+            titleBottomSpacing: CustomPadding.sm,
+            isSeeAll: true,
             contentWidgets: state is EventsByMeSuccessState
                 ? state.events.events.map((event) {
                     List<String> splittedDate =
@@ -285,10 +193,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
           height: 20,
         ),
         Padding(
-          padding: const EdgeInsets.only(
-            left: CustomPadding.body,
-            right: CustomPadding.body,
-          ),
+          padding: bodyPadding,
           child: CustomButton(
             label: "Edit Profile",
             type: ButtonType.primary,
@@ -301,15 +206,12 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                 updated = true;
               });
             },
-            cornerRadius: 32.0,
+            cornerRadius: CustomRadius.button,
           ),
         ),
         const SizedBox(height: 20.0),
         Padding(
-          padding: const EdgeInsets.only(
-            left: CustomPadding.body,
-            right: CustomPadding.body,
-          ),
+          padding: bodyPadding,
           child: BlocListener<LogoutCubit, LogoutState>(
             listener: (context, state) {
               if (state is LogoutSuccessState) {
@@ -330,46 +232,18 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
     );
   }
 
-  Widget buildField(String label, String value) {
+  Widget buildInterests() {
     return Padding(
-      padding: const EdgeInsets.only(
-        left: CustomPadding.body,
-        right: CustomPadding.body,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 38.0),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.tertiary,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
-          ),
-        ],
-      ),
+      padding: bodyPadding,
+      child: UserInterestChips(
+          preferences:
+              updated ? updatedUser.preferences : widget.user.preferences),
     );
   }
 
-  List<Widget> buildInterest(List<PreferenceModel> preferences) {
-    List<Widget> widgets = preferences.map((preference) {
-      return PreferenceButton(
-        stringInput: preference.preferenceName,
-        useStringInput: true,
-        onPressedHandler: () {},
-      );
-    }).toList();
-    return widgets;
+  Widget buildField(String label, String value) {
+    return Padding(
+        padding: bodyPadding, child: ProfileField(label: label, value: value));
   }
 
   void logout(BuildContext context) async {

@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/bloc/auth_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/page/friend_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
-import 'package:flutter_boilerplate/page/location_permission.dart';
 
 import 'common/config/route_generator.dart';
 
@@ -56,8 +56,11 @@ class _AppViewState extends State<AppView> {
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthAuthenticatedState) {
+              // _navigator.pushNamedAndRemoveUntil(
+              //     LocationPermission.routeName, (route) => false);
               _navigator.pushNamedAndRemoveUntil(
-                  LocationPermission.routeName, (route) => false);
+                  FriendProfile.routeName, (route) => false,
+                  arguments: 1);
             } else if (state is AuthUnauthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
                   Landing.routeName, (route) => false);

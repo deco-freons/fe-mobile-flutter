@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_boilerplate/common/components/shimmer_widget.dart';
+import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 
 class BuildLoading {
   static Widget buildRectangularLoading(
