@@ -174,7 +174,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                             ? DropdownSearch<dynamic>(
                                 dropdownBuilder: (context, selectedItem) =>
                                     Text(
-                                  selectedItem.suburb,
+                                  selectedItem != null
+                                      ? selectedItem.suburb
+                                      : "",
                                   style: widget.inputStyle,
                                 ),
                                 popupProps: PopupProps.menu(
