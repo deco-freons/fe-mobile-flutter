@@ -8,7 +8,7 @@ import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.d
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/common/data/location_model.dart';
+import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -191,7 +191,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           "lib/common/assets/files/express_public_location.json");
                                   final jsonResult = jsonDecode(data);
                                   List<dynamic> locations = jsonResult
-                                      .map((item) => LocationModel(
+                                      .map((item) => BrisbaneLocationModel(
                                           locationID: item["location_id"],
                                           suburb: item["suburb"],
                                           city: item["city"],

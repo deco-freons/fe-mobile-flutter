@@ -1,13 +1,13 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 
-class LocationModel extends BaseModel {
+class BrisbaneLocationModel extends BaseModel {
   final int locationID;
   final String suburb;
   final String city;
   final String state;
   final String country;
 
-  const LocationModel({
+  const BrisbaneLocationModel({
     required this.locationID,
     required this.suburb,
     required this.city,
