@@ -110,7 +110,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: CustomPadding.body),
       children: [
-// <<<<<<< HEAD
         Padding(
           padding: const EdgeInsets.only(
             left: CustomPadding.body,
@@ -138,103 +137,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                       softWrap: false,
                       style: TextStyle(
                         fontSize: 26.0,
-// =======
-        // Row(
-        //   children: [
-        //     CircleAvatar(
-        //       radius: 52.5,
-        //       child: Image.asset(
-        //           'lib/common/assets/images/CircleAvatarDefault.png'),
-        //     ),
-        //     const SizedBox(
-        //       width: 22.0,
-        //     ),
-        //     Flexible(
-        //       child: Column(
-        //         crossAxisAlignment: CrossAxisAlignment.start,
-        //         children: [
-        //           Text(
-        //             updated
-        //                 ? "${updatedUser.firstName} ${updatedUser.lastName}"
-        //                 : "${widget.user.firstName} ${widget.user.lastName}",
-        //             overflow: TextOverflow.fade,
-        //             softWrap: false,
-        //             style: TextStyle(
-        //               fontSize: 26.0,
-        //               fontWeight: FontWeight.bold,
-        //               color: Theme.of(context).colorScheme.onSurfaceVariant,
-        //             ),
-        //           ),
-        //           const SizedBox(
-        //             height: 5.0,
-        //           ),
-        //           Container(
-        //             padding: const EdgeInsets.symmetric(
-        //                 horizontal: CustomPadding.base),
-        //             decoration: BoxDecoration(
-        //               color: Theme.of(context).colorScheme.primary,
-        //               borderRadius: const BorderRadius.all(
-        //                   Radius.circular(CustomRadius.xxl)),
-        //               boxShadow: [
-        //                 BoxShadow(
-        //                   color: neutral.shade900.withOpacity(0.25),
-        //                   blurRadius: 4,
-        //                   offset: const Offset(0, 4),
-        //                 ),
-        //               ],
-        //             ),
-        //             child: Row(
-        //               mainAxisSize: MainAxisSize.min,
-        //               children: [
-        //                 ImageIcon(
-        //                     const AssetImage(
-        //                         'lib/common/assets/images/TrophyIcon.png'),
-        //                     color: Theme.of(context).colorScheme.secondary),
-        //                 const SizedBox(
-        //                   width: 5.0,
-        //                 ),
-        //                 Text(
-        //                   "$eventCount events",
-        //                   style: TextStyle(
-        //                     fontSize: CustomFontSize.base,
-        //                     fontWeight: FontWeight.bold,
-        //                     color: Theme.of(context).colorScheme.secondary,
-        //                   ),
-        //                 ),
-        //               ],
-        //             ),
-        //           ),
-        //           const SizedBox(
-        //             height: 12.0,
-        //           ),
-        //           Container(
-        //             padding: const EdgeInsets.symmetric(
-        //                 horizontal: CustomPadding.md),
-        //             decoration: BoxDecoration(
-        //               color: eventCount > 20
-        //                   ? Colors.amber
-        //                   : eventCount > 10
-        //                       ? const Color(0xFFC0C0C0)
-        //                       : const Color.fromARGB(255, 189, 52, 2),
-        //               borderRadius: const BorderRadius.all(
-        //                   Radius.circular(CustomRadius.xxl)),
-        //               boxShadow: [
-        //                 BoxShadow(
-        //                   color: neutral.shade900.withOpacity(0.25),
-        //                   blurRadius: 4,
-        //                   offset: const Offset(0, 4),
-        //                 ),
-        //               ],
-        //             ),
-        //             child: Text(
-        //               eventCount > 20
-        //                   ? "Gold"
-        //                   : eventCount > 10
-        //                       ? "Silver"
-        //                       : "Bronze",
-        //               style: TextStyle(
-        //                 fontSize: CustomFontSize.base,
-// >>>>>>> f694cd8 (refactor: :lipstick: added location to profile and edit profile (UI))
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
@@ -243,11 +145,12 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                       height: 5.0,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: CustomPadding.base),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(CustomRadius.xxl)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.25),
@@ -269,7 +172,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                           Text(
                             "$eventCount events",
                             style: TextStyle(
-                              fontSize: 16.0,
+                              fontSize: CustomFontSize.base,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.secondary,
                             ),
@@ -281,21 +184,21 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                       height: 12.0,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: CustomPadding.md),
                       decoration: BoxDecoration(
                         color: eventCount > 20
                             ? Colors.amber
                             : eventCount > 10
                                 ? const Color(0xFFC0C0C0)
                                 : const Color.fromARGB(255, 189, 52, 2),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                        borderRadius: const BorderRadius.all(
+                            Radius.circular(CustomRadius.xxl)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.25),
                             blurRadius: 4,
-                            offset: const Offset(
-                                0, 4), // changes position of shadow
+                            offset: const Offset(0, 4),
                           ),
                         ],
                       ),
@@ -306,7 +209,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
                                 ? "Silver"
                                 : "Bronze",
                         style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: CustomFontSize.base,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -329,7 +232,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Location",
             widget.user.location != null ? widget.user.location! : "Location"),
         const SizedBox(height: 38.0),
-// <<<<<<< HEAD
         Padding(
           padding: const EdgeInsets.only(
             left: CustomPadding.body,
@@ -338,24 +240,15 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
           child: Text(
             "Interest",
             style: TextStyle(
-              fontSize: 16.0,
+              fontSize: CustomFontSize.base,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.tertiary,
             ),
-// =======
-//         Text(
-//           "Interest",
-//           style: TextStyle(
-//             fontSize: CustomFontSize.base,
-//             fontWeight: FontWeight.bold,
-//             color: Theme.of(context).colorScheme.tertiary,
-// >>>>>>> f694cd8 (refactor: :lipstick: added location to profile and edit profile (UI))
           ),
         ),
         const SizedBox(
           height: 7.0,
         ),
-// <<<<<<< HEAD
         Padding(
           padding: const EdgeInsets.only(
             left: CustomPadding.body,
@@ -393,28 +286,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         }),
         const SizedBox(
           height: 20,
-// =======
-//         Wrap(
-//           spacing: CustomPadding.sm,
-//           runSpacing: 0.0,
-//           children: buildInterest(
-//               updated ? updatedUser.preferences : widget.user.preferences),
-//         ),
-//         const SizedBox(height: 34.0),
-//         CustomButton(
-//           label: "Edit Profile",
-//           type: ButtonType.primary,
-//           onPressedHandler: () async {
-//             UserModel response =
-//                 await Navigator.pushNamed(context, EditProfile.routeName)
-//                     as UserModel;
-//             setState(() {
-//               updatedUser = response;
-//               updated = true;
-//             });
-//           },
-//           cornerRadius: CustomRadius.button,
-// >>>>>>> f694cd8 (refactor: :lipstick: added location to profile and edit profile (UI))
         ),
         Padding(
           padding: const EdgeInsets.only(
@@ -425,13 +296,15 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
             label: "Edit Profile",
             type: ButtonType.primary,
             onPressedHandler: () async {
-              UserModel response =
+              UserModel? response =
                   await Navigator.pushNamed(context, EditProfile.routeName)
-                      as UserModel;
-              setState(() {
-                updatedUser = response;
-                updated = true;
-              });
+                      as UserModel?;
+              if (response != null) {
+                setState(() {
+                  updatedUser = response;
+                  updated = true;
+                });
+              }
             },
             cornerRadius: CustomRadius.button,
           ),
@@ -463,7 +336,6 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
   }
 
   Widget buildField(String label, String value) {
-// <<<<<<< HEAD
     return Padding(
       padding: const EdgeInsets.only(
         left: CustomPadding.body,
@@ -476,7 +348,7 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
           Text(
             label,
             style: TextStyle(
-              fontSize: 16.0,
+              fontSize: CustomFontSize.base,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.tertiary,
             ),
@@ -484,30 +356,10 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
           Text(
             value,
             style: TextStyle(
-              fontSize: 20.0,
+              fontSize: CustomFontSize.lg,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
-// =======
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         const SizedBox(height: 38.0),
-//         Text(
-//           label,
-//           style: TextStyle(
-//             fontSize: CustomFontSize.base,
-//             fontWeight: FontWeight.bold,
-//             color: Theme.of(context).colorScheme.tertiary,
-//           ),
-//         ),
-//         Text(
-//           value,
-//           style: TextStyle(
-//             fontSize: CustomFontSize.lg,
-//             fontWeight: FontWeight.bold,
-//             color: Theme.of(context).colorScheme.onSurfaceVariant,
-// >>>>>>> f694cd8 (refactor: :lipstick: added location to profile and edit profile (UI))
           ),
         ],
       ),
