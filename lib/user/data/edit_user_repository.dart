@@ -7,7 +7,7 @@ import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/get_it.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_data_provider.dart';
-import 'package:flutter_boilerplate/user/data/edit_user_model.dart';
+import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
 
 abstract class EditUserRepository implements BaseRepository {
   Future<dynamic> editUser(

@@ -23,7 +23,7 @@ class EventDetailCubit extends BaseCubit<EventDetailState> {
       emit(state.copyWith(status: LoadingType.SUCCESS, message: ""));
     } catch (e) {
       String errorMessage = ErrorHandler.handle(e);
-      state.copyWith(status: LoadingType.ERROR, message: errorMessage);
+      emit(state.copyWith(status: LoadingType.ERROR, message: errorMessage));
     }
   }
 

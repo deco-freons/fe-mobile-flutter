@@ -11,8 +11,8 @@ import 'package:flutter_boilerplate/user/bloc/edit_user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/edit_user_state.dart';
 import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
-import 'package:flutter_boilerplate/user/data/edit_user_model.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
+import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
 
 class EditProfile extends StatefulWidget {

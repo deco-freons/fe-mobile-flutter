@@ -33,7 +33,7 @@ class EventParticipants extends StatelessWidget {
                 child: ParticipantCard(
                     firstName: participants[index].firstName,
                     lastName: participants[index].lastName,
-                    location: "Brisbane City"),
+                    location: participants[index].location?.suburb ?? ""),
               );
             }),
       ),
