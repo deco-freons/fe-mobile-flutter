@@ -160,8 +160,11 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Email", widget.user.email),
         buildField("Birth Date",
             updated ? updatedUser.birthDate : widget.user.birthDate),
-        buildField("Location",
-            widget.user.location.suburb),
+        buildField(
+            "Location",
+            updated
+                ? updatedUser.location.suburb
+                : widget.user.location.suburb),
         const SizedBox(height: 38.0),
         buildInterests(),
         const SizedBox(height: 28.0),
