@@ -11,6 +11,7 @@ enum TextFieldType {
   image,
   interest,
   checkbox,
+  toggleSwitch,
 }
 
 enum ButtonType { primary, inverse, red }

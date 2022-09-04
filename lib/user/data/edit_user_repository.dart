@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_boilerplate/auth/data/profile_location_model.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
@@ -10,8 +11,8 @@ import 'package:flutter_boilerplate/user/data/edit_user_data_provider.dart';
 import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
 
 abstract class EditUserRepository implements BaseRepository {
-  Future<dynamic> editUser(
-      EditUserModel data, List<PreferenceModel> preferenceModels);
+  Future<dynamic> editUser(EditUserModel data,
+      List<PreferenceModel> preferenceModels, ProfileLocationModel location);
 }
 
 class EditUserRepositoryImpl extends EditUserRepository {
@@ -20,7 +21,9 @@ class EditUserRepositoryImpl extends EditUserRepository {
 
   @override
   Future<dynamic> editUser(
-      EditUserModel data, List<PreferenceModel> preferenceModels) async {
+      EditUserModel data,
+      List<PreferenceModel> preferenceModels,
+      ProfileLocationModel location) async {
     String? user = await secureStorage.get(key: 'user');
     if (user == null) {
       throw NotFoundException();
@@ -31,9 +34,12 @@ class EditUserRepositoryImpl extends EditUserRepository {
     userMap['firstName'] = data.firstName;
     userMap['lastName'] = data.lastName;
     userMap['birthDate'] = data.birthDate;
-    List<Map<String, dynamic>> preferencejsons =
+    List<Map<String, dynamic>> preferenceJsons =
         preferenceModels.map((pref) => pref.toJson()).toList();
-    userMap['preferences'] = preferencejsons;
+    userMap['preferences'] = preferenceJsons;
+    Map<String, dynamic> locationJson = location.toJson();
+    userMap['location'] = locationJson;
+    userMap['isShareLocation'] = data.isShareLocation;
 
     await secureStorage.set(key: 'user', value: json.encode(userMap));
     await _editUserDataProvider.editUser(data);
