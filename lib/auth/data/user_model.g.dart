@@ -18,8 +18,15 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       birthDate: json['birthDate'] as String,
+<<<<<<< HEAD
       location:
           LocationModel.fromJson(json['location'] as Map<String, dynamic>),
+=======
+      location: json['location'] == null
+          ? null
+          : UserLocationModel.fromJson(
+              json['location'] as Map<String, dynamic>),
+>>>>>>> deb8e04 (feat: :construction: integrate ui with bloc)
       isShareLocation: json['isShareLocation'] as bool,
     );
 

@@ -1,19 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'location_model.dart';
+part of 'profile_request_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LocationModel _$LocationModelFromJson(Map<String, dynamic> json) =>
-    LocationModel(
-      latitude: (json['latitude'] as num).toDouble(),
+ProfileRequestModel _$ProfileRequestModelFromJson(Map<String, dynamic> json) =>
+    ProfileRequestModel(
+      userID: json['userID'] as int,
       longitude: (json['longitude'] as num).toDouble(),
+      latitude: (json['latitude'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$LocationModelToJson(LocationModel instance) =>
+Map<String, dynamic> _$ProfileRequestModelToJson(
+        ProfileRequestModel instance) =>
     <String, dynamic>{
+      'userID': instance.userID,
       'longitude': instance.longitude,
       'latitude': instance.latitude,
     };

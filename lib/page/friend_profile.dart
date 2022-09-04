@@ -1,38 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
-import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/event_card_small.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
-import 'package:flutter_boilerplate/preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/profile/bloc/profile_cubit.dart';
+import 'package:flutter_boilerplate/profile/bloc/profile_state.dart';
 import 'package:flutter_boilerplate/profile/components/profile_field.dart';
 import 'package:flutter_boilerplate/profile/components/user_interests_chips.dart';
+import 'package:flutter_boilerplate/profile/data/profile_repository.dart';
 
 class FriendProfile extends StatelessWidget {
   static const routeName = "friend-profile";
-
+  final ProfileRepository _profileRepository = ProfileRepositoryImpl();
   final int userID;
-  const FriendProfile({Key? key, required this.userID}) : super(key: key);
+
+  FriendProfile({Key? key, required this.userID}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget spacing = const SizedBox(
       height: 38,
     );
-    return Scaffold(
-      backgroundColor: neutral.shade100,
-      appBar: const PageAppBar(title: "Kim Ji-soo", hasBackButton: true),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: CustomPadding.base),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Center(
-              child: CircleAvatar(
-                radius: 75,
-                backgroundImage: AssetImage(
-                    'lib/common/assets/images/CircleAvatarDefault.png'),
+    return BlocProvider(
+      create: (context) =>
+          ProfileCubit(_profileRepository)..getUserProfile(userID),
+      child: BlocConsumer<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileErrorState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage),
               ),
+            );
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: neutral.shade100,
+            appBar: PageAppBar(
+              title: state is ProfileSuccessState
+                  ? '${state.profile.firstName} ${state.profile.lastName}'
+                  : "",
+              hasBackButton: true,
             ),
             buildField("Username", "jisoo"),
             buildField("Location", "Brisbane City"),
@@ -48,24 +59,41 @@ class FriendProfile extends StatelessWidget {
                 const EventCardSmall.loading(),
               ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
 
-  Widget buildField(String label, String value) {
-    return Padding(
-        padding: bodyPadding, child: ProfileField(label: label, value: value));
+  Widget buildAvatar(ProfileState state) {
+    return Center(
+      child: state is ProfileSuccessState
+          ? const CircleAvatar(
+              radius: 75,
+              backgroundImage: AssetImage(
+                  'lib/common/assets/images/CircleAvatarDefault.png'),
+            )
+          : const ShimmerWidget.circular(width: 150, height: 150),
+    );
   }
 
-  Widget buildInterests() {
+  Widget buildField(String label, String value, bool isLoading) {
+    return Padding(
+        padding: bodyPadding,
+        child: !isLoading
+            ? ProfileField(label: label, value: value)
+            : const ProfileField.loading());
+  }
+
+  Widget buildInterests(ProfileState state) {
     return Padding(
       padding: bodyPadding,
-      child: UserInterestChips(preferences: [
-        PreferenceModel(preferenceID: "CL", preferenceName: PrefType.CL.desc),
-        PreferenceModel(preferenceID: "DC", preferenceName: PrefType.DC.desc)
-      ]),
+      child: state is ProfileSuccessState
+          ? UserInterestChips(
+              preferences: state.profile.preferences
+                  .map((preference) => preference)
+                  .toList())
+          : const UserInterestChips.loading(),
     );
   }
 }

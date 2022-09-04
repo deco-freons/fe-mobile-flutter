@@ -1,7 +1,5 @@
-import 'package:flutter/material.dart';
 import '../../common/bloc/base_state.dart';
 
-@immutable
 abstract class CreateEventState implements BaseState {
   const CreateEventState();
 }
