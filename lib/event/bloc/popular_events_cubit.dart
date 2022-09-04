@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/data/empty_nearby_model.dart';
@@ -50,30 +51,35 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     }
   }
 
-  Future<void> getAllPopularEvents(List<String> data) async {
+  Future<void> getAllPopularEvents(List<PrefType> data) async {
     try {
       emit(const PopularEventsLoadingState());
       Position position = await Geolocator.getCurrentPosition();
 
-      NearbyModel nearby = NearbyModel(
-          categories: data,
-          longitude: position.longitude,
-          latitude: position.latitude,
-          radius: 10.0);
-      EmptyNearbyModel emptyNearby = EmptyNearbyModel(
-          longitude: position.longitude,
-          latitude: position.latitude,
-          radius: 10.0);
       Map res = {};
       String? googleApiKey = dotenv.env['googleApiKey'];
       geocode.GoogleGeocoding googleGeocoding =
           geocode.GoogleGeocoding(googleApiKey!);
       List<List<String>> locationNames = [];
+      List<String> dataString = [];
 
-      if (data.isEmpty) {
+      for (var pref in data) {
+        dataString.add(pref.name);
+      }
+
+      if (dataString.isEmpty) {
+        EmptyNearbyModel emptyNearby = EmptyNearbyModel(
+            longitude: position.longitude,
+            latitude: position.latitude,
+            radius: 10.0);
         res = await _popularEventsRepository
             .getAllPopularEventsByAll(emptyNearby);
       } else {
+        NearbyModel nearby = NearbyModel(
+            categories: dataString,
+            longitude: position.longitude,
+            latitude: position.latitude,
+            radius: 10.0);
         res = await _popularEventsRepository
             .getAllPopularEventsByCategory(nearby);
       }
@@ -101,19 +107,10 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     }
   }
 
-  Future<void> getMoreEvents(List<String> data, int pageCount) async {
+  Future<void> getMoreEvents(List<PrefType> data, int pageCount) async {
     try {
       Position position = await Geolocator.getCurrentPosition();
 
-      NearbyModel nearby = NearbyModel(
-          categories: data,
-          longitude: position.longitude,
-          latitude: position.latitude,
-          radius: 10.0);
-      EmptyNearbyModel emptyNearby = EmptyNearbyModel(
-          longitude: position.longitude,
-          latitude: position.latitude,
-          radius: 10.0);
       Map res = {};
 
       String? googleApiKey = dotenv.env['googleApiKey'];
@@ -121,13 +118,27 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           geocode.GoogleGeocoding(googleApiKey!);
 
       List<List<String>> locationNames = [];
+      List<String> dataString = [];
       pageCount = pageCount + 1;
       String getMorePath = '/event/read?skip=$pageCount&take=10';
 
+      for (var pref in data) {
+        dataString.add(pref.name);
+      }
+
       if (data.isEmpty) {
+        EmptyNearbyModel emptyNearby = EmptyNearbyModel(
+            longitude: position.longitude,
+            latitude: position.latitude,
+            radius: 10.0);
         res = await _popularEventsRepository.getMorePopularEventsByAll(
             emptyNearby, getMorePath);
       } else {
+        NearbyModel nearby = NearbyModel(
+            categories: dataString,
+            longitude: position.longitude,
+            latitude: position.latitude,
+            radius: 10.0);
         res = await _popularEventsRepository.getMorePopularEventsMoreByCategory(
             nearby, getMorePath);
       }
