@@ -7,6 +7,7 @@ import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
 import 'package:flutter_boilerplate/event/components/filter_modal.dart';
 import 'package:flutter_boilerplate/event/components/search_bar.dart';
+import 'package:flutter_boilerplate/event/data/filter_event_modal_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
@@ -65,24 +66,18 @@ class BuildSearchEvents extends StatefulWidget {
 
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
   final scrollController = ScrollController();
-  List<PrefType> categories = [];
-  List<String> categoriesData = [];
   List<PopularEventModel> eventList = [];
-  List<bool> prefCheck = [];
-  bool allCheck = false;
+  FilterEventModalModel filter = FilterEventModalModel(
+      categories: const [],
+      weekChoice: null,
+      distanceChoice: null,
+      allCheck: false,
+      prefCheck: List.filled(PrefType.values.length, true),
+      weekCheck: List.filled(WeekFilter.values.length, true),
+      distanceCheck: List.filled(DistanceFilter.values.length, true));
 
   @override
   Widget build(BuildContext context) {
-    for (var pref in PrefType.values) {
-      if (categoriesData.contains(pref.name)) {
-        prefCheck.add(false);
-      } else {
-        prefCheck.add(true);
-      }
-    }
-    if (prefCheck.contains(false)) {
-      allCheck = true;
-    }
     return Expanded(
       child: Column(
         children: [
@@ -101,11 +96,11 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                       ),
                     ),
                     builder: (context) => FilterModal(
-                          initialCategories: categoriesData,
-                          prefCheck: prefCheck,
-                          allCheck: allCheck,
+                          filter: filter,
                         )).then((value) => setState(() {
-                      categoriesData = value;
+                      if (value != null) {
+                        filter = value;
+                      }
                     }));
                 // ignore: use_build_context_synchronously
                 context.read<PopularEventsCubit>().emitFilterState();
@@ -130,7 +125,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 eventList.removeWhere((event) => !state.events.contains(event));
               }
             } else if (state is PopularEventsFilterState) {
-              getAllPopularEvents(context, categoriesData);
+              getAllPopularEvents(context, filter.categories);
             }
           }, builder: (context, state) {
             if (state is PopularEventsErrorState) {
@@ -153,7 +148,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                 context
                                     .read<PopularEventsCubit>()
                                     .getMoreEvents(
-                                        categoriesData, state.pageCount);
+                                        filter.categories, state.pageCount);
                               }
                             }),
                           children: eventList.map((event) {
@@ -208,7 +203,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     );
   }
 
-  void getAllPopularEvents(BuildContext context, List<String> data) {
+  void getAllPopularEvents(BuildContext context, List<PrefType> data) {
     final cubit = context.read<PopularEventsCubit>();
     cubit.getAllPopularEvents(data);
   }
