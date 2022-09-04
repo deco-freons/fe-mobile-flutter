@@ -22,7 +22,8 @@ class ParticipantCard extends StatelessWidget {
         ],
       ),
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(CustomRadius.xxl)),
         margin: EdgeInsets.zero,
         elevation: 0,
         child: Padding(
