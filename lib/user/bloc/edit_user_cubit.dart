@@ -1,3 +1,4 @@
+import 'package:flutter_boilerplate/auth/data/profile_location_model.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
@@ -12,11 +13,13 @@ class EditUserCubit extends BaseCubit<EditUserState> {
   EditUserCubit(this._editUserRepository) : super(const EditUserInitialState());
 
   Future<void> editUser(
-      EditUserModel data, List<PreferenceModel> preferenceModels) async {
+      EditUserModel data,
+      List<PreferenceModel> preferenceModels,
+      ProfileLocationModel location) async {
     try {
       emit(const EditUserLoadingState());
       UserModel updatedUser =
-          await _editUserRepository.editUser(data, preferenceModels);
+          await _editUserRepository.editUser(data, preferenceModels, location);
       emit(EditUserSuccessState(user: updatedUser));
     } catch (e) {
       String message = ErrorHandler.handle(e);
