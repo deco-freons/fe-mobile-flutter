@@ -8,6 +8,9 @@ class CustomButton extends StatefulWidget {
   final VoidCallback? onPressedHandler;
   final double cornerRadius;
   final double labelFontSize;
+  final double? elevation;
+  final bool hasBorder;
+  final Color borderColor;
 
   const CustomButton(
       {Key? key,
@@ -15,7 +18,10 @@ class CustomButton extends StatefulWidget {
       required this.type,
       this.onPressedHandler,
       this.cornerRadius = CustomRadius.lg,
-      this.labelFontSize = CustomFontSize.lg})
+      this.labelFontSize = CustomFontSize.lg,
+      this.elevation,
+      this.hasBorder = false,
+      this.borderColor = Colors.black})
       : super(key: key);
 
   @override
@@ -27,20 +33,23 @@ class _CustomButtonState extends State<CustomButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        onSurface: neutral,
-        primary: widget.type == ButtonType.primary
-            ? Theme.of(context).colorScheme.primary
-            : widget.type == ButtonType.inverse
-                ? Theme.of(context).colorScheme.secondary
-                : Theme.of(context).colorScheme.error,
-        onPrimary: widget.type == ButtonType.primary
-            ? Theme.of(context).colorScheme.secondary
-            : Theme.of(context).colorScheme.primary,
-        minimumSize: const Size.fromHeight(52),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(widget.cornerRadius)),
-        ),
-      ),
+          onSurface: neutral,
+          primary: widget.type == ButtonType.primary
+              ? Theme.of(context).colorScheme.primary
+              : widget.type == ButtonType.inverse
+                  ? Theme.of(context).colorScheme.secondary
+                  : Theme.of(context).colorScheme.error,
+          onPrimary: widget.type == ButtonType.primary
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.primary,
+          minimumSize: const Size.fromHeight(52),
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.all(Radius.circular(widget.cornerRadius)),
+          ),
+          elevation: widget.elevation,
+          side:
+              widget.hasBorder ? BorderSide(color: widget.borderColor) : null),
       onPressed: widget.onPressedHandler,
       child: Text(
         widget.label,

@@ -67,18 +67,21 @@ enum LoadingType {
   ERROR,
 }
 
-enum WeekFilter {
-  thisWeek,
-  nextWeek,
-}
+enum WeekFilter { today, thisWeek, twoWeeks, fourWeeks, moreThanFourWeeks }
 
 extension WeekExtension on WeekFilter {
   String get desc {
     switch (this) {
+      case WeekFilter.today:
+        return 'Today';
       case WeekFilter.thisWeek:
         return 'This Week';
-      case WeekFilter.nextWeek:
-        return 'Next Week';
+      case WeekFilter.twoWeeks:
+        return 'In 2 Weeks';
+      case WeekFilter.fourWeeks:
+        return 'In 4 Weeks';
+      case WeekFilter.moreThanFourWeeks:
+        return 'More Than 4 Weeks';
     }
   }
 }
