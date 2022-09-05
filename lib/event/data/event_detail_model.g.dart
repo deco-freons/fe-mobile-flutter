@@ -26,6 +26,9 @@ EventDetailModel _$EventDetailModelFromJson(Map<String, dynamic> json) =>
           .map((e) => EventParticipantModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       participated: json['participated'] as bool,
+      locationName: json['locationName'] as String,
+      location:
+          EventLocationModel.fromJson(json['location'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventDetailModelToJson(EventDetailModel instance) =>
@@ -43,4 +46,6 @@ Map<String, dynamic> _$EventDetailModelToJson(EventDetailModel instance) =>
       'participants': instance.participants,
       'participantsList': instance.participantsList,
       'participated': instance.participated,
+      'location': instance.location,
+      'locationName': instance.locationName,
     };

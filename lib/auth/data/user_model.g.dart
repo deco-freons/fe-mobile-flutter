@@ -18,7 +18,8 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
       birthDate: json['birthDate'] as String,
-      location: json['location'] as String?,
+      location:
+          LocationModel.fromJson(json['location'] as Map<String, dynamic>),
       isShareLocation: json['isShareLocation'] as bool,
     );
 

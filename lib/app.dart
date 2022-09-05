@@ -6,7 +6,6 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
-
 import 'common/config/route_generator.dart';
 
 class App extends StatelessWidget {

@@ -18,8 +18,7 @@ class _EmailConfirmationState extends State<EmailConfirmation> {
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.only(top: 10.0, left: 10.0),
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35.0),
+          child: BackButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, Landing.routeName);
             },

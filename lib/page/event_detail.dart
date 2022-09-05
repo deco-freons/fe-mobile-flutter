@@ -20,6 +20,7 @@ import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/get_it.dart';
+import 'package:flutter_boilerplate/page/event_participants.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -435,6 +436,8 @@ class _EventDetailState extends State<EventDetail> {
                 fontSize: CustomFontSize.base,
                 onPressedHandler: () {
                   // GO TO VIEW ALL PARTICIPANTS PAGE
+                  Navigator.of(context).pushNamed(EventParticipants.routeName,
+                      arguments: state.model.event.participantsList);
                 },
               )
             : BuildLoading.buildRectangularLoading(

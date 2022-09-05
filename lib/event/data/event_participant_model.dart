@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/event/data/participant_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'event_participant_model.g.dart';
@@ -9,25 +10,42 @@ class EventParticipantModel extends BaseModel {
   final String username;
   final String firstName;
   final String lastName;
-  const EventParticipantModel(
-      {required this.username,
-      required this.firstName,
-      required this.lastName,
-      this.userID});
+  final ParticipantLocationModel? location;
+  final bool? isShareLocation;
 
-  const EventParticipantModel.empty(
-      {this.firstName = "",
-      this.lastName = "",
-      this.username = "",
-      this.userID = 0});
+  const EventParticipantModel({
+    required this.username,
+    required this.firstName,
+    required this.lastName,
+    this.isShareLocation,
+    this.userID,
+    this.location,
+  });
+
+  const EventParticipantModel.empty({
+    this.firstName = "",
+    this.lastName = "",
+    this.username = "",
+    this.userID = 0,
+    this.location,
+    this.isShareLocation = false,
+  });
 
   EventParticipantModel copyWith(
-      {int? userID, String? username, String? firstName, String? lastName}) {
+      {int? userID,
+      String? username,
+      String? firstName,
+      String? lastName,
+      ParticipantLocationModel? location,
+      bool? isShareLocation}) {
     return EventParticipantModel(
-        userID: userID ?? this.userID,
-        username: username ?? this.username,
-        firstName: firstName ?? this.firstName,
-        lastName: lastName ?? this.lastName);
+      userID: userID ?? this.userID,
+      username: username ?? this.username,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      location: location ?? this.location,
+      isShareLocation: isShareLocation ?? this.isShareLocation,
+    );
   }
 
   factory EventParticipantModel.fromJson(Map<String, dynamic> json) =>

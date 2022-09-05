@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
+import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
 
 import '../../common/config/enum.dart';
@@ -165,21 +166,24 @@ class _EditEventFormState extends State<EditEventForm> {
       submitHandler: () {
         if (event != null) {
           EventDetailModel updatedEvent = EventDetailModel(
-              eventID: event.eventID,
-              eventName: eventName.controller.text,
-              categories: category.preferences,
-              date: date.controller.text,
-              startTime: eventTime.controller.text,
-              endTime: eventTime.secondController != null
-                  ? eventTime.secondController!.text
-                  : eventTime.controller.text,
-              longitude: location.lng,
-              latitude: location.lat,
-              description: description.controller.text,
-              eventCreator: event.eventCreator,
-              participants: event.participants,
-              participantsList: event.participantsList,
-              participated: event.participated);
+            eventID: event.eventID,
+            eventName: eventName.controller.text,
+            categories: category.preferences,
+            date: date.controller.text,
+            startTime: eventTime.controller.text,
+            endTime: eventTime.secondController != null
+                ? eventTime.secondController!.text
+                : eventTime.controller.text,
+            longitude: location.lng,
+            latitude: location.lat,
+            description: description.controller.text,
+            eventCreator: event.eventCreator,
+            participants: event.participants,
+            participantsList: event.participantsList,
+            participated: event.participated,
+            locationName: "",
+            location: const EventLocationModel(suburb: "", city: ""),
+          );
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,
             isEventCreator: true,

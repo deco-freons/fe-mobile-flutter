@@ -1,5 +1,6 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
+import 'package:flutter_boilerplate/user/data/models/location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_model.g.dart';
@@ -15,7 +16,7 @@ class UserModel extends BaseModel {
   final bool isVerified;
   final bool isFirstLogin;
   final List<PreferenceModel> preferences;
-  final String? location;
+  final LocationModel location;
   final bool isShareLocation;
 
   const UserModel({
@@ -28,7 +29,7 @@ class UserModel extends BaseModel {
     required this.firstName,
     required this.lastName,
     required this.birthDate,
-    this.location,
+    required this.location,
     required this.isShareLocation,
   });
 
