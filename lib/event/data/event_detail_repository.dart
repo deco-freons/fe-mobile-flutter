@@ -16,7 +16,7 @@ abstract class EventDetailRepository implements BaseRepository {
   Future<void> joinEvent(int eventID);
   Future<void> leaveEvent(int eventID);
   Future<void> deleteEvent(int eventID);
-  Future<void> editEvent(EventDetailResponseModel updatedModel);
+  Future<void> editEvent(EventDetailResponseModel updatedModel, int suburbId);
   Stream<EventDetailResponseModel> get data async* {}
 }
 
@@ -80,7 +80,8 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
   }
 
   @override
-  Future<void> editEvent(EventDetailResponseModel updatedModel) async {
+  Future<void> editEvent(
+      EventDetailResponseModel updatedModel, int suburbId) async {
     EditEventModel requestData = EditEventModel(
         eventID: updatedModel.event.eventID,
         eventName: updatedModel.event.eventName,
@@ -92,6 +93,9 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
         endTime: updatedModel.event.endTime,
         longitude: updatedModel.event.longitude.toString(),
         latitude: updatedModel.event.latitude.toString(),
+        location: suburbId,
+        locationName: updatedModel.event.locationName,
+        shortDescription: updatedModel.event.shortDescription,
         description: updatedModel.event.description);
     await _eventDetailDataProvider.editEvent(requestData);
     return _controller.add(updatedModel);

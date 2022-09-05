@@ -11,11 +11,11 @@ import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
+import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
-import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 
 class CustomTextField extends StatefulWidget {
   final CustomFormInput input;
@@ -169,8 +169,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           widget.input.controller.text =
                                               initialLocation.locationID
                                                   .toString();
-                                          widget.input.suburb = UserLocationModel(
-                                              suburb: initialLocation.suburb);
+                                          widget.input.location =
+                                              EventLocationModel(
+                                                  suburb:
+                                                      initialLocation.suburb,
+                                                  city: initialLocation.city);
                                         }
                                       }
 
@@ -248,8 +251,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           if (value != null) {
                                             widget.input.controller.text =
                                                 value.locationID.toString();
-                                            widget.input.suburb = UserLocationModel(
-                                                suburb: value.suburb);
+                                            widget.input.location =
+                                                EventLocationModel(
+                                                    suburb: value.suburb,
+                                                    city: value.city);
                                           }
                                         },
                                         validator: (value) {
@@ -392,36 +397,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                   readOnly:
                                                       widget.input.disable,
                                                   keyboardType: widget
-                                                                  .input.type ==
-                                                              TextFieldType
-                                                                  .textArea ||
-                                                          widget.input.type ==
-                                                              TextFieldType
-                                                                  .shortDescription
+                                                              .input.type ==
+                                                          TextFieldType.textArea
                                                       ? TextInputType.multiline
                                                       : TextInputType.text,
                                                   maxLines: widget.input.type ==
-                                                              TextFieldType
-                                                                  .textArea ||
-                                                          widget.input.type ==
-                                                              TextFieldType
-                                                                  .shortDescription
+                                                          TextFieldType.textArea
                                                       ? 4
                                                       : 1,
-                                                  maxLength: widget
-                                                              .input.type ==
-                                                          TextFieldType
-                                                              .shortDescription
-                                                      ? 250
-                                                      : null,
+                                                  maxLength:
+                                                      widget.input.maxLength,
                                                   style: widget.inputStyle,
                                                   decoration: InputDecoration(
                                                       hintText: widget.input.type ==
-                                                                  TextFieldType
-                                                                      .textArea ||
-                                                              widget.input.type ==
-                                                                  TextFieldType
-                                                                      .shortDescription
+                                                              TextFieldType
+                                                                  .textArea
                                                           ? 'Please enter ${widget.input.label} here...'
                                                           : "",
                                                       errorBorder:

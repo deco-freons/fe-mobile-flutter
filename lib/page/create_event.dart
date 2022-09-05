@@ -124,7 +124,8 @@ class _CreateEventFormState extends State<CreateEventForm> {
   );
   final CustomFormInput shortDescription = CustomFormInput(
     label: 'Short Description',
-    type: TextFieldType.shortDescription,
+    type: TextFieldType.textArea,
+    maxLength: 250,
   );
   final CustomFormInput description = CustomFormInput(
     label: 'Description',

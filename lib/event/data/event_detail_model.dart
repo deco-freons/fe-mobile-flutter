@@ -16,6 +16,7 @@ class EventDetailModel extends BaseModel {
   final String endTime;
   final double longitude;
   final double latitude;
+  final String shortDescription;
   final String description;
   final EventParticipantModel eventCreator;
   final int participants;
@@ -33,6 +34,7 @@ class EventDetailModel extends BaseModel {
       required this.endTime,
       required this.longitude,
       required this.latitude,
+      required this.shortDescription,
       required this.description,
       required this.eventCreator,
       required this.participants,
@@ -50,6 +52,7 @@ class EventDetailModel extends BaseModel {
     this.endTime = "",
     this.longitude = 0,
     this.latitude = 0,
+    this.shortDescription = "-",
     this.description = "-",
     this.eventCreator = const EventParticipantModel.empty(),
     this.participants = 0,
@@ -68,6 +71,7 @@ class EventDetailModel extends BaseModel {
     String? endTime,
     double? longitude,
     double? latitude,
+    String? shortDescription,
     String? description,
     EventParticipantModel? eventCreator,
     int? participants,
@@ -85,6 +89,7 @@ class EventDetailModel extends BaseModel {
         endTime: endTime ?? this.endTime,
         longitude: longitude ?? this.longitude,
         latitude: latitude ?? this.latitude,
+        shortDescription: shortDescription ?? this.shortDescription,
         description: description ?? this.description,
         eventCreator: eventCreator ?? this.eventCreator,
         participants: participants ?? this.participants,
