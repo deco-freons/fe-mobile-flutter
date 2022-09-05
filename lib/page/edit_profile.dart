@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/auth/data/profile_location_model.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
 import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
+import 'package:flutter_boilerplate/user/data/models/location_model.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
 
 class EditProfile extends StatefulWidget {
@@ -180,7 +180,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void submit(BuildContext context, EditUserModel data,
-      List<PreferenceModel> preferences, ProfileLocationModel location) async {
+      List<PreferenceModel> preferences, LocationModel location) async {
     final cubit = context.read<EditUserCubit>();
     await cubit.editUser(data, preferences, location);
   }
