@@ -25,13 +25,21 @@ class SearchEvents extends StatefulWidget {
 class _SearchEventsState extends State<SearchEvents>
     with AutomaticKeepAliveClientMixin<SearchEvents> {
   bool keepAlive = true;
+  FilterEventModalModel filter = FilterEventModalModel(
+      categories: const [],
+      daysChoice: null,
+      distanceChoice: null,
+      allCheck: false,
+      prefCheck: List.filled(PrefType.values.length, true),
+      weekCheck: List.filled(DaysFilter.values.length, true),
+      distanceCheck: List.filled(DistanceFilter.values.length, true));
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocProvider(
       create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
-        ..getAllPopularEvents([]),
+        ..searchEvents(filter),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: const PageAppBar(title: "Search Events"),
@@ -69,11 +77,11 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
   List<PopularEventModel> eventList = [];
   FilterEventModalModel filter = FilterEventModalModel(
       categories: const [],
-      weekChoice: null,
+      daysChoice: null,
       distanceChoice: null,
       allCheck: false,
       prefCheck: List.filled(PrefType.values.length, true),
-      weekCheck: List.filled(WeekFilter.values.length, true),
+      weekCheck: List.filled(DaysFilter.values.length, true),
       distanceCheck: List.filled(DistanceFilter.values.length, true));
 
   @override
@@ -116,16 +124,16 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           BlocConsumer<PopularEventsCubit, PopularEventsState>(
               listener: (context, state) {
             if (state is PopularEventsSuccessState) {
-              if (!(state.events.isEmpty && eventList.isNotEmpty)) {
+              if (state.events.isNotEmpty) {
                 for (var resEvent in state.events) {
                   if (!eventList.contains(resEvent)) {
                     eventList.add(resEvent);
                   }
                 }
-                eventList.removeWhere((event) => !state.events.contains(event));
               }
             } else if (state is PopularEventsFilterState) {
-              getAllPopularEvents(context, filter.categories);
+              eventList = [];
+              searchEvents(context, filter);
             }
           }, builder: (context, state) {
             if (state is PopularEventsErrorState) {
@@ -147,8 +155,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                   scrollController.position.maxScrollExtent) {
                                 context
                                     .read<PopularEventsCubit>()
-                                    .getMoreEvents(
-                                        filter.categories, state.pageCount);
+                                    .getMoreEvents(filter, state.pageCount);
                               }
                             }),
                           children: eventList.map((event) {
@@ -203,8 +210,8 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     );
   }
 
-  void getAllPopularEvents(BuildContext context, List<PrefType> data) {
+  void searchEvents(BuildContext context, FilterEventModalModel data) {
     final cubit = context.read<PopularEventsCubit>();
-    cubit.getAllPopularEvents(data);
+    cubit.searchEvents(data);
   }
 }

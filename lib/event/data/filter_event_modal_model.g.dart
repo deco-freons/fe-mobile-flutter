@@ -12,7 +12,7 @@ FilterEventModalModel _$FilterEventModalModelFromJson(
       categories: (json['categories'] as List<dynamic>)
           .map((e) => $enumDecode(_$PrefTypeEnumMap, e))
           .toList(),
-      weekChoice: $enumDecodeNullable(_$WeekFilterEnumMap, json['weekChoice']),
+      daysChoice: $enumDecodeNullable(_$DaysFilterEnumMap, json['daysChoice']),
       distanceChoice:
           $enumDecodeNullable(_$DistanceFilterEnumMap, json['distanceChoice']),
       allCheck: json['allCheck'] as bool,
@@ -30,7 +30,7 @@ Map<String, dynamic> _$FilterEventModalModelToJson(
     <String, dynamic>{
       'categories':
           instance.categories.map((e) => _$PrefTypeEnumMap[e]!).toList(),
-      'weekChoice': _$WeekFilterEnumMap[instance.weekChoice],
+      'daysChoice': _$DaysFilterEnumMap[instance.daysChoice],
       'distanceChoice': _$DistanceFilterEnumMap[instance.distanceChoice],
       'allCheck': instance.allCheck,
       'prefCheck': instance.prefCheck,
@@ -48,16 +48,16 @@ const _$PrefTypeEnumMap = {
   PrefType.FB: 'FB',
 };
 
-const _$WeekFilterEnumMap = {
-  WeekFilter.today: 'today',
-  WeekFilter.thisWeek: 'thisWeek',
-  WeekFilter.twoWeeks: 'twoWeeks',
-  WeekFilter.fourWeeks: 'fourWeeks',
-  WeekFilter.moreThanFourWeeks: 'moreThanFourWeeks',
+const _$DaysFilterEnumMap = {
+  DaysFilter.oneDay: 'oneDay',
+  DaysFilter.oneWeek: 'oneWeek',
+  DaysFilter.twoWeeks: 'twoWeeks',
+  DaysFilter.fourWeeks: 'fourWeeks',
 };
 
 const _$DistanceFilterEnumMap = {
-  DistanceFilter.belowFive: 'belowFive',
-  DistanceFilter.fiveToTen: 'fiveToTen',
-  DistanceFilter.aboveTen: 'aboveTen',
+  DistanceFilter.five: 'five',
+  DistanceFilter.ten: 'ten',
+  DistanceFilter.twenty: 'twenty',
+  DistanceFilter.aboveTwenty: 'aboveTwenty',
 };
