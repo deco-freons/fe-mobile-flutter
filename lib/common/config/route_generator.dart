@@ -88,13 +88,12 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) =>
                 EventParticipants(participants: participants));
-       case FriendProfile.routeName:
+      case FriendProfile.routeName:
         int userID = args as int;
         return MaterialPageRoute(
             builder: (context) => FriendProfile(
                   userID: userID,
                 ));
-
       default:
         return _errorRoute();
     }
