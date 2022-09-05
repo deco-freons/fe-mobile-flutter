@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
-import '../../common/bloc/base_state.dart';
+import 'package:flutter_boilerplate/common/bloc/base_state.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
 
 @immutable
 abstract class PopularEventsState implements BaseState {

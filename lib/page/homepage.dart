@@ -3,11 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_small.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
-import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/search_events.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -24,7 +24,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage>
     with AutomaticKeepAliveClientMixin<Homepage> {
   bool keepAlive = true;
-  double radiusValue = 10.0;
+  DistanceFilter radiusValue = DistanceFilter.ten;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _BuildHomeState extends State<BuildHome> {
   bool allCheck = false;
   List<PrefType> categories = [];
   List<String> categoriesData = [];
-  double radiusValue = 10.0;
+  DistanceFilter radiusValue = DistanceFilter.ten;
 
   @override
   Widget build(BuildContext context) {
@@ -108,20 +108,20 @@ class _BuildHomeState extends State<BuildHome> {
                 child: DropdownButton(
                   items: const [
                     DropdownMenuItem(
-                      value: 5.0,
+                      value: DistanceFilter.five,
                       child: Text('5 km'),
                     ),
                     DropdownMenuItem(
-                      value: 10.0,
+                      value: DistanceFilter.ten,
                       child: Text('10 km'),
                     ),
                     DropdownMenuItem(
-                      value: 20.0,
+                      value: DistanceFilter.twenty,
                       child: Text('20 km'),
                     ),
                   ],
                   value: radiusValue,
-                  onChanged: (double? selectedRadius) {
+                  onChanged: (DistanceFilter? selectedRadius) {
                     setState(() {
                       radiusValue = selectedRadius!;
                     });
@@ -243,12 +243,11 @@ class _BuildHomeState extends State<BuildHome> {
                     : const [
                         Padding(
                           padding: EdgeInsets.only(
-                              left: CustomPadding.xl, top: CustomPadding.xs),
+                              left: CustomPadding.xs, top: CustomPadding.xs),
                           child: EventCardSmall.loading(),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(
-                              left: CustomPadding.sm, top: CustomPadding.xs),
+                          padding: EdgeInsets.only(top: CustomPadding.xs),
                           child: EventCardSmall.loading(),
                         ),
                       ]),
@@ -259,7 +258,7 @@ class _BuildHomeState extends State<BuildHome> {
   }
 
   void getPopularEvents(
-      BuildContext context, List<String> data, double radius) {
+      BuildContext context, List<String> data, DistanceFilter radius) {
     final cubit = context.read<PopularEventsCubit>();
     cubit.getPopularEvents(data, radius);
   }

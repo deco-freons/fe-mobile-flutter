@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
-import 'package:flutter_boilerplate/event/bloc/filter_event_state.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_state.dart';
 
 class FilterEventCubit extends BaseCubit<FilterEventState> {
   StreamController<bool> clearController = StreamController<bool>();
