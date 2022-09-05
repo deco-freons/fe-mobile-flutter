@@ -73,8 +73,15 @@ class _SearchLocationState extends State<SearchLocation> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      Navigator.pop(context,
-                          PlaceModel(searchController.text, lat!, lng!));
+                      if (searchController.text != "") {
+                        Navigator.pop(
+                            context,
+                            PlaceModel(
+                              searchController.text.split(",")[0],
+                              lat!,
+                              lng!,
+                            ));
+                      }
                     },
                     child: const Text("Select")),
               ],

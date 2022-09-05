@@ -122,6 +122,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
     label: 'Start and End Time',
     type: TextFieldType.eventTime,
   );
+  final CustomFormInput shortDescription = CustomFormInput(
+    label: 'Short Description',
+    type: TextFieldType.shortDescription,
+  );
   final CustomFormInput description = CustomFormInput(
     label: 'Description',
     type: TextFieldType.textArea,
@@ -129,6 +133,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final CustomFormInput location = CustomFormInput(
     label: 'Location',
     type: TextFieldType.location,
+  );
+  final CustomFormInput suburb = CustomFormInput(
+    label: 'Suburb',
+    type: TextFieldType.suburbDropdown,
   );
 
   @override
@@ -141,6 +149,8 @@ class _CreateEventFormState extends State<CreateEventForm> {
         date,
         eventTime,
         location,
+        suburb,
+        shortDescription,
         description
       ],
       submitTitle: 'Create',
@@ -156,6 +166,13 @@ class _CreateEventFormState extends State<CreateEventForm> {
                 : eventTime.controller.text,
             longitude: location.lng.toString(),
             latitude: location.lat.toString(),
+            location: suburb.controller.text == ""
+                ? 0
+                : int.parse(suburb.controller.text),
+            locationName: location.controller.text,
+            shortDescription: shortDescription.controller.text != ""
+                ? shortDescription.controller.text
+                : "No description",
             description: description.controller.text != ""
                 ? description.controller.text
                 : "No description");
@@ -163,7 +180,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
       },
       topPadding: 0.0,
       textButtonHandler: () {},
-      labelColor: Theme.of(context).colorScheme.tertiary,
+      labelColor: neutral.shade600,
       inputStyle: TextStyle(
         fontSize: CustomFontSize.lg,
         fontWeight: FontWeight.bold,

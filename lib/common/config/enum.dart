@@ -10,6 +10,7 @@ enum TextFieldType {
   suburbDropdown,
   eventTime,
   textArea,
+  shortDescription,
   location,
   image,
   interest,
