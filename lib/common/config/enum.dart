@@ -66,40 +66,96 @@ enum LoadingType {
   ERROR,
 }
 
-enum WeekFilter { today, thisWeek, twoWeeks, fourWeeks, moreThanFourWeeks }
+enum DaysFilter { oneDay, oneWeek, twoWeeks, fourWeeks }
 
-extension WeekExtension on WeekFilter {
+extension DaysDescExtension on DaysFilter {
   String get desc {
     switch (this) {
-      case WeekFilter.today:
-        return 'Today';
-      case WeekFilter.thisWeek:
-        return 'This Week';
-      case WeekFilter.twoWeeks:
-        return 'In 2 Weeks';
-      case WeekFilter.fourWeeks:
-        return 'In 4 Weeks';
-      case WeekFilter.moreThanFourWeeks:
-        return 'More Than 4 Weeks';
+      case DaysFilter.oneDay:
+        return '1 day';
+      case DaysFilter.oneWeek:
+        return '1 Week';
+      case DaysFilter.twoWeeks:
+        return '2 Weeks';
+      case DaysFilter.fourWeeks:
+        return '1 Month';
     }
   }
 }
 
-enum DistanceFilter {
-  belowFive,
-  fiveToTen,
-  aboveTen,
+extension DaysValueExtension on DaysFilter {
+  int get value {
+    switch (this) {
+      case DaysFilter.oneDay:
+        return 1;
+      case DaysFilter.oneWeek:
+        return 7;
+      case DaysFilter.twoWeeks:
+        return 14;
+      case DaysFilter.fourWeeks:
+        return 28;
+    }
+  }
 }
 
-extension DistanceExtension on DistanceFilter {
+extension DaysMoreLessExtension on DaysFilter {
+  String get isMoreOrLess {
+    switch (this) {
+      case DaysFilter.oneDay:
+        return 'LESS';
+      case DaysFilter.oneWeek:
+        return 'LESS';
+      case DaysFilter.twoWeeks:
+        return 'LESS';
+      case DaysFilter.fourWeeks:
+        return 'LESS';
+    }
+  }
+}
+
+enum DistanceFilter { five, ten, twenty, aboveTwenty }
+
+extension DistanceDescExtension on DistanceFilter {
   String get desc {
     switch (this) {
-      case DistanceFilter.belowFive:
-        return '< 5 km';
-      case DistanceFilter.fiveToTen:
-        return '5 <= km < 10';
-      case DistanceFilter.aboveTen:
-        return '>= 10 km';
+      case DistanceFilter.five:
+        return '5 km';
+      case DistanceFilter.ten:
+        return '10 km';
+      case DistanceFilter.twenty:
+        return '20 km';
+      case DistanceFilter.aboveTwenty:
+        return '> 20 km';
+    }
+  }
+}
+
+extension DistanceValueExtension on DistanceFilter {
+  int get value {
+    switch (this) {
+      case DistanceFilter.five:
+        return 5;
+      case DistanceFilter.ten:
+        return 10;
+      case DistanceFilter.twenty:
+        return 20;
+      case DistanceFilter.aboveTwenty:
+        return 20;
+    }
+  }
+}
+
+extension DistanceMoreLessExtension on DistanceFilter {
+  String get isMoreOrLess {
+    switch (this) {
+      case DistanceFilter.five:
+        return 'LESS';
+      case DistanceFilter.ten:
+        return 'LESS';
+      case DistanceFilter.twenty:
+        return 'LESS';
+      case DistanceFilter.aboveTwenty:
+        return 'MORE';
     }
   }
 }

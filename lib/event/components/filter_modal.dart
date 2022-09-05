@@ -54,7 +54,7 @@ class BuildFilterModal extends StatefulWidget {
 class _BuildFilterModalState extends State<BuildFilterModal> {
   FilterEventModalModel filter = const FilterEventModalModel(
       categories: [],
-      weekChoice: null,
+      daysChoice: null,
       distanceChoice: null,
       allCheck: false,
       prefCheck: [],
@@ -63,11 +63,11 @@ class _BuildFilterModalState extends State<BuildFilterModal> {
 
   FilterEventModalModel clearFilter = FilterEventModalModel(
       categories: const [],
-      weekChoice: null,
+      daysChoice: null,
       distanceChoice: null,
       allCheck: false,
       prefCheck: List.filled(PrefType.values.length, true),
-      weekCheck: List.filled(WeekFilter.values.length, true),
+      weekCheck: List.filled(DaysFilter.values.length, true),
       distanceCheck: List.filled(DistanceFilter.values.length, true));
 
   @override
@@ -82,7 +82,7 @@ class _BuildFilterModalState extends State<BuildFilterModal> {
             onPressedHandler: () {
               FilterEventModalModel filter = FilterEventModalModel(
                   categories: widget.filter.categories,
-                  weekChoice: widget.filter.weekChoice,
+                  daysChoice: widget.filter.daysChoice,
                   distanceChoice: widget.filter.distanceChoice,
                   allCheck: widget.filter.allCheck,
                   prefCheck: widget.filter.prefCheck,
@@ -102,11 +102,11 @@ class _BuildFilterModalState extends State<BuildFilterModal> {
             if (state is FilterEventClearState) {
               filter = FilterEventModalModel(
                   categories: const [],
-                  weekChoice: null,
+                  daysChoice: null,
                   distanceChoice: null,
                   allCheck: false,
                   prefCheck: List.filled(PrefType.values.length, true),
-                  weekCheck: List.filled(WeekFilter.values.length, true),
+                  weekCheck: List.filled(DaysFilter.values.length, true),
                   distanceCheck:
                       List.filled(DistanceFilter.values.length, true));
             }
@@ -137,7 +137,7 @@ class BuildFilter extends StatefulWidget {
 
 class _BuildFilterState extends State<BuildFilter> {
   List<PrefType> categories = [];
-  WeekFilter? weekChoice;
+  DaysFilter? daysChoice;
   DistanceFilter? distanceChoice;
   bool allCheck = false;
   List<bool> prefCheck = [];
@@ -148,7 +148,7 @@ class _BuildFilterState extends State<BuildFilter> {
   void initState() {
     super.initState();
     categories = List.from(widget.filter.categories);
-    weekChoice = widget.filter.weekChoice;
+    daysChoice = widget.filter.daysChoice;
     distanceChoice = widget.filter.distanceChoice;
     allCheck = widget.filter.allCheck;
     prefCheck = List.from(widget.filter.prefCheck);
@@ -203,7 +203,7 @@ class _BuildFilterState extends State<BuildFilter> {
             ),
         ]),
         FilterContent(title: 'Week', widgets: [
-          for (var week in WeekFilter.values)
+          for (var week in DaysFilter.values)
             FilterButton(
               desc: week.desc,
               onPressedHandler: () {
@@ -211,15 +211,15 @@ class _BuildFilterState extends State<BuildFilter> {
                   if (weekCheck.contains(false)) {
                     if (!weekCheck[week.index]) {
                       weekCheck[week.index] = !weekCheck[week.index];
-                      weekChoice = null;
+                      daysChoice = null;
                     } else {
-                      weekCheck = List.filled(WeekFilter.values.length, true);
+                      weekCheck = List.filled(DaysFilter.values.length, true);
                       weekCheck[week.index] = false;
-                      weekChoice = week;
+                      daysChoice = week;
                     }
                   } else {
                     weekCheck[week.index] = !weekCheck[week.index];
-                    weekChoice = week;
+                    daysChoice = week;
                   }
                 });
               },
@@ -284,7 +284,7 @@ class _BuildFilterState extends State<BuildFilter> {
                 onPressedHandler: () {
                   FilterEventModalModel filter = FilterEventModalModel(
                       categories: categories,
-                      weekChoice: weekChoice,
+                      daysChoice: daysChoice,
                       distanceChoice: distanceChoice,
                       allCheck: allCheck,
                       prefCheck: prefCheck,
@@ -315,7 +315,7 @@ class BuildClearFilter extends StatefulWidget {
 
 class _BuildClearFilterState extends State<BuildClearFilter> {
   List<PrefType> categories = [];
-  WeekFilter? weekChoice;
+  DaysFilter? daysChoice;
   DistanceFilter? distanceChoice;
   bool allCheck = false;
   List<bool> prefCheck = [];
@@ -326,7 +326,7 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
   void initState() {
     super.initState();
     categories = List.from(widget.filter.categories);
-    weekChoice = widget.filter.weekChoice;
+    daysChoice = widget.filter.daysChoice;
     distanceChoice = widget.filter.distanceChoice;
     allCheck = widget.filter.allCheck;
     prefCheck = List.from(widget.filter.prefCheck);
@@ -381,7 +381,7 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
             ),
         ]),
         FilterContent(title: 'Week', widgets: [
-          for (var week in WeekFilter.values)
+          for (var week in DaysFilter.values)
             FilterButton(
               desc: week.desc,
               onPressedHandler: () {
@@ -389,15 +389,15 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
                   if (weekCheck.contains(false)) {
                     if (!weekCheck[week.index]) {
                       weekCheck[week.index] = !weekCheck[week.index];
-                      weekChoice = null;
+                      daysChoice = null;
                     } else {
-                      weekCheck = List.filled(WeekFilter.values.length, true);
+                      weekCheck = List.filled(DaysFilter.values.length, true);
                       weekCheck[week.index] = false;
-                      weekChoice = week;
+                      daysChoice = week;
                     }
                   } else {
                     weekCheck[week.index] = !weekCheck[week.index];
-                    weekChoice = week;
+                    daysChoice = week;
                   }
                 });
               },
@@ -462,7 +462,7 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
                 onPressedHandler: () {
                   FilterEventModalModel filter = FilterEventModalModel(
                       categories: categories,
-                      weekChoice: weekChoice,
+                      daysChoice: daysChoice,
                       distanceChoice: distanceChoice,
                       allCheck: allCheck,
                       prefCheck: prefCheck,

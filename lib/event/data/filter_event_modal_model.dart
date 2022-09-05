@@ -7,7 +7,7 @@ part 'filter_event_modal_model.g.dart';
 @JsonSerializable()
 class FilterEventModalModel extends BaseModel {
   final List<PrefType> categories;
-  final WeekFilter? weekChoice;
+  final DaysFilter? daysChoice;
   final DistanceFilter? distanceChoice;
   final bool allCheck;
   final List<bool> prefCheck;
@@ -16,7 +16,7 @@ class FilterEventModalModel extends BaseModel {
 
   const FilterEventModalModel({
     required this.categories,
-    required this.weekChoice,
+    required this.daysChoice,
     required this.distanceChoice,
     required this.allCheck,
     required this.prefCheck,

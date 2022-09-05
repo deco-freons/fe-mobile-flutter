@@ -2,10 +2,14 @@ import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
-import 'package:flutter_boilerplate/event/data/empty_nearby_model.dart';
-import 'package:flutter_boilerplate/event/data/nearby_model.dart';
+import 'package:flutter_boilerplate/event/data/days_to_event_model.dart';
+import 'package:flutter_boilerplate/event/data/event_categories_model.dart';
+import 'package:flutter_boilerplate/event/data/event_radius_model.dart';
+import 'package:flutter_boilerplate/event/data/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/data/filter_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
+import 'package:flutter_boilerplate/event/data/read_event_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_geocoding/google_geocoding.dart' as geocode;
@@ -20,23 +24,38 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     try {
       emit(const PopularEventsLoadingState());
       Position position = await Geolocator.getCurrentPosition();
+      String todaysDate = DateTime.now().toIso8601String();
 
-      NearbyModel nearby = NearbyModel(
-          categories: data,
-          longitude: position.longitude,
-          latitude: position.latitude,
-          radius: 10.0);
-      EmptyNearbyModel emptyNearby = EmptyNearbyModel(
-          longitude: position.longitude,
-          latitude: position.latitude,
-          radius: 10.0);
       Map res = {};
       List<List<String>> locationNames = [];
+
+      FilterEventModel filter = FilterEventModel(
+          eventCategories: data.isNotEmpty
+              ? EventCategoriesModel(category: data).toJson()
+              : null,
+          eventRadius: null,
+          daysToEvent: null);
+
+      Map<String, dynamic> jsonFilter = filter.toJson();
+      jsonFilter.removeWhere((key, value) => key == "eventRadius");
+      jsonFilter.removeWhere((key, value) => key == "daysToEvent");
       if (data.isEmpty) {
-        res = await _popularEventsRepository.getPopularEventsByAll(emptyNearby);
-      } else {
-        res = await _popularEventsRepository.getPopularEventsByCategory(nearby);
+        jsonFilter.removeWhere((key, value) => key == "eventCategories");
       }
+
+      ReadEventModel readEvent = ReadEventModel.noSort(
+          longitude: position.longitude,
+          latitude: position.latitude,
+          todaysDate: todaysDate,
+          filter: jsonFilter);
+      Map<String, dynamic> jsonData = readEvent.toJson();
+      jsonData.removeWhere((key, value) => key == "sort");
+      if (data.isEmpty) {
+        jsonData.removeWhere((key, value) => key == "filter");
+      }
+
+      res = await _popularEventsRepository.getPopularEvents(jsonData);
+
       List<PopularEventModel> events = [];
       for (var resEvent in res['events']) {
         resEvent['location'] = [];
@@ -51,38 +70,64 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     }
   }
 
-  Future<void> getAllPopularEvents(List<PrefType> data) async {
+  Future<void> searchEvents(FilterEventModalModel data) async {
     try {
       emit(const PopularEventsLoadingState());
       Position position = await Geolocator.getCurrentPosition();
+      String todaysDate = DateTime.now().toIso8601String();
 
       Map res = {};
       String? googleApiKey = dotenv.env['googleApiKey'];
       geocode.GoogleGeocoding googleGeocoding =
           geocode.GoogleGeocoding(googleApiKey!);
       List<List<String>> locationNames = [];
-      List<String> dataString = [];
+      List<String> categories = [];
 
-      for (var pref in data) {
-        dataString.add(pref.name);
+      for (var pref in data.categories) {
+        categories.add(pref.name);
       }
 
-      if (dataString.isEmpty) {
-        EmptyNearbyModel emptyNearby = EmptyNearbyModel(
-            longitude: position.longitude,
-            latitude: position.latitude,
-            radius: 10.0);
-        res = await _popularEventsRepository
-            .getAllPopularEventsByAll(emptyNearby);
-      } else {
-        NearbyModel nearby = NearbyModel(
-            categories: dataString,
-            longitude: position.longitude,
-            latitude: position.latitude,
-            radius: 10.0);
-        res = await _popularEventsRepository
-            .getAllPopularEventsByCategory(nearby);
+      FilterEventModel filter = FilterEventModel(
+          eventCategories: categories.isNotEmpty
+              ? EventCategoriesModel(category: categories).toJson()
+              : null,
+          eventRadius: data.distanceChoice != null
+              ? EventRadiusModel(
+                      radius: data.distanceChoice!.value,
+                      isMoreOrLess: data.distanceChoice!.isMoreOrLess)
+                  .toJson()
+              : null,
+          daysToEvent: data.daysChoice != null
+              ? DaysToEventModel(
+                      days: data.daysChoice!.value,
+                      isMoreOrLess: data.daysChoice!.isMoreOrLess)
+                  .toJson()
+              : null);
+
+      Map<String, dynamic> jsonFilter = filter.toJson();
+      if (categories.isEmpty) {
+        jsonFilter.removeWhere((key, value) => key == "eventCategories");
       }
+      if (data.distanceChoice == null) {
+        jsonFilter.removeWhere((key, value) => key == "eventRadius");
+      }
+      if (data.daysChoice == null) {
+        jsonFilter.removeWhere((key, value) => key == "daysToEvent");
+      }
+
+      ReadEventModel readEvent = ReadEventModel.noSort(
+          longitude: position.longitude,
+          latitude: position.latitude,
+          todaysDate: todaysDate,
+          filter: jsonFilter);
+      Map<String, dynamic> jsonData = readEvent.toJson();
+      jsonData.removeWhere((key, value) => key == "sort");
+      if (categories.isEmpty &&
+          data.daysChoice == null &&
+          data.distanceChoice == null) {
+        jsonData.removeWhere((key, value) => key == "filter");
+      }
+      res = await _popularEventsRepository.searchEvents(jsonData);
 
       List<PopularEventModel> events = [];
       for (var resEvent in res['events']) {
@@ -107,9 +152,10 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     }
   }
 
-  Future<void> getMoreEvents(List<PrefType> data, int pageCount) async {
+  Future<void> getMoreEvents(FilterEventModalModel data, int pageCount) async {
     try {
       Position position = await Geolocator.getCurrentPosition();
+      String todaysDate = DateTime.now().toIso8601String();
 
       Map res = {};
 
@@ -118,30 +164,57 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           geocode.GoogleGeocoding(googleApiKey!);
 
       List<List<String>> locationNames = [];
-      List<String> dataString = [];
+      List<String> categories = [];
       pageCount = pageCount + 1;
       String getMorePath = '/event/read?skip=$pageCount&take=10';
 
-      for (var pref in data) {
-        dataString.add(pref.name);
+      for (var pref in data.categories) {
+        categories.add(pref.name);
       }
 
-      if (data.isEmpty) {
-        EmptyNearbyModel emptyNearby = EmptyNearbyModel(
-            longitude: position.longitude,
-            latitude: position.latitude,
-            radius: 10.0);
-        res = await _popularEventsRepository.getMorePopularEventsByAll(
-            emptyNearby, getMorePath);
-      } else {
-        NearbyModel nearby = NearbyModel(
-            categories: dataString,
-            longitude: position.longitude,
-            latitude: position.latitude,
-            radius: 10.0);
-        res = await _popularEventsRepository.getMorePopularEventsMoreByCategory(
-            nearby, getMorePath);
+      FilterEventModel filter = FilterEventModel(
+          eventCategories: categories.isNotEmpty
+              ? EventCategoriesModel(category: categories).toJson()
+              : null,
+          eventRadius: data.distanceChoice != null
+              ? EventRadiusModel(
+                      radius: data.distanceChoice!.value,
+                      isMoreOrLess: data.distanceChoice!.isMoreOrLess)
+                  .toJson()
+              : null,
+          daysToEvent: data.daysChoice != null
+              ? DaysToEventModel(
+                      days: data.daysChoice!.value,
+                      isMoreOrLess: data.daysChoice!.isMoreOrLess)
+                  .toJson()
+              : null);
+
+      Map<String, dynamic> jsonFilter = filter.toJson();
+      if (categories.isEmpty) {
+        jsonFilter.removeWhere((key, value) => key == "eventCategories");
       }
+      if (data.distanceChoice == null) {
+        jsonFilter.removeWhere((key, value) => key == "eventRadius");
+      }
+      if (data.daysChoice == null) {
+        jsonFilter.removeWhere((key, value) => key == "daysToEvent");
+      }
+
+      ReadEventModel readEvent = ReadEventModel.noSort(
+          longitude: position.longitude,
+          latitude: position.latitude,
+          todaysDate: todaysDate,
+          filter: jsonFilter);
+      Map<String, dynamic> jsonData = readEvent.toJson();
+      jsonData.removeWhere((key, value) => key == "sort");
+      if (categories.isEmpty &&
+          data.daysChoice == null &&
+          data.distanceChoice == null) {
+        jsonData.removeWhere((key, value) => key == "filter");
+      }
+
+      res = await _popularEventsRepository.getMorePopularEvents(
+          jsonData, getMorePath);
 
       List<PopularEventModel> events = [];
       for (var resEvent in res['events']) {
