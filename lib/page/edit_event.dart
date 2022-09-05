@@ -137,19 +137,39 @@ class _EditEventFormState extends State<EditEventForm> {
       initialValue: event?.startTime,
       initialSecondValue: event?.endTime,
     );
+    final CustomFormInput shortDescription = CustomFormInput(
+      label: 'Short Description',
+      type: TextFieldType.textArea,
+      maxLength: 250,
+      initialValue: event?.shortDescription,
+    );
     final CustomFormInput description = CustomFormInput(
       label: 'Description',
       type: TextFieldType.textArea,
       initialValue: event?.description,
     );
     final CustomFormInput location = CustomFormInput(
-        label: 'Location',
-        type: TextFieldType.location,
-        initialValue: "initial location");
+      label: 'Location',
+      type: TextFieldType.location,
+      initialValue: event?.locationName,
+    );
+    final CustomFormInput suburb = CustomFormInput(
+      label: 'Suburb',
+      type: TextFieldType.suburbDropdown,
+      initialValue: event?.location.suburb,
+    );
 
     if (event != null) {
       location.setLatLng(event.latitude, event.longitude);
       category.setPreferences(event.categories);
+    }
+
+    void submit(BuildContext context, EventDetailResponseModel data) {
+      final cubit = context.read<UpdateEventDetailCubit>();
+      cubit.editEvent(
+        data,
+        suburb.controller.text == "" ? 0 : int.parse(suburb.controller.text),
+      );
     }
 
     return CustomForm(
@@ -160,7 +180,9 @@ class _EditEventFormState extends State<EditEventForm> {
         date,
         eventTime,
         location,
-        description
+        suburb,
+        shortDescription,
+        description,
       ],
       submitTitle: 'Save',
       submitHandler: () {
@@ -176,13 +198,15 @@ class _EditEventFormState extends State<EditEventForm> {
                 : eventTime.controller.text,
             longitude: location.lng,
             latitude: location.lat,
+            shortDescription: shortDescription.controller.text,
             description: description.controller.text,
             eventCreator: event.eventCreator,
             participants: event.participants,
             participantsList: event.participantsList,
             participated: event.participated,
-            locationName: "",
-            location: const EventLocationModel(suburb: "", city: ""),
+            locationName: location.controller.text,
+            location: EventLocationModel(
+                suburb: suburb.location.suburb, city: suburb.location.city),
           );
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,
@@ -202,9 +226,4 @@ class _EditEventFormState extends State<EditEventForm> {
       errorMessage: widget.errorMessage,
     );
   }
-}
-
-void submit(BuildContext context, EventDetailResponseModel data) {
-  final cubit = context.read<UpdateEventDetailCubit>();
-  cubit.editEvent(data);
 }

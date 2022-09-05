@@ -40,10 +40,10 @@ class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
     }
   }
 
-  Future<void> editEvent(EventDetailResponseModel data) async {
+  Future<void> editEvent(EventDetailResponseModel data, int suburbId) async {
     try {
       emit(const UpdateEventDetailLoadingState());
-      await _eventDetailRepository.editEvent(data);
+      await _eventDetailRepository.editEvent(data, suburbId);
       emit(const UpdateEventDetailEditedState());
     } catch (e) {
       emit(UpdateEventDetailErrorState(errorMessage: ErrorHandler.handle(e)));
