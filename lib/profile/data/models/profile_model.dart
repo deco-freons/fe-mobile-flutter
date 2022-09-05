@@ -1,7 +1,7 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
-import 'package:flutter_boilerplate/user/data/user_location_model.dart';
+import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'profile_model.g.dart';
 

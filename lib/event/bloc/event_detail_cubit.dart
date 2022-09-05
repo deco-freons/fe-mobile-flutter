@@ -34,7 +34,6 @@ class EventDetailCubit extends BaseCubit<EventDetailState> {
   @override
   Future<void> close() {
     _streamSubscription.cancel();
-    _eventDetailRepository.dispose();
     return super.close();
   }
 }

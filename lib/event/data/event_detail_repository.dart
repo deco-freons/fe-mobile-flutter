@@ -18,11 +18,10 @@ abstract class EventDetailRepository implements BaseRepository {
   Future<void> deleteEvent(int eventID);
   Future<void> editEvent(EventDetailResponseModel updatedModel);
   Stream<EventDetailResponseModel> get data async* {}
-  void dispose();
 }
 
 class EventDetailRepositoryImpl extends EventDetailRepository {
-  final _controller = StreamController<EventDetailResponseModel>();
+  final _controller = StreamController<EventDetailResponseModel>.broadcast();
   final EventDetailDataProvider _eventDetailDataProvider =
       EventDetailDataProvider();
   final _secureStorage = getIt.get<SecureStorage>();
@@ -97,9 +96,6 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
     await _eventDetailDataProvider.editEvent(requestData);
     return _controller.add(updatedModel);
   }
-
-  @override
-  void dispose() => _controller.close();
 
   Future<EventParticipantModel> _loadUserFromStorage() async {
     String? userString = await _secureStorage.get(key: "user");

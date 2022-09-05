@@ -1,12 +1,7 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
-<<<<<<< HEAD
-import 'package:flutter_boilerplate/user/data/models/location_model.dart';
-=======
-import 'package:flutter_boilerplate/user/data/user_location_model.dart';
->>>>>>> deb8e04 (feat: :construction: integrate ui with bloc)
+import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'user_model.g.dart';
 
 @JsonSerializable()
@@ -20,11 +15,7 @@ class UserModel extends BaseModel {
   final bool isVerified;
   final bool isFirstLogin;
   final List<PreferenceModel> preferences;
-<<<<<<< HEAD
-  final LocationModel location;
-=======
-  final UserLocationModel? location;
->>>>>>> deb8e04 (feat: :construction: integrate ui with bloc)
+  final UserLocationModel location;
   final bool isShareLocation;
 
   const UserModel({

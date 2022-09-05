@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/components/event_card_small.dart';
-import 'package:flutter_boilerplate/event/components/home_content.dart';
+import 'package:flutter_boilerplate/event/components/event_list.dart';
 import 'package:flutter_boilerplate/profile/bloc/profile_cubit.dart';
 import 'package:flutter_boilerplate/profile/bloc/profile_state.dart';
 import 'package:flutter_boilerplate/profile/components/profile_field.dart';
@@ -45,18 +44,32 @@ class FriendProfile extends StatelessWidget {
                   : "",
               hasBackButton: true,
             ),
-            buildField("Username", "jisoo"),
-            buildField("Location", "Brisbane City"),
-            spacing,
-            buildInterests(),
-            spacing,
-            HomeContent(
-              title: "Events by Me",
-              titleBottomSpacing: CustomPadding.sm,
-              isPair: true,
-              contentWidgets: List.filled(
-                3,
-                const EventCardSmall.loading(),
+            body: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: CustomPadding.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  buildAvatar(state),
+                  state is ProfileSuccessState
+                      ? buildField("Username", state.profile.username, false)
+                      : buildField("Username", "", true),
+                  state is ProfileSuccessState
+                      ? buildField("Location",
+                          state.profile.location?.suburb ?? "", false)
+                      : buildField("Location", "", true),
+                  spacing,
+                  buildInterests(state),
+                  spacing,
+                  EventList(
+                    title:
+                        'Events by ${state is ProfileSuccessState ? state.profile.username : ""}',
+                    isLoading: state is! ProfileSuccessState,
+                    events: state is ProfileSuccessState
+                        ? state.profile.eventCreated
+                        : [],
+                    onPressed: () {},
+                  ),
+                ],
               ),
             ),
           );

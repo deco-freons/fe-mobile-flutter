@@ -8,11 +8,9 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/common/utils/date_parser.dart';
 import 'package:flutter_boilerplate/event/bloc/events_by_me_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/events_by_me_state.dart';
-import 'package:flutter_boilerplate/event/components/event_card_small.dart';
-import 'package:flutter_boilerplate/event/components/home_content.dart';
+import 'package:flutter_boilerplate/event/components/event_list.dart';
 import 'package:flutter_boilerplate/event/data/events_by_me_repository.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
@@ -56,11 +54,9 @@ class _ProfileState extends State<Profile> {
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-
         appBar: const PageAppBar(
           title: "My Profile",
           hasBackButton: true,
-
         ),
         body: Container(
           decoration:
@@ -169,27 +165,12 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         const SizedBox(height: 28.0),
         BlocBuilder<EventsByMeCubit, EventsByMeState>(
             builder: (context, state) {
-          return HomeContent(
-            title: "Events by Me",
-            titleBottomSpacing: CustomPadding.sm,
-            isPair: true,
-            contentWidgets: state is EventsByMeSuccessState
-                ? state.events.events.map((event) {
-                    List<String> splittedDate =
-                        DateParser.parseEventDate(event.date);
-                    return EventCardSmall(
-                        eventID: event.eventID,
-                        title: event.eventName,
-                        distance: event.distance,
-                        month: splittedDate[0].substring(0, 3),
-                        date: splittedDate[1].substring(0, 2),
-                        image: 'lib/common/assets/images/SmallEventTest.png');
-                  }).toList()
-                : List.filled(
-                    3,
-                    const EventCardSmall.loading(),
-                  ),
-          );
+          return EventList(
+              events:
+                  state is EventsByMeSuccessState ? state.events.events : [],
+              onPressed: () {},
+              isLoading: state is! EventsByMeSuccessState,
+              title: "Events by Me");
         }),
         const SizedBox(
           height: 20,
