@@ -392,19 +392,36 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                   readOnly:
                                                       widget.input.disable,
                                                   keyboardType: widget
-                                                              .input.type ==
-                                                          TextFieldType.textArea
+                                                                  .input.type ==
+                                                              TextFieldType
+                                                                  .textArea ||
+                                                          widget.input.type ==
+                                                              TextFieldType
+                                                                  .shortDescription
                                                       ? TextInputType.multiline
                                                       : TextInputType.text,
                                                   maxLines: widget.input.type ==
-                                                          TextFieldType.textArea
+                                                              TextFieldType
+                                                                  .textArea ||
+                                                          widget.input.type ==
+                                                              TextFieldType
+                                                                  .shortDescription
                                                       ? 4
                                                       : 1,
+                                                  maxLength: widget
+                                                              .input.type ==
+                                                          TextFieldType
+                                                              .shortDescription
+                                                      ? 250
+                                                      : null,
                                                   style: widget.inputStyle,
                                                   decoration: InputDecoration(
                                                       hintText: widget.input.type ==
-                                                              TextFieldType
-                                                                  .textArea
+                                                                  TextFieldType
+                                                                      .textArea ||
+                                                              widget.input.type ==
+                                                                  TextFieldType
+                                                                      .shortDescription
                                                           ? 'Please enter ${widget.input.label} here...'
                                                           : "",
                                                       errorBorder:
