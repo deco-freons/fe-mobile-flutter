@@ -75,7 +75,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
           return MediaQuery(
               data:
                   MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-              child: childWidget!);
+              child: Theme(
+                data: ThemeData.light().copyWith(
+                  colorScheme: const ColorScheme.light(
+                    primary: primary,
+                    onSurface: primary,
+                  ),
+                ),
+                child: childWidget!,
+              ));
         });
     if (newTime != null) {
       String hour = newTime.hour < 10 ? "0${newTime.hour}" : "${newTime.hour}";
@@ -343,23 +351,39 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                               ? Wrap(
                                                   spacing: CustomPadding.sm,
                                                   runSpacing: 0.0,
-                                                  children: [
-                                                      for (PreferenceModel pref
-                                                          in widget.input
-                                                              .preferences)
-                                                        PreferenceButton(
-                                                          stringInput: pref
-                                                              .preferenceName,
-                                                          useStringInput: true,
-                                                          cancelIcon: true,
-                                                          onPressedHandler: () {
-                                                            widget.input
-                                                                .removePreferences(
-                                                                    pref);
-                                                            setState(() {});
-                                                          },
-                                                        ),
-                                                    ])
+                                                  children: widget
+                                                          .input
+                                                          .preferences
+                                                          .isNotEmpty
+                                                      ? widget.input.preferences
+                                                          .map(
+                                                            (pref) =>
+                                                                PreferenceButton(
+                                                              stringInput: pref
+                                                                  .preferenceName,
+                                                              useStringInput:
+                                                                  true,
+                                                              cancelIcon: true,
+                                                              onPressedHandler:
+                                                                  () {
+                                                                widget.input
+                                                                    .removePreferences(
+                                                                        pref);
+                                                                setState(() {});
+                                                              },
+                                                            ),
+                                                          )
+                                                          .toList()
+                                                      : [
+                                                          Text(
+                                                            "No picked categories",
+                                                            style:
+                                                                customFontStyle(
+                                                                    CustomFontSize
+                                                                        .base),
+                                                          )
+                                                        ],
+                                                )
                                               : TextFormField(
                                                   controller:
                                                       widget.input.controller,
