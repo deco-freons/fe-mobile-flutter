@@ -3,7 +3,7 @@ import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/events_by_me_state.dart';
 import 'package:flutter_boilerplate/event/data/events_by_me_repository.dart';
 import 'package:flutter_boilerplate/event/data/events_by_user_model.dart';
-import 'package:flutter_boilerplate/event/data/location_model.dart';
+import 'package:flutter_boilerplate/event/data/coordinate_model.dart';
 import 'package:geolocator/geolocator.dart';
 
 class EventsByMeCubit extends BaseCubit<EventsByMeState> {
@@ -16,7 +16,7 @@ class EventsByMeCubit extends BaseCubit<EventsByMeState> {
     try {
       emit(const EventsByMeLoadingState());
       Position position = await Geolocator.getCurrentPosition();
-      LocationModel model = LocationModel(
+      CoordinateModel model = CoordinateModel(
           latitude: position.latitude, longitude: position.longitude);
       EventsByUserModel data = await _eventsByMeRepository.getEventsByMe(model);
       emit(EventsByMeSuccessState(events: data));

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/components/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/participant_card.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
+import 'package:flutter_boilerplate/page/friend_profile.dart';
 
 class EventParticipants extends StatelessWidget {
   static const routeName = "/event-participants";
@@ -31,6 +32,12 @@ class EventParticipants extends StatelessWidget {
                     right: CustomPadding.body,
                     top: index == 0 ? CustomPadding.body : 0),
                 child: ParticipantCard(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        FriendProfile.routeName,
+                        arguments: participants[index].userID,
+                      );
+                    },
                     firstName: participants[index].firstName,
                     lastName: participants[index].lastName,
                     location: participants[index].location?.suburb ?? ""),

@@ -29,7 +29,8 @@ class _LocationPermissionState extends State<LocationPermission> {
               child: BlocConsumer<LocationCubit, LocationState>(
             listener: (context, state) {
               if (state is LocationAllowedState) {
-                Navigator.pushNamed(context, Dashboard.routeName);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, Dashboard.routeName, (route) => false);
               } else if (state is LocationDeniedState) {
                 Navigator.pushNamedAndRemoveUntil(
                     context, LocationDenied.routeName, (route) => false);

@@ -1,42 +1,34 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
-part 'user_model.g.dart';
+part 'profile_model.g.dart';
 
 @JsonSerializable()
-class UserModel extends BaseModel {
+class ProfileModel extends BaseModel {
   final int userID;
   final String username;
-  final String email;
   final String firstName;
   final String lastName;
-  final String birthDate;
-  final bool isVerified;
-  final bool isFirstLogin;
+  final UserLocationModel? location;
   final List<PreferenceModel> preferences;
-  final UserLocationModel location;
   final bool isShareLocation;
+  final List<EventByUserModel> eventCreated;
 
-  const UserModel({
-    required this.isVerified,
-    required this.isFirstLogin,
-    required this.preferences,
+  const ProfileModel({
     required this.userID,
     required this.username,
-    required this.email,
     required this.firstName,
     required this.lastName,
-    required this.birthDate,
     required this.location,
+    required this.preferences,
     required this.isShareLocation,
+    required this.eventCreated,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      _$UserModelFromJson(json);
+  factory ProfileModel.fromJson(Map<String, dynamic> json) =>
+      _$ProfileModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$UserModelToJson(this);
-
-  @override
-  List<Object> get props => [userID];
+  Map<String, dynamic> toJson() => _$ProfileModelToJson(this);
 }

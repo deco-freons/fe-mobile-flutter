@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'location_model.dart';
+part of 'user_location_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-LocationModel _$LocationModelFromJson(Map<String, dynamic> json) =>
-    LocationModel(
+UserLocationModel _$UserLocationModelFromJson(Map<String, dynamic> json) =>
+    UserLocationModel(
       suburb: json['suburb'] as String,
     );
 
-Map<String, dynamic> _$LocationModelToJson(LocationModel instance) =>
+Map<String, dynamic> _$UserLocationModelToJson(UserLocationModel instance) =>
     <String, dynamic>{
       'suburb': instance.suburb,
     };

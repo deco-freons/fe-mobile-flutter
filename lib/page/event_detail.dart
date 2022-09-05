@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
-import 'package:flutter_boilerplate/common/components/shimmer_widget.dart';
+import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
