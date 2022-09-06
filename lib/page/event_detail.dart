@@ -24,6 +24,7 @@ import 'package:flutter_boilerplate/page/event_participants.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
+import 'package:google_geocoding/google_geocoding.dart' as geocode;
 
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";
@@ -38,6 +39,37 @@ class EventDetail extends StatefulWidget {
 final googleApiKey = dotenv.env['googleApiKey'];
 
 class _EventDetailState extends State<EventDetail> {
+  geocode.GoogleGeocoding googleGeocoding =
+      geocode.GoogleGeocoding(googleApiKey!);
+
+  String locationName = "";
+  String locationArea = "";
+  String formattedAddress = "";
+  LoadingType geoCodeStatus = LoadingType.INITIAL;
+
+  Future<void> _handleReverseGeoCoding(double lat, double long) async {
+    try {
+      geocode.GeocodingResponse? response =
+          await googleGeocoding.geocoding.getReverse(geocode.LatLon(lat, long));
+      if (response != null) {
+        setState(() {
+          formattedAddress = response.results?[0].formattedAddress ?? "";
+          locationName =
+              response.results?[0].addressComponents?[0].longName ?? "";
+          locationArea =
+              '${response.results?[0].addressComponents?[1].longName ?? ""}, ${response.results?[0].addressComponents?[2].shortName}';
+          geoCodeStatus = LoadingType.SUCCESS;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        locationName = "";
+        locationArea = "";
+        formattedAddress = "";
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext buildContext) {
     return MultiBlocProvider(
@@ -72,7 +104,12 @@ class _EventDetailState extends State<EventDetail> {
               ),
               BlocListener<EventDetailCubit, EventDetailState>(
                 listener: (context, state) {
-                  if (state.status == LoadingType.ERROR) {
+                  // REVERSE GEO LOCATE HERE
+                  if (state.status == LoadingType.SUCCESS &&
+                      geoCodeStatus == LoadingType.INITIAL) {
+                    _handleReverseGeoCoding(state.model.event.latitude,
+                        state.model.event.longitude);
+                  } else if (state.status == LoadingType.ERROR) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.message),
@@ -159,17 +196,20 @@ class _EventDetailState extends State<EventDetail> {
                             isSuccessState
                                 ? EventInfo(
                                     icon: Icons.location_on_outlined,
-                                    title:
-                                        "${state.model.event.location.suburb}, ${state.model.event.location.city}",
-                                    body: state.model.event.locationName,
+                                    title: locationArea,
+                                    body: locationName,
                                     onTap: () {
-                                      Navigator.of(context).pushNamed(
-                                        ShowLocation.routeName,
-                                        arguments: PlaceModel(
-                                            state.model.event.locationName,
-                                            state.model.event.latitude,
-                                            state.model.event.longitude),
-                                      );
+                                      // OPEN GOOGLE MAP
+                                      if (geoCodeStatus ==
+                                          LoadingType.SUCCESS) {
+                                        Navigator.of(context).pushNamed(
+                                          ShowLocation.routeName,
+                                          arguments: PlaceModel(
+                                              formattedAddress,
+                                              state.model.event.latitude,
+                                              state.model.event.longitude),
+                                        );
+                                      }
                                     },
                                   )
                                 : const EventInfo.loading(),
