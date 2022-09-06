@@ -113,3 +113,89 @@ extension BadgeTierExtension on BadgeTier {
     }
   }
 }
+
+enum DaysFilter { oneDay, oneWeek, twoWeeks, fourWeeks }
+
+extension DaysFilterExtension on DaysFilter {
+  String get desc {
+    switch (this) {
+      case DaysFilter.oneDay:
+        return '1 day';
+      case DaysFilter.oneWeek:
+        return '1 Week';
+      case DaysFilter.twoWeeks:
+        return '2 Weeks';
+      case DaysFilter.fourWeeks:
+        return '1 Month';
+    }
+  }
+
+  int get value {
+    switch (this) {
+      case DaysFilter.oneDay:
+        return 1;
+      case DaysFilter.oneWeek:
+        return 7;
+      case DaysFilter.twoWeeks:
+        return 14;
+      case DaysFilter.fourWeeks:
+        return 28;
+    }
+  }
+
+  String get isMoreOrLess {
+    switch (this) {
+      case DaysFilter.oneDay:
+        return 'LESS';
+      case DaysFilter.oneWeek:
+        return 'LESS';
+      case DaysFilter.twoWeeks:
+        return 'LESS';
+      case DaysFilter.fourWeeks:
+        return 'LESS';
+    }
+  }
+}
+
+enum DistanceFilter { five, ten, twenty, aboveTwenty }
+
+extension DistanceFilterExtension on DistanceFilter {
+  String get desc {
+    switch (this) {
+      case DistanceFilter.five:
+        return '5 km';
+      case DistanceFilter.ten:
+        return '10 km';
+      case DistanceFilter.twenty:
+        return '20 km';
+      case DistanceFilter.aboveTwenty:
+        return '> 20 km';
+    }
+  }
+
+  int get value {
+    switch (this) {
+      case DistanceFilter.five:
+        return 5;
+      case DistanceFilter.ten:
+        return 10;
+      case DistanceFilter.twenty:
+        return 20;
+      case DistanceFilter.aboveTwenty:
+        return 20;
+    }
+  }
+
+  String get isMoreOrLess {
+    switch (this) {
+      case DistanceFilter.five:
+        return 'LESS';
+      case DistanceFilter.ten:
+        return 'LESS';
+      case DistanceFilter.twenty:
+        return 'LESS';
+      case DistanceFilter.aboveTwenty:
+        return 'MORE';
+    }
+  }
+}

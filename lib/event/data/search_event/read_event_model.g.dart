@@ -1,21 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'empty_nearby_model.dart';
+part of 'read_event_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-EmptyNearbyModel _$EmptyNearbyModelFromJson(Map<String, dynamic> json) =>
-    EmptyNearbyModel(
+ReadEventModel _$ReadEventModelFromJson(Map<String, dynamic> json) =>
+    ReadEventModel(
       longitude: (json['longitude'] as num).toDouble(),
       latitude: (json['latitude'] as num).toDouble(),
-      radius: (json['radius'] as num).toDouble(),
+      todaysDate: json['todaysDate'] as String,
+      filter: json['filter'] as Map<String, dynamic>?,
+      sort: json['sort'] as Map<String, dynamic>?,
     );
 
-Map<String, dynamic> _$EmptyNearbyModelToJson(EmptyNearbyModel instance) =>
+Map<String, dynamic> _$ReadEventModelToJson(ReadEventModel instance) =>
     <String, dynamic>{
       'longitude': instance.longitude,
       'latitude': instance.latitude,
-      'radius': instance.radius,
+      'todaysDate': instance.todaysDate,
+      'filter': instance.filter,
+      'sort': instance.sort,
     };

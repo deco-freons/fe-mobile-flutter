@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/components/layout/custom_bottom_navig
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
+import 'package:flutter_boilerplate/page/search_events.dart';
 
 class Dashboard extends StatefulWidget {
   static const routeName = "/dashboard";
@@ -16,8 +17,7 @@ class _DashboardState extends State<Dashboard> {
   final PageController _pageController = PageController(initialPage: 0);
   int _selectedPageIndex = 0;
 
-  final Homepage _homePage = const Homepage();
-  final Widget _searchPage = const SizedBox();
+  final SearchEvents _searchPage = const SearchEvents();
   final Widget _eventPage = const SizedBox();
   final Widget _historyPage = const SizedBox();
 
@@ -58,7 +58,12 @@ class _DashboardState extends State<Dashboard> {
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
-          children: <Widget>[_homePage, _searchPage, _eventPage, _historyPage],
+          children: <Widget>[
+            Homepage(handlePageChanged: handlePageChanged),
+            _searchPage,
+            _eventPage,
+            _historyPage
+          ],
         ),
         bottomNavigationBar: CustomBottomNavigation(
           currentIndex: _selectedPageIndex,

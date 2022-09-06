@@ -2,34 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/bloc/popular_events_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
-import 'package:flutter_boilerplate/event/components/home_content.dart';
-import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
-import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
+import 'package:flutter_boilerplate/common/components/buttons/search_bar.dart';
+import 'package:flutter_boilerplate/event/components/search_event/filter_modal.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:intl/intl.dart';
 
-class PopularEvents extends StatefulWidget {
-  const PopularEvents({Key? key}) : super(key: key);
-  static const routeName = '/popular-events';
+class SearchEvents extends StatefulWidget {
+  const SearchEvents({Key? key}) : super(key: key);
+  static const routeName = '/search-events';
 
   @override
-  State<PopularEvents> createState() => _PopularEventsState();
+  State<SearchEvents> createState() => _SearchEventsState();
 }
 
-class _PopularEventsState extends State<PopularEvents> {
+class _SearchEventsState extends State<SearchEvents>
+    with AutomaticKeepAliveClientMixin<SearchEvents> {
+  bool keepAlive = true;
+  FilterEventModalModel filter = FilterEventModalModel(
+      categories: const [],
+      daysChoice: null,
+      distanceChoice: null,
+      allCheck: false,
+      prefCheck: List.filled(PrefType.values.length, true),
+      weekCheck: List.filled(DaysFilter.values.length, true),
+      distanceCheck: List.filled(DistanceFilter.values.length, true));
+
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocProvider(
       create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
-        ..getAllPopularEvents([]),
+        ..searchEvents(filter),
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: const PageAppBar(title: "Popular Events"),
+        appBar: const PageAppBar(title: "Search Events"),
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: SafeArea(
@@ -37,7 +50,7 @@ class _PopularEventsState extends State<PopularEvents> {
             padding: const EdgeInsets.only(top: CustomPadding.sm),
             child: Column(
               children: const [
-                ShowCategories(),
+                BuildSearchEvents(),
               ],
             ),
           )),
@@ -45,87 +58,65 @@ class _PopularEventsState extends State<PopularEvents> {
       ),
     );
   }
-}
-
-class ShowCategories extends StatefulWidget {
-  final String errorMessage;
-
-  const ShowCategories({Key? key, this.errorMessage = ''}) : super(key: key);
 
   @override
-  State<ShowCategories> createState() => _ShowCategoriesState();
+  bool get wantKeepAlive => keepAlive;
 }
 
-class _ShowCategoriesState extends State<ShowCategories> {
+class BuildSearchEvents extends StatefulWidget {
+  final String errorMessage;
+
+  const BuildSearchEvents({Key? key, this.errorMessage = ''}) : super(key: key);
+
+  @override
+  State<BuildSearchEvents> createState() => _BuildSearchEventsState();
+}
+
+class _BuildSearchEventsState extends State<BuildSearchEvents> {
   final scrollController = ScrollController();
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  bool allCheck = false;
-  List<PrefType> categories = [];
-  List<String> categoriesData = [];
   List<PopularEventModel> eventList = [];
+  FilterEventModalModel filter = FilterEventModalModel(
+      categories: const [],
+      daysChoice: null,
+      distanceChoice: null,
+      allCheck: false,
+      prefCheck: List.filled(PrefType.values.length, true),
+      weekCheck: List.filled(DaysFilter.values.length, true),
+      distanceCheck: List.filled(DistanceFilter.values.length, true));
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
         children: [
-          HomeContent(
-            title: 'Categories',
-            contentWidgets: [
-              Padding(
-                padding: const EdgeInsets.only(left: CustomPadding.body),
-                child: PreferenceButton(
-                  type: PrefType.GM,
-                  isAll: true,
-                  elevation: 4.0,
-                  onPressedHandler: () {
-                    setState(() {
-                      if (clickCheck.contains(false)) {
-                        allCheck = !allCheck;
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: CustomPadding.body),
+            child: SearchBar(
+              label: 'Search event...',
+              hasSecondIcon: true,
+              secondIcon: const Icon(Icons.filter_list),
+              iconOnPressedHandler: () async {
+                await showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(CustomRadius.body),
+                      ),
+                    ),
+                    builder: (context) => FilterModal(
+                          filter: filter,
+                        )).then((value) => setState(() {
+                      if (value != null) {
+                        filter = value;
                       }
-                    });
-                    if (!allCheck) {
-                      for (var category in categories) {
-                        clickCheck[category.index] =
-                            !clickCheck[category.index];
-                      }
-                      categories = [];
-                      categoriesData = [];
-                      getAllPopularEvents(context, categoriesData);
-                    }
-                  },
-                  click: allCheck,
-                ),
-              ),
-              for (var pref in PrefType.values)
-                PreferenceButton(
-                  type: pref,
-                  elevation: 4.0,
-                  onPressedHandler: () {
-                    setState(() {
-                      clickCheck[pref.index] = !clickCheck[pref.index];
-                    });
-                    if (!clickCheck[pref.index]) {
-                      categories.add(pref);
-                      categoriesData.add(pref.name);
-                      if (!allCheck) {
-                        allCheck = !allCheck;
-                      }
-                      getAllPopularEvents(context, categoriesData);
-                    } else if (!clickCheck.contains(false)) {
-                      allCheck = false;
-                      categories = [];
-                      categoriesData = [];
-                      getAllPopularEvents(context, categoriesData);
-                    } else {
-                      categories.remove(pref);
-                      categoriesData.remove(pref.name);
-                      getAllPopularEvents(context, categoriesData);
-                    }
-                  },
-                  click: clickCheck[pref.index],
-                )
-            ],
+                    }));
+                // ignore: use_build_context_synchronously
+                context.read<PopularEventsCubit>().emitFilterState();
+              },
+            ),
+          ),
+          const SizedBox(
+            height: 25,
           ),
           const SizedBox(
             height: 28,
@@ -133,14 +124,16 @@ class _ShowCategoriesState extends State<ShowCategories> {
           BlocConsumer<PopularEventsCubit, PopularEventsState>(
               listener: (context, state) {
             if (state is PopularEventsSuccessState) {
-              if (!(state.events.isEmpty && eventList.isNotEmpty)) {
+              if (state.events.isNotEmpty) {
                 for (var resEvent in state.events) {
                   if (!eventList.contains(resEvent)) {
                     eventList.add(resEvent);
                   }
                 }
-                eventList.removeWhere((event) => !state.events.contains(event));
               }
+            } else if (state is PopularEventsFilterState) {
+              eventList = [];
+              searchEvents(context, filter);
             }
           }, builder: (context, state) {
             if (state is PopularEventsErrorState) {
@@ -162,8 +155,7 @@ class _ShowCategoriesState extends State<ShowCategories> {
                                   scrollController.position.maxScrollExtent) {
                                 context
                                     .read<PopularEventsCubit>()
-                                    .getMoreEvents(
-                                        categoriesData, state.pageCount);
+                                    .getMoreEvents(filter, state.pageCount);
                               }
                             }),
                           children: eventList.map((event) {
@@ -218,8 +210,8 @@ class _ShowCategoriesState extends State<ShowCategories> {
     );
   }
 
-  void getAllPopularEvents(BuildContext context, List<String> data) {
+  void searchEvents(BuildContext context, FilterEventModalModel data) {
     final cubit = context.read<PopularEventsCubit>();
-    cubit.getAllPopularEvents(data);
+    cubit.searchEvents(data);
   }
 }

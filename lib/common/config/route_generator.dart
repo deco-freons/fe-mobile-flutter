@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
@@ -17,7 +18,7 @@ import 'package:flutter_boilerplate/page/login.dart';
 import 'package:flutter_boilerplate/page/email_confirmation.dart';
 import 'package:flutter_boilerplate/page/edit_profile.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
-import 'package:flutter_boilerplate/page/popular_events.dart';
+import 'package:flutter_boilerplate/page/search_events.dart';
 import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/register.dart';
@@ -50,7 +51,10 @@ class RouteGenerator {
       case EditProfile.routeName:
         return MaterialPageRoute(builder: (context) => const EditProfile());
       case Homepage.routeName:
-        return MaterialPageRoute(builder: (context) => const Homepage());
+        HandlePageCallBack handlePageCallBack = args as HandlePageCallBack;
+        return MaterialPageRoute(
+            builder: (context) =>
+                Homepage(handlePageChanged: handlePageCallBack));
       case Preference.routeName:
         return MaterialPageRoute(builder: (context) => const Preference());
       case GetStarted.routeName:
@@ -75,8 +79,8 @@ class RouteGenerator {
                   long: placeModel.lng,
                   address: placeModel.name,
                 ));
-      case PopularEvents.routeName:
-        return MaterialPageRoute(builder: (context) => const PopularEvents());
+      case SearchEvents.routeName:
+        return MaterialPageRoute(builder: (context) => const SearchEvents());
       case LocationPermission.routeName:
         return MaterialPageRoute(
             builder: (context) => const LocationPermission());
