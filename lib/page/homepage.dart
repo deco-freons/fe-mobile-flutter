@@ -3,18 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_small.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
-import 'package:flutter_boilerplate/page/search_events.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:intl/intl.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+  final HandlePageCallBack handlePageChanged;
+
+  const Homepage({Key? key, required this.handlePageChanged}) : super(key: key);
   static const routeName = '/homepage';
 
   @override
@@ -37,7 +39,10 @@ class _HomepageState extends State<Homepage>
         body: Container(
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.secondary),
-          child: const SafeArea(child: BuildHome()),
+          child: SafeArea(
+              child: BuildHome(
+            handlePageChanged: widget.handlePageChanged,
+          )),
         ),
       ),
     );
@@ -49,8 +54,11 @@ class _HomepageState extends State<Homepage>
 
 class BuildHome extends StatefulWidget {
   final String errorMessage;
+  final HandlePageCallBack handlePageChanged;
 
-  const BuildHome({Key? key, this.errorMessage = ''}) : super(key: key);
+  const BuildHome(
+      {Key? key, this.errorMessage = '', required this.handlePageChanged})
+      : super(key: key);
 
   @override
   State<BuildHome> createState() => _BuildHomeState();
@@ -224,7 +232,7 @@ class _BuildHomeState extends State<BuildHome> {
                     fontSize: CustomFontSize.sm,
                     type: TextButtonType.tertiary,
                     onPressedHandler: () {
-                      Navigator.pushNamed(context, SearchEvents.routeName);
+                      widget.handlePageChanged(1);
                     }),
                 contentWidgets: isSuccessState
                     ? state.events.map((event) {
