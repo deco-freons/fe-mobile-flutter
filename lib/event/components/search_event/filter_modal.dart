@@ -4,11 +4,11 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/bloc/filter_event_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/filter_event_state.dart';
-import 'package:flutter_boilerplate/event/components/filter_button.dart';
-import 'package:flutter_boilerplate/event/components/filter_content.dart';
-import 'package:flutter_boilerplate/event/data/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_state.dart';
+import 'package:flutter_boilerplate/event/components/search_event/filter_button.dart';
+import 'package:flutter_boilerplate/event/components/search_event/filter_content.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_modal_model.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
 class FilterModal extends StatefulWidget {

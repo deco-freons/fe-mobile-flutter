@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../common/data/base_repository.dart';
+import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'popular_events_data_provider.dart';
 
 @immutable

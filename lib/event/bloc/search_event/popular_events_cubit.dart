@@ -1,15 +1,15 @@
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
-import 'package:flutter_boilerplate/event/bloc/popular_events_state.dart';
-import 'package:flutter_boilerplate/event/data/days_to_event_model.dart';
-import 'package:flutter_boilerplate/event/data/event_categories_model.dart';
-import 'package:flutter_boilerplate/event/data/event_radius_model.dart';
-import 'package:flutter_boilerplate/event/data/filter_event_modal_model.dart';
-import 'package:flutter_boilerplate/event/data/filter_event_model.dart';
-import 'package:flutter_boilerplate/event/data/popular_event_model.dart';
-import 'package:flutter_boilerplate/event/data/popular_events_repository.dart';
-import 'package:flutter_boilerplate/event/data/read_event_model.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
+import 'package:flutter_boilerplate/event/data/search_event/days_to_event_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/event_categories_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/event_radius_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
+import 'package:flutter_boilerplate/event/data/search_event/read_event_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_geocoding/google_geocoding.dart' as geocode;
@@ -20,7 +20,8 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
   PopularEventsCubit(this._popularEventsRepository)
       : super(const PopularEventsInitialState());
 
-  Future<void> getPopularEvents(List<String> data, double radius) async {
+  Future<void> getPopularEvents(
+      List<String> data, DistanceFilter radius) async {
     try {
       emit(const PopularEventsLoadingState());
       Position position = await Geolocator.getCurrentPosition();
@@ -33,11 +34,12 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           eventCategories: data.isNotEmpty
               ? EventCategoriesModel(category: data).toJson()
               : null,
-          eventRadius: null,
+          eventRadius: EventRadiusModel(
+                  radius: radius.value, isMoreOrLess: radius.isMoreOrLess)
+              .toJson(),
           daysToEvent: null);
 
       Map<String, dynamic> jsonFilter = filter.toJson();
-      jsonFilter.removeWhere((key, value) => key == "eventRadius");
       jsonFilter.removeWhere((key, value) => key == "daysToEvent");
       if (data.isEmpty) {
         jsonFilter.removeWhere((key, value) => key == "eventCategories");

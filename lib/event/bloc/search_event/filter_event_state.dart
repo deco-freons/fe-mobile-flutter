@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../common/bloc/base_state.dart';
+import 'package:flutter_boilerplate/common/bloc/base_state.dart';
 
 @immutable
 abstract class FilterEventState implements BaseState {

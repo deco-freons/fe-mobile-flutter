@@ -1,4 +1,4 @@
-import '../../common/data/base_data_provider.dart';
+import 'package:flutter_boilerplate/common/data/base_data_provider.dart';
 
 class PopularEventsDataProvider extends BaseDataProvider {
   Future<dynamic> getPopularEvents(Map<String, dynamic> data) async {

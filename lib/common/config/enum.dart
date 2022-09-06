@@ -116,7 +116,7 @@ extension BadgeTierExtension on BadgeTier {
 
 enum DaysFilter { oneDay, oneWeek, twoWeeks, fourWeeks }
 
-extension DaysDescExtension on DaysFilter {
+extension DaysFilterExtension on DaysFilter {
   String get desc {
     switch (this) {
       case DaysFilter.oneDay:
@@ -129,9 +129,7 @@ extension DaysDescExtension on DaysFilter {
         return '1 Month';
     }
   }
-}
 
-extension DaysValueExtension on DaysFilter {
   int get value {
     switch (this) {
       case DaysFilter.oneDay:
@@ -144,9 +142,7 @@ extension DaysValueExtension on DaysFilter {
         return 28;
     }
   }
-}
 
-extension DaysMoreLessExtension on DaysFilter {
   String get isMoreOrLess {
     switch (this) {
       case DaysFilter.oneDay:
@@ -163,7 +159,7 @@ extension DaysMoreLessExtension on DaysFilter {
 
 enum DistanceFilter { five, ten, twenty, aboveTwenty }
 
-extension DistanceDescExtension on DistanceFilter {
+extension DistanceFilterExtension on DistanceFilter {
   String get desc {
     switch (this) {
       case DistanceFilter.five:
@@ -176,9 +172,7 @@ extension DistanceDescExtension on DistanceFilter {
         return '> 20 km';
     }
   }
-}
 
-extension DistanceValueExtension on DistanceFilter {
   int get value {
     switch (this) {
       case DistanceFilter.five:
@@ -191,9 +185,7 @@ extension DistanceValueExtension on DistanceFilter {
         return 20;
     }
   }
-}
 
-extension DistanceMoreLessExtension on DistanceFilter {
   String get isMoreOrLess {
     switch (this) {
       case DistanceFilter.five:
