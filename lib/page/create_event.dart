@@ -125,7 +125,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final CustomFormInput shortDescription = CustomFormInput(
     label: 'Short Description',
     type: TextFieldType.textArea,
-    maxLength: 250,
+    maxLength: 100,
   );
   final CustomFormInput description = CustomFormInput(
     label: 'Description',
@@ -134,6 +134,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final CustomFormInput location = CustomFormInput(
     label: 'Location',
     type: TextFieldType.location,
+    initialgoogleMapSuburb: "",
   );
 
   @override

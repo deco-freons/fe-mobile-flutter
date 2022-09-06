@@ -158,29 +158,26 @@ class _BuildHomeState extends State<BuildHome> {
           height: 32,
         ),
         HomeContent(title: 'Categories', contentWidgets: [
-          Padding(
-            padding: const EdgeInsets.only(left: CustomPadding.body),
-            child: PreferenceButton(
-              type: PrefType.GM,
-              isAll: true,
-              elevation: 4.0,
-              onPressedHandler: () {
-                setState(() {
-                  if (clickCheck.contains(false)) {
-                    allCheck = !allCheck;
-                  }
-                });
-                if (!allCheck) {
-                  for (var category in categories) {
-                    clickCheck[category.index] = !clickCheck[category.index];
-                  }
-                  categories = [];
-                  categoriesData = [];
-                  getPopularEvents(context, categoriesData, radiusValue);
+          PreferenceButton(
+            type: PrefType.GM,
+            isAll: true,
+            elevation: 4.0,
+            onPressedHandler: () {
+              setState(() {
+                if (clickCheck.contains(false)) {
+                  allCheck = !allCheck;
                 }
-              },
-              click: allCheck,
-            ),
+              });
+              if (!allCheck) {
+                for (var category in categories) {
+                  clickCheck[category.index] = !clickCheck[category.index];
+                }
+                categories = [];
+                categoriesData = [];
+                getPopularEvents(context, categoriesData, radiusValue);
+              }
+            },
+            click: allCheck,
           ),
           for (var pref in PrefType.values)
             PreferenceButton(

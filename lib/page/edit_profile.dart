@@ -111,6 +111,7 @@ class _EditProfileState extends State<EditProfile> {
       label: "Location",
       type: TextFieldType.suburbDropdown,
       initialValue: user.location.suburb,
+      initialgoogleMapSuburb: "",
     );
     CustomFormInput isShareLocation = CustomFormInput(
       label: "Allow other users to see your location?",
