@@ -25,6 +25,8 @@ class CustomFormInput {
   ValueNotifier<bool>? switchController;
   bool? initialSwitchValue;
   int? maxLength;
+  int? googleMapSuburbId;
+  String? initialgoogleMapSuburb;
 
   CustomFormInput({
     required this.label,
@@ -44,6 +46,8 @@ class CustomFormInput {
     this.location = const EventLocationModel(suburb: "", city: ""),
     this.initialSwitchValue,
     this.maxLength,
+    this.googleMapSuburbId,
+    this.initialgoogleMapSuburb,
   })  : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101),
         initialValue = initialValue ?? "",

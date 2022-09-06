@@ -9,7 +9,6 @@ import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
-import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
 
 import '../../common/config/enum.dart';
@@ -152,23 +151,20 @@ class _EditEventFormState extends State<EditEventForm> {
       label: 'Location',
       type: TextFieldType.location,
       initialValue: event?.locationName,
-    );
-    final CustomFormInput suburb = CustomFormInput(
-      label: 'Suburb',
-      type: TextFieldType.suburbDropdown,
-      initialValue: event?.location.suburb,
+      initialgoogleMapSuburb: event?.location.suburb,
     );
 
     if (event != null) {
       location.setLatLng(event.latitude, event.longitude);
       category.setPreferences(event.categories);
+      location.location = event.location;
     }
 
     void submit(BuildContext context, EventDetailResponseModel data) {
       final cubit = context.read<UpdateEventDetailCubit>();
       cubit.editEvent(
         data,
-        suburb.controller.text == "" ? 0 : int.parse(suburb.controller.text),
+        location.googleMapSuburbId != null ? location.googleMapSuburbId! : 0,
       );
     }
 
@@ -180,7 +176,6 @@ class _EditEventFormState extends State<EditEventForm> {
         date,
         eventTime,
         location,
-        suburb,
         shortDescription,
         description,
       ],
@@ -205,8 +200,7 @@ class _EditEventFormState extends State<EditEventForm> {
             participantsList: event.participantsList,
             participated: event.participated,
             locationName: location.controller.text,
-            location: EventLocationModel(
-                suburb: suburb.location.suburb, city: suburb.location.city),
+            location: location.location,
           );
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,

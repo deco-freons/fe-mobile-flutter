@@ -11,8 +11,8 @@ import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
+import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
-import 'package:flutter_boilerplate/event/data/place_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
@@ -150,7 +150,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                           jsonDecode(snapshot.data!);
                                       List<dynamic> locations = jsonResult
                                           .map((item) => BrisbaneLocationModel(
-                                              locationID: item["location_id"],
+                                              location_id: item["location_id"],
                                               suburb: item["suburb"],
                                               city: item["city"],
                                               state: item["state"],
@@ -167,7 +167,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                             .toList()[0];
                                         if (initialLocation != null) {
                                           widget.input.controller.text =
-                                              initialLocation.locationID
+                                              initialLocation.location_id
                                                   .toString();
                                           widget.input.location =
                                               EventLocationModel(
@@ -315,15 +315,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                 Icons.place_outlined),
                                           ),
                                           onTap: () async {
-                                            PlaceModel location =
+                                            SearchLocationResponseModel
+                                                location =
                                                 await Navigator.pushNamed(
-                                              context,
-                                              SearchLocation.routeName,
-                                            ) as PlaceModel;
+                                                        context,
+                                                        SearchLocation.routeName,
+                                                        arguments: widget.input
+                                                            .initialgoogleMapSuburb)
+                                                    as SearchLocationResponseModel;
                                             widget.input.controller.text =
                                                 location.name;
                                             widget.input.lat = location.lat;
                                             widget.input.lng = location.lng;
+                                            widget.input.googleMapSuburbId =
+                                                location.suburbId;
+                                            widget.input.location =
+                                                EventLocationModel(
+                                                    suburb: location.suburb,
+                                                    city: location.city);
                                           },
                                         )
                                       : widget.input.type == TextFieldType.image
