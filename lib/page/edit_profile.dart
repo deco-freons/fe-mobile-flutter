@@ -162,7 +162,7 @@ class _EditProfileState extends State<EditProfile> {
                       : false,
                   preferences: newPreferences);
               submit(context, data, interest.preferences,
-                  LocationModel(suburb: location.location.suburb));
+                  UserLocationModel(suburb: location.location.suburb));
             },
             textButtonHandler: () {},
             sidePadding: 0.0,
