@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
@@ -50,7 +51,10 @@ class RouteGenerator {
       case EditProfile.routeName:
         return MaterialPageRoute(builder: (context) => const EditProfile());
       case Homepage.routeName:
-        return MaterialPageRoute(builder: (context) => const Homepage());
+        HandlePageCallBack handlePageCallBack = args as HandlePageCallBack;
+        return MaterialPageRoute(
+            builder: (context) =>
+                Homepage(handlePageChanged: handlePageCallBack));
       case Preference.routeName:
         return MaterialPageRoute(builder: (context) => const Preference());
       case GetStarted.routeName:

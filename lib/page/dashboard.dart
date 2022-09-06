@@ -17,7 +17,6 @@ class _DashboardState extends State<Dashboard> {
   final PageController _pageController = PageController(initialPage: 0);
   int _selectedPageIndex = 0;
 
-  final Homepage _homePage = const Homepage();
   final SearchEvents _searchPage = const SearchEvents();
   final Widget _eventPage = const SizedBox();
   final Widget _historyPage = const SizedBox();
@@ -59,7 +58,12 @@ class _DashboardState extends State<Dashboard> {
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
-          children: <Widget>[_homePage, _searchPage, _eventPage, _historyPage],
+          children: <Widget>[
+            Homepage(handlePageChanged: handlePageChanged),
+            _searchPage,
+            _eventPage,
+            _historyPage
+          ],
         ),
         bottomNavigationBar: CustomBottomNavigation(
           currentIndex: _selectedPageIndex,
