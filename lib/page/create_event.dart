@@ -135,10 +135,6 @@ class _CreateEventFormState extends State<CreateEventForm> {
     label: 'Location',
     type: TextFieldType.location,
   );
-  final CustomFormInput suburb = CustomFormInput(
-    label: 'Suburb',
-    type: TextFieldType.suburbDropdown,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +146,6 @@ class _CreateEventFormState extends State<CreateEventForm> {
         date,
         eventTime,
         location,
-        suburb,
         shortDescription,
         description
       ],
@@ -167,9 +162,9 @@ class _CreateEventFormState extends State<CreateEventForm> {
                 : eventTime.controller.text,
             longitude: location.lng.toString(),
             latitude: location.lat.toString(),
-            location: suburb.controller.text == ""
-                ? 0
-                : int.parse(suburb.controller.text),
+            location: location.googleMapSuburbId != null
+                ? location.googleMapSuburbId!
+                : 0,
             locationName: location.controller.text,
             shortDescription: shortDescription.controller.text != ""
                 ? shortDescription.controller.text

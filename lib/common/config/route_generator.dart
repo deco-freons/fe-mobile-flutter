@@ -61,7 +61,10 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => EditEvent(eventDetail: eventDetail));
       case SearchLocation.routeName:
-        return MaterialPageRoute(builder: (context) => const SearchLocation());
+        String initialGoogleMapSuburb = args as String;
+        return MaterialPageRoute(
+            builder: (context) =>
+                SearchLocation(initialSuburb: initialGoogleMapSuburb));
       case EventDetail.routeName:
         int eventID = args as int;
         return MaterialPageRoute(
