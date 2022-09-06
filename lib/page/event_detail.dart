@@ -38,14 +38,6 @@ class EventDetail extends StatefulWidget {
 final googleApiKey = dotenv.env['googleApiKey'];
 
 class _EventDetailState extends State<EventDetail> {
-  // geocode.GoogleGeocoding googleGeocoding =
-  //     geocode.GoogleGeocoding(googleApiKey!);
-
-  // String locationName = "";
-  // String locationArea = "";
-  // String formattedAddress = "";
-  LoadingType geoCodeStatus = LoadingType.INITIAL;
-
   @override
   Widget build(BuildContext buildContext) {
     return MultiBlocProvider(
@@ -80,12 +72,7 @@ class _EventDetailState extends State<EventDetail> {
               ),
               BlocListener<EventDetailCubit, EventDetailState>(
                 listener: (context, state) {
-                  // REVERSE GEO LOCATE HERE
-                  if (state.status == LoadingType.SUCCESS &&
-                      geoCodeStatus == LoadingType.INITIAL) {
-                    // _handleReverseGeoCoding(state.model.event.latitude,
-                    //     state.model.event.longitude);
-                  } else if (state.status == LoadingType.ERROR) {
+                  if (state.status == LoadingType.ERROR) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.message),
@@ -176,17 +163,13 @@ class _EventDetailState extends State<EventDetail> {
                                         "${state.model.event.location.suburb}, ${state.model.event.location.city}",
                                     body: state.model.event.locationName,
                                     onTap: () {
-                                      // OPEN GOOGLE MAP
-                                      if (geoCodeStatus ==
-                                          LoadingType.SUCCESS) {
-                                        Navigator.of(context).pushNamed(
-                                          ShowLocation.routeName,
-                                          arguments: PlaceModel(
-                                              state.model.event.locationName,
-                                              state.model.event.latitude,
-                                              state.model.event.longitude),
-                                        );
-                                      }
+                                      Navigator.of(context).pushNamed(
+                                        ShowLocation.routeName,
+                                        arguments: PlaceModel(
+                                            state.model.event.locationName,
+                                            state.model.event.latitude,
+                                            state.model.event.longitude),
+                                      );
                                     },
                                   )
                                 : const EventInfo.loading(),
