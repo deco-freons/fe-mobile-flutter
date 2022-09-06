@@ -13,6 +13,7 @@ import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/user_state.dart';
 import 'package:flutter_boilerplate/user/data/edit_user_repository.dart';
 import 'package:flutter_boilerplate/user/data/models/edit_user_model.dart';
+import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
 import 'package:flutter_boilerplate/user/data/user_repository.dart';
 
 class EditProfile extends StatefulWidget {
@@ -26,7 +27,6 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final UserRepositoryImpl userRepository = UserRepositoryImpl();
   final EditUserRepositoryImpl editUserRepository = EditUserRepositoryImpl();
-  int eventCount = 12;
 
   @override
   Widget build(BuildContext context) {
@@ -103,12 +103,23 @@ class _EditProfileState extends State<EditProfile> {
       lastDate: DateTime.now(),
     );
     CustomFormInput interest = CustomFormInput(
-        label: "Interests",
-        type: TextFieldType.interest,
-        preferences: user.preferences);
-
+      label: "Interests",
+      type: TextFieldType.interest,
+      preferences: user.preferences,
+    );
+    CustomFormInput location = CustomFormInput(
+      label: "Location",
+      type: TextFieldType.suburbDropdown,
+      initialValue: user.location.suburb,
+    );
+    CustomFormInput isShareLocation = CustomFormInput(
+      label: "Allow other users to see your location?",
+      type: TextFieldType.toggleSwitch,
+      initialSwitchValue: user.isShareLocation,
+    );
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 43.0),
+      padding: screenBodyPadding,
+      shrinkWrap: true,
       children: [
         Center(
           child: CircleAvatar(
@@ -117,9 +128,6 @@ class _EditProfileState extends State<EditProfile> {
                 Image.asset('lib/common/assets/images/CircleAvatarDefault.png'),
           ),
         ),
-        const SizedBox(
-          height: 41.0,
-        ),
         BlocListener<EditUserCubit, EditUserState>(
           listener: (context, state) {
             if (state is EditUserSuccessState) {
@@ -127,7 +135,16 @@ class _EditProfileState extends State<EditProfile> {
             }
           },
           child: CustomForm(
-            inputs: [firstName, lastName, username, email, birthDate, interest],
+            inputs: [
+              firstName,
+              lastName,
+              username,
+              email,
+              birthDate,
+              location,
+              isShareLocation,
+              interest,
+            ],
             submitTitle: "Save",
             submitHandler: () {
               List<String> newPreferences = interest.preferences
@@ -137,13 +154,20 @@ class _EditProfileState extends State<EditProfile> {
                   firstName: firstName.controller.text,
                   lastName: lastName.controller.text,
                   birthDate: birthDate.controller.text,
+                  location: location.controller.text == ""
+                      ? 0
+                      : int.parse(location.controller.text),
+                  isShareLocation: isShareLocation.switchController != null
+                      ? isShareLocation.switchController!.value
+                      : false,
                   preferences: newPreferences);
-              submit(context, data, interest.preferences);
+              submit(context, data, interest.preferences, location.suburb);
             },
             textButtonHandler: () {},
             sidePadding: 0.0,
             topPadding: 0.0,
-            labelColor: Theme.of(context).colorScheme.tertiary,
+            submitButtonRadius: CustomRadius.button,
+            labelColor: neutral.shade600,
             inputStyle: TextStyle(
               fontSize: CustomFontSize.lg,
               fontWeight: FontWeight.bold,
@@ -155,61 +179,9 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  Widget buildField(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 38.0),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: CustomFontSize.base,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: CustomFontSize.lg,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> buildInterest(List<PreferenceModel> preferences) {
-    List<Widget> widgets = preferences.map((preference) {
-      return IntrinsicWidth(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: CustomPadding.base),
-          height: 36.0,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.12),
-            border: Border.all(
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.21),
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-          ),
-          child: Row(
-            children: [
-              Text(
-                preference.preferenceName,
-                style: const TextStyle(fontSize: CustomFontSize.base),
-              )
-            ],
-          ),
-        ),
-      );
-    }).toList();
-    return widgets;
-  }
-
   void submit(BuildContext context, EditUserModel data,
-      List<PreferenceModel> preferences) async {
+      List<PreferenceModel> preferences, UserLocationModel location) async {
     final cubit = context.read<EditUserCubit>();
-    await cubit.editUser(data, preferences);
+    await cubit.editUser(data, preferences, location);
   }
 }

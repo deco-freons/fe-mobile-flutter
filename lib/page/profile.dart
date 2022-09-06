@@ -160,6 +160,11 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
         buildField("Email", widget.user.email),
         buildField("Birth Date",
             updated ? updatedUser.birthDate : widget.user.birthDate),
+        buildField(
+            "Location",
+            updated
+                ? updatedUser.location.suburb
+                : widget.user.location.suburb),
         const SizedBox(height: 38.0),
         buildInterests(),
         const SizedBox(height: 28.0),
@@ -181,13 +186,15 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
             label: "Edit Profile",
             type: ButtonType.primary,
             onPressedHandler: () async {
-              UserModel response =
+              UserModel? response =
                   await Navigator.pushNamed(context, EditProfile.routeName)
-                      as UserModel;
-              setState(() {
-                updatedUser = response;
-                updated = true;
-              });
+                      as UserModel?;
+              if (response != null) {
+                setState(() {
+                  updatedUser = response;
+                  updated = true;
+                });
+              }
             },
             cornerRadius: CustomRadius.button,
           ),

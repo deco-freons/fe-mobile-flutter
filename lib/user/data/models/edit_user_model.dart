@@ -8,12 +8,16 @@ class EditUserModel extends BaseModel {
   final String firstName;
   final String lastName;
   final String birthDate;
+  final int location;
+  final bool isShareLocation;
   final List<String> preferences;
 
   const EditUserModel({
     required this.firstName,
     required this.lastName,
     required this.birthDate,
+    required this.location,
+    required this.isShareLocation,
     required this.preferences,
   });
 

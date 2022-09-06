@@ -24,6 +24,7 @@ class CustomForm extends StatefulWidget {
   final double sidePadding;
   final Color labelColor;
   final TextStyle inputStyle;
+  final double submitButtonRadius;
 
   CustomForm({
     Key? key,
@@ -41,6 +42,7 @@ class CustomForm extends StatefulWidget {
     this.topPadding = CustomPadding.xxxl,
     this.bottomPadding = 40.0,
     this.sidePadding = CustomPadding.xl,
+    this.submitButtonRadius = CustomPadding.lg,
     Color? labelColor,
     TextStyle? inputStyle,
   })  : labelColor = labelColor ?? neutral.shade700,
@@ -96,10 +98,7 @@ class _CustomFormState extends State<CustomForm> {
                           fontSize: CustomFontSize.base),
                     ),
                   )
-                : const SizedBox(
-                    width: 0,
-                    height: 0,
-                  ),
+                : const SizedBox.shrink(),
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -132,6 +131,7 @@ class _CustomFormState extends State<CustomForm> {
               child: CustomButton(
                 label: widget.submitTitle,
                 type: ButtonType.primary,
+                cornerRadius: widget.submitButtonRadius,
                 onPressedHandler: () {
                   if (_formKey.currentState!.validate()) {
                     widget.submitHandler();
