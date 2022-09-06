@@ -9,7 +9,6 @@ import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
-import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
 
 import '../../common/config/enum.dart';
@@ -137,19 +136,36 @@ class _EditEventFormState extends State<EditEventForm> {
       initialValue: event?.startTime,
       initialSecondValue: event?.endTime,
     );
+    final CustomFormInput shortDescription = CustomFormInput(
+      label: 'Short Description',
+      type: TextFieldType.textArea,
+      maxLength: 250,
+      initialValue: event?.shortDescription,
+    );
     final CustomFormInput description = CustomFormInput(
       label: 'Description',
       type: TextFieldType.textArea,
       initialValue: event?.description,
     );
     final CustomFormInput location = CustomFormInput(
-        label: 'Location',
-        type: TextFieldType.location,
-        initialValue: "initial location");
+      label: 'Location',
+      type: TextFieldType.location,
+      initialValue: event?.locationName,
+      initialgoogleMapSuburb: event?.location.suburb,
+    );
 
     if (event != null) {
       location.setLatLng(event.latitude, event.longitude);
       category.setPreferences(event.categories);
+      location.location = event.location;
+    }
+
+    void submit(BuildContext context, EventDetailResponseModel data) {
+      final cubit = context.read<UpdateEventDetailCubit>();
+      cubit.editEvent(
+        data,
+        location.googleMapSuburbId != null ? location.googleMapSuburbId! : 0,
+      );
     }
 
     return CustomForm(
@@ -160,7 +176,8 @@ class _EditEventFormState extends State<EditEventForm> {
         date,
         eventTime,
         location,
-        description
+        shortDescription,
+        description,
       ],
       submitTitle: 'Save',
       submitHandler: () {
@@ -176,13 +193,14 @@ class _EditEventFormState extends State<EditEventForm> {
                 : eventTime.controller.text,
             longitude: location.lng,
             latitude: location.lat,
+            shortDescription: shortDescription.controller.text,
             description: description.controller.text,
             eventCreator: event.eventCreator,
             participants: event.participants,
             participantsList: event.participantsList,
             participated: event.participated,
-            locationName: "",
-            location: const EventLocationModel(suburb: "", city: ""),
+            locationName: location.controller.text,
+            location: location.location,
           );
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,
@@ -202,9 +220,4 @@ class _EditEventFormState extends State<EditEventForm> {
       errorMessage: widget.errorMessage,
     );
   }
-}
-
-void submit(BuildContext context, EventDetailResponseModel data) {
-  final cubit = context.read<UpdateEventDetailCubit>();
-  cubit.editEvent(data);
 }

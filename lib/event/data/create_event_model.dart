@@ -12,6 +12,9 @@ class CreateEventModel extends BaseModel {
   final String endTime;
   final String longitude;
   final String latitude;
+  final int location;
+  final String locationName;
+  final String shortDescription;
   final String description;
 
   const CreateEventModel(
@@ -22,6 +25,9 @@ class CreateEventModel extends BaseModel {
       required this.endTime,
       required this.longitude,
       required this.latitude,
+      required this.location,
+      required this.locationName,
+      required this.shortDescription,
       required this.description});
 
   factory CreateEventModel.fromJson(Map<String, dynamic> json) =>

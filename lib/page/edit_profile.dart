@@ -161,7 +161,8 @@ class _EditProfileState extends State<EditProfile> {
                       ? isShareLocation.switchController!.value
                       : false,
                   preferences: newPreferences);
-              submit(context, data, interest.preferences, location.suburb);
+              submit(context, data, interest.preferences,
+                  UserLocationModel(suburb: location.location.suburb));
             },
             textButtonHandler: () {},
             sidePadding: 0.0,

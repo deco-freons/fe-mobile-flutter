@@ -13,6 +13,9 @@ class EditEventModel extends BaseModel {
   final String endTime;
   final String longitude;
   final String latitude;
+  final int location;
+  final String locationName;
+  final String shortDescription;
   final String description;
 
   const EditEventModel(
@@ -24,6 +27,9 @@ class EditEventModel extends BaseModel {
       required this.endTime,
       required this.longitude,
       required this.latitude,
+      required this.location,
+      required this.locationName,
+      required this.shortDescription,
       required this.description});
 
   factory EditEventModel.fromJson(Map<String, dynamic> json) =>

@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/event/data/place_model.dart';
+import 'package:flutter_boilerplate/common/data/brisbane_location_list_model.dart';
+import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
+import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_geocoding/google_geocoding.dart' as geocode;
@@ -10,7 +14,9 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SearchLocation extends StatefulWidget {
-  const SearchLocation({Key? key}) : super(key: key);
+  final String initialSuburb;
+
+  const SearchLocation({Key? key, this.initialSuburb = ""}) : super(key: key);
   static const routeName = '/search-location';
 
   @override
@@ -28,61 +34,113 @@ class _SearchLocationState extends State<SearchLocation> {
   late GoogleMapController googleMapController;
   final Mode _mode = Mode.overlay;
   final TextEditingController searchController = TextEditingController();
+  late Future<String> _brisbaneLocationJson;
+  late BrisbaneLocationListModel _brisbaneLocationList;
+  int pickedSuburbId = 0;
+  String pickedSuburb = "";
+  String pickedCity = "";
 
   double? lat = 0;
   double? lng = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _brisbaneLocationJson = getJson();
+  }
+
+  Future<String> getJson() async {
+    Future<String> jsonData = DefaultAssetBundle.of(context)
+        .loadString("lib/common/assets/files/express_public_location.json");
+    return jsonData;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: homeScaffoldKey,
-      body: Stack(children: [
-        GoogleMap(
-          initialCameraPosition: initialCameraPosition,
-          markers: markerList,
-          mapType: MapType.normal,
-          onMapCreated: (GoogleMapController controller) {
-            googleMapController = controller;
-          },
-          onTap: (latlng) async {
-            _handleTap(latlng);
-          },
-        ),
-        Align(
-          alignment: AlignmentDirectional.topCenter,
-          child: Container(
-            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 50.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                TextField(
-                  controller: searchController,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    hintText: "Search",
-                    border: OutlineInputBorder(
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(10.0)),
-                      borderSide: BorderSide(color: primary.shade500, width: 5),
-                    ),
-                    filled: true,
-                    fillColor: primary.shade400,
-                    suffixIcon: const Icon(Icons.search_outlined),
-                  ),
-                  onTap: _handlePressButton,
+        key: homeScaffoldKey,
+        body: FutureBuilder<String>(
+          future: _brisbaneLocationJson,
+          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            if (snapshot.hasData) {
+              List<dynamic> jsonResult = jsonDecode(snapshot.data!);
+              List<BrisbaneLocationModel> locations = jsonResult
+                  .map((item) => BrisbaneLocationModel(
+                      location_id: item["location_id"],
+                      suburb: item["suburb"],
+                      city: item["city"],
+                      state: item["state"],
+                      country: item["country"]))
+                  .toList();
+              _brisbaneLocationList =
+                  BrisbaneLocationListModel(brisbaneLocations: locations);
+              if (widget.initialSuburb != "") {
+                pickedSuburbId =
+                    _brisbaneLocationList.getIdFromSuburb(widget.initialSuburb);
+              }
+              return Stack(children: [
+                GoogleMap(
+                  initialCameraPosition: initialCameraPosition,
+                  markers: markerList,
+                  mapType: MapType.normal,
+                  onMapCreated: (GoogleMapController controller) {
+                    googleMapController = controller;
+                  },
+                  onTap: (latlng) async {
+                    _handleTap(latlng);
+                  },
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context,
-                          PlaceModel(searchController.text, lat!, lng!));
-                    },
-                    child: const Text("Select")),
-              ],
-            ),
-          ),
-        ),
-      ]),
-    );
+                Align(
+                  alignment: AlignmentDirectional.topCenter,
+                  child: Container(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, top: 50.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        TextField(
+                          controller: searchController,
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            hintText: "Search",
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10.0)),
+                              borderSide:
+                                  BorderSide(color: primary.shade500, width: 5),
+                            ),
+                            filled: true,
+                            fillColor: primary.shade400,
+                            suffixIcon: const Icon(Icons.search_outlined),
+                          ),
+                          onTap: _handlePressButton,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              if (searchController.text != "") {
+                                Navigator.pop(
+                                    context,
+                                    SearchLocationResponseModel(
+                                      searchController.text.split(",")[0],
+                                      lat!,
+                                      lng!,
+                                      pickedSuburbId,
+                                      pickedSuburb,
+                                      pickedCity,
+                                    ));
+                              }
+                            },
+                            child: const Text("Select")),
+                      ],
+                    ),
+                  ),
+                ),
+              ]);
+            } else {
+              return const Text("Loading...");
+            }
+          },
+        ));
   }
 
   Future<void> _handleTap(LatLng latlng) async {
@@ -106,6 +164,16 @@ class _SearchLocationState extends State<SearchLocation> {
       }
 
       searchController.text = placeName;
+      place.addressComponents?.forEach((element) {
+        if (element.types?[0] == "administrative_area_level_2") {
+          pickedCity = element.shortName ?? "";
+        }
+        if (element.types?[0] == "locality") {
+          pickedSuburb = element.longName ?? "";
+          pickedSuburbId =
+              _brisbaneLocationList.getIdFromSuburb(element.longName ?? "");
+        }
+      });
     } else {
       markerList.clear();
       setState(() {});
@@ -153,6 +221,12 @@ class _SearchLocationState extends State<SearchLocation> {
           infoWindow: InfoWindow(title: detail.result.name)));
 
       searchController.text = detail.result.name;
+      for (var element in detail.result.addressComponents) {
+        if (element.types[0] == "locality") {
+          pickedSuburbId =
+              _brisbaneLocationList.getIdFromSuburb(element.longName);
+        }
+      }
       setState(() {});
 
       googleMapController

@@ -122,6 +122,11 @@ class _CreateEventFormState extends State<CreateEventForm> {
     label: 'Start and End Time',
     type: TextFieldType.eventTime,
   );
+  final CustomFormInput shortDescription = CustomFormInput(
+    label: 'Short Description',
+    type: TextFieldType.textArea,
+    maxLength: 250,
+  );
   final CustomFormInput description = CustomFormInput(
     label: 'Description',
     type: TextFieldType.textArea,
@@ -141,6 +146,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
         date,
         eventTime,
         location,
+        shortDescription,
         description
       ],
       submitTitle: 'Create',
@@ -156,6 +162,13 @@ class _CreateEventFormState extends State<CreateEventForm> {
                 : eventTime.controller.text,
             longitude: location.lng.toString(),
             latitude: location.lat.toString(),
+            location: location.googleMapSuburbId != null
+                ? location.googleMapSuburbId!
+                : 0,
+            locationName: location.controller.text,
+            shortDescription: shortDescription.controller.text != ""
+                ? shortDescription.controller.text
+                : "No description",
             description: description.controller.text != ""
                 ? description.controller.text
                 : "No description");
@@ -163,7 +176,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
       },
       topPadding: 0.0,
       textButtonHandler: () {},
-      labelColor: Theme.of(context).colorScheme.tertiary,
+      labelColor: neutral.shade600,
       inputStyle: TextStyle(
         fontSize: CustomFontSize.lg,
         fontWeight: FontWeight.bold,
