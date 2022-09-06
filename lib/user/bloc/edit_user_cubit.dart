@@ -12,9 +12,10 @@ class EditUserCubit extends BaseCubit<EditUserState> {
 
   EditUserCubit(this._editUserRepository) : super(const EditUserInitialState());
 
-
-  Future<void> editUser(EditUserModel data,
-      List<PreferenceModel> preferenceModels, UserLocationModel location) async {
+  Future<void> editUser(
+      EditUserModel data,
+      List<PreferenceModel> preferenceModels,
+      UserLocationModel location) async {
     try {
       emit(const EditUserLoadingState());
       UserModel updatedUser =
