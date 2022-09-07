@@ -139,7 +139,7 @@ class _EditEventFormState extends State<EditEventForm> {
     final CustomFormInput shortDescription = CustomFormInput(
       label: 'Short Description',
       type: TextFieldType.textArea,
-      maxLength: 250,
+      maxLength: 100,
       initialValue: event?.shortDescription,
     );
     final CustomFormInput description = CustomFormInput(

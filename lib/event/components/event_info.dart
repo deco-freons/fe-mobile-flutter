@@ -50,30 +50,36 @@ class EventInfo extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              !loading
-                  ? Text(
-                      title,
-                      style: const TextStyle(
-                          color: neutral,
-                          fontSize: CustomFontSize.base,
-                          fontWeight: FontWeight.bold),
-                    )
-                  : BuildLoading.buildRectangularLoading(
-                      height: 16, width: 100, verticalPadding: 3),
-              !loading
-                  ? Text(
-                      body,
-                      style: TextStyle(
-                          color: neutral.shade700,
-                          fontSize: CustomFontSize.lg,
-                          fontWeight: FontWeight.bold),
-                    )
-                  : BuildLoading.buildRectangularLoading(
-                      height: 18, width: 120, verticalPadding: 3)
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                !loading
+                    ? Text(
+                        title,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: const TextStyle(
+                            color: neutral,
+                            fontSize: CustomFontSize.base,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : BuildLoading.buildRectangularLoading(
+                        height: 16, width: 100, verticalPadding: 3),
+                !loading
+                    ? Text(
+                        body,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        style: TextStyle(
+                            color: neutral.shade700,
+                            fontSize: CustomFontSize.lg,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : BuildLoading.buildRectangularLoading(
+                        height: 18, width: 120, verticalPadding: 3)
+              ],
+            ),
           )
         ],
       ),

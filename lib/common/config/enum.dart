@@ -114,7 +114,12 @@ extension BadgeTierExtension on BadgeTier {
   }
 }
 
-enum DaysFilter { oneDay, oneWeek, twoWeeks, fourWeeks }
+enum DaysFilter {
+  oneDay,
+  oneWeek,
+  twoWeeks,
+  fourWeeks,
+}
 
 extension DaysFilterExtension on DaysFilter {
   String get desc {
