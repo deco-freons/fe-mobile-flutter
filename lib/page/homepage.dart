@@ -234,9 +234,9 @@ class _BuildHomeState extends State<BuildHome> {
     );
   }
 
-  Future<void> getPopularEvents(
+  void getPopularEvents(
       BuildContext context, List<String> data, DistanceFilter radius) {
     final cubit = context.read<PopularEventsCubit>();
-    return cubit.getPopularEvents(data, radius);
+    cubit.getPopularEvents(data, radius);
   }
 }
