@@ -24,7 +24,6 @@ import 'package:flutter_boilerplate/page/event_participants.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
-import 'package:google_geocoding/google_geocoding.dart' as geocode;
 
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";

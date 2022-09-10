@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_dropdown_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/typedef.dart';
@@ -69,6 +70,16 @@ class _BuildHomeState extends State<BuildHome> {
   List<PrefType> categories = [];
   List<String> categoriesData = [];
   DistanceFilter radiusValue = DistanceFilter.ten;
+  List<DistanceFilter> radiusOptions = DistanceFilter.values;
+  List<String> radiusTexts = [];
+
+  @override
+  initState() {
+    super.initState();
+    for (var radius in radiusOptions) {
+      radiusTexts.add(radius.desc);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,36 +122,16 @@ class _BuildHomeState extends State<BuildHome> {
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   border: Border.all(color: neutral.shade500)),
               child: Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: DropdownButton(
-                  items: const [
-                    DropdownMenuItem(
-                      value: DistanceFilter.five,
-                      child: Text('5 km'),
-                    ),
-                    DropdownMenuItem(
-                      value: DistanceFilter.ten,
-                      child: Text('10 km'),
-                    ),
-                    DropdownMenuItem(
-                      value: DistanceFilter.twenty,
-                      child: Text('20 km'),
-                    ),
-                  ],
-                  value: radiusValue,
-                  onChanged: (DistanceFilter? selectedRadius) {
-                    setState(() {
-                      radiusValue = selectedRadius!;
-                    });
-                    getPopularEvents(context, categoriesData, radiusValue);
-                  },
-                  iconSize: 40.0,
-                  iconEnabledColor: neutral.shade900,
-                  underline: Container(
-                    color: neutral.shade100,
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: CustomDropdownButton(
+                    options: radiusOptions,
+                    texts: radiusTexts,
+                    initialValue: radiusValue,
+                    callback: (newValue) {
+                      radiusValue = newValue;
+                      getPopularEvents(context, categoriesData, radiusValue);
+                    },
+                  )),
             ),
             contentWidgets: [
               Padding(
@@ -243,9 +234,9 @@ class _BuildHomeState extends State<BuildHome> {
     );
   }
 
-  void getPopularEvents(
+  Future<void> getPopularEvents(
       BuildContext context, List<String> data, DistanceFilter radius) {
     final cubit = context.read<PopularEventsCubit>();
-    cubit.getPopularEvents(data, radius);
+    return cubit.getPopularEvents(data, radius);
   }
 }

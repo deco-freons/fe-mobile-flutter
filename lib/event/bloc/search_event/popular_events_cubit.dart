@@ -52,9 +52,6 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           filter: jsonFilter);
       Map<String, dynamic> jsonData = readEvent.toJson();
       jsonData.removeWhere((key, value) => key == "sort");
-      if (data.isEmpty) {
-        jsonData.removeWhere((key, value) => key == "filter");
-      }
 
       res = await _popularEventsRepository.getPopularEvents(jsonData);
 
