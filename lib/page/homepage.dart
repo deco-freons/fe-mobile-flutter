@@ -71,15 +71,6 @@ class _BuildHomeState extends State<BuildHome> {
   List<String> categoriesData = [];
   DistanceFilter radiusValue = DistanceFilter.ten;
   List<DistanceFilter> radiusOptions = DistanceFilter.values;
-  List<String> radiusTexts = [];
-
-  @override
-  initState() {
-    super.initState();
-    for (var radius in radiusOptions) {
-      radiusTexts.add(radius.desc);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +116,7 @@ class _BuildHomeState extends State<BuildHome> {
                   padding: const EdgeInsets.only(left: 10.0),
                   child: CustomDropdownButton(
                     options: radiusOptions,
-                    texts: radiusTexts,
+                    texts: radiusValue.descList,
                     initialValue: radiusValue,
                     callback: (newValue) {
                       radiusValue = newValue;

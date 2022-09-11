@@ -203,4 +203,12 @@ extension DistanceFilterExtension on DistanceFilter {
         return 'MORE';
     }
   }
+
+  List<String> get descList {
+    List<String> list = [];
+    for (var radius in DistanceFilter.values) {
+      list.add(radius.desc);
+    }
+    return list;
+  }
 }
