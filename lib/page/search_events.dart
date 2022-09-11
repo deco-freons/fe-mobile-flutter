@@ -6,12 +6,12 @@ import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit
 import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
 import 'package:flutter_boilerplate/common/components/buttons/search_bar.dart';
-import 'package:flutter_boilerplate/event/components/search_event/filter_modal.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/page/search_events_filter.dart';
 import 'package:intl/intl.dart';
 
 class SearchEvents extends StatefulWidget {
@@ -25,14 +25,16 @@ class SearchEvents extends StatefulWidget {
 class _SearchEventsState extends State<SearchEvents>
     with AutomaticKeepAliveClientMixin<SearchEvents> {
   bool keepAlive = true;
-  FilterEventModalModel filter = FilterEventModalModel(
+  FilterEventPageModel filter = FilterEventPageModel(
       categories: const [],
       daysChoice: null,
       distanceChoice: null,
+      sortChoice: null,
       allCheck: false,
       prefCheck: List.filled(PrefType.values.length, true),
       weekCheck: List.filled(DaysFilter.values.length, true),
-      distanceCheck: List.filled(DistanceFilter.values.length, true));
+      distanceCheck: List.filled(DistanceFilter.values.length, true),
+      sortCheck: List.filled(EventSort.values.length, true));
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +77,16 @@ class BuildSearchEvents extends StatefulWidget {
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
   final scrollController = ScrollController();
   List<PopularEventModel> eventList = [];
-  FilterEventModalModel filter = FilterEventModalModel(
+  FilterEventPageModel filter = FilterEventPageModel(
       categories: const [],
       daysChoice: null,
       distanceChoice: null,
+      sortChoice: null,
       allCheck: false,
       prefCheck: List.filled(PrefType.values.length, true),
       weekCheck: List.filled(DaysFilter.values.length, true),
-      distanceCheck: List.filled(DistanceFilter.values.length, true));
+      distanceCheck: List.filled(DistanceFilter.values.length, true),
+      sortCheck: List.filled(EventSort.values.length, true));
 
   @override
   Widget build(BuildContext context) {
@@ -96,20 +100,15 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               hasSecondIcon: true,
               secondIcon: const Icon(Icons.filter_list),
               iconOnPressedHandler: () async {
-                await showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(CustomRadius.body),
-                      ),
-                    ),
-                    builder: (context) => FilterModal(
-                          filter: filter,
-                        )).then((value) => setState(() {
-                      if (value != null) {
-                        filter = value;
-                      }
-                    }));
+                await Navigator.of(context, rootNavigator: true)
+                    .push(MaterialPageRoute(
+                        builder: (context) =>
+                            SearchEventsFilter(filter: filter)))
+                    .then((value) => setState(() {
+                          if (value != null) {
+                            filter = value;
+                          }
+                        }));
                 // ignore: use_build_context_synchronously
                 context.read<PopularEventsCubit>().emitFilterState();
               },
@@ -210,7 +209,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     );
   }
 
-  void searchEvents(BuildContext context, FilterEventModalModel data) {
+  void searchEvents(BuildContext context, FilterEventPageModel data) {
     final cubit = context.read<PopularEventsCubit>();
     cubit.searchEvents(data);
   }

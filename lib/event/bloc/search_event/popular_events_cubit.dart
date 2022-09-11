@@ -5,11 +5,12 @@ import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state
 import 'package:flutter_boilerplate/event/data/search_event/days_to_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/event_categories_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/event_radius_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/event/data/search_event/read_event_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/sort_event_model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_geocoding/google_geocoding.dart' as geocode;
@@ -69,7 +70,7 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     }
   }
 
-  Future<void> searchEvents(FilterEventModalModel data) async {
+  Future<void> searchEvents(FilterEventPageModel data) async {
     try {
       emit(const PopularEventsLoadingState());
       Position position = await Geolocator.getCurrentPosition();
@@ -114,17 +115,22 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
         jsonFilter.removeWhere((key, value) => key == "daysToEvent");
       }
 
-      ReadEventModel readEvent = ReadEventModel.noSort(
+      ReadEventModel readEvent = ReadEventModel(
           longitude: position.longitude,
           latitude: position.latitude,
           todaysDate: todaysDate,
-          filter: jsonFilter);
+          filter: jsonFilter,
+          sort: data.sortChoice != null
+              ? SortEventModel(sortBy: data.sortChoice!.value).toJson()
+              : null);
       Map<String, dynamic> jsonData = readEvent.toJson();
-      jsonData.removeWhere((key, value) => key == "sort");
       if (categories.isEmpty &&
           data.daysChoice == null &&
           data.distanceChoice == null) {
         jsonData.removeWhere((key, value) => key == "filter");
+      }
+      if (data.sortChoice == null) {
+        jsonData.removeWhere((key, value) => key == "sort");
       }
       res = await _popularEventsRepository.searchEvents(jsonData);
 
@@ -151,7 +157,7 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
     }
   }
 
-  Future<void> getMoreEvents(FilterEventModalModel data, int pageCount) async {
+  Future<void> getMoreEvents(FilterEventPageModel data, int pageCount) async {
     try {
       Position position = await Geolocator.getCurrentPosition();
       String todaysDate = DateTime.now().toIso8601String();
@@ -199,19 +205,23 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
         jsonFilter.removeWhere((key, value) => key == "daysToEvent");
       }
 
-      ReadEventModel readEvent = ReadEventModel.noSort(
+      ReadEventModel readEvent = ReadEventModel(
           longitude: position.longitude,
           latitude: position.latitude,
           todaysDate: todaysDate,
-          filter: jsonFilter);
+          filter: jsonFilter,
+          sort: data.sortChoice != null
+              ? SortEventModel(sortBy: data.sortChoice!.value).toJson()
+              : null);
       Map<String, dynamic> jsonData = readEvent.toJson();
-      jsonData.removeWhere((key, value) => key == "sort");
       if (categories.isEmpty &&
           data.daysChoice == null &&
           data.distanceChoice == null) {
         jsonData.removeWhere((key, value) => key == "filter");
       }
-
+      if (data.sortChoice == null) {
+        jsonData.removeWhere((key, value) => key == "sort");
+      }
       res = await _popularEventsRepository.getMorePopularEvents(
           jsonData, getMorePath);
 

@@ -9,7 +9,7 @@ part of 'brisbane_location_model.dart';
 BrisbaneLocationModel _$BrisbaneLocationModelFromJson(
         Map<String, dynamic> json) =>
     BrisbaneLocationModel(
-      location_id: json['locationID'] as int,
+      location_id: json['location_id'] as int,
       suburb: json['suburb'] as String,
       city: json['city'] as String,
       state: json['state'] as String,
@@ -19,7 +19,7 @@ BrisbaneLocationModel _$BrisbaneLocationModelFromJson(
 Map<String, dynamic> _$BrisbaneLocationModelToJson(
         BrisbaneLocationModel instance) =>
     <String, dynamic>{
-      'locationID': instance.location_id,
+      'location_id': instance.location_id,
       'suburb': instance.suburb,
       'city': instance.city,
       'state': instance.state,
