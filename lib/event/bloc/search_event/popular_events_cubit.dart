@@ -121,7 +121,10 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           todaysDate: todaysDate,
           filter: jsonFilter,
           sort: data.sortChoice != null
-              ? SortEventModel(sortBy: data.sortChoice!.value).toJson()
+              ? SortEventModel(
+                      sortBy: data.sortChoice!.value,
+                      isMoreOrLess: data.sortChoice!.order)
+                  .toJson()
               : null);
       Map<String, dynamic> jsonData = readEvent.toJson();
       if (categories.isEmpty &&
@@ -211,7 +214,10 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
           todaysDate: todaysDate,
           filter: jsonFilter,
           sort: data.sortChoice != null
-              ? SortEventModel(sortBy: data.sortChoice!.value).toJson()
+              ? SortEventModel(
+                      sortBy: data.sortChoice!.value,
+                      isMoreOrLess: data.sortChoice!.order)
+                  .toJson()
               : null);
       Map<String, dynamic> jsonData = readEvent.toJson();
       if (categories.isEmpty &&

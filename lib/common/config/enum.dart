@@ -231,7 +231,7 @@ extension EventSortExtension on EventSort {
       case EventSort.mostPopular:
         return 'Most Popular';
       case EventSort.distanceNearToFar:
-        return 'Distance: Nearest to Nearest';
+        return 'Distance: Nearest to Farthest';
       case EventSort.distanceFarToNear:
         return 'Distance: Farthest to Nearest';
     }
@@ -249,6 +249,21 @@ extension EventSortExtension on EventSort {
         return 'DISTANCE';
       case EventSort.distanceFarToNear:
         return 'DISTANCE';
+    }
+  }
+
+  String get order {
+    switch (this) {
+      case EventSort.daysNearToFar:
+        return 'LESS';
+      case EventSort.daysFarToNear:
+        return 'MORE';
+      case EventSort.mostPopular:
+        return 'MORE';
+      case EventSort.distanceNearToFar:
+        return 'LESS';
+      case EventSort.distanceFarToNear:
+        return 'MORE';
     }
   }
 }

@@ -6,10 +6,9 @@ part 'sort_event_model.g.dart';
 @JsonSerializable()
 class SortEventModel extends BaseModel {
   final String sortBy;
+  final String isMoreOrLess;
 
-  const SortEventModel({
-    required this.sortBy,
-  });
+  const SortEventModel({required this.sortBy, required this.isMoreOrLess});
 
   factory SortEventModel.fromJson(Map<String, dynamic> json) =>
       _$SortEventModelFromJson(json);

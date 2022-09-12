@@ -9,9 +9,11 @@ part of 'sort_event_model.dart';
 SortEventModel _$SortEventModelFromJson(Map<String, dynamic> json) =>
     SortEventModel(
       sortBy: json['sortBy'] as String,
+      isMoreOrLess: json['isMoreOrLess'] as String,
     );
 
 Map<String, dynamic> _$SortEventModelToJson(SortEventModel instance) =>
     <String, dynamic>{
       'sortBy': instance.sortBy,
+      'isMoreOrLess': instance.isMoreOrLess,
     };
