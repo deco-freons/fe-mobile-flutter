@@ -100,6 +100,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               hasSecondIcon: true,
               secondIcon: const Icon(Icons.filter_list),
               iconOnPressedHandler: () async {
+                final cubit = context.read<PopularEventsCubit>();
                 await Navigator.of(context, rootNavigator: true)
                     .push(MaterialPageRoute(
                         builder: (context) =>
@@ -109,8 +110,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                             filter = value;
                           }
                         }));
-                // ignore: use_build_context_synchronously
-                context.read<PopularEventsCubit>().emitFilterState();
+                cubit.emitFilterState();
               },
             ),
           ),
