@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/popular_event_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'popular_event_model.g.dart';
@@ -12,7 +13,8 @@ class PopularEventModel extends BaseModel {
   final double longitude;
   final double latitude;
   final Map<String, String> eventCreator;
-  final List<String> location;
+  final PopularEventLocationModel location;
+  final String locationName;
 
   const PopularEventModel({
     required this.eventID,
@@ -23,6 +25,7 @@ class PopularEventModel extends BaseModel {
     required this.latitude,
     required this.eventCreator,
     required this.location,
+    required this.locationName
   });
 
   factory PopularEventModel.fromJson(Map<String, dynamic> json) =>

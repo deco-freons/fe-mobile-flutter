@@ -169,7 +169,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                   author: event.eventCreator['username'],
                                   distance: event.distance,
                                   location:
-                                      '${event.location[0]}, ${event.location[1]}',
+                                      '${event.locationName}, ${event.location.city}',
                                   month: splittedDate[0].substring(0, 3),
                                   date: splittedDate[1].substring(0, 2),
                                   image:

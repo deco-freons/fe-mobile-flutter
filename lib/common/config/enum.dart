@@ -218,7 +218,7 @@ enum EventSort {
   daysFarToNear,
   mostPopular,
   distanceNearToFar,
-  distanceFarToNear
+  distanceFarToNear,
 }
 
 extension EventSortExtension on EventSort {
