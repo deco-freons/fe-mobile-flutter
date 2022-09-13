@@ -212,3 +212,58 @@ extension DistanceFilterExtension on DistanceFilter {
     return list;
   }
 }
+
+enum EventSort {
+  daysNearToFar,
+  daysFarToNear,
+  mostPopular,
+  distanceNearToFar,
+  distanceFarToNear
+}
+
+extension EventSortExtension on EventSort {
+  String get desc {
+    switch (this) {
+      case EventSort.daysNearToFar:
+        return 'Days to Event: Nearest to Farthest';
+      case EventSort.daysFarToNear:
+        return 'Days to Event: Farthest to Nearest';
+      case EventSort.mostPopular:
+        return 'Most Popular';
+      case EventSort.distanceNearToFar:
+        return 'Distance: Nearest to Farthest';
+      case EventSort.distanceFarToNear:
+        return 'Distance: Farthest to Nearest';
+    }
+  }
+
+  String get value {
+    switch (this) {
+      case EventSort.daysNearToFar:
+        return 'DAYS_TO_EVENT';
+      case EventSort.daysFarToNear:
+        return 'DAYS_TO_EVENT';
+      case EventSort.mostPopular:
+        return 'POPULARITY';
+      case EventSort.distanceNearToFar:
+        return 'DISTANCE';
+      case EventSort.distanceFarToNear:
+        return 'DISTANCE';
+    }
+  }
+
+  String get order {
+    switch (this) {
+      case EventSort.daysNearToFar:
+        return 'LESS';
+      case EventSort.daysFarToNear:
+        return 'MORE';
+      case EventSort.mostPopular:
+        return 'MORE';
+      case EventSort.distanceNearToFar:
+        return 'LESS';
+      case EventSort.distanceFarToNear:
+        return 'MORE';
+    }
+  }
+}

@@ -8,67 +8,74 @@ import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_cubit.d
 import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_state.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_button.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_content.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_modal_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
-class FilterModal extends StatefulWidget {
-  final FilterEventModalModel filter;
+class SearchEventsFilter extends StatefulWidget {
+  static const routeName = "/search-events/filter";
+  final FilterEventPageModel filter;
 
-  const FilterModal({
+  const SearchEventsFilter({
     Key? key,
     required this.filter,
   }) : super(key: key);
 
   @override
-  State<FilterModal> createState() => _FilterModalState();
+  State<SearchEventsFilter> createState() => _SearchEventsFilterState();
 }
 
-class _FilterModalState extends State<FilterModal> {
+class _SearchEventsFilterState extends State<SearchEventsFilter> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FilterEventCubit(),
-      child: Container(
-          padding: const EdgeInsets.only(
-              right: CustomPadding.xxl,
-              left: CustomPadding.xxl,
-              top: CustomPadding.xl),
-          height: 600,
-          child: BuildFilterModal(filter: widget.filter)),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: Container(
+            color: Theme.of(context).colorScheme.secondary,
+            padding: const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
+            child: SafeArea(
+                child: BuildSearchEventsFilter(filter: widget.filter))),
+      ),
     );
   }
 }
 
-class BuildFilterModal extends StatefulWidget {
-  final FilterEventModalModel filter;
+class BuildSearchEventsFilter extends StatefulWidget {
+  final FilterEventPageModel filter;
   final String errorMessage;
 
-  const BuildFilterModal(
+  const BuildSearchEventsFilter(
       {Key? key, required this.filter, this.errorMessage = ''})
       : super(key: key);
 
   @override
-  State<BuildFilterModal> createState() => _BuildFilterModalState();
+  State<BuildSearchEventsFilter> createState() =>
+      _BuildSearchEventsFilterState();
 }
 
-class _BuildFilterModalState extends State<BuildFilterModal> {
-  FilterEventModalModel filter = const FilterEventModalModel(
+class _BuildSearchEventsFilterState extends State<BuildSearchEventsFilter> {
+  FilterEventPageModel filter = const FilterEventPageModel(
       categories: [],
       daysChoice: null,
       distanceChoice: null,
+      sortChoice: null,
       allCheck: false,
       prefCheck: [],
       weekCheck: [],
-      distanceCheck: []);
+      distanceCheck: [],
+      sortCheck: []);
 
-  FilterEventModalModel clearFilter = FilterEventModalModel(
+  FilterEventPageModel clearFilter = FilterEventPageModel(
       categories: const [],
       daysChoice: null,
       distanceChoice: null,
+      sortChoice: null,
       allCheck: false,
       prefCheck: List.filled(PrefType.values.length, true),
       weekCheck: List.filled(DaysFilter.values.length, true),
-      distanceCheck: List.filled(DistanceFilter.values.length, true));
+      distanceCheck: List.filled(DistanceFilter.values.length, true),
+      sortCheck: List.filled(EventSort.values.length, true));
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +87,16 @@ class _BuildFilterModalState extends State<BuildFilterModal> {
           child: CustomTextButton(
             text: "Close",
             onPressedHandler: () {
-              FilterEventModalModel filter = FilterEventModalModel(
+              FilterEventPageModel filter = FilterEventPageModel(
                   categories: widget.filter.categories,
                   daysChoice: widget.filter.daysChoice,
                   distanceChoice: widget.filter.distanceChoice,
+                  sortChoice: widget.filter.sortChoice,
                   allCheck: widget.filter.allCheck,
                   prefCheck: widget.filter.prefCheck,
                   weekCheck: widget.filter.weekCheck,
-                  distanceCheck: widget.filter.distanceCheck);
+                  distanceCheck: widget.filter.distanceCheck,
+                  sortCheck: widget.filter.sortCheck);
               Navigator.pop(context, filter);
             },
             fontSize: CustomFontSize.base,
@@ -100,15 +109,17 @@ class _BuildFilterModalState extends State<BuildFilterModal> {
         BlocConsumer<FilterEventCubit, FilterEventState>(
           listener: (context, state) {
             if (state is FilterEventClearState) {
-              filter = FilterEventModalModel(
+              filter = FilterEventPageModel(
                   categories: const [],
                   daysChoice: null,
                   distanceChoice: null,
+                  sortChoice: null,
                   allCheck: false,
                   prefCheck: List.filled(PrefType.values.length, true),
                   weekCheck: List.filled(DaysFilter.values.length, true),
                   distanceCheck:
-                      List.filled(DistanceFilter.values.length, true));
+                      List.filled(DistanceFilter.values.length, true),
+                  sortCheck: List.filled(EventSort.values.length, true));
             }
           },
           builder: ((context, state) {
@@ -127,7 +138,7 @@ class _BuildFilterModalState extends State<BuildFilterModal> {
 }
 
 class BuildFilter extends StatefulWidget {
-  final FilterEventModalModel filter;
+  final FilterEventPageModel filter;
 
   const BuildFilter({Key? key, required this.filter}) : super(key: key);
 
@@ -139,10 +150,12 @@ class _BuildFilterState extends State<BuildFilter> {
   List<PrefType> categories = [];
   DaysFilter? daysChoice;
   DistanceFilter? distanceChoice;
+  EventSort? sortChoice;
   bool allCheck = false;
   List<bool> prefCheck = [];
   List<bool> weekCheck = [];
   List<bool> distanceCheck = [];
+  List<bool> sortCheck = [];
 
   @override
   void initState() {
@@ -150,10 +163,12 @@ class _BuildFilterState extends State<BuildFilter> {
     categories = List.from(widget.filter.categories);
     daysChoice = widget.filter.daysChoice;
     distanceChoice = widget.filter.distanceChoice;
+    sortChoice = widget.filter.sortChoice;
     allCheck = widget.filter.allCheck;
     prefCheck = List.from(widget.filter.prefCheck);
     weekCheck = List.from(widget.filter.weekCheck);
     distanceCheck = List.from(widget.filter.distanceCheck);
+    sortCheck = List.from(widget.filter.sortCheck);
   }
 
   @override
@@ -253,6 +268,30 @@ class _BuildFilterState extends State<BuildFilter> {
               click: distanceCheck[distance.index],
             )
         ]),
+        FilterContent(title: 'Sort', widgets: [
+          for (var sort in EventSort.values)
+            FilterButton(
+              desc: sort.desc,
+              onPressedHandler: () {
+                setState(() {
+                  if (sortCheck.contains(false)) {
+                    if (!sortCheck[sort.index]) {
+                      sortCheck[sort.index] = !sortCheck[sort.index];
+                      sortChoice = null;
+                    } else {
+                      sortCheck = List.filled(EventSort.values.length, true);
+                      sortCheck[sort.index] = false;
+                      sortChoice = sort;
+                    }
+                  } else {
+                    sortCheck[sort.index] = !sortCheck[sort.index];
+                    sortChoice = sort;
+                  }
+                });
+              },
+              click: sortCheck[sort.index],
+            )
+        ]),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -282,14 +321,16 @@ class _BuildFilterState extends State<BuildFilter> {
                 type: ButtonType.primary,
                 elevation: 0,
                 onPressedHandler: () {
-                  FilterEventModalModel filter = FilterEventModalModel(
+                  FilterEventPageModel filter = FilterEventPageModel(
                       categories: categories,
                       daysChoice: daysChoice,
                       distanceChoice: distanceChoice,
+                      sortChoice: sortChoice,
                       allCheck: allCheck,
                       prefCheck: prefCheck,
                       weekCheck: weekCheck,
-                      distanceCheck: distanceCheck);
+                      distanceCheck: distanceCheck,
+                      sortCheck: sortCheck);
                   Navigator.pop(context, filter);
                 },
               ),
@@ -305,7 +346,7 @@ class _BuildFilterState extends State<BuildFilter> {
 }
 
 class BuildClearFilter extends StatefulWidget {
-  final FilterEventModalModel filter;
+  final FilterEventPageModel filter;
 
   const BuildClearFilter({Key? key, required this.filter}) : super(key: key);
 
@@ -317,10 +358,12 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
   List<PrefType> categories = [];
   DaysFilter? daysChoice;
   DistanceFilter? distanceChoice;
+  EventSort? sortChoice;
   bool allCheck = false;
   List<bool> prefCheck = [];
   List<bool> weekCheck = [];
   List<bool> distanceCheck = [];
+  List<bool> sortCheck = [];
 
   @override
   void initState() {
@@ -328,10 +371,12 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
     categories = List.from(widget.filter.categories);
     daysChoice = widget.filter.daysChoice;
     distanceChoice = widget.filter.distanceChoice;
+    sortChoice = widget.filter.sortChoice;
     allCheck = widget.filter.allCheck;
     prefCheck = List.from(widget.filter.prefCheck);
     weekCheck = List.from(widget.filter.weekCheck);
     distanceCheck = List.from(widget.filter.distanceCheck);
+    sortCheck = List.from(widget.filter.sortCheck);
   }
 
   @override
@@ -431,6 +476,30 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
               click: distanceCheck[distance.index],
             )
         ]),
+        FilterContent(title: 'Sort', widgets: [
+          for (var sort in EventSort.values)
+            FilterButton(
+              desc: sort.desc,
+              onPressedHandler: () {
+                setState(() {
+                  if (sortCheck.contains(false)) {
+                    if (!sortCheck[sort.index]) {
+                      sortCheck[sort.index] = !sortCheck[sort.index];
+                      sortChoice = null;
+                    } else {
+                      sortCheck = List.filled(EventSort.values.length, true);
+                      sortCheck[sort.index] = false;
+                      sortChoice = sort;
+                    }
+                  } else {
+                    sortCheck[sort.index] = !sortCheck[sort.index];
+                    sortChoice = sort;
+                  }
+                });
+              },
+              click: sortCheck[sort.index],
+            )
+        ]),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -460,14 +529,16 @@ class _BuildClearFilterState extends State<BuildClearFilter> {
                 type: ButtonType.primary,
                 elevation: 0,
                 onPressedHandler: () {
-                  FilterEventModalModel filter = FilterEventModalModel(
+                  FilterEventPageModel filter = FilterEventPageModel(
                       categories: categories,
                       daysChoice: daysChoice,
                       distanceChoice: distanceChoice,
+                      sortChoice: sortChoice,
                       allCheck: allCheck,
                       prefCheck: prefCheck,
                       weekCheck: weekCheck,
-                      distanceCheck: distanceCheck);
+                      distanceCheck: distanceCheck,
+                      sortCheck: sortCheck);
                   Navigator.pop(context, filter);
                 },
               ),
