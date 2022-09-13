@@ -11,9 +11,7 @@ import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.
 import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/event/data/search_event/read_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/sort_event_model.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_geocoding/google_geocoding.dart' as geocode;
 
 class PopularEventsCubit extends BaseCubit<PopularEventsState> {
   final PopularEventsRepository _popularEventsRepository;
@@ -58,7 +56,6 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
 
       List<PopularEventModel> events = [];
       for (var resEvent in res['events']) {
-        resEvent['location'] = [];
         PopularEventModel event = PopularEventModel.fromJson(resEvent);
         events.add(event);
       }
@@ -77,9 +74,6 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
       String todaysDate = DateTime.now().toIso8601String();
 
       Map res = {};
-      String? googleApiKey = dotenv.env['googleApiKey'];
-      geocode.GoogleGeocoding googleGeocoding =
-          geocode.GoogleGeocoding(googleApiKey!);
       List<List<String>> locationNames = [];
       List<String> categories = [];
 
@@ -136,19 +130,8 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
         jsonData.removeWhere((key, value) => key == "sort");
       }
       res = await _popularEventsRepository.searchEvents(jsonData);
-
       List<PopularEventModel> events = [];
       for (var resEvent in res['events']) {
-        geocode.GeocodingResponse? response = await googleGeocoding.geocoding
-            .getReverse(
-                geocode.LatLon(resEvent['latitude'], resEvent['longitude']));
-        if (response != null) {
-          String locationName =
-              response.results?[0].addressComponents?[0].longName ?? "";
-          String locationArea =
-              '${response.results?[0].addressComponents?[1].longName ?? ""}, ${response.results?[0].addressComponents?[2].shortName}';
-          resEvent['location'] = [locationName, locationArea];
-        }
         PopularEventModel event = PopularEventModel.fromJson(resEvent);
         events.add(event);
       }
@@ -166,10 +149,6 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
       String todaysDate = DateTime.now().toIso8601String();
 
       Map res = {};
-
-      String? googleApiKey = dotenv.env['googleApiKey'];
-      geocode.GoogleGeocoding googleGeocoding =
-          geocode.GoogleGeocoding(googleApiKey!);
 
       List<List<String>> locationNames = [];
       List<String> categories = [];
@@ -233,16 +212,6 @@ class PopularEventsCubit extends BaseCubit<PopularEventsState> {
 
       List<PopularEventModel> events = [];
       for (var resEvent in res['events']) {
-        geocode.GeocodingResponse? response = await googleGeocoding.geocoding
-            .getReverse(
-                geocode.LatLon(resEvent['latitude'], resEvent['longitude']));
-        if (response != null) {
-          String locationName =
-              response.results?[0].addressComponents?[0].longName ?? "";
-          String locationArea =
-              '${response.results?[0].addressComponents?[1].longName ?? ""}, ${response.results?[0].addressComponents?[2].shortName}';
-          resEvent['location'] = [locationName, locationArea];
-        }
         PopularEventModel event = PopularEventModel.fromJson(resEvent);
         events.add(event);
       }
