@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/date_parser.dart';
+import 'package:flutter_boilerplate/common/utils/debounce.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
@@ -75,7 +76,8 @@ class BuildSearchEvents extends StatefulWidget {
 }
 
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
-  TextEditingController textEditingController = TextEditingController();
+  final TextEditingController textEditingController = TextEditingController();
+  final Debounce _debounce = Debounce(delay: const Duration(milliseconds: 500));
   late FilterEventPageModel filter =
       FilterEventPageModel(searchTerm: textEditingController.text);
   late FilterEventPageModel filterInitial = filter;
@@ -86,7 +88,9 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     textEditingController.addListener(() {
       filter = filter.copyWith(searchTerm: textEditingController.text);
       if (filterInitial.searchTerm != filter.searchTerm) {
-        widget.searchEventsCubit.searchEvents(filter);
+        _debounce(() {
+          widget.searchEventsCubit.searchEvents(filter);
+        });
       }
     });
   }
@@ -94,7 +98,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
   @override
   void dispose() {
     textEditingController.dispose();
-
+    _debounce.dispose();
     super.dispose();
   }
 
