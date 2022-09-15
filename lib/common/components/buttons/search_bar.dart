@@ -6,20 +6,22 @@ class SearchBar extends StatelessWidget {
   final bool hasSecondIcon;
   final Widget secondIcon;
   final VoidCallback iconOnPressedHandler;
-
-  const SearchBar(
-      {Key? key,
-      required this.label,
-      this.hasSecondIcon = false,
-      this.secondIcon = const Text(''),
-      required this.iconOnPressedHandler})
-      : super(key: key);
+  final TextEditingController textEditingController;
+  const SearchBar({
+    Key? key,
+    required this.label,
+    this.hasSecondIcon = false,
+    this.secondIcon = const Text(''),
+    required this.iconOnPressedHandler,
+    required this.textEditingController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 45.0,
       child: TextField(
+        controller: textEditingController,
         decoration: InputDecoration(
             prefixIcon: const Icon(Icons.search),
             suffixIcon: hasSecondIcon

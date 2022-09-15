@@ -785,7 +785,7 @@ class _AddPreferenceModalState extends State<AddPreferenceModal> {
                       preferenceList.remove(pref);
                     }
                   },
-                  click: clickCheck[pref.index],
+                  isActive: clickCheck[pref.index],
                 ),
             ],
           ),

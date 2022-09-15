@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/event/data/search_event/item_filter_model.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
 import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import '../../common/config/enum.dart';
@@ -89,8 +90,8 @@ class PreferenceForm extends StatefulWidget {
 }
 
 class _PreferenceFormState extends State<PreferenceForm> {
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  List<String> preferenceList = [];
+  List<ItemFilterModel<PrefType>> prefs =
+      PrefType.values.map((pref) => ItemFilterModel(data: pref)).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -103,20 +104,22 @@ class _PreferenceFormState extends State<PreferenceForm> {
             runSpacing: CustomPadding.md,
             alignment: WrapAlignment.center,
             children: [
-              for (var pref in PrefType.values)
+              for (PrefType pref in PrefType.values)
                 PreferenceButton(
                   type: pref,
                   onPressedHandler: () {
                     setState(() {
-                      clickCheck[pref.index] = !clickCheck[pref.index];
+                      prefs = prefs
+                          .map((currPref) => currPref.copyWith(
+                              isPicked: currPref.data == pref
+                                  ? !currPref.isPicked
+                                  : null))
+                          .toList();
                     });
-                    if (!clickCheck[pref.index]) {
-                      preferenceList.add(pref.name);
-                    } else {
-                      preferenceList.remove(pref.name);
-                    }
                   },
-                  click: clickCheck[pref.index],
+                  isActive: prefs
+                      .firstWhere((currPref) => currPref.data == pref)
+                      .isPicked,
                 ),
             ],
           ),
@@ -127,7 +130,7 @@ class _PreferenceFormState extends State<PreferenceForm> {
             label: 'Done',
             type: ButtonType.primary,
             onPressedHandler: () {
-              submit(context, preferenceList);
+              submit(context, prefs.map((pref) => pref.data.name).toList());
             },
             cornerRadius: 32.0,
           ),

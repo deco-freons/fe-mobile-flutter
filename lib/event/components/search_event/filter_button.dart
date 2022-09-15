@@ -1,50 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 
-class FilterButton extends StatefulWidget {
+class FilterButton extends StatelessWidget {
   final String desc;
   final VoidCallback onPressedHandler;
   final double cornerRadius;
-  final bool click;
+  final bool isActive;
   final double elevation;
-  final double clickedElevation;
+  final double activeElevation;
 
   const FilterButton({
     Key? key,
     required this.desc,
     required this.onPressedHandler,
     this.cornerRadius = 50.0,
-    this.click = true,
+    this.isActive = true,
     this.elevation = 0.0,
-    this.clickedElevation = 0.0,
+    this.activeElevation = 0.0,
   }) : super(key: key);
 
-  @override
-  State<FilterButton> createState() => _FilterButtonState();
-}
-
-class _FilterButtonState extends State<FilterButton> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          elevation:
-              (widget.click) ? widget.elevation : widget.clickedElevation,
+          elevation: isActive ? activeElevation : elevation,
           side: BorderSide(width: 1.0, color: primary.shade400),
-          primary: (widget.click)
-              ? primary.shade300
-              : Theme.of(context).colorScheme.primary,
-          onPrimary: (widget.click)
-              ? neutral.shade800
-              : Theme.of(context).colorScheme.secondary,
+          primary: isActive
+              ? Theme.of(context).colorScheme.primary
+              : primary.shade300,
+          onPrimary: isActive
+              ? Theme.of(context).colorScheme.secondary
+              : neutral.shade800,
           shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.all(Radius.circular(widget.cornerRadius)),
+            borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
           )),
-      onPressed: widget.onPressedHandler,
+      onPressed: onPressedHandler,
       child: IntrinsicWidth(
         child: Text(
-          widget.desc,
+          desc,
           style: const TextStyle(
             fontSize: 15.0,
             fontWeight: FontWeight.bold,

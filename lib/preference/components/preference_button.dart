@@ -7,7 +7,7 @@ class PreferenceButton extends StatelessWidget {
   final PrefType type;
   final VoidCallback? onPressedHandler;
   final double cornerRadius;
-  final bool click;
+  final bool isActive;
   final String stringInput;
   final bool useStringInput;
   final bool cancelIcon;
@@ -21,7 +21,7 @@ class PreferenceButton extends StatelessWidget {
       this.type = PrefType.MV,
       this.onPressedHandler,
       this.cornerRadius = 50.0,
-      this.click = true,
+      this.isActive = false,
       this.stringInput = "",
       this.useStringInput = false,
       this.cancelIcon = false,
@@ -36,7 +36,7 @@ class PreferenceButton extends StatelessWidget {
       this.type = PrefType.MV,
       this.onPressedHandler,
       this.cornerRadius = 50.0,
-      this.click = true,
+      this.isActive = false,
       this.stringInput = "",
       this.useStringInput = false,
       this.cancelIcon = false,
@@ -58,14 +58,14 @@ class PreferenceButton extends StatelessWidget {
     return onPressedHandler != null
         ? ElevatedButton(
             style: ElevatedButton.styleFrom(
-                elevation: (click) ? elevation : clickedElevation,
+                elevation: isActive ? clickedElevation : elevation,
                 side: BorderSide(width: 1.0, color: primary.shade400),
-                primary: (click)
-                    ? primary.shade300
-                    : Theme.of(context).colorScheme.primary,
-                onPrimary: (click)
-                    ? neutral.shade800
-                    : Theme.of(context).colorScheme.secondary,
+                primary: isActive
+                    ? Theme.of(context).colorScheme.primary
+                    : primary.shade300,
+                onPrimary: isActive
+                    ? Theme.of(context).colorScheme.secondary
+                    : neutral.shade800,
                 shape: RoundedRectangleBorder(
                   borderRadius: borderRadius,
                 )),

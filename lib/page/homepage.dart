@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state
 import 'package:flutter_boilerplate/event/components/event_list.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/item_filter_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -65,10 +66,10 @@ class BuildHome extends StatefulWidget {
 }
 
 class _BuildHomeState extends State<BuildHome> {
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  bool allCheck = false;
-  List<PrefType> categories = [];
-  List<String> categoriesData = [];
+  bool allCheck = true;
+  List<ItemFilterModel<PrefType>> prefs = PrefType.values
+      .map((pref) => ItemFilterModel(data: pref, isPicked: true))
+      .toList();
   DistanceFilter radiusValue = DistanceFilter.ten;
   List<DistanceFilter> radiusOptions = DistanceFilter.values;
 
@@ -120,7 +121,7 @@ class _BuildHomeState extends State<BuildHome> {
                     initialValue: radiusValue,
                     callback: (newValue) {
                       radiusValue = newValue;
-                      getPopularEvents(context, categoriesData, radiusValue);
+                      getPopularEvents(context, [], radiusValue);
                     },
                   )),
             ),
@@ -145,49 +146,50 @@ class _BuildHomeState extends State<BuildHome> {
             isAll: true,
             elevation: 4.0,
             onPressedHandler: () {
+              if (allCheck) return;
               setState(() {
-                if (clickCheck.contains(false)) {
-                  allCheck = !allCheck;
-                }
+                allCheck = true;
+                prefs =
+                    prefs.map((pref) => pref.copyWith(isPicked: true)).toList();
+                getPopularEvents(context, [], radiusValue);
               });
-              if (!allCheck) {
-                for (var category in categories) {
-                  clickCheck[category.index] = !clickCheck[category.index];
-                }
-                categories = [];
-                categoriesData = [];
-                getPopularEvents(context, categoriesData, radiusValue);
-              }
             },
-            click: allCheck,
+            isActive: allCheck,
           ),
-          for (var pref in PrefType.values)
+          for (PrefType pref in PrefType.values)
             PreferenceButton(
               type: pref,
               elevation: 4.0,
               onPressedHandler: () {
-                setState(() {
-                  clickCheck[pref.index] = !clickCheck[pref.index];
-                });
-                if (!clickCheck[pref.index]) {
-                  categories.add(pref);
-                  categoriesData.add(pref.name);
-                  if (!allCheck) {
-                    allCheck = !allCheck;
-                  }
-                  getPopularEvents(context, categoriesData, radiusValue);
-                } else if (!clickCheck.contains(false)) {
-                  allCheck = false;
-                  categories = [];
-                  categoriesData = [];
-                  getPopularEvents(context, categoriesData, radiusValue);
-                } else {
-                  categories.remove(pref);
-                  categoriesData.remove(pref.name);
-                  getPopularEvents(context, categoriesData, radiusValue);
+                List<ItemFilterModel<PrefType>> isOnePrefPicked =
+                    prefs.where((currPref) => currPref.isPicked).toList();
+
+                if (isOnePrefPicked.length == 1) {
+                  if (isOnePrefPicked.first.data == pref) return;
                 }
+                setState(() {
+                  prefs = prefs
+                      .map((currPref) => currPref.data == pref
+                          ? currPref.copyWith(
+                              isPicked: allCheck ? null : !currPref.isPicked)
+                          : currPref.copyWith(
+                              isPicked: allCheck ? false : null))
+                      .toList();
+                  allCheck = false;
+                  getPopularEvents(
+                      context,
+                      prefs
+                          .where((currPref) => currPref.isPicked)
+                          .map((currPref) => currPref.data.name)
+                          .toList(),
+                      radiusValue);
+                });
               },
-              click: clickCheck[pref.index],
+              isActive: allCheck
+                  ? false
+                  : prefs
+                      .firstWhere((currPref) => currPref.data == pref)
+                      .isPicked,
             )
         ]),
         const SizedBox(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_mo
 import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
-import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/search_events_filter.dart';
 import 'package:intl/intl.dart';
 
@@ -25,16 +25,7 @@ class SearchEvents extends StatefulWidget {
 class _SearchEventsState extends State<SearchEvents>
     with AutomaticKeepAliveClientMixin<SearchEvents> {
   bool keepAlive = true;
-  FilterEventPageModel filter = FilterEventPageModel(
-      categories: const [],
-      daysChoice: null,
-      distanceChoice: null,
-      sortChoice: null,
-      allCheck: false,
-      prefCheck: List.filled(PrefType.values.length, true),
-      weekCheck: List.filled(DaysFilter.values.length, true),
-      distanceCheck: List.filled(DistanceFilter.values.length, true),
-      sortCheck: List.filled(EventSort.values.length, true));
+  FilterEventPageModel filter = FilterEventPageModel();
 
   @override
   Widget build(BuildContext context) {
@@ -77,17 +68,11 @@ class BuildSearchEvents extends StatefulWidget {
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
   final scrollController = ScrollController();
   List<PopularEventModel> eventList = [];
-  FilterEventPageModel filter = FilterEventPageModel(
-      categories: const [],
-      daysChoice: null,
-      distanceChoice: null,
-      sortChoice: null,
-      allCheck: false,
-      prefCheck: List.filled(PrefType.values.length, true),
-      weekCheck: List.filled(DaysFilter.values.length, true),
-      distanceCheck: List.filled(DistanceFilter.values.length, true),
-      sortCheck: List.filled(EventSort.values.length, true));
 
+  TextEditingController textEditingController = TextEditingController();
+  late FilterEventPageModel filter =
+      FilterEventPageModel(searchTerm: textEditingController.text);
+  late FilterEventPageModel filterInitial = filter;
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -96,21 +81,37 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: CustomPadding.body),
             child: SearchBar(
+              textEditingController: textEditingController,
               label: 'Search event...',
               hasSecondIcon: true,
               secondIcon: const Icon(Icons.filter_list),
               iconOnPressedHandler: () async {
                 final cubit = context.read<PopularEventsCubit>();
-                await Navigator.of(context, rootNavigator: true)
-                    .push(MaterialPageRoute(
-                        builder: (context) =>
-                            SearchEventsFilter(filter: filter)))
-                    .then((value) => setState(() {
-                          if (value != null) {
-                            filter = value;
-                          }
-                        }));
-                cubit.emitFilterState();
+                String? response = await showGeneralDialog(
+                    context: context,
+                    pageBuilder: (context, animation, secondaryAnimation) {
+                      return StatefulBuilder(
+                          builder: (context, StateSetter newSetState) {
+                        return SearchEventsFilter(
+                          setState: newSetState,
+                          filter: filter,
+                          onCategoryTap: handleCategoryTap,
+                          onTimeTap: handleTimeTap,
+                          onDistanceTap: handleDistanceTap,
+                          onSortTap: handleSortTap,
+                          resetFilter: resetFilter,
+                          onAllTap: handleAllTap,
+                        );
+                      });
+                    });
+                if (response == "submit") {
+                  // SUBMIT AND UPDATE INITIAL HERE
+                  filterInitial = filter;
+
+                  cubit.emitFilterState();
+                } else {
+                  cancelFilter();
+                }
               },
             ),
           ),
@@ -207,6 +208,64 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
         ],
       ),
     );
+  }
+
+  void cancelFilter() {
+    filter = filterInitial;
+  }
+
+  void resetFilter() {
+    filter = FilterEventPageModel(searchTerm: filter.searchTerm);
+  }
+
+  void handleAllTap() {
+    if (!filter.allCheck) {
+      filter = filter.copyWith(
+          allCheck: true,
+          prefCheck: filter.prefCheck
+              .map((pref) => pref.copyWith(isPicked: true))
+              .toList());
+    }
+  }
+
+  void handleCategoryTap(PrefType choosenCategory) {
+    if (!filter.isOnePreferencePicked(choosenCategory)) {
+      filter = filter.copyWith(
+          allCheck: false,
+          prefCheck: filter.prefCheck
+              .map((pref) => pref.data == choosenCategory
+                  ? pref.copyWith(
+                      isPicked: filter.allCheck ? null : !pref.isPicked)
+                  : pref.copyWith(isPicked: filter.allCheck ? false : null))
+              .toList());
+    }
+  }
+
+  void handleTimeTap(TimeFilter choosenTime) {
+    filter = filter.copyWith(
+        timeCheck: filter.timeCheck
+            .map((time) => time.data == choosenTime
+                ? time.copyWith(isPicked: !time.isPicked)
+                : time.copyWith(isPicked: false))
+            .toList());
+  }
+
+  void handleDistanceTap(DistanceFilter choosenDistance) {
+    filter = filter.copyWith(
+        distanceCheck: filter.distanceCheck
+            .map((distance) => distance.data == choosenDistance
+                ? distance.copyWith(isPicked: !distance.isPicked)
+                : distance.copyWith(isPicked: false))
+            .toList());
+  }
+
+  void handleSortTap(EventSort choosenSort) {
+    filter = filter.copyWith(
+        sortCheck: filter.sortCheck
+            .map((sort) => sort.data == choosenSort
+                ? sort.copyWith(isPicked: !sort.isPicked)
+                : sort.copyWith(isPicked: false))
+            .toList());
   }
 
   void searchEvents(BuildContext context, FilterEventPageModel data) {
