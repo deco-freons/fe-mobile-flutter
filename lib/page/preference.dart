@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/data/search_event/item_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/models/item_filter_model.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
 import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import '../../common/config/enum.dart';

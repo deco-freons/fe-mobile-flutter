@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'event_categories_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class EventCategoriesModel extends BaseModel {
   final List<String> category;
 

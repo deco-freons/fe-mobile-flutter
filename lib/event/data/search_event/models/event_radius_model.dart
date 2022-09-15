@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'event_radius_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class EventRadiusModel extends BaseModel {
   final int radius;
   final String isMoreOrLess;

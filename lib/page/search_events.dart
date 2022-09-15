@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/buttons/search_bar.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
+import 'package:flutter_boilerplate/common/utils/date_parser.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/search_event_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
-import 'package:flutter_boilerplate/common/components/buttons/search_bar.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
+import 'package:flutter_boilerplate/event/data/search_event/models/filter_event_page_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
 import 'package:flutter_boilerplate/page/search_events_filter.dart';
-import 'package:intl/intl.dart';
 
 class SearchEvents extends StatefulWidget {
   const SearchEvents({Key? key}) : super(key: key);
@@ -26,15 +25,21 @@ class _SearchEventsState extends State<SearchEvents>
     with AutomaticKeepAliveClientMixin<SearchEvents> {
   bool keepAlive = true;
   FilterEventPageModel filter = FilterEventPageModel();
+  late SearchEventsCubit _searchEventsCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchEventsCubit = SearchEventsCubit(SearchEventsRepositoryImpl());
+  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return BlocProvider(
-      create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
-        ..searchEvents(filter),
+      create: (context) => _searchEventsCubit..searchEvents(filter),
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         appBar: const PageAppBar(title: "Search Events"),
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
@@ -42,8 +47,10 @@ class _SearchEventsState extends State<SearchEvents>
               child: Padding(
             padding: const EdgeInsets.only(top: CustomPadding.sm),
             child: Column(
-              children: const [
-                BuildSearchEvents(),
+              children: [
+                BuildSearchEvents(
+                  searchEventsCubit: _searchEventsCubit,
+                ),
               ],
             ),
           )),
@@ -58,21 +65,39 @@ class _SearchEventsState extends State<SearchEvents>
 
 class BuildSearchEvents extends StatefulWidget {
   final String errorMessage;
-
-  const BuildSearchEvents({Key? key, this.errorMessage = ''}) : super(key: key);
+  final SearchEventsCubit searchEventsCubit;
+  const BuildSearchEvents(
+      {Key? key, this.errorMessage = '', required this.searchEventsCubit})
+      : super(key: key);
 
   @override
   State<BuildSearchEvents> createState() => _BuildSearchEventsState();
 }
 
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
-  final scrollController = ScrollController();
-  List<PopularEventModel> eventList = [];
-
   TextEditingController textEditingController = TextEditingController();
   late FilterEventPageModel filter =
       FilterEventPageModel(searchTerm: textEditingController.text);
   late FilterEventPageModel filterInitial = filter;
+
+  @override
+  void initState() {
+    super.initState();
+    textEditingController.addListener(() {
+      filter = filter.copyWith(searchTerm: textEditingController.text);
+      if (filterInitial.searchTerm != filter.searchTerm) {
+        widget.searchEventsCubit.searchEvents(filter);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -86,7 +111,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               hasSecondIcon: true,
               secondIcon: const Icon(Icons.filter_list),
               iconOnPressedHandler: () async {
-                final cubit = context.read<PopularEventsCubit>();
+                final cubit = context.read<SearchEventsCubit>();
                 String? response = await showGeneralDialog(
                     context: context,
                     pageBuilder: (context, animation, secondaryAnimation) {
@@ -107,8 +132,8 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 if (response == "submit") {
                   // SUBMIT AND UPDATE INITIAL HERE
                   filterInitial = filter;
-
-                  cubit.emitFilterState();
+                  // reset page count
+                  cubit.searchEvents(filter);
                 } else {
                   cancelFilter();
                 }
@@ -121,25 +146,26 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           const SizedBox(
             height: 28,
           ),
-          BlocConsumer<PopularEventsCubit, PopularEventsState>(
+          BlocConsumer<SearchEventsCubit, SearchEventsState>(
               listener: (context, state) {
-            if (state is PopularEventsSuccessState) {
-              if (state.events.isNotEmpty) {
-                for (var resEvent in state.events) {
-                  if (!eventList.contains(resEvent)) {
-                    eventList.add(resEvent);
-                  }
-                }
-              }
-            } else if (state is PopularEventsFilterState) {
-              eventList = [];
-              searchEvents(context, filter);
-            }
+            // if (state is PopularEventsSuccessState) {
+            //   if (state.events.isNotEmpty) {
+            //     for (var resEvent in state.events) {
+            //       if (!eventList.contains(resEvent)) {
+            //         eventList.add(resEvent);
+            //       }
+            //     }
+            //   }
+            // } else if (state is PopularEventsFilterState) {
+            //   eventList = [];
+            //   searchEvents(context, filter);
+            // }
           }, builder: (context, state) {
-            if (state is PopularEventsErrorState) {
+            if (state is SearchEventsErrorState) {
               return Text(state.errorMessage);
             }
-            bool isSuccessState = state is PopularEventsSuccessState;
+            bool isSuccessState = state is SearchEventsSuccessState;
+            ScrollController scrollController = ScrollController();
             return Expanded(
               child: Padding(
                 padding:
@@ -154,20 +180,18 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                               if (scrollController.offset ==
                                   scrollController.position.maxScrollExtent) {
                                 context
-                                    .read<PopularEventsCubit>()
+                                    .read<SearchEventsCubit>()
                                     .getMoreEvents(filter, state.pageCount);
                               }
                             }),
-                          children: eventList.map((event) {
-                            String formattedDate = DateFormat('MMMM dd, yyyy')
-                                .format(DateTime.parse(event.date));
+                          children: state.events.map((event) {
                             List<String> splittedDate =
-                                formattedDate.split(' ');
+                                DateParser.parseEventDate(event.date);
                             return Padding(
                                 padding: const EdgeInsets.only(bottom: 15.0),
                                 child: EventCardLarge(
                                   title: event.eventName,
-                                  author: event.eventCreator['username'],
+                                  author: event.eventCreator.username,
                                   distance: event.distance,
                                   location:
                                       '${event.locationName}, ${event.location.city}',
@@ -266,10 +290,5 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 ? sort.copyWith(isPicked: !sort.isPicked)
                 : sort.copyWith(isPicked: false))
             .toList());
-  }
-
-  void searchEvents(BuildContext context, FilterEventPageModel data) {
-    final cubit = context.read<PopularEventsCubit>();
-    cubit.searchEvents(data);
   }
 }

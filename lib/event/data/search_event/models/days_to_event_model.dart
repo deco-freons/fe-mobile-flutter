@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'days_to_event_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(includeIfNull: false)
 class DaysToEventModel extends BaseModel {
   final int days;
   final String isMoreOrLess;

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/search_event/filter_event_state.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_button.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_content.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/models/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
 class SearchEventsFilter extends StatelessWidget {
@@ -36,40 +33,29 @@ class SearchEventsFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => FilterEventCubit(),
-        child: Container(
-          color: Theme.of(context).colorScheme.secondary,
-          padding: const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
-          child: SafeArea(
-              child: ListView(
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: CustomTextButton(
-                  text: "Close",
-                  onPressedHandler: () {
-                    Navigator.pop(context);
-                  },
-                  fontSize: CustomFontSize.base,
-                  type: TextButtonType.primary,
-                ),
+      body: Container(
+        color: Theme.of(context).colorScheme.secondary,
+        padding: const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
+        child: SafeArea(
+            child: ListView(
+          children: [
+            Align(
+              alignment: Alignment.centerRight,
+              child: CustomTextButton(
+                text: "Close",
+                onPressedHandler: () {
+                  Navigator.pop(context);
+                },
+                fontSize: CustomFontSize.base,
+                type: TextButtonType.primary,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              BlocConsumer<FilterEventCubit, FilterEventState>(
-                listener: (context, state) {},
-                builder: ((context, state) {
-                  if (state is FilterEventErrorState) {
-                    return const Text("Error");
-                  }
-                  return buildFilter(context);
-                }),
-              ),
-            ],
-          )),
-        ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            buildFilter(context)
+          ],
+        )),
       ),
     );
   }

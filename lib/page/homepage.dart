@@ -4,13 +4,13 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_dropdown_bu
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/typedef.dart';
-import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/search_event/popular_events_state.dart';
+import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_list.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/item_filter_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/popular_events_repository.dart';
+import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
+import 'package:flutter_boilerplate/event/data/search_event/models/item_filter_model.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
