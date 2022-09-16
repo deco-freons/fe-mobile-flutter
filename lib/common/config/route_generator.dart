@@ -101,10 +101,6 @@ class RouteGenerator {
             builder: (context) => FriendProfile(
                   userID: userID,
                 ));
-      // case SearchEventsFilter.routeName:
-      //   FilterEventPageModel filter = args as FilterEventPageModel;
-      //   return MaterialPageRoute(
-      //       builder: (context) => SearchEventsFilter(filter: filter));
       default:
         return _errorRoute();
     }
