@@ -5,7 +5,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_button.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_content.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/filter_event_page_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
 class SearchEventsFilter extends StatelessWidget {

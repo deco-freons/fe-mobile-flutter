@@ -1,6 +1,6 @@
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
-import 'package:flutter_boilerplate/event/data/popular_event/popular_event_model.dart';
-import 'package:flutter_boilerplate/event/data/request_get_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_events_data_provider.dart';
 
 abstract class SearchEventsRepository implements BaseRepository {

@@ -10,7 +10,7 @@ import 'package:flutter_boilerplate/event/components/event_list.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/item_filter_model.dart';
+import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -36,7 +36,7 @@ class _HomepageState extends State<Homepage>
       create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
         ..getPopularEvents([], radiusValue),
       child: Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         body: Container(
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.secondary),

@@ -1,17 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sort_model.dart';
+part of 'event_sort_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-SortModel _$SortModelFromJson(Map<String, dynamic> json) => SortModel(
+EventSortModel _$EventSortModelFromJson(Map<String, dynamic> json) =>
+    EventSortModel(
       sortBy: json['sortBy'] as String,
       isMoreOrLess: json['isMoreOrLess'] as String,
     );
 
-Map<String, dynamic> _$SortModelToJson(SortModel instance) => <String, dynamic>{
+Map<String, dynamic> _$EventSortModelToJson(EventSortModel instance) =>
+    <String, dynamic>{
       'sortBy': instance.sortBy,
       'isMoreOrLess': instance.isMoreOrLess,
     };

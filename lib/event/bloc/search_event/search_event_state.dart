@@ -1,5 +1,5 @@
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/event/data/popular_event/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 
 abstract class SearchEventsState implements BaseState {
   const SearchEventsState();

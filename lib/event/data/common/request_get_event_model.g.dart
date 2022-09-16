@@ -17,7 +17,7 @@ RequestGetEventModel _$RequestGetEventModelFromJson(
           : EventFilterModel.fromJson(json['filter'] as Map<String, dynamic>),
       sort: json['sort'] == null
           ? null
-          : SortModel.fromJson(json['sort'] as Map<String, dynamic>),
+          : EventSortModel.fromJson(json['sort'] as Map<String, dynamic>),
       search: SearchModel.fromJson(json['search'] as Map<String, dynamic>),
     );
 

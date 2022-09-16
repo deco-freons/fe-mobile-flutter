@@ -1,9 +1,9 @@
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
-import 'package:flutter_boilerplate/event/data/popular_event/popular_event_model.dart';
-import 'package:flutter_boilerplate/event/data/request_get_event_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/filter_event_page_model.dart';
+import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
+import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
 import 'package:geolocator/geolocator.dart';
 

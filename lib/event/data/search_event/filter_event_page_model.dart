@@ -1,13 +1,14 @@
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/data/base_model.dart';
-import 'package:flutter_boilerplate/event/data/event_filter_model.dart';
-import 'package:flutter_boilerplate/event/data/request_get_event_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/days_to_event_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/event_categories_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/event_radius_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/models/item_filter_model.dart';
-import 'package:flutter_boilerplate/event/data/search_model.dart';
-import 'package:flutter_boilerplate/event/data/sort_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/days_to_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_categories_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_radius_model.dart';
+import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_sort_model.dart';
+import 'package:flutter_boilerplate/event/data/common/search_model.dart';
+
 import 'package:geolocator/geolocator.dart';
 
 class FilterEventPageModel extends BaseModel {
@@ -110,7 +111,7 @@ class FilterEventPageModel extends BaseModel {
         sort: sortCheck.any((sort) => sort.isPicked)
             ? sortCheck
                 .where((sort) => sort.isPicked)
-                .map((filteredSort) => SortModel(
+                .map((filteredSort) => EventSortModel(
                     sortBy: filteredSort.data.value,
                     isMoreOrLess: filteredSort.data.order))
                 .first
