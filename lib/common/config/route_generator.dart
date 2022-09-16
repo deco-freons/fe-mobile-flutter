@@ -3,7 +3,6 @@ import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/place_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/edit_event.dart';
@@ -23,7 +22,6 @@ import 'package:flutter_boilerplate/page/search_events.dart';
 import 'package:flutter_boilerplate/page/preference.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/page/register.dart';
-import 'package:flutter_boilerplate/page/search_events_filter.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_boilerplate/page/splash.dart';
@@ -103,10 +101,6 @@ class RouteGenerator {
             builder: (context) => FriendProfile(
                   userID: userID,
                 ));
-      case SearchEventsFilter.routeName:
-        FilterEventPageModel filter = args as FilterEventPageModel;
-        return MaterialPageRoute(
-            builder: (context) => SearchEventsFilter(filter: filter));
       default:
         return _errorRoute();
     }

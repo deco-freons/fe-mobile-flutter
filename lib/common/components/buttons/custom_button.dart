@@ -2,64 +2,61 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 
-class CustomButton extends StatefulWidget {
+class CustomButton extends StatelessWidget {
   final String label;
   final ButtonType type;
   final VoidCallback? onPressedHandler;
   final double cornerRadius;
   final double labelFontSize;
   final double? elevation;
+  final double height;
+  final double width;
   final bool hasBorder;
   final Color borderColor;
 
-  const CustomButton(
-      {Key? key,
-      required this.label,
-      required this.type,
-      this.onPressedHandler,
-      this.cornerRadius = CustomRadius.lg,
-      this.labelFontSize = CustomFontSize.lg,
-      this.elevation,
-      this.hasBorder = false,
-      this.borderColor = Colors.black})
-      : super(key: key);
+  const CustomButton({
+    Key? key,
+    required this.label,
+    required this.type,
+    this.onPressedHandler,
+    this.cornerRadius = CustomRadius.lg,
+    this.labelFontSize = CustomFontSize.lg,
+    this.elevation,
+    this.hasBorder = false,
+    this.borderColor = Colors.black,
+    this.height = 52,
+    this.width = double.infinity,
+  }) : super(key: key);
 
-  @override
-  State<CustomButton> createState() => _CustomButtonState();
-}
-
-class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           onSurface: neutral,
-          primary: widget.type == ButtonType.primary
+          primary: type == ButtonType.primary
               ? Theme.of(context).colorScheme.primary
-              : widget.type == ButtonType.inverse
+              : type == ButtonType.inverse
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.error,
-          onPrimary: widget.type == ButtonType.primary
+          onPrimary: type == ButtonType.primary
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
-          minimumSize: const Size.fromHeight(52),
+          minimumSize: Size(width, height),
           shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.all(Radius.circular(widget.cornerRadius)),
+            borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
           ),
-          elevation: widget.elevation,
-          side:
-              widget.hasBorder ? BorderSide(color: widget.borderColor) : null),
-      onPressed: widget.onPressedHandler,
+          elevation: elevation,
+          side: hasBorder ? BorderSide(color: borderColor) : null),
+      onPressed: onPressedHandler,
       child: Text(
-        widget.label,
+        label,
         style: TextStyle(
-          color: widget.onPressedHandler == null
+          color: onPressedHandler == null
               ? neutral.shade600
-              : widget.type == ButtonType.inverse
+              : type == ButtonType.inverse
                   ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.secondary,
-          fontSize: widget.labelFontSize,
+          fontSize: labelFontSize,
           fontWeight: FontWeight.bold,
         ),
       ),

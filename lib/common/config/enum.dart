@@ -114,49 +114,49 @@ extension BadgeTierExtension on BadgeTier {
   }
 }
 
-enum DaysFilter {
+enum TimeFilter {
   oneDay,
   oneWeek,
   twoWeeks,
   fourWeeks,
 }
 
-extension DaysFilterExtension on DaysFilter {
+extension TimeFilterExtension on TimeFilter {
   String get desc {
     switch (this) {
-      case DaysFilter.oneDay:
+      case TimeFilter.oneDay:
         return '1 day';
-      case DaysFilter.oneWeek:
+      case TimeFilter.oneWeek:
         return '1 Week';
-      case DaysFilter.twoWeeks:
+      case TimeFilter.twoWeeks:
         return '2 Weeks';
-      case DaysFilter.fourWeeks:
+      case TimeFilter.fourWeeks:
         return '1 Month';
     }
   }
 
   int get value {
     switch (this) {
-      case DaysFilter.oneDay:
+      case TimeFilter.oneDay:
         return 1;
-      case DaysFilter.oneWeek:
+      case TimeFilter.oneWeek:
         return 7;
-      case DaysFilter.twoWeeks:
+      case TimeFilter.twoWeeks:
         return 14;
-      case DaysFilter.fourWeeks:
+      case TimeFilter.fourWeeks:
         return 28;
     }
   }
 
   String get isMoreOrLess {
     switch (this) {
-      case DaysFilter.oneDay:
+      case TimeFilter.oneDay:
         return 'LESS';
-      case DaysFilter.oneWeek:
+      case TimeFilter.oneWeek:
         return 'LESS';
-      case DaysFilter.twoWeeks:
+      case TimeFilter.twoWeeks:
         return 'LESS';
-      case DaysFilter.fourWeeks:
+      case TimeFilter.fourWeeks:
         return 'LESS';
     }
   }

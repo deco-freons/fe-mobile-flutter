@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/event/data/search_event/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 
 @immutable
 abstract class PopularEventsState implements BaseState {
@@ -20,13 +20,11 @@ class PopularEventsFilterState extends PopularEventsState {
 }
 
 class PopularEventsSuccessState extends PopularEventsState {
-  final List<List<String>> locationNames;
   final List<PopularEventModel> events;
-  final int pageCount;
-  const PopularEventsSuccessState(
-      {required this.events,
-      required this.locationNames,
-      required this.pageCount});
+
+  const PopularEventsSuccessState({
+    required this.events,
+  });
 }
 
 class PopularEventsErrorState extends PopularEventsState {

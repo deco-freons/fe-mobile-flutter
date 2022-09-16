@@ -14,7 +14,8 @@ PopularEventModel _$PopularEventModelFromJson(Map<String, dynamic> json) =>
       distance: (json['distance'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       latitude: (json['latitude'] as num).toDouble(),
-      eventCreator: Map<String, String>.from(json['eventCreator'] as Map),
+      eventCreator: EventParticipantModel.fromJson(
+          json['eventCreator'] as Map<String, dynamic>),
       location: PopularEventLocationModel.fromJson(
           json['location'] as Map<String, dynamic>),
       locationName: json['locationName'] as String,
