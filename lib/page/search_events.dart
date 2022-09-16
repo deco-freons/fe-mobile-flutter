@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/common/utils/debounce.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
+import 'package:flutter_boilerplate/event/data/popular_event/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/models/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
@@ -29,20 +30,25 @@ class _SearchEventsState extends State<SearchEvents>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: const PageAppBar(title: "Search Events"),
-      body: Container(
-        color: Theme.of(context).colorScheme.secondary,
-        child: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(top: CustomPadding.sm),
-          child: Column(
-            children: const [
-              BuildSearchEvents(),
-            ],
-          ),
-        )),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: const PageAppBar(title: "Search Events"),
+        body: Container(
+          color: Theme.of(context).colorScheme.secondary,
+          child: SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.only(top: CustomPadding.sm),
+            child: Column(
+              children: const [
+                BuildSearchEvents(),
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }
@@ -153,72 +159,87 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               height: 28,
             ),
             BlocConsumer<SearchEventsCubit, SearchEventsState>(
-                listener: (context, state) {},
-                builder: (context, state) {
-                  if (state is SearchEventsErrorState) {
-                    return Text(state.errorMessage);
-                  }
-                  bool isSuccessState = state is SearchEventsSuccessState;
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: CustomPadding.body),
-                      child: SizedBox(
-                        width: double.infinity,
-                        child: isSuccessState
-                            ? ListView(
-                                shrinkWrap: true,
-                                controller: _scrollController,
-                                children: state.events.map((event) {
-                                  List<String> splittedDate =
-                                      DateParser.parseEventDate(event.date);
-                                  return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 15.0),
-                                      child: EventCardLarge(
-                                        title: event.eventName,
-                                        author: event.eventCreator.username,
-                                        distance: event.distance,
-                                        location:
-                                            '${event.locationName}, ${event.location.city}',
-                                        month: splittedDate[0].substring(0, 3),
-                                        date: splittedDate[1].substring(0, 2),
-                                        image:
-                                            'lib/common/assets/images/LargeEventTest.png',
-                                        onTapHandler: () {
-                                          Navigator.of(context).pushNamed(
-                                              EventDetail.routeName,
-                                              arguments: event.eventID);
-                                        },
-                                      ));
-                                }).toList(),
-                              )
-                            : ListView(
-                                shrinkWrap: true,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: CustomPadding.xl),
-                                    child: EventCardLarge.loading(
-                                        onTapHandler: () {}),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: CustomPadding.xl),
-                                    child: EventCardLarge.loading(
-                                        onTapHandler: () {}),
-                                  ),
-                                  EventCardLarge.loading(onTapHandler: () {})
-                                ],
+                listener: (context, state) {
+              if (state is SearchEventsFetchMoreErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.errorMsg),
+                  ),
+                );
+              }
+            }, builder: (context, state) {
+              if (state is SearchEventsErrorState) {
+                return Text(state.errorMessage);
+              }
+              bool isSuccessState = state is SearchEventsSuccessState;
+              bool isFetchMoreErrorState =
+                  state is SearchEventsFetchMoreErrorState;
+              return Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: CustomPadding.body),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: isSuccessState || isFetchMoreErrorState
+                        ? ListView(
+                            shrinkWrap: true,
+                            controller: _scrollController,
+                            children: buildEvents(
+                                context,
+                                isSuccessState
+                                    ? state.events
+                                    : isFetchMoreErrorState
+                                        ? state.events
+                                        : []),
+                          )
+                        : ListView(
+                            shrinkWrap: true,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: CustomPadding.xl),
+                                child:
+                                    EventCardLarge.loading(onTapHandler: () {}),
                               ),
-                      ),
-                    ),
-                  );
-                }),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: CustomPadding.xl),
+                                child:
+                                    EventCardLarge.loading(onTapHandler: () {}),
+                              ),
+                              EventCardLarge.loading(onTapHandler: () {})
+                            ],
+                          ),
+                  ),
+                ),
+              );
+            }),
           ],
         ),
       ),
     );
+  }
+
+  List<Widget> buildEvents(
+      BuildContext context, List<PopularEventModel> events) {
+    return events.map((event) {
+      List<String> splittedDate = DateParser.parseEventDate(event.date);
+      return Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: EventCardLarge(
+            title: event.eventName,
+            author: event.eventCreator.username,
+            distance: event.distance,
+            location: '${event.locationName}, ${event.location.city}',
+            month: splittedDate[0].substring(0, 3),
+            date: splittedDate[1].substring(0, 2),
+            image: 'lib/common/assets/images/LargeEventTest.png',
+            onTapHandler: () {
+              Navigator.of(context)
+                  .pushNamed(EventDetail.routeName, arguments: event.eventID);
+            },
+          ));
+    }).toList();
   }
 
   void cancelFilter() {

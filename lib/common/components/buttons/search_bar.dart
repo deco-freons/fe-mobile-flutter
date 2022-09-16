@@ -21,8 +21,10 @@ class SearchBar extends StatelessWidget {
     return SizedBox(
       height: 45.0,
       child: TextField(
+        textAlignVertical: TextAlignVertical.center,
         controller: textEditingController,
         decoration: InputDecoration(
+            isCollapsed: true,
             prefixIcon: const Icon(Icons.search),
             suffixIcon: hasSecondIcon
                 ? IconButton(
@@ -31,6 +33,7 @@ class SearchBar extends StatelessWidget {
                   )
                 : null,
             labelText: label,
+            floatingLabelBehavior: FloatingLabelBehavior.never,
             labelStyle: TextStyle(color: neutral.shade300),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(32.0),

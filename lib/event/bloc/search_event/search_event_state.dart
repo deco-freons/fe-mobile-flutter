@@ -19,6 +19,13 @@ class SearchEventsSuccessState extends SearchEventsState {
   const SearchEventsSuccessState({required this.events, required this.hasMore});
 }
 
+class SearchEventsFetchMoreErrorState extends SearchEventsState {
+  final List<PopularEventModel> events;
+  final String errorMsg;
+  const SearchEventsFetchMoreErrorState(
+      {required this.events, required this.errorMsg});
+}
+
 class SearchEventsErrorState extends SearchEventsState {
   final String errorMessage;
   const SearchEventsErrorState({required this.errorMessage});

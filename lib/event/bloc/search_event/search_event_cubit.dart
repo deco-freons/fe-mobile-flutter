@@ -55,7 +55,8 @@ class SearchEventsCubit extends BaseCubit<SearchEventsState> {
     } catch (e) {
       pageCount--;
       String message = ErrorHandler.handle(e);
-      emit(SearchEventsErrorState(errorMessage: message));
+      emit(SearchEventsFetchMoreErrorState(
+          errorMsg: message, events: eventList));
     }
   }
 }
