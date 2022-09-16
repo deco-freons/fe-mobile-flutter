@@ -10,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final double labelFontSize;
   final double? elevation;
   final double height;
+  final double width;
   final bool hasBorder;
   final Color borderColor;
 
@@ -24,6 +25,7 @@ class CustomButton extends StatelessWidget {
     this.hasBorder = false,
     this.borderColor = Colors.black,
     this.height = 52,
+    this.width = double.infinity,
   }) : super(key: key);
 
   @override
@@ -39,7 +41,7 @@ class CustomButton extends StatelessWidget {
           onPrimary: type == ButtonType.primary
               ? Theme.of(context).colorScheme.secondary
               : Theme.of(context).colorScheme.primary,
-          minimumSize: Size(10, height),
+          minimumSize: Size(width, height),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(cornerRadius)),
           ),
