@@ -111,7 +111,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SearchEventsCubit>(
-      create: (BuildContext context) =>
+      create: (BuildContext blocContext) =>
           _searchEventsCubit..searchEvents(filter),
       child: Expanded(
         child: Column(
@@ -125,27 +125,14 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 hasSecondIcon: true,
                 secondIcon: const Icon(Icons.filter_list),
                 iconOnPressedHandler: () async {
-                  final cubit = context.read<SearchEventsCubit>();
                   String? response = await showGeneralDialog(
                       context: context,
                       pageBuilder: (context, animation, secondaryAnimation) {
-                        return StatefulBuilder(
-                            builder: (context, StateSetter newSetState) {
-                          return SearchEventsFilter(
-                            setState: newSetState,
-                            filter: filter,
-                            onCategoryTap: handleCategoryTap,
-                            onTimeTap: handleTimeTap,
-                            onDistanceTap: handleDistanceTap,
-                            onSortTap: handleSortTap,
-                            resetFilter: resetFilter,
-                            onAllTap: handleAllTap,
-                          );
-                        });
+                        return buildFilterDialog();
                       });
                   if (response == "submit") {
                     filterInitial = filter;
-                    cubit.searchEvents(filter);
+                    _searchEventsCubit.searchEvents(filter);
                   } else {
                     cancelFilter();
                   }
@@ -181,16 +168,30 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                   child: SizedBox(
                     width: double.infinity,
                     child: isSuccessState || isFetchMoreErrorState
-                        ? ListView(
-                            shrinkWrap: true,
-                            controller: _scrollController,
-                            children: buildEvents(
-                                context,
-                                isSuccessState
-                                    ? state.events
-                                    : isFetchMoreErrorState
-                                        ? state.events
-                                        : []),
+                        ? RefreshIndicator(
+                            onRefresh: (() async {
+                              context
+                                  .read<SearchEventsCubit>()
+                                  .searchEvents(filter);
+                            }),
+                            child: ListView.builder(
+                              itemCount: isSuccessState
+                                  ? state.events.length
+                                  : isFetchMoreErrorState
+                                      ? state.events.length
+                                      : 0,
+                              shrinkWrap: true,
+                              controller: _scrollController,
+                              itemBuilder: ((context, index) {
+                                return buildEvent(
+                                    context,
+                                    isSuccessState
+                                        ? state.events[index]
+                                        : isFetchMoreErrorState
+                                            ? state.events[index]
+                                            : null);
+                              }),
+                            ),
                           )
                         : ListView(
                             shrinkWrap: true,
@@ -220,26 +221,41 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     );
   }
 
-  List<Widget> buildEvents(
-      BuildContext context, List<PopularEventModel> events) {
-    return events.map((event) {
-      List<String> splittedDate = DateParser.parseEventDate(event.date);
-      return Padding(
-          padding: const EdgeInsets.only(bottom: 15.0),
-          child: EventCardLarge(
-            title: event.eventName,
-            author: event.eventCreator.username,
-            distance: event.distance,
-            location: '${event.locationName}, ${event.location.city}',
-            month: splittedDate[0].substring(0, 3),
-            date: splittedDate[1].substring(0, 2),
-            image: 'lib/common/assets/images/LargeEventTest.png',
-            onTapHandler: () {
-              Navigator.of(context)
-                  .pushNamed(EventDetail.routeName, arguments: event.eventID);
-            },
-          ));
-    }).toList();
+  Widget buildEvent(BuildContext context, PopularEventModel? event) {
+    if (event == null) {
+      return const SizedBox.shrink();
+    }
+    List<String> splittedDate = DateParser.parseEventDate(event.date);
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 15.0),
+        child: EventCardLarge(
+          title: event.eventName,
+          author: event.eventCreator.username,
+          distance: event.distance,
+          location: '${event.locationName}, ${event.location.city}',
+          month: splittedDate[0].substring(0, 3),
+          date: splittedDate[1].substring(0, 2),
+          image: 'lib/common/assets/images/LargeEventTest.png',
+          onTapHandler: () {
+            Navigator.of(context)
+                .pushNamed(EventDetail.routeName, arguments: event.eventID);
+          },
+        ));
+  }
+
+  Widget buildFilterDialog() {
+    return StatefulBuilder(builder: (context, StateSetter newSetState) {
+      return SearchEventsFilter(
+        setState: newSetState,
+        filter: filter,
+        onCategoryTap: handleCategoryTap,
+        onTimeTap: handleTimeTap,
+        onDistanceTap: handleDistanceTap,
+        onSortTap: handleSortTap,
+        resetFilter: resetFilter,
+        onAllTap: handleAllTap,
+      );
+    });
   }
 
   void cancelFilter() {
