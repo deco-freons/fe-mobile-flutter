@@ -15,9 +15,8 @@ class SearchEventsLoadingState extends SearchEventsState {
 
 class SearchEventsSuccessState extends SearchEventsState {
   final List<PopularEventModel> events;
-  final int pageCount;
-  const SearchEventsSuccessState(
-      {required this.events, required this.pageCount});
+  final bool hasMore;
+  const SearchEventsSuccessState({required this.events, required this.hasMore});
 }
 
 class SearchEventsErrorState extends SearchEventsState {

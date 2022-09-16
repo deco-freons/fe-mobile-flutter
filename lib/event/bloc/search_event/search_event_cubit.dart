@@ -10,7 +10,7 @@ import 'package:geolocator/geolocator.dart';
 class SearchEventsCubit extends BaseCubit<SearchEventsState> {
   final SearchEventsRepository _searchEventsRepository;
   List<PopularEventModel> eventList;
-
+  int pageCount = 0;
   SearchEventsCubit(this._searchEventsRepository)
       : eventList = [],
         super(const SearchEventsInitialState());
@@ -18,6 +18,7 @@ class SearchEventsCubit extends BaseCubit<SearchEventsState> {
   Future<void> searchEvents(FilterEventPageModel data) async {
     try {
       emit(const SearchEventsLoadingState());
+      pageCount = 0;
       Position position = await Geolocator.getCurrentPosition();
       String todaysDate = DateTime.now().toIso8601String();
 
@@ -28,28 +29,31 @@ class SearchEventsCubit extends BaseCubit<SearchEventsState> {
           await _searchEventsRepository.searchEvents(request);
 
       eventList = [...events];
-      emit(SearchEventsSuccessState(events: eventList, pageCount: 0));
+      emit(SearchEventsSuccessState(events: eventList, hasMore: true));
     } catch (e) {
       String message = ErrorHandler.handle(e);
       emit(SearchEventsErrorState(errorMessage: message));
     }
   }
 
-  Future<void> getMoreEvents(FilterEventPageModel data, int pageCount) async {
+  Future<void> getMoreEvents(FilterEventPageModel data) async {
     try {
+      pageCount++;
       Position position = await Geolocator.getCurrentPosition();
       String todaysDate = DateTime.now().toIso8601String();
-      int nextPage = pageCount + 1;
 
       RequestGetEventModel request =
           data.toRequestGetEventModel(position, todaysDate);
 
       List<PopularEventModel> events =
-          await _searchEventsRepository.getMoreSearchEvents(request, nextPage);
+          await _searchEventsRepository.getMoreSearchEvents(request, pageCount);
+
+      bool hasMore = events.isNotEmpty;
 
       eventList = [...eventList, ...events];
-      emit(SearchEventsSuccessState(events: eventList, pageCount: nextPage));
+      emit(SearchEventsSuccessState(events: eventList, hasMore: hasMore));
     } catch (e) {
+      pageCount--;
       String message = ErrorHandler.handle(e);
       emit(SearchEventsErrorState(errorMessage: message));
     }

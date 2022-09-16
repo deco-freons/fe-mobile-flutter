@@ -25,37 +25,24 @@ class SearchEvents extends StatefulWidget {
 class _SearchEventsState extends State<SearchEvents>
     with AutomaticKeepAliveClientMixin<SearchEvents> {
   bool keepAlive = true;
-  FilterEventPageModel filter = FilterEventPageModel();
-  late SearchEventsCubit _searchEventsCubit;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchEventsCubit = SearchEventsCubit(SearchEventsRepositoryImpl());
-  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => _searchEventsCubit..searchEvents(filter),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: const PageAppBar(title: "Search Events"),
-        body: Container(
-          color: Theme.of(context).colorScheme.secondary,
-          child: SafeArea(
-              child: Padding(
-            padding: const EdgeInsets.only(top: CustomPadding.sm),
-            child: Column(
-              children: [
-                BuildSearchEvents(
-                  searchEventsCubit: _searchEventsCubit,
-                ),
-              ],
-            ),
-          )),
-        ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: const PageAppBar(title: "Search Events"),
+      body: Container(
+        color: Theme.of(context).colorScheme.secondary,
+        child: SafeArea(
+            child: Padding(
+          padding: const EdgeInsets.only(top: CustomPadding.sm),
+          child: Column(
+            children: const [
+              BuildSearchEvents(),
+            ],
+          ),
+        )),
       ),
     );
   }
@@ -65,175 +52,171 @@ class _SearchEventsState extends State<SearchEvents>
 }
 
 class BuildSearchEvents extends StatefulWidget {
-  final String errorMessage;
-  final SearchEventsCubit searchEventsCubit;
-  const BuildSearchEvents(
-      {Key? key, this.errorMessage = '', required this.searchEventsCubit})
-      : super(key: key);
+  const BuildSearchEvents({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<BuildSearchEvents> createState() => _BuildSearchEventsState();
 }
 
 class _BuildSearchEventsState extends State<BuildSearchEvents> {
-  final TextEditingController textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   final Debounce _debounce = Debounce(delay: const Duration(milliseconds: 500));
   late FilterEventPageModel filter =
-      FilterEventPageModel(searchTerm: textEditingController.text);
+      FilterEventPageModel(searchTerm: _textEditingController.text);
   late FilterEventPageModel filterInitial = filter;
-
+  final SearchEventsCubit _searchEventsCubit =
+      SearchEventsCubit(SearchEventsRepositoryImpl());
   @override
   void initState() {
     super.initState();
-    textEditingController.addListener(() {
-      filter = filter.copyWith(searchTerm: textEditingController.text);
+    _textEditingController.addListener(() {
+      filter = filter.copyWith(searchTerm: _textEditingController.text);
       if (filterInitial.searchTerm != filter.searchTerm) {
         _debounce(() {
-          widget.searchEventsCubit.searchEvents(filter);
+          _searchEventsCubit.searchEvents(filter);
         });
+      }
+    });
+
+    _scrollController.addListener(() {
+      if (_scrollController.offset ==
+          _scrollController.position.maxScrollExtent) {
+        SearchEventsState state = _searchEventsCubit.state;
+        if (state is SearchEventsSuccessState) {
+          if (state.hasMore) {
+            _searchEventsCubit.getMoreEvents(filter);
+          }
+        }
       }
     });
   }
 
   @override
   void dispose() {
-    textEditingController.dispose();
+    _textEditingController.dispose();
     _debounce.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: CustomPadding.body),
-            child: SearchBar(
-              textEditingController: textEditingController,
-              label: 'Search event...',
-              hasSecondIcon: true,
-              secondIcon: const Icon(Icons.filter_list),
-              iconOnPressedHandler: () async {
-                final cubit = context.read<SearchEventsCubit>();
-                String? response = await showGeneralDialog(
-                    context: context,
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return StatefulBuilder(
-                          builder: (context, StateSetter newSetState) {
-                        return SearchEventsFilter(
-                          setState: newSetState,
-                          filter: filter,
-                          onCategoryTap: handleCategoryTap,
-                          onTimeTap: handleTimeTap,
-                          onDistanceTap: handleDistanceTap,
-                          onSortTap: handleSortTap,
-                          resetFilter: resetFilter,
-                          onAllTap: handleAllTap,
-                        );
+    return BlocProvider<SearchEventsCubit>(
+      create: (BuildContext context) =>
+          _searchEventsCubit..searchEvents(filter),
+      child: Expanded(
+        child: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: CustomPadding.body),
+              child: SearchBar(
+                textEditingController: _textEditingController,
+                label: 'Search event...',
+                hasSecondIcon: true,
+                secondIcon: const Icon(Icons.filter_list),
+                iconOnPressedHandler: () async {
+                  final cubit = context.read<SearchEventsCubit>();
+                  String? response = await showGeneralDialog(
+                      context: context,
+                      pageBuilder: (context, animation, secondaryAnimation) {
+                        return StatefulBuilder(
+                            builder: (context, StateSetter newSetState) {
+                          return SearchEventsFilter(
+                            setState: newSetState,
+                            filter: filter,
+                            onCategoryTap: handleCategoryTap,
+                            onTimeTap: handleTimeTap,
+                            onDistanceTap: handleDistanceTap,
+                            onSortTap: handleSortTap,
+                            resetFilter: resetFilter,
+                            onAllTap: handleAllTap,
+                          );
+                        });
                       });
-                    });
-                if (response == "submit") {
-                  // SUBMIT AND UPDATE INITIAL HERE
-                  filterInitial = filter;
-                  // reset page count
-                  cubit.searchEvents(filter);
-                } else {
-                  cancelFilter();
-                }
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 25,
-          ),
-          const SizedBox(
-            height: 28,
-          ),
-          BlocConsumer<SearchEventsCubit, SearchEventsState>(
-              listener: (context, state) {
-            // if (state is PopularEventsSuccessState) {
-            //   if (state.events.isNotEmpty) {
-            //     for (var resEvent in state.events) {
-            //       if (!eventList.contains(resEvent)) {
-            //         eventList.add(resEvent);
-            //       }
-            //     }
-            //   }
-            // } else if (state is PopularEventsFilterState) {
-            //   eventList = [];
-            //   searchEvents(context, filter);
-            // }
-          }, builder: (context, state) {
-            if (state is SearchEventsErrorState) {
-              return Text(state.errorMessage);
-            }
-            bool isSuccessState = state is SearchEventsSuccessState;
-            ScrollController scrollController = ScrollController();
-            return Expanded(
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: CustomPadding.body),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: isSuccessState
-                      ? ListView(
-                          shrinkWrap: true,
-                          controller: scrollController
-                            ..addListener(() {
-                              if (scrollController.offset ==
-                                  scrollController.position.maxScrollExtent) {
-                                context
-                                    .read<SearchEventsCubit>()
-                                    .getMoreEvents(filter, state.pageCount);
-                              }
-                            }),
-                          children: state.events.map((event) {
-                            List<String> splittedDate =
-                                DateParser.parseEventDate(event.date);
-                            return Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0),
-                                child: EventCardLarge(
-                                  title: event.eventName,
-                                  author: event.eventCreator.username,
-                                  distance: event.distance,
-                                  location:
-                                      '${event.locationName}, ${event.location.city}',
-                                  month: splittedDate[0].substring(0, 3),
-                                  date: splittedDate[1].substring(0, 2),
-                                  image:
-                                      'lib/common/assets/images/LargeEventTest.png',
-                                  onTapHandler: () {
-                                    Navigator.of(context).pushNamed(
-                                        EventDetail.routeName,
-                                        arguments: event.eventID);
-                                  },
-                                ));
-                          }).toList(),
-                        )
-                      : ListView(
-                          shrinkWrap: true,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: CustomPadding.xl),
-                              child:
-                                  EventCardLarge.loading(onTapHandler: () {}),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: CustomPadding.xl),
-                              child:
-                                  EventCardLarge.loading(onTapHandler: () {}),
-                            ),
-                            EventCardLarge.loading(onTapHandler: () {})
-                          ],
-                        ),
-                ),
+                  if (response == "submit") {
+                    filterInitial = filter;
+                    cubit.searchEvents(filter);
+                  } else {
+                    cancelFilter();
+                  }
+                },
               ),
-            );
-          }),
-        ],
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            const SizedBox(
+              height: 28,
+            ),
+            BlocConsumer<SearchEventsCubit, SearchEventsState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  if (state is SearchEventsErrorState) {
+                    return Text(state.errorMessage);
+                  }
+                  bool isSuccessState = state is SearchEventsSuccessState;
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: CustomPadding.body),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: isSuccessState
+                            ? ListView(
+                                shrinkWrap: true,
+                                controller: _scrollController,
+                                children: state.events.map((event) {
+                                  List<String> splittedDate =
+                                      DateParser.parseEventDate(event.date);
+                                  return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 15.0),
+                                      child: EventCardLarge(
+                                        title: event.eventName,
+                                        author: event.eventCreator.username,
+                                        distance: event.distance,
+                                        location:
+                                            '${event.locationName}, ${event.location.city}',
+                                        month: splittedDate[0].substring(0, 3),
+                                        date: splittedDate[1].substring(0, 2),
+                                        image:
+                                            'lib/common/assets/images/LargeEventTest.png',
+                                        onTapHandler: () {
+                                          Navigator.of(context).pushNamed(
+                                              EventDetail.routeName,
+                                              arguments: event.eventID);
+                                        },
+                                      ));
+                                }).toList(),
+                              )
+                            : ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: CustomPadding.xl),
+                                    child: EventCardLarge.loading(
+                                        onTapHandler: () {}),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: CustomPadding.xl),
+                                    child: EventCardLarge.loading(
+                                        onTapHandler: () {}),
+                                  ),
+                                  EventCardLarge.loading(onTapHandler: () {})
+                                ],
+                              ),
+                      ),
+                    ),
+                  );
+                }),
+          ],
+        ),
       ),
     );
   }
