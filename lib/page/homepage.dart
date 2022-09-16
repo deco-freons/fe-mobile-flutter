@@ -7,10 +7,12 @@ import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_list.dart';
+import 'package:flutter_boilerplate/event/components/event_matching_home_card.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -127,15 +129,18 @@ class _BuildHomeState extends State<BuildHome> {
             ),
             contentWidgets: [
               Padding(
-                padding: const EdgeInsets.only(
-                    left: CustomPadding.body, right: CustomPadding.body),
-                child: SizedBox(
-                  width: 350,
-                  height: 343.0,
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(color: neutral.shade400)),
-                ),
-              ),
+                  padding: const EdgeInsets.only(left: CustomPadding.base),
+                  child: EventMatchingCardHome(
+                      title: 'Harry Styles with Jennie',
+                      author: 'Jennie',
+                      distance: 2,
+                      location: 'Marvel Stadium, Melbourne',
+                      month: 'Mar',
+                      date: '24',
+                      image: 'lib/common/assets/images/LargeEventTest.png',
+                      onTapHandler: () {
+                        Navigator.of(context).pushNamed(Landing.routeName);
+                      })),
             ]),
         const SizedBox(
           height: 32,
