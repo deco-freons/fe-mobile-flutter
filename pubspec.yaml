@@ -89,6 +89,7 @@ flutter:
     - lib/common/assets/images/LocationIcon.png
     - lib/common/assets/images/LargeEventTest.png
     - lib/common/assets/images/SmallEventTest.png
+    - lib/common/assets/images/NoResult.png
     - lib/common/assets/files/express_public_location.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
