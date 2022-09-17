@@ -11,6 +11,7 @@ import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
+import 'package:flutter_boilerplate/page/event_matching_page.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -129,11 +130,16 @@ class _BuildHomeState extends State<BuildHome> {
               Padding(
                 padding: const EdgeInsets.only(
                     left: CustomPadding.body, right: CustomPadding.body),
-                child: SizedBox(
-                  width: 350,
-                  height: 343.0,
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(color: neutral.shade400)),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(EventMatching.routeName);
+                  },
+                  child: SizedBox(
+                    width: 350,
+                    height: 343.0,
+                    child: DecoratedBox(
+                        decoration: BoxDecoration(color: neutral.shade400)),
+                  ),
                 ),
               ),
             ]),

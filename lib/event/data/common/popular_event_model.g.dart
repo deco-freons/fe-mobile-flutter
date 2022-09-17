@@ -19,6 +19,7 @@ PopularEventModel _$PopularEventModelFromJson(Map<String, dynamic> json) =>
       location: PopularEventLocationModel.fromJson(
           json['location'] as Map<String, dynamic>),
       locationName: json['locationName'] as String,
+      participants: json['participants'] as int,
     );
 
 Map<String, dynamic> _$PopularEventModelToJson(PopularEventModel instance) =>
@@ -32,4 +33,5 @@ Map<String, dynamic> _$PopularEventModelToJson(PopularEventModel instance) =>
       'eventCreator': instance.eventCreator,
       'location': instance.location,
       'locationName': instance.locationName,
+      'participants': instance.participants,
     };

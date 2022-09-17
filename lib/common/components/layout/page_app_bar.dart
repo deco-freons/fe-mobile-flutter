@@ -5,7 +5,9 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool hasBackButton;
   final String title;
-  const PageAppBar({Key? key, this.hasBackButton = false, required this.title})
+  final Widget? widget;
+  const PageAppBar(
+      {Key? key, this.hasBackButton = false, required this.title, this.widget})
       : super(key: key);
 
   @override
@@ -37,6 +39,7 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: neutral.shade900,
         ),
       ),
+      actions: widget != null ? [widget!] : [],
     );
   }
 
