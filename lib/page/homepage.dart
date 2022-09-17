@@ -16,7 +16,7 @@ import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
-import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/event_matching_page.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -170,7 +170,7 @@ class _BuildHomeState extends State<BuildHome> {
                           date: splittedDate[1].substring(0, 2),
                           image: 'lib/common/assets/images/LargeEventTest.png',
                           onTapHandler: () {
-                            Navigator.of(context).pushNamed(Landing.routeName);
+                            Navigator.of(context).pushNamed(EventMatching.routeName);
                           }),
                     );
                   }

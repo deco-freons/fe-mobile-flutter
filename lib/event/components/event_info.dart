@@ -8,12 +8,20 @@ class EventInfo extends StatelessWidget {
   final String body;
   final bool loading;
   final VoidCallback? onTap;
+  final double titleFontSize;
+  final double bodyFontSize;
+  final double iconBoxSize;
+  final double iconSize;
   const EventInfo(
       {Key? key,
       required this.icon,
       required this.title,
       required this.body,
       this.loading = false,
+      this.titleFontSize = CustomFontSize.base,
+      this.bodyFontSize = CustomFontSize.lg,
+      this.iconBoxSize = 50,
+      this.iconSize = 30,
       this.onTap})
       : super(key: key);
 
@@ -23,6 +31,10 @@ class EventInfo extends StatelessWidget {
       this.title = "",
       this.body = "",
       this.loading = true,
+      this.titleFontSize = CustomFontSize.base,
+      this.bodyFontSize = CustomFontSize.lg,
+      this.iconBoxSize = 50,
+      this.iconSize = 30,
       this.onTap})
       : super(key: key);
 
@@ -34,8 +46,8 @@ class EventInfo extends StatelessWidget {
         children: [
           !loading
               ? Container(
-                  height: 50,
-                  width: 50,
+                  height: iconBoxSize,
+                  width: iconBoxSize,
                   decoration: BoxDecoration(
                     color: primary.shade300,
                     borderRadius: BorderRadius.circular(10),
@@ -43,10 +55,11 @@ class EventInfo extends StatelessWidget {
                   child: Icon(
                     icon,
                     color: primary,
-                    size: 30,
+                    size: iconSize,
                   ),
                 )
-              : BuildLoading.buildRectangularLoading(height: 50, width: 50),
+              : BuildLoading.buildRectangularLoading(
+                  height: iconBoxSize, width: iconBoxSize),
           const SizedBox(
             width: 20,
           ),
@@ -59,9 +72,9 @@ class EventInfo extends StatelessWidget {
                         title,
                         overflow: TextOverflow.fade,
                         softWrap: false,
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: neutral,
-                            fontSize: CustomFontSize.base,
+                            fontSize: titleFontSize,
                             fontWeight: FontWeight.bold),
                       )
                     : BuildLoading.buildRectangularLoading(
@@ -73,7 +86,7 @@ class EventInfo extends StatelessWidget {
                         softWrap: false,
                         style: TextStyle(
                             color: neutral.shade700,
-                            fontSize: CustomFontSize.lg,
+                            fontSize: bodyFontSize,
                             fontWeight: FontWeight.bold),
                       )
                     : BuildLoading.buildRectangularLoading(

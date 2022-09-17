@@ -17,6 +17,7 @@ class PopularEventModel extends BaseModel {
   final EventParticipantModel eventCreator;
   final PopularEventLocationModel location;
   final String locationName;
+  final int participants;
 
   const PopularEventModel(
       {required this.eventID,
@@ -27,7 +28,8 @@ class PopularEventModel extends BaseModel {
       required this.latitude,
       required this.eventCreator,
       required this.location,
-      required this.locationName});
+      required this.locationName,
+      required this.participants});
 
   factory PopularEventModel.fromJson(Map<String, dynamic> json) =>
       _$PopularEventModelFromJson(json);
