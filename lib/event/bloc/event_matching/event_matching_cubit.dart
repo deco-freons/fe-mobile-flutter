@@ -1,6 +1,5 @@
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_state.dart';
 import 'package:flutter_boilerplate/event/data/common/event_filter_model.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/search_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_repository.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
-import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:geolocator/geolocator.dart';
 
 class EventMatchingCubit extends BaseCubit<EventMatchingState> {
@@ -33,7 +31,7 @@ class EventMatchingCubit extends BaseCubit<EventMatchingState> {
                 radius: radius.value, isMoreOrLess: radius.isMoreOrLess)),
         search: const SearchModel(keyword: ""),
       );
-      
+
       List<PopularEventModel> res =
           await _eventMatchingRepository.getEvents(request);
 
