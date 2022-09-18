@@ -2,20 +2,103 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_chip.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
+import 'package:flutter_boilerplate/event/components/event_matching/card_provider.dart';
 import 'package:flutter_boilerplate/event/components/see_more.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-class EventMatchingCard extends StatelessWidget {
-  final PopularEventModel event;
+class SwipeCards extends StatefulWidget {
+  final int eventID;
+  final String eventName;
+  final int participants;
+  final String date;
+  final String suburb;
+  final String city;
+  final String locationName;
+  final double distance;
   final bool isEventEmpty;
-  const EventMatchingCard(
-      {Key? key, required this.event, this.isEventEmpty = false})
-      : super(key: key);
+  final bool isFront;
+
+  const SwipeCards({
+    Key? key,
+    this.isEventEmpty = false,
+    required this.eventID,
+    required this.eventName,
+    required this.participants,
+    required this.date,
+    required this.suburb,
+    required this.city,
+    required this.locationName,
+    required this.distance,
+    required this.isFront,
+  }) : super(key: key);
+
+  const SwipeCards.empty({
+    Key? key,
+    this.eventID = 0,
+    this.isEventEmpty = true,
+    this.eventName = "",
+    this.participants = 0,
+    this.date = "",
+    this.suburb = "",
+    this.city = "",
+    this.locationName = "",
+    this.distance = 0,
+    this.isFront = false,
+  }) : super(key: key);
+
+  @override
+  State<SwipeCards> createState() => _SwipeCardsState();
+}
+
+class _SwipeCardsState extends State<SwipeCards> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final size = MediaQuery.of(context).size;
+
+      final provider = Provider.of<CardProvider>(context, listen: false);
+      provider.setScreenSize(size);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return !isEventEmpty
+    return widget.isFront ? buildFrontCard() : buildCard();
+  }
+
+  Widget buildFrontCard() {
+    return GestureDetector(
+      child: Builder(builder: (context) {
+        final provider = Provider.of<CardProvider>(context);
+        final position = provider.position;
+        int milliseconds = provider.isDragging ? 0 : 400;
+
+        return AnimatedContainer(
+            curve: Curves.easeInOut,
+            duration: Duration(milliseconds: milliseconds),
+            transform: Matrix4.identity()..translate(position.dx),
+            child: buildCard());
+      }),
+      onPanStart: (details) {
+        final provider = Provider.of<CardProvider>(context, listen: false);
+        provider.startPosition(details);
+      },
+      onPanUpdate: (details) {
+        final provider = Provider.of<CardProvider>(context, listen: false);
+        provider.updatePosition(details);
+      },
+      onPanEnd: (details) {
+        final provider = Provider.of<CardProvider>(context, listen: false);
+        provider.endPosition();
+      },
+    );
+  }
+
+  Widget buildCard() {
+    return !widget.isEventEmpty
         ? Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(CustomRadius.xxl),
@@ -65,18 +148,18 @@ class EventMatchingCard extends StatelessWidget {
                     const SizedBox(
                       height: 15,
                     ),
-                    _buildEventName(event.eventName),
+                    _buildEventName(widget.eventName),
                     const SizedBox(
                       height: 10,
                     ),
-                    _buildParticipantsDetail(event.participants),
+                    _buildParticipantsDetail(widget.participants),
                     const SizedBox(
                       height: 20,
                     ),
                     EventInfo(
                       icon: Icons.access_time_outlined,
                       title: DateFormat('MMMM dd, yyyy')
-                          .format(DateTime.parse(event.date)),
+                          .format(DateTime.parse(widget.date)),
                       titleFontSize: CustomFontSize.sm,
                       bodyFontSize: CustomFontSize.base,
                       iconBoxSize: 40,
@@ -88,8 +171,8 @@ class EventMatchingCard extends StatelessWidget {
                     ),
                     EventInfo(
                       icon: Icons.location_on_outlined,
-                      title: "${event.location.suburb}, ${event.location.city}",
-                      body: event.locationName,
+                      title: "${widget.suburb}, ${widget.city}",
+                      body: widget.locationName,
                       titleFontSize: CustomFontSize.sm,
                       bodyFontSize: CustomFontSize.base,
                       iconBoxSize: 40,
@@ -114,7 +197,7 @@ class EventMatchingCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomChip(label: '${event.distance} km'),
+                        CustomChip(label: '${widget.distance} km'),
                       ],
                     )
                   ],

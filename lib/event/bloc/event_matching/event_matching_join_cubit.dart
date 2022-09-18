@@ -11,6 +11,7 @@ class EventMatchingJoinCubit extends BaseCubit<EventMatchingJoinState> {
 
   Future<void> joinEvent(int eventId) async {
     try {
+      emit(const EventMatchingJoinLoadingState());
       await _eventMatchingRepository.joinEvent(eventId);
       emit(const EventMatchingJoinSuccessState());
     } catch (e) {

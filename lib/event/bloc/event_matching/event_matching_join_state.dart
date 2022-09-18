@@ -10,6 +10,10 @@ class EventMatchingJoinInitialState extends EventMatchingJoinState {
   const EventMatchingJoinInitialState();
 }
 
+class EventMatchingJoinLoadingState extends EventMatchingJoinState {
+  const EventMatchingJoinLoadingState();
+}
+
 class EventMatchingJoinSuccessState extends EventMatchingJoinState {
   const EventMatchingJoinSuccessState();
 }

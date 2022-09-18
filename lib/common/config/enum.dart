@@ -272,3 +272,8 @@ extension EventSortExtension on EventSort {
     }
   }
 }
+
+enum CardStatus {
+  join,
+  skip,
+}

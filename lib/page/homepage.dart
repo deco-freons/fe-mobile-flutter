@@ -16,7 +16,7 @@ import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
-import 'package:flutter_boilerplate/page/event_matching_page.dart';
+import 'package:flutter_boilerplate/page/event_matching.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -56,9 +56,10 @@ class _HomepageState extends State<Homepage>
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.secondary),
           child: SafeArea(
-              child: BuildHome(
-            handlePageChanged: widget.handlePageChanged,
-          )),
+            child: BuildHome(
+              handlePageChanged: widget.handlePageChanged,
+            ),
+          ),
         ),
       ),
     );

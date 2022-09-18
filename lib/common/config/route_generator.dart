@@ -7,7 +7,7 @@ import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/create_event.dart';
 import 'package:flutter_boilerplate/page/edit_event.dart';
 import 'package:flutter_boilerplate/page/event_detail.dart';
-import 'package:flutter_boilerplate/page/event_matching_page.dart';
+import 'package:flutter_boilerplate/page/event_matching.dart';
 import 'package:flutter_boilerplate/page/event_participants.dart';
 import 'package:flutter_boilerplate/page/forget.dart';
 import 'package:flutter_boilerplate/page/friend_profile.dart';
