@@ -17,10 +17,10 @@ class EventMatchingLoadingState extends EventMatchingState {
 
 class EventMatchingSuccessState extends EventMatchingState {
   final List<PopularEventModel> events;
-
-  const EventMatchingSuccessState({
-    required this.events,
-  });
+  final bool hasMore;
+  final int pageCount;
+  const EventMatchingSuccessState(
+      {required this.events, required this.pageCount, required this.hasMore});
 }
 
 class EventMatchingErrorState extends EventMatchingState {
