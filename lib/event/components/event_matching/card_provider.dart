@@ -9,6 +9,7 @@ class CardProvider extends ChangeNotifier {
   Offset _position = Offset.zero;
   Size _screenSize = Size.zero;
   EventMatchingJoinCubit? _cubit;
+  bool loading = false;
 
   List<PopularEventModel> get events => _events;
   bool get isDragging => _isDragging;
@@ -21,7 +22,11 @@ class CardProvider extends ChangeNotifier {
   void setScreenSize(Size screenSize) => _screenSize = screenSize;
 
   void addEvents(List<PopularEventModel> events) {
-    _events = events;
+    if (!loading) {
+      loading = true;
+      _events = events;
+    }
+    loading = false;
   }
 
   PopularEventModel getCurrentEvent() {
@@ -79,27 +84,39 @@ class CardProvider extends ChangeNotifier {
   }
 
   void join(EventMatchingJoinCubit? cubit) {
-    _position += Offset(2 * _screenSize.width, 0);
-    if (cubit != null) {
-      cubit.joinEvent(getCurrentEvent().eventID);
-    }
-    _nextCard();
+    if (!loading) {
+      loading = true;
+      _position += Offset(2 * _screenSize.width, 0);
+      if (cubit != null && events.isNotEmpty) {
+        cubit.joinEvent(getCurrentEvent().eventID);
+      }
+      _nextCard();
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   void skip() {
-    _position -= Offset(2 * _screenSize.width, 0);
-    _nextCard();
+    if (!loading) {
+      loading = true;
+      _position -= Offset(2 * _screenSize.width, 0);
+      _nextCard();
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
 
   Future _nextCard() async {
-    if (_events.isEmpty) return;
+    if (_events.isEmpty) {
+      loading = false;
+      return;
+    }
 
     await Future.delayed(const Duration(milliseconds: 200));
-    _events.removeLast();
+    if (events.isNotEmpty) {
+      _events.removeLast();
+    }
     resetPosition();
+    loading = false;
   }
 }
