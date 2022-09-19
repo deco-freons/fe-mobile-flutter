@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/file_parser.dart';
 import 'package:image_picker/image_picker.dart';
 
 const kilobyte = 1024;
@@ -91,13 +92,19 @@ class _ImageInputState extends State<ImageInput> {
     final XFile? selectedImage =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 60);
     if (selectedImage != null) {
-      if (await getFileSize(selectedImage) <= 3.0) {
+      String errorMessage = "";
+
+      if (await getFileSize(selectedImage) > 3.0) {
+        errorMessage = "Image must not exceed 3MB";
+      } else if (!FileParser.isValidImage(selectedImage.path)) {
+        errorMessage = "File type must be jpeg, jpg, png";
+      }
+      if (errorMessage.isEmpty) {
         setState(() {
           widget.customFormInput.setImage(File(selectedImage.path));
         });
       } else {
-        scaffoldState.showSnackBar(
-            const SnackBar(content: Text("Image must not exceed 3MB")));
+        scaffoldState.showSnackBar(SnackBar(content: Text(errorMessage)));
       }
     }
   }

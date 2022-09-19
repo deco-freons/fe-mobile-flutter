@@ -12,6 +12,7 @@ import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
+import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
@@ -348,7 +349,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                   height: CustomPadding.sm,
                                                 ),
                                                 Text(
-                                                  "Image cannot exceed 3MB",
+                                                  "Image cannot exceed 3MB (jpg, jpeg, png)",
                                                   style: TextStyle(
                                                     fontSize: CustomFontSize.xs,
                                                     color: neutral.shade500,
@@ -357,27 +358,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                 )
                                               ],
                                             )
-                                          // TextFormField(
-                                          //     controller:
-                                          //         widget.input.controller,
-                                          //     readOnly: true,
-                                          //     maxLines: 6,
-                                          //     style: widget.inputStyle,
-                                          //     decoration: InputDecoration(
-                                          //       border:
-                                          //           const OutlineInputBorder(
-                                          //         borderRadius:
-                                          //             BorderRadius.all(
-                                          //                 Radius.circular(
-                                          //                     10.0)),
-                                          //         borderSide: BorderSide.none,
-                                          //       ),
-                                          //       filled: true,
-                                          //       fillColor: Theme.of(context)
-                                          //           .colorScheme
-                                          //           .primary
-                                          //           .withOpacity(0.21),
-                                          //     ))
                                           : widget.input.type ==
                                                   TextFieldType.interest
                                               ? Wrap(
@@ -752,19 +732,20 @@ class AddPreferenceModal extends StatefulWidget {
 }
 
 class _AddPreferenceModalState extends State<AddPreferenceModal> {
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  List<PrefType> preferenceList = [];
+  List<ItemFilterModel<PrefType>> prefs =
+      PrefType.values.map((pref) => ItemFilterModel(data: pref)).toList();
 
   @override
   void initState() {
     super.initState();
-    for (var pref in PrefType.values) {
-      if (widget.initialPrefs.contains(pref.name)) {
-        clickCheck[pref.index] = !clickCheck[pref.index];
-        preferenceList.add(pref);
-      }
-    }
-    setState(() {});
+
+    setState(() {
+      prefs = prefs
+          .map((pref) => widget.initialPrefs.contains(pref.data.name)
+              ? pref.copyWith(isPicked: true)
+              : pref)
+          .toList();
+    });
   }
 
   @override
@@ -790,15 +771,16 @@ class _AddPreferenceModalState extends State<AddPreferenceModal> {
                   type: pref,
                   onPressedHandler: () {
                     setState(() {
-                      clickCheck[pref.index] = !clickCheck[pref.index];
+                      prefs = prefs
+                          .map((currPref) => currPref.data == pref
+                              ? currPref.copyWith(isPicked: !currPref.isPicked)
+                              : currPref)
+                          .toList();
                     });
-                    if (!clickCheck[pref.index]) {
-                      preferenceList.add(pref);
-                    } else {
-                      preferenceList.remove(pref);
-                    }
                   },
-                  isActive: clickCheck[pref.index],
+                  isActive: prefs
+                      .firstWhere((currPref) => currPref.data == pref)
+                      .isPicked,
                 ),
             ],
           ),
@@ -808,7 +790,12 @@ class _AddPreferenceModalState extends State<AddPreferenceModal> {
               type: ButtonType.primary,
               cornerRadius: CustomRadius.button,
               onPressedHandler: () {
-                Navigator.pop(context, preferenceList);
+                Navigator.pop(
+                    context,
+                    prefs
+                        .where((pref) => pref.isPicked)
+                        .map((pref) => pref.data)
+                        .toList());
               }),
           const SizedBox(height: 20.0),
           CustomTextButton(
