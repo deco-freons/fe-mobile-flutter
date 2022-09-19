@@ -75,8 +75,8 @@ class _SearchLocationState extends State<SearchLocation> {
               _brisbaneLocationList =
                   BrisbaneLocationListModel(brisbaneLocations: locations);
               if (widget.initialSuburb != "") {
-                pickedSuburbId =
-                    _brisbaneLocationList.getIdFromSuburb(widget.initialSuburb);
+                pickedSuburbId = _brisbaneLocationList.getIdFromSuburb(
+                    widget.initialSuburb, widget.initialSuburb);
               }
               return Stack(children: [
                 GoogleMap(
@@ -170,8 +170,8 @@ class _SearchLocationState extends State<SearchLocation> {
         }
         if (element.types?[0] == "locality") {
           pickedSuburb = element.longName ?? "";
-          pickedSuburbId =
-              _brisbaneLocationList.getIdFromSuburb(element.longName ?? "");
+          pickedSuburbId = _brisbaneLocationList.getIdFromSuburb(
+              element.longName ?? "", element.shortName ?? "");
         }
       });
     } else {
@@ -223,8 +223,8 @@ class _SearchLocationState extends State<SearchLocation> {
       searchController.text = detail.result.name;
       for (var element in detail.result.addressComponents) {
         if (element.types[0] == "locality") {
-          pickedSuburbId =
-              _brisbaneLocationList.getIdFromSuburb(element.longName);
+          pickedSuburbId = _brisbaneLocationList.getIdFromSuburb(
+              element.longName, element.shortName);
         }
       }
       setState(() {});

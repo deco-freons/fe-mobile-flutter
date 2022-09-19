@@ -311,14 +311,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                 Icons.place_outlined),
                                           ),
                                           onTap: () async {
-                                            SearchLocationResponseModel
+                                            SearchLocationResponseModel?
                                                 location =
                                                 await Navigator.pushNamed(
                                                         context,
                                                         SearchLocation.routeName,
                                                         arguments: widget.input
                                                             .initialgoogleMapSuburb)
-                                                    as SearchLocationResponseModel;
+                                                    as SearchLocationResponseModel?;
+                                            if (location == null) return;
                                             widget.input.controller.text =
                                                 location.name;
                                             widget.input.lat = location.lat;
