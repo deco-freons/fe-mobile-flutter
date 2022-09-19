@@ -3,14 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_dropdown_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/date_parser.dart';
 import 'package:flutter_boilerplate/common/utils/typedef.dart';
+import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_state.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/event_list.dart';
+import 'package:flutter_boilerplate/event/components/event_matching_home_card.dart';
 import 'package:flutter_boilerplate/event/components/home_content.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
+import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
+import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -32,9 +38,18 @@ class _HomepageState extends State<Homepage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
-        ..getPopularEvents([], radiusValue),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
+            ..getPopularEvents([], radiusValue),
+        ),
+        BlocProvider(
+          create: (context) =>
+              EventMatchingHomeCubit(EventMatchingHomeRepositoryImpl())
+                ..getEventMatchingHome(radiusValue),
+        ),
+      ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Container(
@@ -122,20 +137,53 @@ class _BuildHomeState extends State<BuildHome> {
                     callback: (newValue) {
                       radiusValue = newValue;
                       getPopularEvents(context, [], radiusValue);
+                      getEventMatchingHome(context, radiusValue);
                     },
                   )),
             ),
             contentWidgets: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: CustomPadding.body, right: CustomPadding.body),
-                child: SizedBox(
-                  width: 350,
-                  height: 343.0,
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(color: neutral.shade400)),
-                ),
-              ),
+              BlocBuilder<EventMatchingHomeCubit, EventMatchingHomeState>(
+                  builder: (context, state) {
+                if (state is EventMatchingHomeErrorState) {
+                  return Center(child: Text(state.errorMessage));
+                } else if (state is EventMatchingHomeSuccessState) {
+                  if (state.events.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: CustomPadding.base),
+                      child: EventMatchingCardHome.empty(
+                        isEventEmpty: true,
+                        onTapHandler: () {},
+                      ),
+                    );
+                  } else {
+                    List<String> splittedDate =
+                        DateParser.parseEventDate(state.events[0].date);
+                    return Padding(
+                      padding: const EdgeInsets.only(left: CustomPadding.base),
+                      child: EventMatchingCardHome(
+                          title: state.events[0].eventName,
+                          author: state.events[0].eventCreator.username,
+                          distance: state.events[0].distance,
+                          location:
+                              '${state.events[0].locationName}, ${state.events[0].location.city}',
+                          month: splittedDate[0].substring(0, 3),
+                          date: splittedDate[1].substring(0, 2),
+                          image: 'lib/common/assets/images/LargeEventTest.png',
+                          onTapHandler: () {
+                            Navigator.of(context).pushNamed(Landing.routeName);
+                          }),
+                    );
+                  }
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: CustomPadding.base),
+                    child: EventMatchingCardHome.empty(
+                      loading: true,
+                      onTapHandler: () {},
+                    ),
+                  );
+                }
+              }),
             ]),
         const SizedBox(
           height: 32,
@@ -231,5 +279,10 @@ class _BuildHomeState extends State<BuildHome> {
       BuildContext context, List<String> data, DistanceFilter radius) {
     final cubit = context.read<PopularEventsCubit>();
     cubit.getPopularEvents(data, radius);
+  }
+
+  void getEventMatchingHome(BuildContext context, DistanceFilter radius) {
+    final cubit = context.read<EventMatchingHomeCubit>();
+    cubit.getEventMatchingHome(radius);
   }
 }

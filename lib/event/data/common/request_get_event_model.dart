@@ -9,18 +9,18 @@ part 'request_get_event_model.g.dart';
 class RequestGetEventModel extends BaseModel {
   final double longitude;
   final double latitude;
-  final String todaysDate;
+  final String? todaysDate;
   final EventFilterModel? filter;
   final EventSortModel? sort;
-  final SearchModel search;
+  final SearchModel? search;
 
   const RequestGetEventModel({
     required this.latitude,
     required this.longitude,
-    required this.todaysDate,
+    this.todaysDate,
     this.filter,
     this.sort,
-    required this.search,
+    this.search,
   });
 
   factory RequestGetEventModel.fromJson(Map<String, dynamic> json) =>
