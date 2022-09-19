@@ -4,14 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_state.dart';
 import 'package:flutter_boilerplate/event/data/create_event_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event_repository.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
-
-import '../../common/config/enum.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -94,7 +93,12 @@ class _CreateEventState extends State<CreateEvent> {
                 }
               },
               listener: (context, state) {
-                if (state is CreateEventSuccessState) {
+                if (state is CreateEventSuccessState ||
+                    state is CreateEventUploadErrorState) {
+                  if (state is CreateEventUploadErrorState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.errorMessage)));
+                  }
                   Navigator.pushReplacementNamed(context, Dashboard.routeName);
                 }
               },
