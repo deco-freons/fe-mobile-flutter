@@ -15,8 +15,6 @@ import 'package:flutter_boilerplate/event/data/event_matching/event_matching_rep
 import 'package:provider/provider.dart';
 
 const int snackbarDuration = 1000;
-const int rightSwipeDelay = 2000;
-const int leftSwipeDelay = 700;
 
 class EventMatching extends StatefulWidget {
   const EventMatching({Key? key}) : super(key: key);
@@ -84,7 +82,7 @@ class _EventMatchingState extends State<EventMatching> {
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Container(
                   constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 72 / 100),
+                      minHeight: MediaQuery.of(context).size.height * 70 / 100),
                   child: MultiBlocListener(
                     listeners: [
                       BlocListener<EventMatchingCubit, EventMatchingState>(
@@ -156,7 +154,7 @@ class _EventMatchingState extends State<EventMatching> {
                               builder: (context) => buildCards(context));
                         }
                         return BuildLoading.buildRectangularLoading(
-                            width: 342, height: 600, borderRadius: 20);
+                            width: 342, height: 500, borderRadius: 20);
                       },
                     ),
                   ),

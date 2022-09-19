@@ -116,10 +116,7 @@ class _SwipeCardsState extends State<SwipeCards> {
               ),
               margin: EdgeInsets.zero,
               child: Padding(
-                padding: const EdgeInsets.only(
-                    top: CustomPadding.lg,
-                    left: CustomPadding.lg,
-                    right: CustomPadding.lg),
+                padding: const EdgeInsets.all(CustomPadding.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -207,7 +204,7 @@ class _SwipeCardsState extends State<SwipeCards> {
           )
         : Container(
             width: 342,
-            height: 600,
+            height: 500,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(CustomRadius.xxl),
                 boxShadow: [
