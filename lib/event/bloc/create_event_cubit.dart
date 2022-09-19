@@ -27,10 +27,7 @@ class CreateEventCubit extends BaseCubit<CreateEventState> {
         List<String>? mimeType =
             FileParser.getFileMime(imageData.eventImage.path);
         if (mimeType != null) {
-          MediaType mediaType = MediaType(mimeType[0], mimeType[1]);
-          Map<String, dynamic> req = await imageData.toJson(mediaType);
-
-          await _createEventRepository.uploadImage(req);
+          await _uploadEventImage(imageData, mimeType);
         }
       }
 
@@ -38,6 +35,18 @@ class CreateEventCubit extends BaseCubit<CreateEventState> {
     } catch (e) {
       String message = ErrorHandler.handle(e);
       emit(CreateEventErrorState(errorMessage: message));
+    }
+  }
+
+  Future<void> _uploadEventImage(
+      EventImageRequestModel model, List<String> mimeType) async {
+    try {
+      MediaType mediaType = MediaType(mimeType[0], mimeType[1]);
+      Map<String, dynamic> req = await model.toJson(mediaType);
+      await _createEventRepository.uploadImage(req);
+    } catch (e) {
+      emit(const CreateEventUploadErrorState(
+          errorMessage: "Image upload failed"));
     }
   }
 }
