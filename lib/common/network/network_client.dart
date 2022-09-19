@@ -20,8 +20,8 @@ class NetworkClient {
   final Dio dio = Dio(
     BaseOptions(
         baseUrl: "https://deco-freons-be.devs.id",
-        connectTimeout: 5000,
-        receiveTimeout: 3000,
+        connectTimeout: 30000,
+        receiveTimeout: 30000,
         contentType: "application/json"),
   )..interceptors.addAll([Logging(), Refresh()]);
   final String env = "DEV";

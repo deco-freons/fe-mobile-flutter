@@ -6,6 +6,7 @@ import '../../common/data/base_repository.dart';
 @immutable
 abstract class CreateEventRepository implements BaseRepository {
   Future<dynamic> createEvent(CreateEventModel data);
+  Future<dynamic> uploadImage(Map<String, dynamic> data);
 }
 
 class CreateEventRepositoryImpl extends CreateEventRepository {
@@ -15,6 +16,12 @@ class CreateEventRepositoryImpl extends CreateEventRepository {
   @override
   Future<dynamic> createEvent(CreateEventModel data) async {
     final response = await _createEventDataProvider.createEvent(data);
+    return response;
+  }
+
+  @override
+  Future<dynamic> uploadImage(Map<String, dynamic> data) async {
+    final response = await _createEventDataProvider.uploadImage(data);
     return response;
   }
 }

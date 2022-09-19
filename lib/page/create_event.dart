@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
@@ -71,7 +73,7 @@ class _CreateEventState extends State<CreateEvent> {
             if (state is CreateEventLoadingState) {
               return Center(
                 child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               );
             } else if (state is CreateEventErrorState) {
@@ -173,7 +175,8 @@ class _CreateEventFormState extends State<CreateEventForm> {
             description: description.controller.text != ""
                 ? description.controller.text
                 : "No description");
-        submit(context, data);
+
+        submit(context, data, image.image);
       },
       topPadding: 0.0,
       textButtonHandler: () {},
@@ -188,7 +191,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   }
 }
 
-void submit(BuildContext context, CreateEventModel data) {
+void submit(BuildContext context, CreateEventModel data, File? image) {
   final cubit = context.read<CreateEventCubit>();
-  cubit.createEvent(data);
+  cubit.createEvent(data, image);
 }
