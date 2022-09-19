@@ -52,6 +52,7 @@ dependencies:
   flutter_config: ^2.0.0
   dropdown_search: ^5.0.2
   flutter_advanced_switch: ^3.0.1
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:

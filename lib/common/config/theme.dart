@@ -28,9 +28,9 @@ ColorScheme colorScheme = ColorScheme(
 );
 
 const MaterialColor primary = MaterialColor(0xFF0AA1DD, <int, Color>{
-  50: Color(0xFF0AA1DD),
-  100: Color(0xFF0AA1DD),
-  200: Color(0xFF0AA1DD),
+  50: Color(0xFFE1F5FD),
+  100: Color(0xFFE1F5FD),
+  200: Color(0xFFE1F5FD),
   300: Color(0xFFE1F5FD),
   400: Color(0xFFB2DBEB),
   500: Color(0xFF0AA1DD),
@@ -65,7 +65,6 @@ const MaterialColor error = MaterialColor(0xFFFC1313, <int, Color>{
   800: Color(0xFFFC1313),
   900: Color(0xFFFC1313),
 });
-
 
 const double appBarHeight = 96.0;
 

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
@@ -27,7 +29,8 @@ class CustomFormInput {
   int? maxLength;
   int? googleMapSuburbId;
   String? initialgoogleMapSuburb;
-
+  File? image;
+  String? initialImage;
   CustomFormInput({
     required this.label,
     required this.type,
@@ -48,6 +51,8 @@ class CustomFormInput {
     this.maxLength,
     this.googleMapSuburbId,
     this.initialgoogleMapSuburb,
+    this.image,
+    this.initialImage,
   })  : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101),
         initialValue = initialValue ?? "",
@@ -80,5 +85,9 @@ class CustomFormInput {
 
   void toggleCheckbox() {
     checkbox = !checkbox;
+  }
+
+  void setImage(File? newImage) {
+    image = newImage;
   }
 }

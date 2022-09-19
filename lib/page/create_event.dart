@@ -104,8 +104,8 @@ class CreateEventForm extends StatefulWidget {
 }
 
 class _CreateEventFormState extends State<CreateEventForm> {
-  final CustomFormInput photo =
-      CustomFormInput(label: 'Add Photo', type: TextFieldType.image);
+  final CustomFormInput image =
+      CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
   final CustomFormInput eventName =
       CustomFormInput(label: 'Event Name', type: TextFieldType.string);
   final CustomFormInput category = CustomFormInput(
@@ -141,7 +141,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   Widget build(BuildContext context) {
     return CustomForm(
       inputs: [
-        photo,
+        image,
         eventName,
         category,
         date,

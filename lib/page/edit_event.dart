@@ -114,7 +114,7 @@ class _EditEventFormState extends State<EditEventForm> {
   Widget build(BuildContext context) {
     EventDetailModel? event = widget.eventDetail?.event;
     final CustomFormInput photo =
-        CustomFormInput(label: 'Add Photo', type: TextFieldType.image);
+        CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
     final CustomFormInput eventName = CustomFormInput(
         label: 'Event Name',
         type: TextFieldType.string,
