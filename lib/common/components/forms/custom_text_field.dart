@@ -7,6 +7,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/forms/image_input.dart';
 import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -239,10 +240,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                       .error),
                                             ),
                                             filled: true,
-                                            fillColor: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withOpacity(0.21),
+                                            fillColor: primary.shade300,
                                             suffixIcon: const Icon(
                                                 Icons.place_outlined),
                                           ),
@@ -307,10 +305,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                     .colorScheme
                                                     .tertiary
                                                     .withOpacity(0.41)
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .primary
-                                                    .withOpacity(0.21),
+                                                : primary.shade300,
                                             suffixIcon: const Icon(
                                                 Icons.place_outlined),
                                           ),
@@ -335,28 +330,54 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                     city: location.city);
                                           },
                                         )
-                                      : widget.input.type == TextFieldType.image
-                                          ? TextFormField(
-                                              controller:
-                                                  widget.input.controller,
-                                              readOnly: true,
-                                              maxLines: 6,
-                                              style: widget.inputStyle,
-                                              decoration: InputDecoration(
-                                                border:
-                                                    const OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0)),
-                                                  borderSide: BorderSide.none,
+                                      : widget.input.type ==
+                                              TextFieldType.eventImage
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                ImageInput(
+                                                  customFormInput: widget.input,
+                                                  icon: Icon(
+                                                    Icons.add_a_photo_rounded,
+                                                    color: neutral.shade200,
+                                                    size: 60,
+                                                  ),
                                                 ),
-                                                filled: true,
-                                                fillColor: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary
-                                                    .withOpacity(0.21),
-                                              ))
+                                                const SizedBox(
+                                                  height: CustomPadding.sm,
+                                                ),
+                                                Text(
+                                                  "Image cannot exceed 3MB",
+                                                  style: TextStyle(
+                                                    fontSize: CustomFontSize.xs,
+                                                    color: neutral.shade500,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          // TextFormField(
+                                          //     controller:
+                                          //         widget.input.controller,
+                                          //     readOnly: true,
+                                          //     maxLines: 6,
+                                          //     style: widget.inputStyle,
+                                          //     decoration: InputDecoration(
+                                          //       border:
+                                          //           const OutlineInputBorder(
+                                          //         borderRadius:
+                                          //             BorderRadius.all(
+                                          //                 Radius.circular(
+                                          //                     10.0)),
+                                          //         borderSide: BorderSide.none,
+                                          //       ),
+                                          //       filled: true,
+                                          //       fillColor: Theme.of(context)
+                                          //           .colorScheme
+                                          //           .primary
+                                          //           .withOpacity(0.21),
+                                          //     ))
                                           : widget.input.type ==
                                                   TextFieldType.interest
                                               ? Wrap(
@@ -471,11 +492,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                               .colorScheme
                                                               .tertiary
                                                               .withOpacity(0.41)
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .primary
-                                                              .withOpacity(
-                                                                  0.21),
+                                                          : primary.shade300,
                                                       suffixIcon:
                                                           widget.input.type ==
                                                                   TextFieldType
@@ -568,10 +585,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                               .error),
                                     ),
                                     filled: true,
-                                    fillColor: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withOpacity(0.21),
+                                    fillColor: primary.shade300,
                                     suffixIcon: widget.input.type ==
                                             TextFieldType.password
                                         ? _confirmObscured
@@ -620,8 +634,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.21),
+              fillColor: primary.shade300,
               suffixIcon: const Icon(Icons.arrow_drop_down),
             ),
             readOnly: true,
