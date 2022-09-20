@@ -151,6 +151,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.errorMsg),
+                    behavior: SnackBarBehavior.floating,
                   ),
                 );
               }

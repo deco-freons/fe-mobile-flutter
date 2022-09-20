@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
@@ -40,11 +42,16 @@ class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
     }
   }
 
-  Future<void> editEvent(EventDetailResponseModel data, int suburbId) async {
+  Future<void> editEvent(
+      EventDetailResponseModel data, int suburbId, File? image) async {
     try {
       emit(const UpdateEventDetailLoadingState());
-      await _eventDetailRepository.editEvent(data, suburbId);
-      emit(const UpdateEventDetailEditedState());
+      bool isImageUpdateSuccess =
+          await _eventDetailRepository.editEvent(data, suburbId, image);
+      isImageUpdateSuccess
+          ? emit(const UpdateEventDetailEditedState())
+          : emit(const UpdateEventDetailImageErrorState(
+              errorMessage: "Updating image failed"));
     } catch (e) {
       emit(UpdateEventDetailErrorState(errorMessage: ErrorHandler.handle(e)));
     }

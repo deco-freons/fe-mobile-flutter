@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/data/brisbane_location_list_model.dart';
+import 'package:flutter_boilerplate/common/utils/brisbane_location_util.dart';
 import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
@@ -75,7 +80,7 @@ class _EditEventState extends State<EditEvent> {
             if (state is UpdateEventDetailLoadingState) {
               return Center(
                 child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               );
             } else if (state is UpdateEventDetailErrorState) {
@@ -85,7 +90,12 @@ class _EditEventState extends State<EditEvent> {
             }
           },
           listener: (context, state) {
-            if (state is UpdateEventDetailEditedState) {
+            if (state is UpdateEventDetailEditedState ||
+                state is UpdateEventDetailImageErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(state is UpdateEventDetailImageErrorState
+                      ? state.errorMessage
+                      : "Event successfully updated!")));
               NavigatorUtil.goBacknTimes(context, 2);
             }
           },
@@ -110,11 +120,21 @@ class EditEventForm extends StatefulWidget {
 }
 
 class _EditEventFormState extends State<EditEventForm> {
+  late Future<String> _brisbaneLocationJson;
+
+  @override
+  void initState() {
+    super.initState();
+    _brisbaneLocationJson = BrisbaneLocationUtil.getJson(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     EventDetailModel? event = widget.eventDetail?.event;
-    final CustomFormInput photo =
-        CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
+    final CustomFormInput image = CustomFormInput(
+        label: 'Add Photo',
+        type: TextFieldType.eventImage,
+        initialImage: widget.eventDetail?.event.eventImage?.imageUrl);
     final CustomFormInput eventName = CustomFormInput(
         label: 'Event Name',
         type: TextFieldType.string,
@@ -160,17 +180,29 @@ class _EditEventFormState extends State<EditEventForm> {
       location.location = event.location;
     }
 
-    void submit(BuildContext context, EventDetailResponseModel data) {
+    void submit(BuildContext context, EventDetailResponseModel data,
+        File? image) async {
       final cubit = context.read<UpdateEventDetailCubit>();
+
+      List<dynamic> jsonResult = jsonDecode(await _brisbaneLocationJson);
+      BrisbaneLocationListModel locationListModel = BrisbaneLocationListModel(
+          brisbaneLocations: BrisbaneLocationUtil.createModel(jsonResult));
+
       cubit.editEvent(
         data,
-        location.googleMapSuburbId != null ? location.googleMapSuburbId! : 0,
+        location.googleMapSuburbId != null &&
+                location.initialgoogleMapSuburb != null
+            ? location.googleMapSuburbId!
+            : locationListModel.getIdFromSuburb(
+                location.initialgoogleMapSuburb!,
+                location.initialgoogleMapSuburb!),
+        image,
       );
     }
 
     return CustomForm(
       inputs: [
-        photo,
+        image,
         eventName,
         category,
         date,
@@ -183,30 +215,30 @@ class _EditEventFormState extends State<EditEventForm> {
       submitHandler: () {
         if (event != null) {
           EventDetailModel updatedEvent = EventDetailModel(
-            eventID: event.eventID,
-            eventName: eventName.controller.text,
-            categories: category.preferences,
-            date: date.controller.text,
-            startTime: eventTime.controller.text,
-            endTime: eventTime.secondController != null
-                ? eventTime.secondController!.text
-                : eventTime.controller.text,
-            longitude: location.lng,
-            latitude: location.lat,
-            shortDescription: shortDescription.controller.text,
-            description: description.controller.text,
-            eventCreator: event.eventCreator,
-            participants: event.participants,
-            participantsList: event.participantsList,
-            participated: event.participated,
-            locationName: location.controller.text,
-            location: location.location,
-          );
+              eventID: event.eventID,
+              eventName: eventName.controller.text,
+              categories: category.preferences,
+              date: date.controller.text,
+              startTime: eventTime.controller.text,
+              endTime: eventTime.secondController != null
+                  ? eventTime.secondController!.text
+                  : eventTime.controller.text,
+              longitude: location.lng,
+              latitude: location.lat,
+              shortDescription: shortDescription.controller.text,
+              description: description.controller.text,
+              eventCreator: event.eventCreator,
+              participants: event.participants,
+              participantsList: event.participantsList,
+              participated: event.participated,
+              locationName: location.controller.text,
+              location: location.location,
+              eventImage: event.eventImage);
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,
             isEventCreator: true,
           );
-          submit(context, data);
+          submit(context, data, image.image);
         }
       },
       topPadding: 0.0,

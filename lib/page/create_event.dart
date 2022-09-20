@@ -36,75 +36,77 @@ class _CreateEventState extends State<CreateEvent> {
   }
 
   Widget buildCreateEvent() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: bodyPadding,
-              child: SizedBox(
-                height: appBarHeight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 40.0),
-                      child: TextButton(
-                        child: Text(
-                          "Cancel",
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.error),
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: bodyPadding,
+            child: SizedBox(
+              height: appBarHeight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 40.0),
+                    child: TextButton(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.error),
                       ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    const Text(
-                      'Create Event',
-                      style: TextStyle(
-                          fontSize: CustomFontSize.title,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+                  ),
+                  const Text(
+                    'Create Event',
+                    style: TextStyle(
+                        fontSize: CustomFontSize.title,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
-            BlocConsumer<CreateEventCubit, CreateEventState>(
-              builder: (context, state) {
-                if (state is CreateEventLoadingState) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height -
-                        MediaQuery.of(context).padding.top -
-                        appBarHeight -
-                        48,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+          ),
+          BlocConsumer<CreateEventCubit, CreateEventState>(
+            builder: (context, state) {
+              if (state is CreateEventLoadingState) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      appBarHeight -
+                      48,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                  );
-                } else if (state is CreateEventErrorState) {
-                  return CreateEventForm(errorMessage: state.errorMessage);
-                } else {
-                  return const CreateEventForm();
-                }
-              },
-              listener: (context, state) {
-                if (state is CreateEventSuccessState ||
-                    state is CreateEventUploadErrorState) {
-                  if (state is CreateEventUploadErrorState) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.errorMessage)));
-                  }
-                  Navigator.pushReplacementNamed(context, Dashboard.routeName);
-                }
-              },
-            ),
-          ],
-        ),
+                  ),
+                );
+              } else if (state is CreateEventErrorState) {
+                return CreateEventForm(errorMessage: state.errorMessage);
+              } else {
+                return const CreateEventForm();
+              }
+            },
+            listener: (context, state) {
+              if (state is CreateEventSuccessState ||
+                  state is CreateEventUploadErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state is CreateEventUploadErrorState
+                        ? state.errorMessage
+                        : "Event successfully created"),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                Navigator.pushReplacementNamed(context, Dashboard.routeName);
+              }
+            },
+          ),
+        ],
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_image_model.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
@@ -24,6 +25,7 @@ class EventDetailModel extends BaseModel {
   final bool participated;
   final EventLocationModel location;
   final String locationName;
+  final EventImageModel? eventImage;
 
   const EventDetailModel(
       {required this.eventID,
@@ -41,26 +43,27 @@ class EventDetailModel extends BaseModel {
       required this.participantsList,
       required this.participated,
       required this.locationName,
-      required this.location});
+      required this.location,
+      this.eventImage});
 
-  const EventDetailModel.empty({
-    this.eventID = 0,
-    this.eventName = "",
-    this.categories = const [],
-    this.date = "",
-    this.startTime = "",
-    this.endTime = "",
-    this.longitude = 0,
-    this.latitude = 0,
-    this.shortDescription = "-",
-    this.description = "-",
-    this.eventCreator = const EventParticipantModel.empty(),
-    this.participants = 0,
-    this.participantsList = const [],
-    this.participated = false,
-    this.locationName = "",
-    this.location = const EventLocationModel(suburb: "", city: ""),
-  });
+  const EventDetailModel.empty(
+      {this.eventID = 0,
+      this.eventName = "",
+      this.categories = const [],
+      this.date = "",
+      this.startTime = "",
+      this.endTime = "",
+      this.longitude = 0,
+      this.latitude = 0,
+      this.shortDescription = "-",
+      this.description = "-",
+      this.eventCreator = const EventParticipantModel.empty(),
+      this.participants = 0,
+      this.participantsList = const [],
+      this.participated = false,
+      this.locationName = "",
+      this.location = const EventLocationModel(suburb: "", city: ""),
+      this.eventImage});
 
   EventDetailModel copyWith({
     int? eventID,
@@ -79,24 +82,27 @@ class EventDetailModel extends BaseModel {
     bool? participated,
     String? locationName,
     EventLocationModel? location,
+    EventImageModel? eventImage,
   }) {
     return EventDetailModel(
-        eventID: eventID ?? this.eventID,
-        eventName: eventName ?? this.eventName,
-        categories: categories ?? this.categories,
-        date: date ?? this.date,
-        startTime: startTime ?? this.startTime,
-        endTime: endTime ?? this.endTime,
-        longitude: longitude ?? this.longitude,
-        latitude: latitude ?? this.latitude,
-        shortDescription: shortDescription ?? this.shortDescription,
-        description: description ?? this.description,
-        eventCreator: eventCreator ?? this.eventCreator,
-        participants: participants ?? this.participants,
-        participantsList: participantsList,
-        participated: participated ?? this.participated,
-        locationName: locationName ?? this.locationName,
-        location: location ?? this.location);
+      eventID: eventID ?? this.eventID,
+      eventName: eventName ?? this.eventName,
+      categories: categories ?? this.categories,
+      date: date ?? this.date,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+      longitude: longitude ?? this.longitude,
+      latitude: latitude ?? this.latitude,
+      shortDescription: shortDescription ?? this.shortDescription,
+      description: description ?? this.description,
+      eventCreator: eventCreator ?? this.eventCreator,
+      participants: participants ?? this.participants,
+      participantsList: participantsList,
+      participated: participated ?? this.participated,
+      locationName: locationName ?? this.locationName,
+      location: location ?? this.location,
+      eventImage: eventImage ?? this.eventImage,
+    );
   }
 
   factory EventDetailModel.fromJson(Map<String, dynamic> json) =>
