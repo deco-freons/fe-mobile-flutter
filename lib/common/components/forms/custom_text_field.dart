@@ -14,6 +14,7 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
+import 'package:flutter_boilerplate/common/utils/brisbane_location_util.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -42,7 +43,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   bool _obscured = true;
   bool _confirmObscured = true;
   late Future<String> _brisbaneLocationJson;
-  late List<dynamic> _brisbaneLocations;
+  late List<BrisbaneLocationModel> _brisbaneLocations;
 
   TextStyle customFontStyle(double size) {
     return TextStyle(fontSize: size, fontWeight: FontWeight.bold);
@@ -109,14 +110,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   void initState() {
     super.initState();
     if (widget.input.type == TextFieldType.suburbDropdown) {
-      _brisbaneLocationJson = getJson();
+      _brisbaneLocationJson = BrisbaneLocationUtil.getJson(context);
     }
-  }
-
-  Future<String> getJson() async {
-    Future<String> jsonData = DefaultAssetBundle.of(context)
-        .loadString("lib/common/assets/files/express_public_location.json");
-    return jsonData;
   }
 
   @override
@@ -148,17 +143,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                   builder: (BuildContext context,
                                       AsyncSnapshot<String> snapshot) {
                                     if (snapshot.hasData) {
-                                      final jsonResult =
+                                      List<dynamic> jsonResult =
                                           jsonDecode(snapshot.data!);
-                                      List<dynamic> locations = jsonResult
-                                          .map((item) => BrisbaneLocationModel(
-                                              location_id: item["location_id"],
-                                              suburb: item["suburb"],
-                                              city: item["city"],
-                                              state: item["state"],
-                                              country: item["country"]))
-                                          .toList();
-                                      _brisbaneLocations = locations;
+
+                                      _brisbaneLocations =
+                                          BrisbaneLocationUtil.createModel(
+                                              jsonResult);
 
                                       BrisbaneLocationModel? initialLocation;
                                       if (widget.input.initialValue != "") {
@@ -167,16 +157,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                 element.suburb ==
                                                 widget.input.initialValue)
                                             .toList()[0];
-                                        if (initialLocation != null) {
-                                          widget.input.controller.text =
-                                              initialLocation.location_id
-                                                  .toString();
-                                          widget.input.location =
-                                              EventLocationModel(
-                                                  suburb:
-                                                      initialLocation.suburb,
-                                                  city: initialLocation.city);
-                                        }
+
+                                        widget.input.controller.text =
+                                            initialLocation.location_id
+                                                .toString();
+                                        widget.input.location =
+                                            EventLocationModel(
+                                                suburb: initialLocation.suburb,
+                                                city: initialLocation.city);
                                       }
 
                                       return DropdownSearch<dynamic>(

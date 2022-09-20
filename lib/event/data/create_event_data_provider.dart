@@ -11,9 +11,6 @@ class CreateEventDataProvider extends BaseDataProvider {
 
   Future<dynamic> uploadImage(Map<String, dynamic> data) async {
     return await super.networkClient.post(
-        path: "/event/image/upload",
-        body: data,
-        authorized: true,
-        formData: true);
+        path: "/event/image", body: data, authorized: true, formData: true);
   }
 }

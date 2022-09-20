@@ -30,6 +30,7 @@ class ImageInput extends StatefulWidget {
 
 class _ImageInputState extends State<ImageInput> {
   final ImagePicker _picker = ImagePicker();
+  bool isReset = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +46,9 @@ class _ImageInputState extends State<ImageInput> {
           onTap: () {
             pickImage(context);
           },
-          child: widget.customFormInput.image != null ||
-                  widget.customFormInput.initialImage != null
+          child: (widget.customFormInput.image != null ||
+                      widget.customFormInput.initialImage != null) &&
+                  !isReset
               ? Stack(children: [
                   Ink(
                     width: widget.width,
@@ -73,6 +75,7 @@ class _ImageInputState extends State<ImageInput> {
                         bgColor: error,
                         onPressed: () {
                           setState(() {
+                            isReset = true;
                             widget.customFormInput.setImage(null);
                           });
                         },
@@ -101,6 +104,7 @@ class _ImageInputState extends State<ImageInput> {
       }
       if (errorMessage.isEmpty) {
         setState(() {
+          isReset = false;
           widget.customFormInput.setImage(File(selectedImage.path));
         });
       } else {
