@@ -237,6 +237,9 @@ class _EventMatchingState extends State<EventMatching> {
                         city: event.location.city,
                         locationName: event.locationName,
                         distance: event.distance,
+                        startTime: event.startTime,
+                        endTime: event.endTime,
+                        shortDescription: event.shortDescription,
                         isFront: events.last == event))
                     .toList()),
           );

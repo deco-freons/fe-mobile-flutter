@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';
 
 @immutable
 abstract class EventMatchingState implements BaseState {
@@ -16,7 +16,7 @@ class EventMatchingLoadingState extends EventMatchingState {
 }
 
 class EventMatchingSuccessState extends EventMatchingState {
-  final List<PopularEventModel> events;
+  final List<EventMatchingResponseModel> events;
   final bool hasMore;
   final int pageCount;
   const EventMatchingSuccessState(

@@ -5,9 +5,9 @@ import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_sta
 import 'package:flutter_boilerplate/event/data/common/event_filter_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_radius_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_sort_model.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_repository.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
+import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';
 import 'package:geolocator/geolocator.dart';
 
 class EventMatchingCubit extends BaseCubit<EventMatchingState> {
@@ -40,7 +40,7 @@ class EventMatchingCubit extends BaseCubit<EventMatchingState> {
         sort: EventSortModel(sortBy: sort.value, isMoreOrLess: sort.order),
       );
 
-      List<PopularEventModel> res =
+      List<EventMatchingResponseModel> res =
           await _eventMatchingRepository.getEvents(request, pageCount);
 
       if (res.isEmpty) {

@@ -12,8 +12,11 @@ class SwipeCards extends StatefulWidget {
   final String eventName;
   final int participants;
   final String date;
+  final String startTime;
+  final String endTime;
   final String suburb;
   final String city;
+  final String shortDescription;
   final String locationName;
   final double distance;
   final bool isEventEmpty;
@@ -26,8 +29,11 @@ class SwipeCards extends StatefulWidget {
     required this.eventName,
     required this.participants,
     required this.date,
+    required this.startTime,
+    required this.endTime,
     required this.suburb,
     required this.city,
+    required this.shortDescription,
     required this.locationName,
     required this.distance,
     required this.isFront,
@@ -40,8 +46,11 @@ class SwipeCards extends StatefulWidget {
     this.eventName = "",
     this.participants = 0,
     this.date = "",
+    this.startTime = "",
+    this.endTime = "",
     this.suburb = "",
     this.city = "",
+    this.shortDescription = "",
     this.locationName = "",
     this.distance = 0,
     this.isFront = false,
@@ -161,7 +170,7 @@ class _SwipeCardsState extends State<SwipeCards> {
                       bodyFontSize: CustomFontSize.base,
                       iconBoxSize: 40,
                       iconSize: 20,
-                      body: '12:12 - 13:13',
+                      body: '${widget.startTime} - ${widget.endTime}',
                     ),
                     const SizedBox(
                       height: 10,
@@ -186,8 +195,7 @@ class _SwipeCardsState extends State<SwipeCards> {
                           fontSize: CustomFontSize.md,
                           fontWeight: FontWeight.bold),
                     ),
-                    _buildEventDescription(
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet feugiat nunc, ut posuere neque. Morbi placerat nisl in felis lectus."),
+                    _buildEventDescription(widget.shortDescription),
                     const SizedBox(
                       height: 10,
                     ),

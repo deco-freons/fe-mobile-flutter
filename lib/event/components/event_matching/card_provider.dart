@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_join_cubit.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';
 
 class CardProvider extends ChangeNotifier {
-  List<PopularEventModel> _events = [];
+  List<EventMatchingResponseModel> _events = [];
   bool _isDragging = false;
   Offset _position = Offset.zero;
   Size _screenSize = Size.zero;
   EventMatchingJoinCubit? _cubit;
   bool loading = false;
 
-  List<PopularEventModel> get events => _events;
+  List<EventMatchingResponseModel> get events => _events;
   bool get isDragging => _isDragging;
   Offset get position => _position;
 
@@ -21,7 +21,7 @@ class CardProvider extends ChangeNotifier {
 
   void setScreenSize(Size screenSize) => _screenSize = screenSize;
 
-  void addEvents(List<PopularEventModel> events) {
+  void addEvents(List<EventMatchingResponseModel> events) {
     if (!loading) {
       loading = true;
       _events = events;
@@ -29,7 +29,7 @@ class CardProvider extends ChangeNotifier {
     loading = false;
   }
 
-  PopularEventModel getCurrentEvent() {
+  EventMatchingResponseModel getCurrentEvent() {
     return _events.last;
   }
 
