@@ -16,6 +16,11 @@ class CreateEventSuccessState extends CreateEventState {
   const CreateEventSuccessState();
 }
 
+class CreateEventUploadErrorState extends CreateEventState {
+  final String errorMessage;
+  const CreateEventUploadErrorState({required this.errorMessage});
+}
+
 class CreateEventErrorState extends CreateEventState {
   final String errorMessage;
   const CreateEventErrorState({required this.errorMessage});

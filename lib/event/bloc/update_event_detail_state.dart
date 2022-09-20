@@ -25,6 +25,11 @@ class UpdateEventDetailEditedState extends UpdateEventDetailState {
   const UpdateEventDetailEditedState();
 }
 
+class UpdateEventDetailImageErrorState extends UpdateEventDetailState {
+  final String errorMessage;
+  const UpdateEventDetailImageErrorState({required this.errorMessage});
+}
+
 class UpdateEventDetailErrorState extends UpdateEventDetailState {
   final String errorMessage;
   const UpdateEventDetailErrorState({required this.errorMessage});

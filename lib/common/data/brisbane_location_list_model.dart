@@ -17,9 +17,9 @@ class BrisbaneLocationListModel extends BaseModel {
 
   Map<String, dynamic> toJson() => _$BrisbaneLocationListModelToJson(this);
 
-  int getIdFromSuburb(String suburb) {
-    BrisbaneLocationModel result =
-        brisbaneLocations.singleWhere((location) => location.suburb == suburb);
+  int getIdFromSuburb(String longName, String shortName) {
+    BrisbaneLocationModel result = brisbaneLocations.singleWhere((location) =>
+        location.suburb == longName || location.suburb == shortName);
     return result.location_id;
   }
 }

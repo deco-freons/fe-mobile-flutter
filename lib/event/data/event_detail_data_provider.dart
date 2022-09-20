@@ -1,5 +1,7 @@
 import 'package:flutter_boilerplate/common/data/base_data_provider.dart';
+import 'package:flutter_boilerplate/event/data/common/event_image_request_model.dart';
 import 'package:flutter_boilerplate/event/data/edit_event_model.dart';
+import 'package:http_parser/http_parser.dart';
 
 class EventDetailDataProvider extends BaseDataProvider {
   Future<dynamic> getEventDetail(int eventID) async {
@@ -28,5 +30,14 @@ class EventDetailDataProvider extends BaseDataProvider {
     return super
         .networkClient
         .patch(path: "/event/update", body: data.toJson(), authorized: true);
+  }
+
+  Future<dynamic> updateEventImage(
+      EventImageRequestModel data, MediaType mediaType) async {
+    return super.networkClient.post(
+        path: "/event/image",
+        body: await data.toJson(mediaType),
+        formData: true,
+        authorized: true);
   }
 }

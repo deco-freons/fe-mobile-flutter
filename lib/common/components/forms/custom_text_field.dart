@@ -7,11 +7,14 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_date_picker.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/forms/image_input.dart';
 import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
+import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
+import 'package:flutter_boilerplate/common/utils/brisbane_location_util.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/page/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -40,7 +43,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   bool _obscured = true;
   bool _confirmObscured = true;
   late Future<String> _brisbaneLocationJson;
-  late List<dynamic> _brisbaneLocations;
+  late List<BrisbaneLocationModel> _brisbaneLocations;
 
   TextStyle customFontStyle(double size) {
     return TextStyle(fontSize: size, fontWeight: FontWeight.bold);
@@ -107,14 +110,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   void initState() {
     super.initState();
     if (widget.input.type == TextFieldType.suburbDropdown) {
-      _brisbaneLocationJson = getJson();
+      _brisbaneLocationJson = BrisbaneLocationUtil.getJson(context);
     }
-  }
-
-  Future<String> getJson() async {
-    Future<String> jsonData = DefaultAssetBundle.of(context)
-        .loadString("lib/common/assets/files/express_public_location.json");
-    return jsonData;
   }
 
   @override
@@ -146,17 +143,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                   builder: (BuildContext context,
                                       AsyncSnapshot<String> snapshot) {
                                     if (snapshot.hasData) {
-                                      final jsonResult =
+                                      List<dynamic> jsonResult =
                                           jsonDecode(snapshot.data!);
-                                      List<dynamic> locations = jsonResult
-                                          .map((item) => BrisbaneLocationModel(
-                                              location_id: item["location_id"],
-                                              suburb: item["suburb"],
-                                              city: item["city"],
-                                              state: item["state"],
-                                              country: item["country"]))
-                                          .toList();
-                                      _brisbaneLocations = locations;
+
+                                      _brisbaneLocations =
+                                          BrisbaneLocationUtil.createModel(
+                                              jsonResult);
 
                                       BrisbaneLocationModel? initialLocation;
                                       if (widget.input.initialValue != "") {
@@ -165,16 +157,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                 element.suburb ==
                                                 widget.input.initialValue)
                                             .toList()[0];
-                                        if (initialLocation != null) {
-                                          widget.input.controller.text =
-                                              initialLocation.location_id
-                                                  .toString();
-                                          widget.input.location =
-                                              EventLocationModel(
-                                                  suburb:
-                                                      initialLocation.suburb,
-                                                  city: initialLocation.city);
-                                        }
+
+                                        widget.input.controller.text =
+                                            initialLocation.location_id
+                                                .toString();
+                                        widget.input.location =
+                                            EventLocationModel(
+                                                suburb: initialLocation.suburb,
+                                                city: initialLocation.city);
                                       }
 
                                       return DropdownSearch<dynamic>(
@@ -239,10 +229,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                       .error),
                                             ),
                                             filled: true,
-                                            fillColor: Theme.of(context)
-                                                .colorScheme
-                                                .primary
-                                                .withOpacity(0.21),
+                                            fillColor: primary.shade300,
                                             suffixIcon: const Icon(
                                                 Icons.place_outlined),
                                           ),
@@ -307,22 +294,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                     .colorScheme
                                                     .tertiary
                                                     .withOpacity(0.41)
-                                                : Theme.of(context)
-                                                    .colorScheme
-                                                    .primary
-                                                    .withOpacity(0.21),
+                                                : primary.shade300,
                                             suffixIcon: const Icon(
                                                 Icons.place_outlined),
                                           ),
                                           onTap: () async {
-                                            SearchLocationResponseModel
+                                            SearchLocationResponseModel?
                                                 location =
                                                 await Navigator.pushNamed(
                                                         context,
                                                         SearchLocation.routeName,
                                                         arguments: widget.input
                                                             .initialgoogleMapSuburb)
-                                                    as SearchLocationResponseModel;
+                                                    as SearchLocationResponseModel?;
+                                            if (location == null) return;
                                             widget.input.controller.text =
                                                 location.name;
                                             widget.input.lat = location.lat;
@@ -335,28 +320,33 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                     city: location.city);
                                           },
                                         )
-                                      : widget.input.type == TextFieldType.image
-                                          ? TextFormField(
-                                              controller:
-                                                  widget.input.controller,
-                                              readOnly: true,
-                                              maxLines: 6,
-                                              style: widget.inputStyle,
-                                              decoration: InputDecoration(
-                                                border:
-                                                    const OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0)),
-                                                  borderSide: BorderSide.none,
+                                      : widget.input.type ==
+                                              TextFieldType.eventImage
+                                          ? Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                ImageInput(
+                                                  customFormInput: widget.input,
+                                                  icon: Icon(
+                                                    Icons.add_a_photo_rounded,
+                                                    color: neutral.shade200,
+                                                    size: 60,
+                                                  ),
                                                 ),
-                                                filled: true,
-                                                fillColor: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary
-                                                    .withOpacity(0.21),
-                                              ))
+                                                const SizedBox(
+                                                  height: CustomPadding.sm,
+                                                ),
+                                                Text(
+                                                  "Image cannot exceed 3MB (jpg, jpeg, png)",
+                                                  style: TextStyle(
+                                                    fontSize: CustomFontSize.xs,
+                                                    color: neutral.shade500,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                )
+                                              ],
+                                            )
                                           : widget.input.type ==
                                                   TextFieldType.interest
                                               ? Wrap(
@@ -471,11 +461,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                                               .colorScheme
                                                               .tertiary
                                                               .withOpacity(0.41)
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .primary
-                                                              .withOpacity(
-                                                                  0.21),
+                                                          : primary.shade300,
                                                       suffixIcon:
                                                           widget.input.type ==
                                                                   TextFieldType
@@ -568,10 +554,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                               .error),
                                     ),
                                     filled: true,
-                                    fillColor: Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withOpacity(0.21),
+                                    fillColor: primary.shade300,
                                     suffixIcon: widget.input.type ==
                                             TextFieldType.password
                                         ? _confirmObscured
@@ -620,8 +603,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 borderSide: BorderSide.none,
               ),
               filled: true,
-              fillColor:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.21),
+              fillColor: primary.shade300,
               suffixIcon: const Icon(Icons.arrow_drop_down),
             ),
             readOnly: true,
@@ -739,19 +721,20 @@ class AddPreferenceModal extends StatefulWidget {
 }
 
 class _AddPreferenceModalState extends State<AddPreferenceModal> {
-  List<bool> clickCheck = List.filled(PrefType.values.length, true);
-  List<PrefType> preferenceList = [];
+  List<ItemFilterModel<PrefType>> prefs =
+      PrefType.values.map((pref) => ItemFilterModel(data: pref)).toList();
 
   @override
   void initState() {
     super.initState();
-    for (var pref in PrefType.values) {
-      if (widget.initialPrefs.contains(pref.name)) {
-        clickCheck[pref.index] = !clickCheck[pref.index];
-        preferenceList.add(pref);
-      }
-    }
-    setState(() {});
+
+    setState(() {
+      prefs = prefs
+          .map((pref) => widget.initialPrefs.contains(pref.data.name)
+              ? pref.copyWith(isPicked: true)
+              : pref)
+          .toList();
+    });
   }
 
   @override
@@ -777,15 +760,16 @@ class _AddPreferenceModalState extends State<AddPreferenceModal> {
                   type: pref,
                   onPressedHandler: () {
                     setState(() {
-                      clickCheck[pref.index] = !clickCheck[pref.index];
+                      prefs = prefs
+                          .map((currPref) => currPref.data == pref
+                              ? currPref.copyWith(isPicked: !currPref.isPicked)
+                              : currPref)
+                          .toList();
                     });
-                    if (!clickCheck[pref.index]) {
-                      preferenceList.add(pref);
-                    } else {
-                      preferenceList.remove(pref);
-                    }
                   },
-                  isActive: clickCheck[pref.index],
+                  isActive: prefs
+                      .firstWhere((currPref) => currPref.data == pref)
+                      .isPicked,
                 ),
             ],
           ),
@@ -795,7 +779,12 @@ class _AddPreferenceModalState extends State<AddPreferenceModal> {
               type: ButtonType.primary,
               cornerRadius: CustomRadius.button,
               onPressedHandler: () {
-                Navigator.pop(context, preferenceList);
+                Navigator.pop(
+                    context,
+                    prefs
+                        .where((pref) => pref.isPicked)
+                        .map((pref) => pref.data)
+                        .toList());
               }),
           const SizedBox(height: 20.0),
           CustomTextButton(

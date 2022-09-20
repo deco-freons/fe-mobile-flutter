@@ -1,15 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_state.dart';
 import 'package:flutter_boilerplate/event/data/create_event_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event_repository.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
-
-import '../../common/config/enum.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -35,58 +36,78 @@ class _CreateEventState extends State<CreateEvent> {
   }
 
   Widget buildCreateEvent() {
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 60.0, left: 20.0, right: 35.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 40.0),
-                child: TextButton(
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.error),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: bodyPadding,
+            child: SizedBox(
+              height: appBarHeight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 40.0),
+                    child: TextButton(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.error),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                  const Text(
+                    'Create Event',
+                    style: TextStyle(
+                        fontSize: CustomFontSize.title,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
-              const Text(
-                'Create Event',
-                style: TextStyle(
-                    fontSize: CustomFontSize.title,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
+            ),
           ),
-        ),
-        BlocConsumer<CreateEventCubit, CreateEventState>(
-          builder: (context, state) {
-            if (state is CreateEventLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              );
-            } else if (state is CreateEventErrorState) {
-              return CreateEventForm(errorMessage: state.errorMessage);
-            } else {
-              return const CreateEventForm();
-            }
-          },
-          listener: (context, state) {
-            if (state is CreateEventSuccessState) {
-              Navigator.pushReplacementNamed(context, Dashboard.routeName);
-            }
-          },
-        ),
-      ],
+          BlocConsumer<CreateEventCubit, CreateEventState>(
+            builder: (context, state) {
+              if (state is CreateEventLoadingState) {
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top -
+                      appBarHeight -
+                      48,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                );
+              } else if (state is CreateEventErrorState) {
+                return CreateEventForm(errorMessage: state.errorMessage);
+              } else {
+                return const CreateEventForm();
+              }
+            },
+            listener: (context, state) {
+              if (state is CreateEventSuccessState ||
+                  state is CreateEventUploadErrorState) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state is CreateEventUploadErrorState
+                        ? state.errorMessage
+                        : "Event successfully created"),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+                Navigator.pushReplacementNamed(context, Dashboard.routeName);
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -104,8 +125,8 @@ class CreateEventForm extends StatefulWidget {
 }
 
 class _CreateEventFormState extends State<CreateEventForm> {
-  final CustomFormInput photo =
-      CustomFormInput(label: 'Add Photo', type: TextFieldType.image);
+  final CustomFormInput image =
+      CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
   final CustomFormInput eventName =
       CustomFormInput(label: 'Event Name', type: TextFieldType.string);
   final CustomFormInput category = CustomFormInput(
@@ -141,7 +162,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   Widget build(BuildContext context) {
     return CustomForm(
       inputs: [
-        photo,
+        image,
         eventName,
         category,
         date,
@@ -173,7 +194,8 @@ class _CreateEventFormState extends State<CreateEventForm> {
             description: description.controller.text != ""
                 ? description.controller.text
                 : "No description");
-        submit(context, data);
+
+        submit(context, data, image.image);
       },
       topPadding: 0.0,
       textButtonHandler: () {},
@@ -188,7 +210,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   }
 }
 
-void submit(BuildContext context, CreateEventModel data) {
+void submit(BuildContext context, CreateEventModel data, File? image) {
   final cubit = context.read<CreateEventCubit>();
-  cubit.createEvent(data);
+  cubit.createEvent(data, image);
 }

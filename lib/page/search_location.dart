@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_list_model.dart';
-import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
 import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
+import 'package:flutter_boilerplate/common/utils/brisbane_location_util.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_geocoding/google_geocoding.dart' as geocode;
@@ -46,13 +46,7 @@ class _SearchLocationState extends State<SearchLocation> {
   @override
   void initState() {
     super.initState();
-    _brisbaneLocationJson = getJson();
-  }
-
-  Future<String> getJson() async {
-    Future<String> jsonData = DefaultAssetBundle.of(context)
-        .loadString("lib/common/assets/files/express_public_location.json");
-    return jsonData;
+    _brisbaneLocationJson = BrisbaneLocationUtil.getJson(context);
   }
 
   @override
@@ -64,19 +58,14 @@ class _SearchLocationState extends State<SearchLocation> {
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             if (snapshot.hasData) {
               List<dynamic> jsonResult = jsonDecode(snapshot.data!);
-              List<BrisbaneLocationModel> locations = jsonResult
-                  .map((item) => BrisbaneLocationModel(
-                      location_id: item["location_id"],
-                      suburb: item["suburb"],
-                      city: item["city"],
-                      state: item["state"],
-                      country: item["country"]))
-                  .toList();
-              _brisbaneLocationList =
-                  BrisbaneLocationListModel(brisbaneLocations: locations);
+
+              _brisbaneLocationList = BrisbaneLocationListModel(
+                  brisbaneLocations:
+                      BrisbaneLocationUtil.createModel(jsonResult));
+
               if (widget.initialSuburb != "") {
-                pickedSuburbId =
-                    _brisbaneLocationList.getIdFromSuburb(widget.initialSuburb);
+                pickedSuburbId = _brisbaneLocationList.getIdFromSuburb(
+                    widget.initialSuburb, widget.initialSuburb);
               }
               return Stack(children: [
                 GoogleMap(
@@ -170,8 +159,8 @@ class _SearchLocationState extends State<SearchLocation> {
         }
         if (element.types?[0] == "locality") {
           pickedSuburb = element.longName ?? "";
-          pickedSuburbId =
-              _brisbaneLocationList.getIdFromSuburb(element.longName ?? "");
+          pickedSuburbId = _brisbaneLocationList.getIdFromSuburb(
+              element.longName ?? "", element.shortName ?? "");
         }
       });
     } else {
@@ -223,8 +212,8 @@ class _SearchLocationState extends State<SearchLocation> {
       searchController.text = detail.result.name;
       for (var element in detail.result.addressComponents) {
         if (element.types[0] == "locality") {
-          pickedSuburbId =
-              _brisbaneLocationList.getIdFromSuburb(element.longName);
+          pickedSuburbId = _brisbaneLocationList.getIdFromSuburb(
+              element.longName, element.shortName);
         }
       }
       setState(() {});

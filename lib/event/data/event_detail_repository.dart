@@ -2,21 +2,29 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_boilerplate/common/data/base_repository.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
+import 'package:flutter_boilerplate/common/utils/file_parser.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
+import 'package:flutter_boilerplate/event/data/common/event_image_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_image_request_model.dart';
 import 'package:flutter_boilerplate/event/data/edit_event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_data_provider.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
+import 'package:http_parser/http_parser.dart';
 
 abstract class EventDetailRepository implements BaseRepository {
   Future<void> getEventDetail(int eventID);
   Future<void> joinEvent(int eventID);
   Future<void> leaveEvent(int eventID);
   Future<void> deleteEvent(int eventID);
-  Future<void> editEvent(EventDetailResponseModel updatedModel, int suburbId);
+  Future<bool> editEvent(
+      EventDetailResponseModel updatedModel, int suburbId, File? image);
+  Future<EventImageModel?> uploadImage(
+      EventImageRequestModel model, MediaType mediaType);
   Stream<EventDetailResponseModel> get data async* {}
 }
 
@@ -80,25 +88,61 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
   }
 
   @override
-  Future<void> editEvent(
-      EventDetailResponseModel updatedModel, int suburbId) async {
+  Future<bool> editEvent(
+      EventDetailResponseModel updatedModel, int suburbId, File? image) async {
     EditEventModel requestData = EditEventModel(
-        eventID: updatedModel.event.eventID,
-        eventName: updatedModel.event.eventName,
-        categories: updatedModel.event.categories
-            .map((pref) => pref.preferenceID)
-            .toList(),
-        date: updatedModel.event.date,
-        startTime: updatedModel.event.startTime,
-        endTime: updatedModel.event.endTime,
-        longitude: updatedModel.event.longitude.toString(),
-        latitude: updatedModel.event.latitude.toString(),
-        location: suburbId,
-        locationName: updatedModel.event.locationName,
-        shortDescription: updatedModel.event.shortDescription,
-        description: updatedModel.event.description);
+      eventID: updatedModel.event.eventID,
+      eventName: updatedModel.event.eventName,
+      categories: updatedModel.event.categories
+          .map((pref) => pref.preferenceID)
+          .toList(),
+      date: updatedModel.event.date,
+      startTime: updatedModel.event.startTime,
+      endTime: updatedModel.event.endTime,
+      longitude: updatedModel.event.longitude.toString(),
+      latitude: updatedModel.event.latitude.toString(),
+      location: suburbId,
+      locationName: updatedModel.event.locationName,
+      shortDescription: updatedModel.event.shortDescription,
+      description: updatedModel.event.description,
+    );
     await _eventDetailDataProvider.editEvent(requestData);
-    return _controller.add(updatedModel);
+
+    // TEMPORARY, SHOULD BE -> IF IMAGE NULL THEN REMOVE THE IMAGE
+    if (image == null) {
+      _controller.add(updatedModel);
+      return true;
+    }
+
+    EventImageRequestModel imageModel = EventImageRequestModel(
+        eventID: updatedModel.event.eventID, eventImage: image);
+    List<String>? mimeType = FileParser.getFileMime(image.path);
+    if (mimeType != null) {
+      EventImageModel? updatedImage =
+          await uploadImage(imageModel, MediaType(mimeType[0], mimeType[1]));
+
+      if (updatedImage != null) {
+        // Update model
+        EventDetailResponseModel updatedModelImage = updatedModel.copyWith(
+            event: updatedModel.event.copyWith(eventImage: updatedImage));
+        _controller.add(updatedModelImage);
+        return true;
+      }
+    }
+    _controller.add(updatedModel);
+    return false;
+  }
+
+  @override
+  Future<EventImageModel?> uploadImage(
+      EventImageRequestModel model, MediaType mediaType) async {
+    try {
+      dynamic response =
+          await _eventDetailDataProvider.updateEventImage(model, mediaType);
+      return EventImageModel.fromJson(response["image"]);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<EventParticipantModel> _loadUserFromStorage() async {

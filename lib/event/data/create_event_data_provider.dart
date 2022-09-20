@@ -8,4 +8,9 @@ class CreateEventDataProvider extends BaseDataProvider {
         .networkClient
         .post(path: "/event/create", body: data.toJson(), authorized: true);
   }
+
+  Future<dynamic> uploadImage(Map<String, dynamic> data) async {
+    return await super.networkClient.post(
+        path: "/event/image", body: data, authorized: true, formData: true);
+  }
 }
