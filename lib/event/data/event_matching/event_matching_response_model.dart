@@ -4,37 +4,43 @@ import 'package:flutter_boilerplate/event/data/common/popular_event_location_mod
 
 import 'package:json_annotation/json_annotation.dart';
 
-part 'popular_event_model.g.dart';
+part 'event_matching_response_model.g.dart';
 
 @JsonSerializable()
-class PopularEventModel extends BaseModel {
+class EventMatchingResponseModel extends BaseModel {
   final int eventID;
   final String eventName;
   final String date;
+  final String startTime;
+  final String endTime;
   final double distance;
   final double longitude;
   final double latitude;
+  final String shortDescription;
   final EventParticipantModel eventCreator;
   final PopularEventLocationModel location;
   final String locationName;
   final int participants;
 
-  const PopularEventModel(
+  const EventMatchingResponseModel(
       {required this.eventID,
       required this.eventName,
       required this.date,
+      required this.startTime,
+      required this.endTime,
       required this.distance,
       required this.longitude,
       required this.latitude,
+      required this.shortDescription,
       required this.eventCreator,
       required this.location,
       required this.locationName,
       required this.participants});
 
-  factory PopularEventModel.fromJson(Map<String, dynamic> json) =>
-      _$PopularEventModelFromJson(json);
+  factory EventMatchingResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$EventMatchingResponseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PopularEventModelToJson(this);
+  Map<String, dynamic> toJson() => _$EventMatchingResponseModelToJson(this);
 
   @override
   List<Object> get props => [eventID];

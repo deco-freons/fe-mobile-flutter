@@ -16,7 +16,7 @@ import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
-import 'package:flutter_boilerplate/page/landing.dart';
+import 'package:flutter_boilerplate/page/event_matching.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
@@ -56,9 +56,10 @@ class _HomepageState extends State<Homepage>
           decoration:
               BoxDecoration(color: Theme.of(context).colorScheme.secondary),
           child: SafeArea(
-              child: BuildHome(
-            handlePageChanged: widget.handlePageChanged,
-          )),
+            child: BuildHome(
+              handlePageChanged: widget.handlePageChanged,
+            ),
+          ),
         ),
       ),
     );
@@ -148,39 +149,31 @@ class _BuildHomeState extends State<BuildHome> {
                   return Center(child: Text(state.errorMessage));
                 } else if (state is EventMatchingHomeSuccessState) {
                   if (state.events.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: CustomPadding.base),
-                      child: EventMatchingCardHome.empty(
-                        isEventEmpty: true,
-                        onTapHandler: () {},
-                      ),
+                    return EventMatchingCardHome.empty(
+                      isEventEmpty: true,
+                      onTapHandler: () {},
                     );
                   } else {
                     List<String> splittedDate =
                         DateParser.parseEventDate(state.events[0].date);
-                    return Padding(
-                      padding: const EdgeInsets.only(left: CustomPadding.base),
-                      child: EventMatchingCardHome(
-                          title: state.events[0].eventName,
-                          author: state.events[0].eventCreator.username,
-                          distance: state.events[0].distance,
-                          location:
-                              '${state.events[0].locationName}, ${state.events[0].location.city}',
-                          month: splittedDate[0].substring(0, 3),
-                          date: splittedDate[1].substring(0, 2),
-                          image: 'lib/common/assets/images/LargeEventTest.png',
-                          onTapHandler: () {
-                            Navigator.of(context).pushNamed(Landing.routeName);
-                          }),
-                    );
+                    return EventMatchingCardHome(
+                        title: state.events[0].eventName,
+                        author: state.events[0].eventCreator.username,
+                        distance: state.events[0].distance,
+                        location:
+                            '${state.events[0].locationName}, ${state.events[0].location.city}',
+                        month: splittedDate[0].substring(0, 3),
+                        date: splittedDate[1].substring(0, 2),
+                        image: 'lib/common/assets/images/LargeEventTest.png',
+                        onTapHandler: () {
+                          Navigator.of(context)
+                              .pushNamed(EventMatching.routeName);
+                        });
                   }
                 } else {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: CustomPadding.base),
-                    child: EventMatchingCardHome.empty(
-                      loading: true,
-                      onTapHandler: () {},
-                    ),
+                  return EventMatchingCardHome.empty(
+                    loading: true,
+                    onTapHandler: () {},
                   );
                 }
               }),

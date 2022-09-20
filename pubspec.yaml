@@ -52,6 +52,7 @@ dependencies:
   flutter_config: ^2.0.0
   dropdown_search: ^5.0.2
   flutter_advanced_switch: ^3.0.1
+  provider: ^6.0.3
 
 dev_dependencies:
   flutter_test:
@@ -90,6 +91,8 @@ flutter:
     - lib/common/assets/images/LargeEventTest.png
     - lib/common/assets/images/SmallEventTest.png
     - lib/common/assets/images/NoResult.png
+    - lib/common/assets/images/HeartIcon.png
+    - lib/common/assets/images/WhoopsImage.png
     - lib/common/assets/files/express_public_location.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

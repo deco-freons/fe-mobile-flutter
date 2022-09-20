@@ -162,7 +162,12 @@ extension TimeFilterExtension on TimeFilter {
   }
 }
 
-enum DistanceFilter { five, ten, twenty, aboveTwenty }
+enum DistanceFilter {
+  five,
+  ten,
+  twenty,
+  aboveTwenty,
+}
 
 extension DistanceFilterExtension on DistanceFilter {
   String get desc {
@@ -266,4 +271,9 @@ extension EventSortExtension on EventSort {
         return 'MORE';
     }
   }
+}
+
+enum CardStatus {
+  join,
+  skip,
 }
