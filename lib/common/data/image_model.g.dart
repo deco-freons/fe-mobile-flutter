@@ -1,17 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'event_image_model.dart';
+part of 'image_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-EventImageModel _$EventImageModelFromJson(Map<String, dynamic> json) =>
-    EventImageModel(
+ImageModel _$ImageModelFromJson(Map<String, dynamic> json) => ImageModel(
       imageUrl: json['imageUrl'] as String,
     );
 
-Map<String, dynamic> _$EventImageModelToJson(EventImageModel instance) =>
+Map<String, dynamic> _$ImageModelToJson(ImageModel instance) =>
     <String, dynamic>{
       'imageUrl': instance.imageUrl,
     };

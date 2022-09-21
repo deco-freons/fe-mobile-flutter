@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_model.dart';
+part of 'edit_user_model_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-      isVerified: json['isVerified'] as bool,
-      isFirstLogin: json['isFirstLogin'] as bool,
+EditUserModelResponse _$EditUserModelResponseFromJson(
+        Map<String, dynamic> json) =>
+    EditUserModelResponse(
       preferences: (json['preferences'] as List<dynamic>)
           .map((e) => PreferenceModel.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -26,15 +26,15 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
           : ImageModel.fromJson(json['userImage'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
+Map<String, dynamic> _$EditUserModelResponseToJson(
+        EditUserModelResponse instance) =>
+    <String, dynamic>{
       'userID': instance.userID,
       'username': instance.username,
       'email': instance.email,
       'firstName': instance.firstName,
       'lastName': instance.lastName,
       'birthDate': instance.birthDate,
-      'isVerified': instance.isVerified,
-      'isFirstLogin': instance.isFirstLogin,
       'preferences': instance.preferences,
       'location': instance.location,
       'isShareLocation': instance.isShareLocation,

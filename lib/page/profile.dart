@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
         resizeToAvoidBottomInset: true,
         appBar: const PageAppBar(
           title: "My Profile",
-          hasBackButton: true,
+          hasLeadingWidget: true,
         ),
         body: Container(
           decoration:

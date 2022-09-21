@@ -1,5 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_image_model.dart';
+import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/data/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
@@ -25,7 +25,7 @@ class EventDetailModel extends BaseModel {
   final bool participated;
   final EventLocationModel location;
   final String locationName;
-  final EventImageModel? eventImage;
+  final ImageModel? eventImage;
 
   const EventDetailModel(
       {required this.eventID,
@@ -82,7 +82,7 @@ class EventDetailModel extends BaseModel {
     bool? participated,
     String? locationName,
     EventLocationModel? location,
-    EventImageModel? eventImage,
+    ImageModel? eventImage,
   }) {
     return EventDetailModel(
       eventID: eventID ?? this.eventID,

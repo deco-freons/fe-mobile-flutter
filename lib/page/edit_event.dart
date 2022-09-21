@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_list_model.dart';
 import 'package:flutter_boilerplate/common/utils/brisbane_location_util.dart';
@@ -15,8 +17,6 @@ import 'package:flutter_boilerplate/event/data/event_detail_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
-
-import '../../common/config/enum.dart';
 
 class EditEvent extends StatefulWidget {
   final EventDetailResponseModel eventDetail;
@@ -34,6 +34,23 @@ class _EditEventState extends State<EditEvent> {
       create: (context) =>
           UpdateEventDetailCubit(getIt.get<EventDetailRepository>()),
       child: Scaffold(
+        appBar: PageAppBar(
+          title: "Edit Event",
+          hasLeadingWidget: true,
+          leadingWidth: 100,
+          leadingWidget: TextButton(
+            child: Text(
+              "Cancel",
+              style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.error),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         resizeToAvoidBottomInset: true,
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
@@ -46,35 +63,6 @@ class _EditEventState extends State<EditEvent> {
   Widget buildEditEvent() {
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 60.0, left: 20.0, right: 35.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 40.0),
-                child: TextButton(
-                  child: Text(
-                    "Cancel",
-                    style: TextStyle(
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.error),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              ),
-              const Text(
-                'Edit Event',
-                style: TextStyle(
-                    fontSize: CustomFontSize.title,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
         BlocConsumer<UpdateEventDetailCubit, UpdateEventDetailState>(
           builder: (context, state) {
             if (state is UpdateEventDetailLoadingState) {
@@ -180,8 +168,12 @@ class _EditEventFormState extends State<EditEventForm> {
       location.location = event.location;
     }
 
-    void submit(BuildContext context, EventDetailResponseModel data,
-        File? image) async {
+    void submit(
+      BuildContext context,
+      EventDetailResponseModel data,
+      File? image,
+      ImageInputAction action,
+    ) async {
       final cubit = context.read<UpdateEventDetailCubit>();
 
       List<dynamic> jsonResult = jsonDecode(await _brisbaneLocationJson);
@@ -189,15 +181,15 @@ class _EditEventFormState extends State<EditEventForm> {
           brisbaneLocations: BrisbaneLocationUtil.createModel(jsonResult));
 
       cubit.editEvent(
-        data,
-        location.googleMapSuburbId != null &&
-                location.initialgoogleMapSuburb != null
-            ? location.googleMapSuburbId!
-            : locationListModel.getIdFromSuburb(
-                location.initialgoogleMapSuburb!,
-                location.initialgoogleMapSuburb!),
-        image,
-      );
+          data,
+          location.googleMapSuburbId != null &&
+                  location.initialgoogleMapSuburb != null
+              ? location.googleMapSuburbId!
+              : locationListModel.getIdFromSuburb(
+                  location.initialgoogleMapSuburb!,
+                  location.initialgoogleMapSuburb!),
+          image,
+          action);
     }
 
     return CustomForm(
@@ -238,7 +230,7 @@ class _EditEventFormState extends State<EditEventForm> {
             event: updatedEvent,
             isEventCreator: true,
           );
-          submit(context, data, image.image);
+          submit(context, data, image.image, image.imageInputAction);
         }
       },
       topPadding: 0.0,

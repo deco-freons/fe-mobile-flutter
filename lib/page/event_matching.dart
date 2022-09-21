@@ -47,7 +47,7 @@ class _EventMatchingState extends State<EventMatching> {
         resizeToAvoidBottomInset: true,
         appBar: PageAppBar(
           title: "Featured",
-          hasBackButton: true,
+          hasLeadingWidget: true,
           widget: Builder(builder: (context) {
             return Padding(
               padding: const EdgeInsets.symmetric(

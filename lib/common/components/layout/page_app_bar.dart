@@ -3,12 +3,19 @@ import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button
 import 'package:flutter_boilerplate/common/config/theme.dart';
 
 class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final bool hasBackButton;
+  final bool hasLeadingWidget;
+  final Widget? leadingWidget;
   final String title;
   final Widget? widget;
-  const PageAppBar(
-      {Key? key, this.hasBackButton = false, required this.title, this.widget})
-      : super(key: key);
+  final double? leadingWidth;
+  const PageAppBar({
+    Key? key,
+    this.hasLeadingWidget = false,
+    required this.title,
+    this.widget,
+    this.leadingWidget,
+    this.leadingWidth,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +25,19 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: appBarHeight,
       backgroundColor: neutral.shade100,
       titleSpacing: 0,
-      leading: hasBackButton
-          ? Padding(
-              padding: const EdgeInsets.only(left: CustomPadding.body),
-              child: CircleIconButton(
-                icon:
-                    Icon(Icons.arrow_back, color: neutral.shade900, size: 35.0),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            )
+      leadingWidth: leadingWidth,
+      leading: hasLeadingWidget
+          ? leadingWidget ??
+              Padding(
+                padding: const EdgeInsets.only(left: CustomPadding.body),
+                child: CircleIconButton(
+                  icon: Icon(Icons.arrow_back,
+                      color: neutral.shade900, size: 35.0),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
           : null,
       centerTitle: true,
       title: Text(

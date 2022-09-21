@@ -18,6 +18,13 @@ class EditUserSuccessState extends EditUserState {
   const EditUserSuccessState({required this.user});
 }
 
+class EditUserImageErrorState extends EditUserState {
+  final String errorMessage;
+  final UserModel user;
+  const EditUserImageErrorState(
+      {required this.errorMessage, required this.user});
+}
+
 class EditUserErrorState extends EditUserState {
   final String errorMessage;
   const EditUserErrorState({required this.errorMessage});

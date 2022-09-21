@@ -42,7 +42,7 @@ class FriendProfile extends StatelessWidget {
               title: state is ProfileSuccessState
                   ? '${state.profile.firstName} ${state.profile.lastName}'
                   : "",
-              hasBackButton: true,
+              hasLeadingWidget: true,
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.only(bottom: CustomPadding.md),

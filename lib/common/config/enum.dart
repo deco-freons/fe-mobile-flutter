@@ -278,3 +278,5 @@ enum CardStatus {
   join,
   skip,
 }
+
+enum ImageInputAction { DO_NOTHING, UPLOAD, REMOVE }

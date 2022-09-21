@@ -32,8 +32,7 @@ EventDetailModel _$EventDetailModelFromJson(Map<String, dynamic> json) =>
           EventLocationModel.fromJson(json['location'] as Map<String, dynamic>),
       eventImage: json['eventImage'] == null
           ? null
-          : EventImageModel.fromJson(
-              json['eventImage'] as Map<String, dynamic>),
+          : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventDetailModelToJson(EventDetailModel instance) =>
