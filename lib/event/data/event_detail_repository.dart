@@ -112,7 +112,6 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
     ImageModel? updatedImage;
     if (action == ImageInputAction.UPLOAD && image != null) {
       updatedImage = await uploadImage(image, model.event.eventID);
-
       model = model.copyWith(
           event: model.event
               .copyWith(eventImage: updatedImage ?? model.event.eventImage));
@@ -122,8 +121,8 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
       // Remove image here
     }
 
-    _controller.add(updatedModel);
-    return updatedImage != null;
+    _controller.add(model);
+    return action == ImageInputAction.DO_NOTHING || updatedImage != null;
   }
 
   @override

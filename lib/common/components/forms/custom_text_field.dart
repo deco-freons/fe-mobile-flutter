@@ -131,7 +131,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                             : const SizedBox.shrink()
                         : const SizedBox.shrink(),
                     Padding(
-                      padding: const EdgeInsets.only(top: CustomPadding.base),
+                      padding: widget.input.label.isNotEmpty
+                          ? const EdgeInsets.only(top: CustomPadding.base)
+                          : EdgeInsets.zero,
                       child: widget.input.type == TextFieldType.date
                           ? CustomDatePicker(
                               input: widget.input,
