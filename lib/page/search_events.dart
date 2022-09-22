@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/common/utils/debounce.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
+import 'package:flutter_boilerplate/event/components/no_events_Card.dart';
 import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
@@ -165,59 +166,70 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               bool isSuccessState = state is SearchEventsSuccessState;
               bool isFetchMoreErrorState =
                   state is SearchEventsFetchMoreErrorState;
-              return Expanded(
+              bool isEventEmpty = false;
+              isSuccessState
+                  ? (state.events.isEmpty ? isEventEmpty = true : null)
+                  : null;
+              return Flexible(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: CustomPadding.body,
                   ),
                   child: SizedBox(
                     width: double.infinity,
-                    child: isSuccessState || isFetchMoreErrorState
-                        ? RefreshIndicator(
-                            onRefresh: (() async {
-                              context
-                                  .read<SearchEventsCubit>()
-                                  .searchEvents(filter);
-                            }),
-                            child: ListView.builder(
-                              padding: const EdgeInsets.only(
-                                  top: CustomPadding.base),
-                              itemCount: isSuccessState
-                                  ? state.events.length
-                                  : isFetchMoreErrorState
+                    child: isEventEmpty
+                        ? const FittedBox(
+                            child: Padding(
+                            padding: EdgeInsets.only(top: CustomPadding.base),
+                            child: NoEventsCard(),
+                          ))
+                        : isSuccessState || isFetchMoreErrorState
+                            ? RefreshIndicator(
+                                onRefresh: (() async {
+                                  context
+                                      .read<SearchEventsCubit>()
+                                      .searchEvents(filter);
+                                }),
+                                child: ListView.builder(
+                                  padding: const EdgeInsets.only(
+                                      top: CustomPadding.base),
+                                  itemCount: isSuccessState
                                       ? state.events.length
-                                      : 0,
-                              shrinkWrap: true,
-                              controller: _scrollController,
-                              itemBuilder: ((context, index) {
-                                return buildEvent(
-                                    context,
-                                    isSuccessState
-                                        ? state.events[index]
-                                        : isFetchMoreErrorState
+                                      : isFetchMoreErrorState
+                                          ? state.events.length
+                                          : 0,
+                                  shrinkWrap: true,
+                                  controller: _scrollController,
+                                  itemBuilder: ((context, index) {
+                                    return buildEvent(
+                                        context,
+                                        isSuccessState
                                             ? state.events[index]
-                                            : null);
-                              }),
-                            ),
-                          )
-                        : ListView(
-                            shrinkWrap: true,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: CustomPadding.xl),
-                                child:
-                                    EventCardLarge.loading(onTapHandler: () {}),
+                                            : isFetchMoreErrorState
+                                                ? state.events[index]
+                                                : null);
+                                  }),
+                                ),
+                              )
+                            : ListView(
+                                shrinkWrap: true,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: CustomPadding.xl,
+                                        top: CustomPadding.base),
+                                    child: EventCardLarge.loading(
+                                        onTapHandler: () {}),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        bottom: CustomPadding.xl),
+                                    child: EventCardLarge.loading(
+                                        onTapHandler: () {}),
+                                  ),
+                                  EventCardLarge.loading(onTapHandler: () {})
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    bottom: CustomPadding.xl),
-                                child:
-                                    EventCardLarge.loading(onTapHandler: () {}),
-                              ),
-                              EventCardLarge.loading(onTapHandler: () {})
-                            ],
-                          ),
                   ),
                 ),
               );
