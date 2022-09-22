@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
+import 'package:flutter_boilerplate/common/components/layout/page_header.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event_cubit.dart';
@@ -39,38 +40,7 @@ class _CreateEventState extends State<CreateEvent> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Padding(
-            padding: bodyPadding,
-            child: SizedBox(
-              height: appBarHeight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 40.0),
-                    child: TextButton(
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.error),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  const Text(
-                    'Create Event',
-                    style: TextStyle(
-                        fontSize: CustomFontSize.title,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          const PageHeader(title: "Create Event"),
           BlocConsumer<CreateEventCubit, CreateEventState>(
             builder: (context, state) {
               if (state is CreateEventLoadingState) {

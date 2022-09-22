@@ -1,9 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
-import 'package:flutter_boilerplate/event/components/date_card.dart';
+import 'package:flutter_boilerplate/event/components/event_card_large.dart';
 
 class EventMatchingCardHome extends StatelessWidget {
   final String title;
@@ -48,26 +46,8 @@ class EventMatchingCardHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(alignment: AlignmentDirectional.topCenter, children: [
-      Card(
-        elevation: 3.0,
-        color: neutral.shade400,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(CustomRadius.xxl))),
-        child: const SizedBox(
-          width: 305.0,
-          height: 346.0,
-        ),
-      ),
-      Card(
-        elevation: 3.0,
-        color: neutral.shade400,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(CustomRadius.xxl))),
-        child: const SizedBox(
-          width: 320.0,
-          height: 333.0,
-        ),
-      ),
+      buildBackgroundCard(305, 346),
+      buildBackgroundCard(320, 333),
       isEventEmpty
           ? Card(
               elevation: 3.0,
@@ -103,111 +83,31 @@ class EventMatchingCardHome extends StatelessWidget {
           : loading
               ? BuildLoading.buildRectangularLoading(
                   width: 330, height: 320, borderRadius: CustomRadius.xxl)
-              : Card(
-                  elevation: 3.0,
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  shape: const RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.all(Radius.circular(CustomRadius.xxl))),
-                  child: InkWell(
-                    onTap: onTapHandler,
-                    child: Container(
-                      width: 330.0,
-                      height: 320.0,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(image), fit: BoxFit.cover)),
-                      child: Padding(
-                        padding:
-                            const EdgeInsets.only(bottom: CustomPadding.base),
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ClipRRect(
-                            child: BackdropFilter(
-                                filter:
-                                    ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                                child: Container(
-                                  width: 300.0,
-                                  height: 96.0,
-                                  decoration: BoxDecoration(
-                                      color: neutral.shade400.withOpacity(0.6),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(CustomRadius.xxl))),
-                                  child: Padding(
-                                    padding:
-                                        const EdgeInsets.all(CustomPadding.xs),
-                                    child: Column(children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: CustomPadding.base),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                FittedBox(
-                                                  child: Text(
-                                                    title,
-                                                    style: const TextStyle(
-                                                      fontSize:
-                                                          CustomFontSize.sm,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  'By $author',
-                                                  style: TextStyle(
-                                                    fontSize: 10.0,
-                                                    color: neutral.shade700,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          DateCard(month: month, date: date)
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.location_on_outlined,
-                                              color: primary,
-                                              size: 40,
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text('$distance km'),
-                                                  Expanded(
-                                                    child: Text(
-                                                      location,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ]),
-                                  ),
-                                )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              : EventCardLarge(
+                  title: title,
+                  author: author,
+                  distance: distance,
+                  location: location,
+                  month: month,
+                  date: date,
+                  image: image,
+                  onTapHandler: onTapHandler,
+                  width: 330,
+                  height: 320,
+                )
     ]);
+  }
+
+  Widget buildBackgroundCard(double width, double height) {
+    return Card(
+      elevation: 3.0,
+      color: neutral.shade400,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(CustomRadius.xxl))),
+      child: SizedBox(
+        width: width,
+        height: height,
+      ),
+    );
   }
 }

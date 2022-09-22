@@ -78,7 +78,7 @@ class _EventMatchingState extends State<EventMatching> {
             create: (context) =>
                 CardProvider(context.read<EventMatchingJoinCubit>()),
             child: Padding(
-              padding: const EdgeInsets.only(top: CustomPadding.sm),
+              padding: const EdgeInsets.only(top: CustomPadding.xxl),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 Container(
                   constraints: BoxConstraints(

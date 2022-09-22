@@ -36,7 +36,7 @@ class _SearchEventsState extends State<SearchEvents>
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: const PageAppBar(title: "Search Events"),
+        appBar: const PageAppBar(title: "Search Events", hasDivider: false),
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: SafeArea(
@@ -139,11 +139,14 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 },
               ),
             ),
-            const SizedBox(
-              height: 25,
-            ),
-            const SizedBox(
-              height: 28,
+            Container(
+              height: CustomPadding.base,
+              decoration: BoxDecoration(
+                color: neutral.shade100,
+                border: Border(
+                  bottom: BorderSide(width: 1.5, color: neutral.shade400),
+                ),
+              ),
             ),
             BlocConsumer<SearchEventsCubit, SearchEventsState>(
                 listener: (context, state) {
@@ -165,7 +168,8 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               return Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: CustomPadding.body),
+                    horizontal: CustomPadding.body,
+                  ),
                   child: SizedBox(
                     width: double.infinity,
                     child: isSuccessState || isFetchMoreErrorState
@@ -176,6 +180,8 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                   .searchEvents(filter);
                             }),
                             child: ListView.builder(
+                              padding: const EdgeInsets.only(
+                                  top: CustomPadding.base),
                               itemCount: isSuccessState
                                   ? state.events.length
                                   : isFetchMoreErrorState
@@ -228,7 +234,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     }
     List<String> splittedDate = DateParser.parseEventDate(event.date);
     return Padding(
-        padding: const EdgeInsets.only(bottom: 15.0),
+        padding: const EdgeInsets.only(bottom: CustomPadding.lg),
         child: EventCardLarge(
           title: event.eventName,
           author: event.eventCreator.username,
