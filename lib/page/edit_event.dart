@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/components/layout/page_header.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_list_model.dart';
@@ -63,6 +64,7 @@ class _EditEventState extends State<EditEvent> {
   Widget buildEditEvent() {
     return ListView(
       children: [
+        const PageHeader(title: "Edit Event"),
         BlocConsumer<UpdateEventDetailCubit, UpdateEventDetailState>(
           builder: (context, state) {
             if (state is UpdateEventDetailLoadingState) {

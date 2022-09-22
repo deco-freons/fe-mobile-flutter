@@ -10,18 +10,20 @@ class HomeContent extends StatefulWidget {
   final double titleLeftSpacing;
   final double titleRightSpacing;
   final Widget secondWidget;
+  final bool isCentered;
 
-  const HomeContent({
-    Key? key,
-    required this.title,
-    required this.contentWidgets,
-    this.isPair = false,
-    this.contentSpacing = CustomPadding.md,
-    this.titleBottomSpacing = CustomPadding.md,
-    this.titleLeftSpacing = CustomPadding.body,
-    this.titleRightSpacing = CustomPadding.body,
-    this.secondWidget = const Text(''),
-  }) : super(key: key);
+  const HomeContent(
+      {Key? key,
+      required this.title,
+      required this.contentWidgets,
+      this.isPair = false,
+      this.contentSpacing = CustomPadding.md,
+      this.titleBottomSpacing = CustomPadding.md,
+      this.titleLeftSpacing = CustomPadding.body,
+      this.titleRightSpacing = CustomPadding.body,
+      this.secondWidget = const Text(''),
+      this.isCentered = false})
+      : super(key: key);
 
   @override
   State<HomeContent> createState() => _HomeContentState();
@@ -57,24 +59,29 @@ class _HomeContentState extends State<HomeContent> {
                         fontSize: CustomFontSize.lg,
                         fontWeight: FontWeight.bold),
                   )),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Wrap(
-            spacing: widget.contentSpacing,
-            children: widget.contentWidgets
-                .asMap()
-                .map((i, element) => MapEntry(
-                    i,
-                    Padding(
-                      padding: i == 0
-                          ? const EdgeInsets.only(left: CustomPadding.body)
-                          : i == widget.contentWidgets.length - 1
-                              ? const EdgeInsets.only(right: CustomPadding.body)
-                              : EdgeInsets.zero,
-                      child: element,
-                    )))
-                .values
-                .toList(),
+        Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Wrap(
+              spacing: widget.contentSpacing,
+              children: widget.contentWidgets
+                  .asMap()
+                  .map((i, element) => MapEntry(
+                      i,
+                      Padding(
+                        padding: i == 0
+                            ? EdgeInsets.only(
+                                left:
+                                    widget.isCentered ? 0 : CustomPadding.body)
+                            : i == widget.contentWidgets.length - 1
+                                ? const EdgeInsets.only(
+                                    right: CustomPadding.body)
+                                : EdgeInsets.zero,
+                        child: element,
+                      )))
+                  .values
+                  .toList(),
+            ),
           ),
         ),
       ],

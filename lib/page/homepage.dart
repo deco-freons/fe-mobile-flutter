@@ -125,6 +125,7 @@ class _BuildHomeState extends State<BuildHome> {
         HomeContent(
             title: 'Featured',
             isPair: true,
+            isCentered: true,
             secondWidget: DecoratedBox(
               decoration: BoxDecoration(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -243,7 +244,7 @@ class _BuildHomeState extends State<BuildHome> {
           }
           bool isSuccessState = state is PopularEventsSuccessState;
           return Padding(
-            padding: const EdgeInsets.only(bottom: CustomPadding.md),
+            padding: const EdgeInsets.only(bottom: CustomPadding.xxxl),
             child: EventList(
               title: "Popular events",
               isLoading: !isSuccessState,

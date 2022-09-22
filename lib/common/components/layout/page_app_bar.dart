@@ -8,14 +8,17 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Widget? widget;
   final double? leadingWidth;
-  const PageAppBar({
-    Key? key,
-    this.hasLeadingWidget = false,
-    required this.title,
-    this.widget,
-    this.leadingWidget,
-    this.leadingWidth,
-  }) : super(key: key);
+
+  final bool hasDivider;
+  const PageAppBar(
+      {Key? key,
+      this.hasLeadingWidget = false,
+      required this.title,
+      this.widget,
+      this.leadingWidget,
+      this.leadingWidth,
+      this.hasDivider = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,15 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
                   },
                 ),
               )
+          : null,
+      bottom: hasDivider
+          ? PreferredSize(
+              preferredSize: const Size.fromHeight(1.5),
+              child: Container(
+                height: 1,
+                color: neutral.shade400,
+              ),
+            )
           : null,
       centerTitle: true,
       title: Text(

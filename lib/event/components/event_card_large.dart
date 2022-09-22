@@ -5,7 +5,7 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/date_card.dart';
 
-class EventCardLarge extends StatefulWidget {
+class EventCardLarge extends StatelessWidget {
   final String title;
   final String? author;
   final double distance;
@@ -13,57 +13,60 @@ class EventCardLarge extends StatefulWidget {
   final String month;
   final String date;
   final String image;
+  final double width;
+  final double height;
   final VoidCallback onTapHandler;
   final bool loading;
 
-  const EventCardLarge(
-      {Key? key,
-      required this.title,
-      required this.author,
-      required this.distance,
-      required this.location,
-      required this.month,
-      required this.date,
-      required this.image,
-      required this.onTapHandler,
-      this.loading = false})
-      : super(key: key);
+  const EventCardLarge({
+    Key? key,
+    required this.title,
+    required this.author,
+    required this.distance,
+    required this.location,
+    required this.month,
+    required this.date,
+    required this.image,
+    required this.onTapHandler,
+    this.loading = false,
+    this.width = 340.0,
+    this.height = 256.0,
+  }) : super(key: key);
 
-  const EventCardLarge.loading(
-      {Key? key,
-      this.title = '',
-      this.author = '',
-      this.distance = 0,
-      this.location = '',
-      this.month = '',
-      this.date = '',
-      this.image = '',
-      required this.onTapHandler,
-      this.loading = true})
-      : super(key: key);
+  const EventCardLarge.loading({
+    Key? key,
+    this.title = '',
+    this.author = '',
+    this.distance = 0,
+    this.location = '',
+    this.month = '',
+    this.date = '',
+    this.image = '',
+    required this.onTapHandler,
+    this.loading = true,
+    this.width = 340.0,
+    this.height = 256.0,
+  }) : super(key: key);
 
-  @override
-  State<EventCardLarge> createState() => _EventCardLargeState();
-}
-
-class _EventCardLargeState extends State<EventCardLarge> {
   @override
   Widget build(BuildContext context) {
-    return !widget.loading
+    return !loading
         ? Card(
-            elevation: 5.0,
+            margin: EdgeInsets.zero,
+            elevation: 8.0,
+            shadowColor: neutral.shade700,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.all(Radius.circular(CustomRadius.xxl))),
             child: InkWell(
-              onTap: widget.onTapHandler,
+              onTap: onTapHandler,
               child: Container(
-                width: 342.0,
-                height: 257.0,
+                width: width,
+                height: height,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(widget.image), fit: BoxFit.cover)),
+                        image: AssetImage(image), fit: BoxFit.cover)),
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: CustomPadding.md),
                   child: Align(
@@ -94,7 +97,7 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                         children: [
                                           FittedBox(
                                             child: Text(
-                                              widget.title,
+                                              title,
                                               style: const TextStyle(
                                                 fontSize: CustomFontSize.sm,
                                                 fontWeight: FontWeight.bold,
@@ -102,7 +105,7 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                             ),
                                           ),
                                           Text(
-                                            'By ${widget.author}',
+                                            'By $author',
                                             style: TextStyle(
                                               fontSize: 10.0,
                                               color: neutral.shade700,
@@ -111,8 +114,7 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                         ],
                                       ),
                                     ),
-                                    DateCard(
-                                        month: widget.month, date: widget.date)
+                                    DateCard(month: month, date: date)
                                   ],
                                 ),
                                 Expanded(
@@ -128,10 +130,10 @@ class _EventCardLargeState extends State<EventCardLarge> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text('${widget.distance} km'),
+                                            Text('$distance km'),
                                             Expanded(
                                               child: Text(
-                                                widget.location,
+                                                location,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
