@@ -79,14 +79,16 @@ class _CustomFormState extends State<CustomForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              widget.title,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontSize: CustomFontSize.xxl,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            widget.title != ""
+                ? Text(
+                    widget.title,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: CustomFontSize.xxl,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                : const SizedBox.shrink(),
             widget.errorMessage != ""
                 ? Padding(
                     padding: const EdgeInsets.only(top: CustomPadding.xs),

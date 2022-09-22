@@ -17,7 +17,7 @@ class EventParticipants extends StatelessWidget {
       backgroundColor: neutral.shade100,
       appBar: const PageAppBar(
         title: "Participants",
-        hasBackButton: true,
+        hasLeadingWidget: true,
       ),
       body: SafeArea(
         child: ListView.separated(

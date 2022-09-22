@@ -36,6 +36,7 @@ class AuthRepositoryImpl extends AuthRepository {
     try {
       final data = await _authDataProvider.login(model);
       Map<String, dynamic> userMap = data["user"];
+
       String accessToken = data["accessToken"];
       String refreshToken = data["refreshToken"];
       UserModel user = UserModel.fromJson(data["user"]);
@@ -77,8 +78,7 @@ class AuthRepositoryImpl extends AuthRepository {
       }
       Map<String, dynamic> userMap = data["user"];
       UserModel user = UserModel.fromJson(userMap);
-
-      await secureStorage.set(key: "user", value: json.encode(userMap));
+      await secureStorage.set(key: "user", value: json.encode(user.toJson()));
       _controller.add(AuthModel(user, AuthStatus.authenticated));
     } catch (e) {
       //  Handle refresh token

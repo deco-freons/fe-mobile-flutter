@@ -31,29 +31,31 @@ class CustomFormInput {
   String? initialgoogleMapSuburb;
   File? image;
   String? initialImage;
-  CustomFormInput({
-    required this.label,
-    required this.type,
-    DateTime? firstDate,
-    DateTime? lastDate,
-    this.pattern = "",
-    this.errorMessage = "",
-    this.confirmField = false,
-    String? initialValue,
-    String? initialSecondValue,
-    this.lat = 0,
-    this.lng = 0,
-    this.disable = false,
-    List<PreferenceModel>? preferences,
-    this.checkbox = false,
-    this.location = const EventLocationModel(suburb: "", city: ""),
-    this.initialSwitchValue,
-    this.maxLength,
-    this.googleMapSuburbId,
-    this.initialgoogleMapSuburb,
-    this.image,
-    this.initialImage,
-  })  : firstDate = firstDate ?? DateTime(1900),
+  ImageInputAction imageInputAction;
+  CustomFormInput(
+      {required this.label,
+      required this.type,
+      DateTime? firstDate,
+      DateTime? lastDate,
+      this.pattern = "",
+      this.errorMessage = "",
+      this.confirmField = false,
+      String? initialValue,
+      String? initialSecondValue,
+      this.lat = 0,
+      this.lng = 0,
+      this.disable = false,
+      List<PreferenceModel>? preferences,
+      this.checkbox = false,
+      this.location = const EventLocationModel(suburb: "", city: ""),
+      this.initialSwitchValue,
+      this.maxLength,
+      this.googleMapSuburbId,
+      this.initialgoogleMapSuburb,
+      this.image,
+      this.initialImage,
+      this.imageInputAction = ImageInputAction.DO_NOTHING})
+      : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101),
         initialValue = initialValue ?? "",
         initialSecondValue = initialSecondValue ?? "",
@@ -89,5 +91,15 @@ class CustomFormInput {
 
   void setImage(File? newImage) {
     image = newImage;
+  }
+
+  void setImageInputAction(bool isReset) {
+    imageInputAction = isReset
+        ? initialImage != null
+            ? ImageInputAction.REMOVE
+            : ImageInputAction.DO_NOTHING
+        : image != null
+            ? ImageInputAction.UPLOAD
+            : ImageInputAction.DO_NOTHING;
   }
 }

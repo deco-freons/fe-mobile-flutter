@@ -15,14 +15,22 @@ class ImageInput extends StatefulWidget {
   final double width;
   final double radius;
   final Icon icon;
-  const ImageInput(
-      {Key? key,
-      required this.customFormInput,
-      this.height = 200,
-      this.width = double.infinity,
-      this.radius = CustomRadius.lg,
-      required this.icon})
-      : super(key: key);
+  final Color? color;
+  final Color? splashColor;
+  final Color? highlightColor;
+  final Widget? overlayWidget;
+  const ImageInput({
+    Key? key,
+    required this.customFormInput,
+    this.height = 200,
+    this.width = double.infinity,
+    this.radius = CustomRadius.lg,
+    this.color,
+    this.splashColor,
+    this.highlightColor,
+    this.overlayWidget,
+    required this.icon,
+  }) : super(key: key);
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -36,13 +44,15 @@ class _ImageInputState extends State<ImageInput> {
   Widget build(BuildContext context) {
     return Center(
       child: Material(
-        color: primary.shade300,
+        color: widget.color ?? primary.shade300,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(widget.radius)),
         elevation: 0,
         child: InkWell(
-          splashColor: primary.shade400.withOpacity(0.5),
-          highlightColor: primary.shade400.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(widget.radius),
+          splashColor: widget.splashColor ?? primary.shade400.withOpacity(0.5),
+          highlightColor:
+              widget.highlightColor ?? primary.shade400.withOpacity(0.2),
           onTap: () {
             pickImage(context);
           },
@@ -77,14 +87,20 @@ class _ImageInputState extends State<ImageInput> {
                           setState(() {
                             isReset = true;
                             widget.customFormInput.setImage(null);
+                            widget.customFormInput.setImageInputAction(isReset);
                           });
                         },
-                      ))
+                      )),
                 ])
-              : SizedBox(
-                  width: widget.width,
-                  height: widget.height,
-                  child: widget.icon),
+              : Stack(
+                  children: [
+                    SizedBox(
+                        width: widget.width,
+                        height: widget.height,
+                        child: widget.icon),
+                    widget.overlayWidget ?? const SizedBox.shrink()
+                  ],
+                ),
         ),
       ),
     );
@@ -93,10 +109,9 @@ class _ImageInputState extends State<ImageInput> {
   void pickImage(BuildContext context) async {
     ScaffoldMessengerState scaffoldState = ScaffoldMessenger.of(context);
     final XFile? selectedImage =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 60);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
     if (selectedImage != null) {
       String errorMessage = "";
-
       if (await getFileSize(selectedImage) > 3.0) {
         errorMessage = "Image must not exceed 3MB";
       } else if (!FileParser.isValidImage(selectedImage.path)) {
@@ -106,6 +121,7 @@ class _ImageInputState extends State<ImageInput> {
         setState(() {
           isReset = false;
           widget.customFormInput.setImage(File(selectedImage.path));
+          widget.customFormInput.setImageInputAction(isReset);
         });
       } else {
         scaffoldState.showSnackBar(SnackBar(content: Text(errorMessage)));

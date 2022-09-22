@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
@@ -44,7 +46,7 @@ class _EditProfileState extends State<EditProfile> {
         resizeToAvoidBottomInset: true,
         appBar: const PageAppBar(
           title: "Edit Profile",
-          hasBackButton: true,
+          hasLeadingWidget: true,
         ),
         body: Container(
           decoration:
@@ -73,6 +75,10 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget buildEditProfile(BuildContext context, UserModel user) {
+    final CustomFormInput profileImage = CustomFormInput(
+        label: "",
+        type: TextFieldType.profileImage,
+        initialImage: user.userImage?.imageUrl);
     CustomFormInput firstName = CustomFormInput(
       label: "First Name",
       type: TextFieldType.string,
@@ -119,24 +125,24 @@ class _EditProfileState extends State<EditProfile> {
       initialSwitchValue: user.isShareLocation,
     );
     return ListView(
-      padding: screenBodyPadding,
+      padding: const EdgeInsets.symmetric(horizontal: CustomPadding.body),
       shrinkWrap: true,
       children: [
-        Center(
-          child: CircleAvatar(
-            radius: 52.5,
-            child:
-                Image.asset('lib/common/assets/images/CircleAvatarDefault.png'),
-          ),
-        ),
         BlocListener<EditUserCubit, EditUserState>(
           listener: (context, state) {
             if (state is EditUserSuccessState) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Profile successfuly updated!")));
+              Navigator.pop(context, state.user);
+            } else if (state is EditUserImageErrorState) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text(state.errorMessage)));
               Navigator.pop(context, state.user);
             }
           },
           child: CustomForm(
             inputs: [
+              profileImage,
               firstName,
               lastName,
               username,
@@ -162,8 +168,13 @@ class _EditProfileState extends State<EditProfile> {
                       ? isShareLocation.switchController!.value
                       : false,
                   preferences: newPreferences);
-              submit(context, data, interest.preferences,
-                  UserLocationModel(suburb: location.location.suburb));
+              submit(
+                  context,
+                  data,
+                  interest.preferences,
+                  UserLocationModel(suburb: location.location.suburb),
+                  profileImage.image,
+                  profileImage.imageInputAction);
             },
             textButtonHandler: () {},
             sidePadding: 0.0,
@@ -181,9 +192,14 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  void submit(BuildContext context, EditUserModel data,
-      List<PreferenceModel> preferences, UserLocationModel location) async {
+  void submit(
+      BuildContext context,
+      EditUserModel data,
+      List<PreferenceModel> preferences,
+      UserLocationModel location,
+      File? image,
+      ImageInputAction action) async {
     final cubit = context.read<EditUserCubit>();
-    await cubit.editUser(data, preferences, location);
+    await cubit.editUser(data, preferences, location, image, action);
   }
 }

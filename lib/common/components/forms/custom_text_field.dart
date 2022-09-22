@@ -125,11 +125,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    widget.input.type != TextFieldType.eventTime
-                        ? buildLabelRow()
+                    widget.input.label.isNotEmpty
+                        ? widget.input.type != TextFieldType.eventTime
+                            ? buildLabelRow()
+                            : const SizedBox.shrink()
                         : const SizedBox.shrink(),
                     Padding(
-                      padding: const EdgeInsets.only(top: CustomPadding.base),
+                      padding: widget.input.label.isNotEmpty
+                          ? const EdgeInsets.only(top: CustomPadding.base)
+                          : EdgeInsets.zero,
                       child: widget.input.type == TextFieldType.date
                           ? CustomDatePicker(
                               input: widget.input,
@@ -348,153 +352,209 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                               ],
                                             )
                                           : widget.input.type ==
-                                                  TextFieldType.interest
-                                              ? Wrap(
-                                                  spacing: CustomPadding.sm,
-                                                  runSpacing: 0.0,
-                                                  children: widget
-                                                          .input
-                                                          .preferences
-                                                          .isNotEmpty
-                                                      ? widget.input.preferences
-                                                          .map(
-                                                            (pref) =>
-                                                                PreferenceButton(
-                                                              stringInput: pref
-                                                                  .preferenceName,
-                                                              useStringInput:
-                                                                  true,
-                                                              cancelIcon: true,
-                                                              onPressedHandler:
-                                                                  () {
-                                                                widget.input
-                                                                    .removePreferences(
-                                                                        pref);
-                                                                setState(() {});
-                                                              },
-                                                            ),
-                                                          )
-                                                          .toList()
-                                                      : [
-                                                          Text(
-                                                            "No picked categories",
-                                                            style:
-                                                                customFontStyle(
-                                                                    CustomFontSize
-                                                                        .base),
-                                                          )
-                                                        ],
+                                                  TextFieldType.profileImage
+                                              ? Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    ImageInput(
+                                                      radius: 100,
+                                                      width: 125,
+                                                      height: 125,
+                                                      customFormInput:
+                                                          widget.input,
+                                                      icon: Icon(
+                                                        Icons.person,
+                                                        color: neutral.shade100,
+                                                        size: 100,
+                                                      ),
+                                                      overlayWidget: Positioned(
+                                                        right: CustomPadding.sm,
+                                                        bottom:
+                                                            CustomPadding.md,
+                                                        child: Icon(
+                                                          Icons
+                                                              .camera_alt_rounded,
+                                                          size: 32,
+                                                          color:
+                                                              neutral.shade200,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: CustomPadding.lg,
+                                                    ),
+                                                    Text(
+                                                      "Image cannot exceed 3MB (jpg, jpeg, png)",
+                                                      style: TextStyle(
+                                                        fontSize:
+                                                            CustomFontSize.xs,
+                                                        color: neutral.shade500,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    )
+                                                  ],
                                                 )
-                                              : TextFormField(
-                                                  controller:
-                                                      widget.input.controller,
-                                                  obscureText: widget
-                                                              .input.type ==
-                                                          TextFieldType.password
-                                                      ? _obscured
-                                                      : false,
-                                                  readOnly:
-                                                      widget.input.disable,
-                                                  keyboardType: widget
-                                                              .input.type ==
-                                                          TextFieldType.textArea
-                                                      ? TextInputType.multiline
-                                                      : TextInputType.text,
-                                                  maxLines: widget.input.type ==
-                                                          TextFieldType.textArea
-                                                      ? 4
-                                                      : 1,
-                                                  maxLength:
-                                                      widget.input.maxLength,
-                                                  style: widget.inputStyle,
-                                                  decoration: InputDecoration(
-                                                      hintText: widget.input.type ==
-                                                              TextFieldType
-                                                                  .textArea
-                                                          ? 'Please enter ${widget.input.label} here...'
-                                                          : "",
-                                                      errorBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    10.0)),
-                                                        borderSide: BorderSide(
-                                                            width: 1.0,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .error),
-                                                      ),
-                                                      border:
-                                                          const OutlineInputBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10.0)),
-                                                        borderSide:
-                                                            BorderSide.none,
-                                                      ),
-                                                      errorText: _error
-                                                          ? widget.input
-                                                              .errorMessage
-                                                          : null,
-                                                      focusedErrorBorder:
-                                                          OutlineInputBorder(
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .all(
-                                                                Radius.circular(
-                                                                    10.0)),
-                                                        borderSide: BorderSide(
-                                                            width: 1.0,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .colorScheme
-                                                                .error),
-                                                      ),
-                                                      filled: true,
-                                                      fillColor: widget
-                                                              .input.disable
-                                                          ? Theme.of(context)
-                                                              .colorScheme
-                                                              .tertiary
-                                                              .withOpacity(0.41)
-                                                          : primary.shade300,
-                                                      suffixIcon:
+                                              : widget.input.type ==
+                                                      TextFieldType.interest
+                                                  ? Wrap(
+                                                      spacing: CustomPadding.sm,
+                                                      runSpacing: 0.0,
+                                                      children:
+                                                          widget
+                                                                  .input
+                                                                  .preferences
+                                                                  .isNotEmpty
+                                                              ? widget.input
+                                                                  .preferences
+                                                                  .map(
+                                                                    (pref) =>
+                                                                        PreferenceButton(
+                                                                      stringInput:
+                                                                          pref.preferenceName,
+                                                                      useStringInput:
+                                                                          true,
+                                                                      cancelIcon:
+                                                                          true,
+                                                                      onPressedHandler:
+                                                                          () {
+                                                                        widget
+                                                                            .input
+                                                                            .removePreferences(pref);
+                                                                        setState(
+                                                                            () {});
+                                                                      },
+                                                                    ),
+                                                                  )
+                                                                  .toList()
+                                                              : [
+                                                                  Text(
+                                                                    "No picked categories",
+                                                                    style: customFontStyle(
+                                                                        CustomFontSize
+                                                                            .base),
+                                                                  )
+                                                                ],
+                                                    )
+                                                  : TextFormField(
+                                                      controller: widget
+                                                          .input.controller,
+                                                      obscureText:
                                                           widget.input.type ==
                                                                   TextFieldType
                                                                       .password
                                                               ? _obscured
-                                                                  ? IconButton(
-                                                                      icon: const Icon(
-                                                                          Icons
-                                                                              .visibility_off),
-                                                                      onPressed:
-                                                                          () {
-                                                                        toggleVisibility();
-                                                                      },
-                                                                    )
-                                                                  : IconButton(
-                                                                      icon: const Icon(
-                                                                          Icons
-                                                                              .visibility),
-                                                                      onPressed:
-                                                                          () {
-                                                                        toggleVisibility();
-                                                                      },
-                                                                    )
-                                                              : null),
-                                                  onChanged: (value) {
-                                                    widget.input.confirmField
-                                                        ? widget.formKey
-                                                            .currentState!
-                                                            .validate()
-                                                        : null;
-                                                    validateField();
-                                                  },
-                                                ),
+                                                              : false,
+                                                      readOnly:
+                                                          widget.input.disable,
+                                                      keyboardType: widget
+                                                                  .input.type ==
+                                                              TextFieldType
+                                                                  .textArea
+                                                          ? TextInputType
+                                                              .multiline
+                                                          : TextInputType.text,
+                                                      maxLines:
+                                                          widget.input.type ==
+                                                                  TextFieldType
+                                                                      .textArea
+                                                              ? 4
+                                                              : 1,
+                                                      maxLength: widget
+                                                          .input.maxLength,
+                                                      style: widget.inputStyle,
+                                                      decoration:
+                                                          InputDecoration(
+                                                              hintText: widget
+                                                                          .input
+                                                                          .type ==
+                                                                      TextFieldType
+                                                                          .textArea
+                                                                  ? 'Please enter ${widget.input.label} here...'
+                                                                  : "",
+                                                              errorBorder:
+                                                                  OutlineInputBorder(
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
+                                                                            10.0)),
+                                                                borderSide: BorderSide(
+                                                                    width: 1.0,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .error),
+                                                              ),
+                                                              border:
+                                                                  const OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            10.0)),
+                                                                borderSide:
+                                                                    BorderSide
+                                                                        .none,
+                                                              ),
+                                                              errorText: _error
+                                                                  ? widget.input
+                                                                      .errorMessage
+                                                                  : null,
+                                                              focusedErrorBorder:
+                                                                  OutlineInputBorder(
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                            .all(
+                                                                        Radius.circular(
+                                                                            10.0)),
+                                                                borderSide: BorderSide(
+                                                                    width: 1.0,
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .colorScheme
+                                                                        .error),
+                                                              ),
+                                                              filled: true,
+                                                              fillColor: widget
+                                                                      .input
+                                                                      .disable
+                                                                  ? Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .tertiary
+                                                                      .withOpacity(
+                                                                          0.41)
+                                                                  : primary
+                                                                      .shade300,
+                                                              suffixIcon:
+                                                                  widget.input.type ==
+                                                                          TextFieldType
+                                                                              .password
+                                                                      ? _obscured
+                                                                          ? IconButton(
+                                                                              icon: const Icon(Icons.visibility_off),
+                                                                              onPressed: () {
+                                                                                toggleVisibility();
+                                                                              },
+                                                                            )
+                                                                          : IconButton(
+                                                                              icon: const Icon(Icons.visibility),
+                                                                              onPressed: () {
+                                                                                toggleVisibility();
+                                                                              },
+                                                                            )
+                                                                      : null),
+                                                      onChanged: (value) {
+                                                        widget.input
+                                                                .confirmField
+                                                            ? widget.formKey
+                                                                .currentState!
+                                                                .validate()
+                                                            : null;
+                                                        validateField();
+                                                      },
+                                                    ),
                     ),
                     widget.input.confirmField
                         ? Column(

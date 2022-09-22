@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/data/event_detail_repository.dart';
@@ -42,12 +43,12 @@ class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
     }
   }
 
-  Future<void> editEvent(
-      EventDetailResponseModel data, int suburbId, File? image) async {
+  Future<void> editEvent(EventDetailResponseModel data, int suburbId,
+      File? image, ImageInputAction action) async {
     try {
       emit(const UpdateEventDetailLoadingState());
       bool isImageUpdateSuccess =
-          await _eventDetailRepository.editEvent(data, suburbId, image);
+          await _eventDetailRepository.editEvent(data, suburbId, image, action);
       isImageUpdateSuccess
           ? emit(const UpdateEventDetailEditedState())
           : emit(const UpdateEventDetailImageErrorState(
