@@ -18,7 +18,11 @@ enum TextFieldType {
   toggleSwitch,
 }
 
-enum ButtonType { primary, inverse, red }
+enum ButtonType {
+  primary,
+  inverse,
+  red,
+}
 
 enum TextButtonType {
   primary,
@@ -72,7 +76,11 @@ enum LoadingType {
   ERROR,
 }
 
-enum BadgeTier { GOLD, SILVER, BRONZE }
+enum BadgeTier {
+  GOLD,
+  SILVER,
+  BRONZE,
+}
 
 extension BadgeTierExtension on BadgeTier {
   int get id {
@@ -279,4 +287,8 @@ enum CardStatus {
   skip,
 }
 
-enum ImageInputAction { DO_NOTHING, UPLOAD, REMOVE }
+enum ImageInputAction {
+  DO_NOTHING,
+  UPLOAD,
+  REMOVE,
+}

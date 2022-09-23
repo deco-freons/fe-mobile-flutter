@@ -241,7 +241,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                                         onChanged: (value) {
                                           if (value != null) {
                                             widget.input.controller.text =
-                                                value.locationID.toString();
+                                                value.location_id.toString();
                                             widget.input.location =
                                                 EventLocationModel(
                                                     suburb: value.suburb,
