@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -312,11 +313,10 @@ class _EventDetailState extends State<EventDetail> {
 
   Widget _buildImage(EventDetailState state) {
     return state.status == LoadingType.SUCCESS
-        ? Image.asset(
-            "lib/common/assets/images/eventBG.png",
-            fit: BoxFit.cover,
+        ? NetworkImageContainer(
             width: double.infinity,
             height: 300,
+            image: state.model.event.eventImage?.imageUrl,
           )
         : const ShimmerWidget.rectangular(height: 300);
   }

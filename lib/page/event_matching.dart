@@ -227,21 +227,23 @@ class _EventMatchingState extends State<EventMatching> {
         : Padding(
             padding: const EdgeInsets.symmetric(horizontal: CustomPadding.md),
             child: Stack(
-                children: events
-                    .map((event) => SwipeCards(
-                        eventID: event.eventID,
-                        eventName: event.eventName,
-                        participants: event.participants,
-                        date: event.date,
-                        suburb: event.location.suburb,
-                        city: event.location.city,
-                        locationName: event.locationName,
-                        distance: event.distance,
-                        startTime: event.startTime,
-                        endTime: event.endTime,
-                        shortDescription: event.shortDescription,
-                        isFront: events.last == event))
-                    .toList()),
+              children: events
+                  .map((event) => SwipeCards(
+                      eventID: event.eventID,
+                      eventName: event.eventName,
+                      participants: event.participants,
+                      date: event.date,
+                      suburb: event.location.suburb,
+                      city: event.location.city,
+                      locationName: event.locationName,
+                      distance: event.distance,
+                      startTime: event.startTime,
+                      endTime: event.endTime,
+                      shortDescription: event.shortDescription,
+                      image: event.eventImage?.imageUrl,
+                      isFront: events.last == event))
+                  .toList(),
+            ),
           );
   }
 }

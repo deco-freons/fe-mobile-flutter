@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/event_card_large.dart';
@@ -10,7 +11,7 @@ class EventMatchingCardHome extends StatelessWidget {
   final String location;
   final String month;
   final String date;
-  final String image;
+  final String? image;
   final VoidCallback onTapHandler;
   final bool loading;
   final bool isEventEmpty;
@@ -23,7 +24,7 @@ class EventMatchingCardHome extends StatelessWidget {
       required this.location,
       required this.month,
       required this.date,
-      required this.image,
+      this.image,
       required this.onTapHandler,
       this.loading = false,
       this.isEventEmpty = false})
@@ -37,7 +38,7 @@ class EventMatchingCardHome extends StatelessWidget {
       this.location = '',
       this.month = '',
       this.date = '',
-      this.image = '',
+      this.image,
       required this.onTapHandler,
       this.loading = false,
       this.isEventEmpty = false})

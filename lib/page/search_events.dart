@@ -254,7 +254,13 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           location: '${event.locationName}, ${event.location.city}',
           month: splittedDate[0].substring(0, 3),
           date: splittedDate[1].substring(0, 2),
-          image: 'lib/common/assets/images/LargeEventTest.png',
+          image: event.eventImage != null
+              ? event.eventImage!.imageUrl
+                      .substring(0, event.eventImage!.imageUrl.indexOf('s')) +
+                  event.eventImage!.imageUrl.substring(
+                      event.eventImage!.imageUrl.indexOf('s') + 1,
+                      event.eventImage!.imageUrl.length)
+              : null,
           onTapHandler: () {
             Navigator.of(context)
                 .pushNamed(EventDetail.routeName, arguments: event.eventID);
