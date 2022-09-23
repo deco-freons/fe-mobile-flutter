@@ -94,6 +94,7 @@ class EventMatchingCardHome extends StatelessWidget {
                   onTapHandler: onTapHandler,
                   width: 330,
                   height: 320,
+                  elevation: 3.0,
                 )
     ]);
   }

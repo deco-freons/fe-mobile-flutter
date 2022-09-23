@@ -17,6 +17,7 @@ class EventCardLarge extends StatelessWidget {
   final double width;
   final double height;
   final VoidCallback onTapHandler;
+  final double elevation;
   final bool loading;
 
   const EventCardLarge({
@@ -32,6 +33,7 @@ class EventCardLarge extends StatelessWidget {
     this.loading = false,
     this.width = 340.0,
     this.height = 256.0,
+    this.elevation = 8.0,
   }) : super(key: key);
 
   const EventCardLarge.loading({
@@ -47,6 +49,7 @@ class EventCardLarge extends StatelessWidget {
     this.loading = true,
     this.width = 340.0,
     this.height = 256.0,
+    this.elevation = 8.0,
   }) : super(key: key);
 
   @override
@@ -54,7 +57,7 @@ class EventCardLarge extends StatelessWidget {
     return !loading
         ? Card(
             margin: EdgeInsets.zero,
-            elevation: 8.0,
+            elevation: elevation,
             shadowColor: neutral.shade700,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const RoundedRectangleBorder(

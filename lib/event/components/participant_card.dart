@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 
 class ParticipantCard extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String location;
+  final String? userImage;
   final VoidCallback onPressed;
   const ParticipantCard({
     Key? key,
@@ -12,6 +14,7 @@ class ParticipantCard extends StatelessWidget {
     required this.lastName,
     required this.location,
     required this.onPressed,
+    required this.userImage,
   }) : super(key: key);
 
   @override
@@ -35,11 +38,7 @@ class ParticipantCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const CircleAvatar(
-                  radius: 25,
-                  backgroundImage: AssetImage(
-                      'lib/common/assets/images/CircleAvatarDefault.png'),
-                ),
+                NetworkImageAvatar(imageUrl: userImage, radius: 25),
                 const SizedBox(
                   width: 12,
                 ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
@@ -326,11 +327,9 @@ class _EventDetailState extends State<EventDetail> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         state.status == LoadingType.SUCCESS
-            ? const CircleAvatar(
-                radius: 15,
-                backgroundImage: AssetImage(
-                    "lib/common/assets/images/CircleAvatarDefault.png"),
-              )
+            ? NetworkImageAvatar(
+                imageUrl: state.model.event.eventCreator.userImage?.imageUrl,
+                radius: 15)
             : const ShimmerWidget.circular(width: 30, height: 30),
         const SizedBox(
           width: 13,
@@ -376,19 +375,15 @@ class _EventDetailState extends State<EventDetail> {
         const SizedBox(
           width: 15,
         ),
-        ...List.filled(
-          3,
-          Padding(
-            padding: const EdgeInsets.all(1),
-            child: state.status == LoadingType.SUCCESS
-                ? const CircleAvatar(
-                    radius: 10,
-                    backgroundImage: AssetImage(
-                        "lib/common/assets/images/CircleAvatarDefault.png"),
-                  )
-                : const ShimmerWidget.circular(width: 20, height: 20),
-          ),
-        ),
+        ...state.model.event.participantsList.take(3).map(
+              (participant) => Padding(
+                padding: const EdgeInsets.all(1),
+                child: state.status == LoadingType.SUCCESS
+                    ? NetworkImageAvatar(
+                        imageUrl: participant.userImage?.imageUrl, radius: 10)
+                    : const ShimmerWidget.circular(width: 20, height: 20),
+              ),
+            ),
         const Spacer(),
         state.status == LoadingType.SUCCESS
             ? CustomTextButton(

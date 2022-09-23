@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_dropdown_button.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/date_parser.dart';
@@ -19,6 +20,9 @@ import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/page/event_matching.dart';
 import 'package:flutter_boilerplate/page/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
+import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/user_state.dart';
+import 'package:flutter_boilerplate/user/data/user_repository.dart';
 
 class Homepage extends StatefulWidget {
   final HandlePageCallBack handlePageChanged;
@@ -40,6 +44,10 @@ class _HomepageState extends State<Homepage>
     super.build(context);
     return MultiBlocProvider(
       providers: [
+        BlocProvider<UserCubit>(
+          create: (BuildContext context) =>
+              UserCubit(UserRepositoryImpl())..getUser(),
+        ),
         BlocProvider(
           create: (context) => PopularEventsCubit(PopularEventsRepositoryImpl())
             ..getPopularEvents([], radiusValue),
@@ -91,6 +99,8 @@ class _BuildHomeState extends State<BuildHome> {
 
   @override
   Widget build(BuildContext context) {
+    UserCubit userCubit = context.read<UserCubit>();
+
     return ListView(
       children: [
         SizedBox(
@@ -102,13 +112,18 @@ class _BuildHomeState extends State<BuildHome> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, Profile.routeName);
+                  onTap: () async {
+                    await Navigator.pushNamed(context, Profile.routeName);
+                    userCubit.getUser();
                   },
-                  child: CircleAvatar(
-                    radius: 25,
-                    child: Image.asset(
-                        'lib/common/assets/images/CircleAvatarDefault.png'),
+                  child: BlocBuilder<UserCubit, UserState>(
+                    builder: (context, state) {
+                      String? imageUrl;
+                      if (state is UserSuccessState) {
+                        imageUrl = state.user.userImage?.imageUrl;
+                      }
+                      return NetworkImageAvatar(imageUrl: imageUrl, radius: 25);
+                    },
                   ),
                 ),
                 InkWell(

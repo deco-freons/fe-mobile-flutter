@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/user/data/models/user_location_model.dart';
@@ -15,6 +16,7 @@ class ProfileModel extends BaseModel {
   final List<PreferenceModel> preferences;
   final bool isShareLocation;
   final List<EventByUserModel> eventCreated;
+  final ImageModel? userImage;
 
   const ProfileModel({
     required this.userID,
@@ -25,6 +27,7 @@ class ProfileModel extends BaseModel {
     required this.preferences,
     required this.isShareLocation,
     required this.eventCreated,
+    this.userImage,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) =>

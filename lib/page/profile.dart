@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/auth/logout/bloc/logout_cubit.dart';
 import 'package:flutter_boilerplate/auth/logout/bloc/logout_state.dart';
 import 'package:flutter_boilerplate/auth/data/user_model.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -114,11 +115,8 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
           padding: bodyPadding,
           child: Row(
             children: [
-              const CircleAvatar(
-                radius: 52.5,
-                backgroundImage: AssetImage(
-                    'lib/common/assets/images/CircleAvatarDefault.png'),
-              ),
+              NetworkImageAvatar(
+                  imageUrl: updatedUser.userImage?.imageUrl, radius: 52.5),
               const SizedBox(
                 width: 22.0,
               ),
