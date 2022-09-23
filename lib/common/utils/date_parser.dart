@@ -6,4 +6,10 @@ class DateParser {
         DateFormat('MMMM dd, yyyy').format(DateTime.parse(date));
     return formattedDate.split(' ');
   }
+
+  static String parseBirthDate(String date) {
+    String formattedDate =
+        DateFormat('dd MMMM yyyy').format(DateTime.parse(date));
+    return formattedDate;
+  }
 }

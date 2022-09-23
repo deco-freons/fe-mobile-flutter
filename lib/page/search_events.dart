@@ -41,13 +41,10 @@ class _SearchEventsState extends State<SearchEvents>
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: SafeArea(
-              child: Padding(
-            padding: const EdgeInsets.only(top: CustomPadding.sm),
-            child: Column(
-              children: const [
-                BuildSearchEvents(),
-              ],
-            ),
+              child: Column(
+            children: const [
+              BuildSearchEvents(),
+            ],
           )),
         ),
       ),
@@ -141,7 +138,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               ),
             ),
             Container(
-              height: CustomPadding.base,
+              height: CustomPadding.lg,
               decoration: BoxDecoration(
                 color: neutral.shade100,
                 border: Border(
@@ -190,25 +187,26 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                       .read<SearchEventsCubit>()
                                       .searchEvents(filter);
                                 }),
-                                child: SingleChildScrollView(
+                                child: ListView.builder(
+                                  cacheExtent: 200,
+                                  padding: const EdgeInsets.only(
+                                      top: CustomPadding.lg),
+                                  itemCount: isSuccessState
+                                      ? state.events.length
+                                      : isFetchMoreErrorState
+                                          ? state.events.length
+                                          : 0,
+                                  shrinkWrap: true,
                                   controller: _scrollController,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: CustomPadding.base),
-                                    child: Column(
-                                      children: isSuccessState
-                                          ? state.events
-                                              .map((event) =>
-                                                  buildEvent(context, event))
-                                              .toList()
-                                          : isFetchMoreErrorState
-                                              ? state.events
-                                                  .map((event) => buildEvent(
-                                                      context, event))
-                                                  .toList()
-                                              : [],
-                                    ),
-                                  ),
+                                  itemBuilder: ((context, index) {
+                                    return buildEvent(
+                                        context,
+                                        isSuccessState
+                                            ? state.events[index]
+                                            : isFetchMoreErrorState
+                                                ? state.events[index]
+                                                : null);
+                                  }),
                                 ),
                               )
                             : ListView(

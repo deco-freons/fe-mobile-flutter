@@ -15,6 +15,9 @@ class NetworkImageAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return imageUrl != null
         ? CachedNetworkImage(
+            fadeInDuration: const Duration(milliseconds: 0),
+            placeholderFadeInDuration: const Duration(milliseconds: 0),
+            fadeOutDuration: const Duration(milliseconds: 0),
             imageUrl: imageUrl!,
             imageBuilder: (context, imageProvider) => CircleAvatar(
                 radius: radius,

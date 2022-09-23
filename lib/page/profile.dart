@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/common/components/layout/network_image_avata
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/date_parser.dart';
 import 'package:flutter_boilerplate/event/bloc/events_by_me_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/events_by_me_state.dart';
 import 'package:flutter_boilerplate/event/components/event_list.dart';
@@ -156,8 +157,11 @@ class _BuildProfilePageState extends State<BuildProfilePage> {
             "Last Name", updated ? updatedUser.lastName : widget.user.lastName),
         buildField("Username", widget.user.username),
         buildField("Email", widget.user.email),
-        buildField("Birth Date",
-            updated ? updatedUser.birthDate : widget.user.birthDate),
+        buildField(
+            "Birth Date",
+            updated
+                ? DateParser.parseBirthDate(updatedUser.birthDate)
+                : DateParser.parseBirthDate(widget.user.birthDate)),
         buildField(
             "Location",
             updated

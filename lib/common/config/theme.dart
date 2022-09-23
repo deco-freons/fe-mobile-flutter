@@ -66,7 +66,7 @@ const MaterialColor error = MaterialColor(0xFFFC1313, <int, Color>{
   900: Color(0xFFFC1313),
 });
 
-const double appBarHeight = 96.0;
+const double appBarHeight = 64.0;
 
 class CustomPadding {
   static const body = 28.0;

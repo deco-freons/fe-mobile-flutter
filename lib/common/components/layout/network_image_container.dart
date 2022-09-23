@@ -21,6 +21,9 @@ class NetworkImageContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return image != null
         ? CachedNetworkImage(
+            fadeInDuration: const Duration(milliseconds: 0),
+            placeholderFadeInDuration: const Duration(milliseconds: 0),
+            fadeOutDuration: const Duration(milliseconds: 0),
             imageUrl: image!,
             imageBuilder: (context, imageProvider) => Container(
               width: width,
