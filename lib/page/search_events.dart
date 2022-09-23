@@ -190,25 +190,25 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                       .read<SearchEventsCubit>()
                                       .searchEvents(filter);
                                 }),
-                                child: ListView.builder(
-                                  padding: const EdgeInsets.only(
-                                      top: CustomPadding.base),
-                                  itemCount: isSuccessState
-                                      ? state.events.length
-                                      : isFetchMoreErrorState
-                                          ? state.events.length
-                                          : 0,
-                                  shrinkWrap: true,
+                                child: SingleChildScrollView(
                                   controller: _scrollController,
-                                  itemBuilder: ((context, index) {
-                                    return buildEvent(
-                                        context,
-                                        isSuccessState
-                                            ? state.events[index]
-                                            : isFetchMoreErrorState
-                                                ? state.events[index]
-                                                : null);
-                                  }),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: CustomPadding.base),
+                                    child: Column(
+                                      children: isSuccessState
+                                          ? state.events
+                                              .map((event) =>
+                                                  buildEvent(context, event))
+                                              .toList()
+                                          : isFetchMoreErrorState
+                                              ? state.events
+                                                  .map((event) => buildEvent(
+                                                      context, event))
+                                                  .toList()
+                                              : [],
+                                    ),
+                                  ),
                                 ),
                               )
                             : ListView(
@@ -246,6 +246,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     }
     List<String> splittedDate = DateParser.parseEventDate(event.date);
     return Padding(
+        key: ValueKey(event.eventID),
         padding: const EdgeInsets.only(bottom: CustomPadding.lg),
         child: EventCardLarge(
           title: event.eventName,
@@ -254,13 +255,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           location: '${event.locationName}, ${event.location.city}',
           month: splittedDate[0].substring(0, 3),
           date: splittedDate[1].substring(0, 2),
-          image: event.eventImage != null
-              ? event.eventImage!.imageUrl
-                      .substring(0, event.eventImage!.imageUrl.indexOf('s')) +
-                  event.eventImage!.imageUrl.substring(
-                      event.eventImage!.imageUrl.indexOf('s') + 1,
-                      event.eventImage!.imageUrl.length)
-              : null,
+          image: event.eventImage?.imageUrl,
           onTapHandler: () {
             Navigator.of(context)
                 .pushNamed(EventDetail.routeName, arguments: event.eventID);

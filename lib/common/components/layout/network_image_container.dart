@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 
 class NetworkImageContainer extends StatelessWidget {
   final double width;
@@ -18,19 +19,34 @@ class NetworkImageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return image != null
+        ? CachedNetworkImage(
+            imageUrl: image!,
+            imageBuilder: (context, imageProvider) => Container(
+              width: width,
+              height: height,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: imageProvider,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: child,
+            ),
+            placeholder: (context, url) =>
+                BuildLoading.buildRectangularLoading(height: height),
+            errorWidget: (context, url, error) => buildDefaultContainer(),
+          )
+        : buildDefaultContainer();
+  }
+
+  Widget buildDefaultContainer() {
     return Container(
       width: width,
       height: height,
-      decoration: image != null
-          ? BoxDecoration(
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(image!),
-                fit: BoxFit.cover,
-              ),
-            )
-          : BoxDecoration(
-              color: neutral.shade400,
-            ),
+      decoration: BoxDecoration(
+        color: neutral.shade400,
+      ),
       child: child,
     );
   }
