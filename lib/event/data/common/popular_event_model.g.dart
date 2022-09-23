@@ -22,8 +22,7 @@ PopularEventModel _$PopularEventModelFromJson(Map<String, dynamic> json) =>
       participants: json['participants'] as int,
       eventImage: json['eventImage'] == null
           ? null
-          : EventImageModel.fromJson(
-              json['eventImage'] as Map<String, dynamic>),
+          : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$PopularEventModelToJson(PopularEventModel instance) =>

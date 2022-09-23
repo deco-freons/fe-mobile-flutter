@@ -1,5 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_image_model.dart';
+import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'event_by_user_model.g.dart';
@@ -12,7 +12,7 @@ class EventByUserModel extends BaseModel {
   final String date;
   final double longitude;
   final double latitude;
-  final EventImageModel? eventImage;
+  final ImageModel? eventImage;
 
   const EventByUserModel(
       {required this.eventID,

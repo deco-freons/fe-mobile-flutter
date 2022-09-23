@@ -64,10 +64,10 @@ class EditUserCubit extends BaseCubit<EditUserState> {
       await _secureStorage.set(
           key: 'user', value: json.encode(updatedUser.toJson()));
 
-      updatedImage != null
+      updatedImage != null || action == ImageInputAction.DO_NOTHING
           ? emit(EditUserSuccessState(user: updatedUser))
           : emit(EditUserImageErrorState(
-              errorMessage: "Image uplaod failed", user: updatedUser));
+              errorMessage: "Image upload failed", user: updatedUser));
     } catch (e) {
       String message = ErrorHandler.handle(e);
       emit(EditUserErrorState(errorMessage: message));
