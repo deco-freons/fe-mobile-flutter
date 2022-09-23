@@ -38,6 +38,7 @@ class EventParticipants extends StatelessWidget {
                         arguments: participants[index].userID,
                       );
                     },
+                    userImage: participants[index].userImage?.imageUrl,
                     firstName: participants[index].firstName,
                     lastName: participants[index].lastName,
                     location: participants[index].location?.suburb ?? ""),

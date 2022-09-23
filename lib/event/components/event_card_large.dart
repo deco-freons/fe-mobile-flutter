@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/date_card.dart';
@@ -12,10 +13,11 @@ class EventCardLarge extends StatelessWidget {
   final String location;
   final String month;
   final String date;
-  final String image;
+  final String? image;
   final double width;
   final double height;
   final VoidCallback onTapHandler;
+  final double elevation;
   final bool loading;
 
   const EventCardLarge({
@@ -26,11 +28,12 @@ class EventCardLarge extends StatelessWidget {
     required this.location,
     required this.month,
     required this.date,
-    required this.image,
+    this.image,
     required this.onTapHandler,
     this.loading = false,
     this.width = 340.0,
     this.height = 256.0,
+    this.elevation = 8.0,
   }) : super(key: key);
 
   const EventCardLarge.loading({
@@ -41,11 +44,12 @@ class EventCardLarge extends StatelessWidget {
     this.location = '',
     this.month = '',
     this.date = '',
-    this.image = '',
+    this.image,
     required this.onTapHandler,
     this.loading = true,
     this.width = 340.0,
     this.height = 256.0,
+    this.elevation = 8.0,
   }) : super(key: key);
 
   @override
@@ -53,7 +57,7 @@ class EventCardLarge extends StatelessWidget {
     return !loading
         ? Card(
             margin: EdgeInsets.zero,
-            elevation: 8.0,
+            elevation: elevation,
             shadowColor: neutral.shade700,
             clipBehavior: Clip.antiAliasWithSaveLayer,
             shape: const RoundedRectangleBorder(
@@ -61,12 +65,10 @@ class EventCardLarge extends StatelessWidget {
                     BorderRadius.all(Radius.circular(CustomRadius.xxl))),
             child: InkWell(
               onTap: onTapHandler,
-              child: Container(
+              child: NetworkImageContainer(
                 width: width,
                 height: height,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(image), fit: BoxFit.cover)),
+                image: image,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: CustomPadding.md),
                   child: Align(
@@ -78,9 +80,11 @@ class EventCardLarge extends StatelessWidget {
                             width: 311.0,
                             height: 96.0,
                             decoration: BoxDecoration(
-                                color: neutral.shade400.withOpacity(0.6),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(CustomRadius.xxl))),
+                              color: neutral.shade400.withOpacity(0.6),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(CustomRadius.xxl),
+                              ),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(CustomPadding.xs),
                               child: Column(children: [

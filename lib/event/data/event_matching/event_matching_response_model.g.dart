@@ -24,6 +24,9 @@ EventMatchingResponseModel _$EventMatchingResponseModelFromJson(
           json['location'] as Map<String, dynamic>),
       locationName: json['locationName'] as String,
       participants: json['participants'] as int,
+      eventImage: json['eventImage'] == null
+          ? null
+          : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventMatchingResponseModelToJson(
@@ -42,4 +45,5 @@ Map<String, dynamic> _$EventMatchingResponseModelToJson(
       'location': instance.location,
       'locationName': instance.locationName,
       'participants': instance.participants,
+      'eventImage': instance.eventImage,
     };

@@ -109,7 +109,7 @@ class _ImageInputState extends State<ImageInput> {
   void pickImage(BuildContext context) async {
     ScaffoldMessengerState scaffoldState = ScaffoldMessenger.of(context);
     final XFile? selectedImage =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
     if (selectedImage != null) {
       String errorMessage = "";
       if (await getFileSize(selectedImage) > 3.0) {

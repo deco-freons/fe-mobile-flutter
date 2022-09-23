@@ -41,13 +41,10 @@ class _SearchEventsState extends State<SearchEvents>
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: SafeArea(
-              child: Padding(
-            padding: const EdgeInsets.only(top: CustomPadding.sm),
-            child: Column(
-              children: const [
-                BuildSearchEvents(),
-              ],
-            ),
+              child: Column(
+            children: const [
+              BuildSearchEvents(),
+            ],
           )),
         ),
       ),
@@ -141,7 +138,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
               ),
             ),
             Container(
-              height: CustomPadding.base,
+              height: CustomPadding.lg,
               decoration: BoxDecoration(
                 color: neutral.shade100,
                 border: Border(
@@ -191,8 +188,9 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                                       .searchEvents(filter);
                                 }),
                                 child: ListView.builder(
+                                  cacheExtent: 200,
                                   padding: const EdgeInsets.only(
-                                      top: CustomPadding.base),
+                                      top: CustomPadding.lg),
                                   itemCount: isSuccessState
                                       ? state.events.length
                                       : isFetchMoreErrorState
@@ -246,6 +244,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     }
     List<String> splittedDate = DateParser.parseEventDate(event.date);
     return Padding(
+        key: ValueKey(event.eventID),
         padding: const EdgeInsets.only(bottom: CustomPadding.lg),
         child: EventCardLarge(
           title: event.eventName,
@@ -254,7 +253,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           location: '${event.locationName}, ${event.location.city}',
           month: splittedDate[0].substring(0, 3),
           date: splittedDate[1].substring(0, 2),
-          image: 'lib/common/assets/images/LargeEventTest.png',
+          image: event.eventImage?.imageUrl,
           onTapHandler: () {
             Navigator.of(context)
                 .pushNamed(EventDetail.routeName, arguments: event.eventID);

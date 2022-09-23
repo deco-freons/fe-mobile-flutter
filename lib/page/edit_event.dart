@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/form_component.dart';
-import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_header.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -35,23 +34,6 @@ class _EditEventState extends State<EditEvent> {
       create: (context) =>
           UpdateEventDetailCubit(getIt.get<EventDetailRepository>()),
       child: Scaffold(
-        appBar: PageAppBar(
-          title: "Edit Event",
-          hasLeadingWidget: true,
-          leadingWidth: 100,
-          leadingWidget: TextButton(
-            child: Text(
-              "Cancel",
-              style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.error),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
         resizeToAvoidBottomInset: true,
         body: Container(
           color: Theme.of(context).colorScheme.secondary,

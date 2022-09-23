@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/data/participant_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -12,6 +13,7 @@ class EventParticipantModel extends BaseModel {
   final String lastName;
   final ParticipantLocationModel? location;
   final bool? isShareLocation;
+  final ImageModel? userImage;
 
   const EventParticipantModel({
     required this.username,
@@ -20,6 +22,7 @@ class EventParticipantModel extends BaseModel {
     this.isShareLocation,
     this.userID,
     this.location,
+    this.userImage,
   });
 
   const EventParticipantModel.empty({
@@ -29,6 +32,7 @@ class EventParticipantModel extends BaseModel {
     this.userID = 0,
     this.location,
     this.isShareLocation = false,
+    this.userImage,
   });
 
   EventParticipantModel copyWith(
@@ -37,7 +41,8 @@ class EventParticipantModel extends BaseModel {
       String? firstName,
       String? lastName,
       ParticipantLocationModel? location,
-      bool? isShareLocation}) {
+      bool? isShareLocation,
+      ImageModel? userImage}) {
     return EventParticipantModel(
       userID: userID ?? this.userID,
       username: username ?? this.username,
@@ -45,6 +50,7 @@ class EventParticipantModel extends BaseModel {
       lastName: lastName ?? this.lastName,
       location: location ?? this.location,
       isShareLocation: isShareLocation ?? this.isShareLocation,
+      userImage: userImage ?? this.userImage,
     );
   }
 

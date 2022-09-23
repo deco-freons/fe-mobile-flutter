@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'event_by_user_model.g.dart';
@@ -11,6 +12,7 @@ class EventByUserModel extends BaseModel {
   final String date;
   final double longitude;
   final double latitude;
+  final ImageModel? eventImage;
 
   const EventByUserModel(
       {required this.eventID,
@@ -18,7 +20,8 @@ class EventByUserModel extends BaseModel {
       required this.distance,
       required this.date,
       required this.latitude,
-      required this.longitude});
+      required this.longitude,
+      required this.eventImage});
 
   factory EventByUserModel.fromJson(Map<String, dynamic> json) =>
       _$EventByUserModelFromJson(json);

@@ -22,6 +22,9 @@ ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) => ProfileModel(
       eventCreated: (json['eventCreated'] as List<dynamic>)
           .map((e) => EventByUserModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      userImage: json['userImage'] == null
+          ? null
+          : ImageModel.fromJson(json['userImage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
@@ -34,4 +37,5 @@ Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
       'preferences': instance.preferences,
       'isShareLocation': instance.isShareLocation,
       'eventCreated': instance.eventCreated,
+      'userImage': instance.userImage,
     };

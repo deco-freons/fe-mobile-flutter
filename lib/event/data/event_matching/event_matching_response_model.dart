@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/common/popular_event_location_model.dart';
 
@@ -21,6 +22,7 @@ class EventMatchingResponseModel extends BaseModel {
   final PopularEventLocationModel location;
   final String locationName;
   final int participants;
+  final ImageModel? eventImage;
 
   const EventMatchingResponseModel(
       {required this.eventID,
@@ -35,7 +37,8 @@ class EventMatchingResponseModel extends BaseModel {
       required this.eventCreator,
       required this.location,
       required this.locationName,
-      required this.participants});
+      required this.participants,
+      this.eventImage});
 
   factory EventMatchingResponseModel.fromJson(Map<String, dynamic> json) =>
       _$EventMatchingResponseModelFromJson(json);

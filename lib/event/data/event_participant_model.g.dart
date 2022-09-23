@@ -18,6 +18,9 @@ EventParticipantModel _$EventParticipantModelFromJson(
           ? null
           : ParticipantLocationModel.fromJson(
               json['location'] as Map<String, dynamic>),
+      userImage: json['userImage'] == null
+          ? null
+          : ImageModel.fromJson(json['userImage'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventParticipantModelToJson(
@@ -29,4 +32,5 @@ Map<String, dynamic> _$EventParticipantModelToJson(
       'lastName': instance.lastName,
       'location': instance.location,
       'isShareLocation': instance.isShareLocation,
+      'userImage': instance.userImage,
     };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/components/layout/shimmer_widget.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -45,7 +46,7 @@ class FriendProfile extends StatelessWidget {
               hasLeadingWidget: true,
             ),
             body: SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: CustomPadding.md),
+              padding: const EdgeInsets.symmetric(vertical: CustomPadding.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -81,10 +82,9 @@ class FriendProfile extends StatelessWidget {
   Widget buildAvatar(ProfileState state) {
     return Center(
       child: state is ProfileSuccessState
-          ? const CircleAvatar(
+          ? NetworkImageAvatar(
+              imageUrl: state.profile.userImage?.imageUrl,
               radius: 75,
-              backgroundImage: AssetImage(
-                  'lib/common/assets/images/CircleAvatarDefault.png'),
             )
           : const ShimmerWidget.circular(width: 150, height: 150),
     );
