@@ -42,7 +42,7 @@ class EventList extends StatelessWidget {
                     distance: event.distance,
                     month: splittedDate[0].substring(0, 3),
                     date: splittedDate[1].substring(0, 2),
-                    image: 'lib/common/assets/images/SmallEventTest.png');
+                    image: event.eventImage?.imageUrl);
               }).toList()
             : List.filled(
                 3,

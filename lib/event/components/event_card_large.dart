@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/date_card.dart';
@@ -12,7 +13,7 @@ class EventCardLarge extends StatefulWidget {
   final String location;
   final String month;
   final String date;
-  final String image;
+  final String? image;
   final VoidCallback onTapHandler;
   final bool loading;
 
@@ -24,7 +25,7 @@ class EventCardLarge extends StatefulWidget {
       required this.location,
       required this.month,
       required this.date,
-      required this.image,
+      this.image,
       required this.onTapHandler,
       this.loading = false})
       : super(key: key);
@@ -37,7 +38,7 @@ class EventCardLarge extends StatefulWidget {
       this.location = '',
       this.month = '',
       this.date = '',
-      this.image = '',
+      this.image,
       required this.onTapHandler,
       this.loading = true})
       : super(key: key);
@@ -58,12 +59,10 @@ class _EventCardLargeState extends State<EventCardLarge> {
                     BorderRadius.all(Radius.circular(CustomRadius.xxl))),
             child: InkWell(
               onTap: widget.onTapHandler,
-              child: Container(
+              child: NetworkImageContainer(
                 width: 342.0,
                 height: 257.0,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(widget.image), fit: BoxFit.cover)),
+                image: widget.image,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: CustomPadding.md),
                   child: Align(
@@ -75,9 +74,11 @@ class _EventCardLargeState extends State<EventCardLarge> {
                             width: 311.0,
                             height: 96.0,
                             decoration: BoxDecoration(
-                                color: neutral.shade400.withOpacity(0.6),
-                                borderRadius: const BorderRadius.all(
-                                    Radius.circular(CustomRadius.xxl))),
+                              color: neutral.shade400.withOpacity(0.6),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(CustomRadius.xxl),
+                              ),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.all(CustomPadding.xs),
                               child: Column(children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_chip.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/event_info.dart';
 import 'package:flutter_boilerplate/event/components/event_matching/card_provider.dart';
@@ -19,6 +20,7 @@ class SwipeCards extends StatefulWidget {
   final String shortDescription;
   final String locationName;
   final double distance;
+  final String? image;
   final bool isEventEmpty;
   final bool isFront;
 
@@ -36,6 +38,7 @@ class SwipeCards extends StatefulWidget {
     required this.shortDescription,
     required this.locationName,
     required this.distance,
+    this.image,
     required this.isFront,
   }) : super(key: key);
 
@@ -53,6 +56,7 @@ class SwipeCards extends StatefulWidget {
     this.shortDescription = "",
     this.locationName = "",
     this.distance = 0,
+    this.image,
     this.isFront = false,
   }) : super(key: key);
 
@@ -130,15 +134,11 @@ class _SwipeCardsState extends State<SwipeCards> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Stack(children: [
-                      Container(
-                        height: 220.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(CustomRadius.xxl),
-                          image: const DecorationImage(
-                            image: AssetImage(
-                                'lib/common/assets/images/LargeEventTest.png'),
-                            fit: BoxFit.cover,
-                          ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(CustomRadius.xxl),
+                        child: NetworkImageContainer(
+                          height: 220.0,
+                          image: widget.image,
                         ),
                       ),
                       Align(

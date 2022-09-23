@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/date_card.dart';
@@ -12,7 +13,7 @@ class EventMatchingCardHome extends StatelessWidget {
   final String location;
   final String month;
   final String date;
-  final String image;
+  final String? image;
   final VoidCallback onTapHandler;
   final bool loading;
   final bool isEventEmpty;
@@ -25,7 +26,7 @@ class EventMatchingCardHome extends StatelessWidget {
       required this.location,
       required this.month,
       required this.date,
-      required this.image,
+      this.image,
       required this.onTapHandler,
       this.loading = false,
       this.isEventEmpty = false})
@@ -39,7 +40,7 @@ class EventMatchingCardHome extends StatelessWidget {
       this.location = '',
       this.month = '',
       this.date = '',
-      this.image = '',
+      this.image,
       required this.onTapHandler,
       this.loading = false,
       this.isEventEmpty = false})
@@ -111,12 +112,10 @@ class EventMatchingCardHome extends StatelessWidget {
                           BorderRadius.all(Radius.circular(CustomRadius.xxl))),
                   child: InkWell(
                     onTap: onTapHandler,
-                    child: Container(
+                    child: NetworkImageContainer(
                       width: 330.0,
                       height: 320.0,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(image), fit: BoxFit.cover)),
+                      image: image,
                       child: Padding(
                         padding:
                             const EdgeInsets.only(bottom: CustomPadding.base),
@@ -130,9 +129,11 @@ class EventMatchingCardHome extends StatelessWidget {
                                   width: 300.0,
                                   height: 96.0,
                                   decoration: BoxDecoration(
-                                      color: neutral.shade400.withOpacity(0.6),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(CustomRadius.xxl))),
+                                    color: neutral.shade400.withOpacity(0.6),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(CustomRadius.xxl),
+                                    ),
+                                  ),
                                   child: Padding(
                                     padding:
                                         const EdgeInsets.all(CustomPadding.xs),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/date_card.dart';
@@ -10,7 +11,7 @@ class EventCardSmall extends StatefulWidget {
   final double distance;
   final String month;
   final String date;
-  final String image;
+  final String? image;
   final bool loading;
 
   const EventCardSmall({
@@ -20,7 +21,7 @@ class EventCardSmall extends StatefulWidget {
     required this.distance,
     required this.month,
     required this.date,
-    required this.image,
+    this.image,
     this.loading = false,
   }) : super(key: key);
 
@@ -67,14 +68,10 @@ class _EventCardSmallState extends State<EventCardSmall> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.0)),
                           ),
-                          child: Container(
+                          child: NetworkImageContainer(
                             width: 174.0,
                             height: 139.0,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                              image: AssetImage(widget.image),
-                              fit: BoxFit.cover,
-                            )),
+                            image: widget.image,
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(top: 9.0, right: 9.0),
