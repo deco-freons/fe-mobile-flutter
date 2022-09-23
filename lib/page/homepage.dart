@@ -165,7 +165,7 @@ class _BuildHomeState extends State<BuildHome> {
                             '${state.events[0].locationName}, ${state.events[0].location.city}',
                         month: splittedDate[0].substring(0, 3),
                         date: splittedDate[1].substring(0, 2),
-                        image: 'lib/common/assets/images/LargeEventTest.png',
+                        image: state.events[0].eventImage?.imageUrl,
                         onTapHandler: () {
                           Navigator.of(context)
                               .pushNamed(EventMatching.routeName);
@@ -256,7 +256,8 @@ class _BuildHomeState extends State<BuildHome> {
                           distance: event.distance,
                           date: event.date,
                           latitude: event.latitude,
-                          longitude: event.longitude))
+                          longitude: event.longitude,
+                          eventImage: event.eventImage))
                       .toList()
                   : [],
               onPressed: () {

@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_image_model.dart';
 import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/common/popular_event_location_model.dart';
 
@@ -18,6 +19,7 @@ class PopularEventModel extends BaseModel {
   final PopularEventLocationModel location;
   final String locationName;
   final int participants;
+  final EventImageModel? eventImage;
 
   const PopularEventModel(
       {required this.eventID,
@@ -29,7 +31,8 @@ class PopularEventModel extends BaseModel {
       required this.eventCreator,
       required this.location,
       required this.locationName,
-      required this.participants});
+      required this.participants,
+      this.eventImage});
 
   factory PopularEventModel.fromJson(Map<String, dynamic> json) =>
       _$PopularEventModelFromJson(json);
