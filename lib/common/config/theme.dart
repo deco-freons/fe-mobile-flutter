@@ -43,8 +43,8 @@ const MaterialColor primary = MaterialColor(0xFF0AA1DD, <int, Color>{
 const MaterialColor neutral = MaterialColor(0xFF8E9093, <int, Color>{
   50: Color(0xFFFFFFFF),
   100: Color(0xFFFFFFFF),
-  200: Color(0xFF8E9093),
-  300: Color(0xFF8E9093),
+  200: Color(0xFFD9D9D9),
+  300: Color(0xFFD9D9D9),
   400: Color(0xFFD9D9D9),
   500: Color(0xFF8E9093),
   600: Color(0xFF8E9093),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/custom_bottom_navigation.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/event/create_event.dart';
+import 'package:flutter_boilerplate/page/event/event_history.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 import 'package:flutter_boilerplate/page/search/search_events.dart';
 
@@ -19,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
 
   final SearchEvents _searchPage = const SearchEvents();
   final Widget _eventPage = const SizedBox();
-  final Widget _historyPage = const SizedBox();
+  final Widget _historyPage = const EventHistory();
 
   @override
   void dispose() {
