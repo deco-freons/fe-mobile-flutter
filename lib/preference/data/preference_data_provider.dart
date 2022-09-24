@@ -1,4 +1,4 @@
-import '../../common/data/base_data_provider.dart';
+import '../../common/data/base/base_data_provider.dart';
 
 class PreferenceDataProvider extends BaseDataProvider {
   Future<dynamic> firstPreference(List<String> data) async {

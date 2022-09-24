@@ -1,13 +1,13 @@
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/common/data/base_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_filter_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
-import 'package:flutter_boilerplate/event/data/common/days_to_event_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_categories_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_radius_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/days_to_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_categories_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_radius_model.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_sort_model.dart';
-import 'package:flutter_boilerplate/event/data/common/search_model.dart';
+import 'package:flutter_boilerplate/event/data/common/sort/event_sort_model.dart';
+import 'package:flutter_boilerplate/event/data/common/search/search_model.dart';
 
 import 'package:geolocator/geolocator.dart';
 

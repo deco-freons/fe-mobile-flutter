@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/utils/typedef.dart';
-import 'package:flutter_boilerplate/event/data/event_detail_response_model.dart';
-import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
-import 'package:flutter_boilerplate/event/data/place_model.dart';
+import 'package:flutter_boilerplate/event/data/event_detail/event_detail_response_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
+import 'package:flutter_boilerplate/event/data/event_detail/event_place_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
-import 'package:flutter_boilerplate/page/create_event.dart';
-import 'package:flutter_boilerplate/page/edit_event.dart';
-import 'package:flutter_boilerplate/page/event_detail.dart';
-import 'package:flutter_boilerplate/page/event_matching.dart';
-import 'package:flutter_boilerplate/page/event_participants.dart';
-import 'package:flutter_boilerplate/page/forget.dart';
-import 'package:flutter_boilerplate/page/friend_profile.dart';
+import 'package:flutter_boilerplate/page/event/create_event.dart';
+import 'package:flutter_boilerplate/page/event/edit_event.dart';
+import 'package:flutter_boilerplate/page/event/event_detail.dart';
+import 'package:flutter_boilerplate/page/event/event_matching.dart';
+import 'package:flutter_boilerplate/page/event/event_participants.dart';
+import 'package:flutter_boilerplate/page/auth/forget_password.dart';
+import 'package:flutter_boilerplate/page/user/friend_profile.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/location_denied.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
-import 'package:flutter_boilerplate/page/login.dart';
-import 'package:flutter_boilerplate/page/email_confirmation.dart';
-import 'package:flutter_boilerplate/page/edit_profile.dart';
+import 'package:flutter_boilerplate/page/auth/login.dart';
+import 'package:flutter_boilerplate/page/auth/email_confirmation.dart';
+import 'package:flutter_boilerplate/page/user/edit_profile.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
-import 'package:flutter_boilerplate/page/search_events.dart';
-import 'package:flutter_boilerplate/page/preference.dart';
-import 'package:flutter_boilerplate/page/profile.dart';
-import 'package:flutter_boilerplate/page/register.dart';
-import 'package:flutter_boilerplate/page/search_location.dart';
+import 'package:flutter_boilerplate/page/search/search_events.dart';
+import 'package:flutter_boilerplate/page/user/preference.dart';
+import 'package:flutter_boilerplate/page/user/profile.dart';
+import 'package:flutter_boilerplate/page/auth/register.dart';
+import 'package:flutter_boilerplate/page/search/search_location.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_boilerplate/page/splash.dart';
 
@@ -45,8 +45,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const Landing());
       case Login.routeName:
         return MaterialPageRoute(builder: (context) => const Login());
-      case Forget.routeName:
-        return MaterialPageRoute(builder: (context) => const Forget());
+      case ForgetPassword.routeName:
+        return MaterialPageRoute(builder: (context) => const ForgetPassword());
       case Profile.routeName:
         return MaterialPageRoute(builder: (context) => const Profile());
       case EditProfile.routeName:
@@ -76,7 +76,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (context) => EventDetail(eventID: eventID));
       case ShowLocation.routeName:
-        PlaceModel placeModel = args as PlaceModel;
+        EventPlaceModel placeModel = args as EventPlaceModel;
         return MaterialPageRoute(
             builder: (context) => ShowLocation(
                   lat: placeModel.lat,

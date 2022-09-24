@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../common/data/base_repository.dart';
+import '../../common/data/base/base_repository.dart';
 import 'preference_data_provider.dart';
 
 @immutable

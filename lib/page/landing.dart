@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/page/register.dart';
-import 'package:flutter_boilerplate/page/login.dart';
+import 'package:flutter_boilerplate/page/auth/register.dart';
+import 'package:flutter_boilerplate/page/auth/login.dart';
 
 import '../common/components/buttons/custom_button.dart';
 import '../common/components/buttons/custom_text_button.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
-import 'package:flutter_boilerplate/page/preference.dart';
+import 'package:flutter_boilerplate/page/user/preference.dart';
 
 import '../common/components/buttons/custom_button.dart';
 import '../common/config/theme.dart';

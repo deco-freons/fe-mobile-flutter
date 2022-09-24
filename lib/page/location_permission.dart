@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/location_denied.dart';
-import 'package:flutter_boilerplate/user/bloc/location_cubit.dart';
-import 'package:flutter_boilerplate/user/bloc/location_state.dart';
+import 'package:flutter_boilerplate/user/bloc/location_permission/location_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/location_permission/location_state.dart';
 import '../common/config/theme.dart';
 
 class LocationPermission extends StatefulWidget {

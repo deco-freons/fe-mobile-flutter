@@ -1,4 +1,4 @@
-import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
 
 class ItemFilterModel<T> extends BaseModel {
   final T data;

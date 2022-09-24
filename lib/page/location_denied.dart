@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
-import 'package:flutter_boilerplate/user/bloc/location_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/location_permission/location_cubit.dart';
 import '../common/config/theme.dart';
 
 class LocationDenied extends StatefulWidget {

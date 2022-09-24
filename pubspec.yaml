@@ -92,8 +92,6 @@ flutter:
     - lib/common/assets/images/TrophyIcon.png
     - lib/common/assets/images/eventBG.png
     - lib/common/assets/images/LocationIcon.png
-    - lib/common/assets/images/LargeEventTest.png
-    - lib/common/assets/images/SmallEventTest.png
     - lib/common/assets/images/NoResult.png
     - lib/common/assets/images/HeartIcon.png
     - lib/common/assets/images/WhoopsImage.png
