@@ -118,6 +118,7 @@ class EventCardLarge extends StatelessWidget {
                       date: date,
                       distance: distance,
                       location: location,
+                      width: 312.0,
                       color: image == null
                           ? neutral.shade100.withOpacity(0.4)
                           : null,
