@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'brisbane_location_model.g.dart';

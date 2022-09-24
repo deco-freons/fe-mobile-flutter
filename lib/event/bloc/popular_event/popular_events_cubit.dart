@@ -2,13 +2,13 @@ import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_state.dart';
-import 'package:flutter_boilerplate/event/data/common/event_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
 import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_categories_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_radius_model.dart';
-import 'package:flutter_boilerplate/event/data/common/search_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_categories_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_radius_model.dart';
+import 'package:flutter_boilerplate/event/data/common/search/search_model.dart';
 import 'package:geolocator/geolocator.dart';
 
 class PopularEventsCubit extends BaseCubit<PopularEventsState> {

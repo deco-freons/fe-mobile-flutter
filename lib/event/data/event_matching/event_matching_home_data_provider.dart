@@ -1,4 +1,4 @@
-import 'package:flutter_boilerplate/common/data/base_data_provider.dart';
+import 'package:flutter_boilerplate/common/data/base/base_data_provider.dart';
 
 class EventMatchingHomeDataProvider extends BaseDataProvider {
   Future<dynamic> getEventMatchingHome(Map<String, dynamic> data) async {

@@ -1,6 +1,6 @@
-import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
 import 'package:flutter_boilerplate/common/data/image_model.dart';
-import 'package:flutter_boilerplate/event/data/event_participant_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
 import 'package:flutter_boilerplate/event/data/common/popular_event_location_model.dart';
 
 import 'package:json_annotation/json_annotation.dart';

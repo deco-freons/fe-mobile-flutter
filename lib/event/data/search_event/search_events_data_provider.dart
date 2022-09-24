@@ -1,4 +1,4 @@
-import 'package:flutter_boilerplate/common/data/base_data_provider.dart';
+import 'package:flutter_boilerplate/common/data/base/base_data_provider.dart';
 
 class SearchEventsDataProvider extends BaseDataProvider {
   Future<dynamic> searchEvents(Map<String, dynamic> data) async {

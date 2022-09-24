@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_boilerplate/auth/data/auth_repository.dart';
+import 'package:flutter_boilerplate/auth/data/auth/auth_repository.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/get_it.dart';
 

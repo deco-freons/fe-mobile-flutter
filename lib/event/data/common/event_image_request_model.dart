@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
 import 'package:http_parser/http_parser.dart';
 
 class EventImageRequestModel extends BaseModel {

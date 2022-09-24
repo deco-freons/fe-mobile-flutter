@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_chip.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/event/components/event_info.dart';
+import 'package:flutter_boilerplate/event/components/common/event_info.dart';
 import 'package:flutter_boilerplate/event/components/event_matching/card_provider.dart';
-import 'package:flutter_boilerplate/event/components/see_more.dart';
+import 'package:flutter_boilerplate/event/components/common/see_more.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_boilerplate/common/data/base_repository.dart';
+import 'package:flutter_boilerplate/common/data/base/base_repository.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_data_provider.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';

@@ -1,7 +1,7 @@
-import 'package:flutter_boilerplate/common/data/base_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_filter_model.dart';
-import 'package:flutter_boilerplate/event/data/common/search_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_sort_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/common/search/search_model.dart';
+import 'package:flutter_boilerplate/event/data/common/sort/event_sort_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'request_get_event_model.g.dart';
 

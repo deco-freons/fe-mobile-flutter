@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/custom_bottom_navigation.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/page/create_event.dart';
+import 'package:flutter_boilerplate/page/event/create_event.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
-import 'package:flutter_boilerplate/page/search_events.dart';
+import 'package:flutter_boilerplate/page/search/search_events.dart';
 
 class Dashboard extends StatefulWidget {
   static const routeName = "/dashboard";

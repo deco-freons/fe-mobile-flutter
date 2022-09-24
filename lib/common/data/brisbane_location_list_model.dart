@@ -1,4 +1,4 @@
-import 'package:flutter_boilerplate/common/data/base_model.dart';
+import 'package:flutter_boilerplate/common/data/base/base_model.dart';
 import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 

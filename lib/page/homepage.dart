@@ -10,19 +10,19 @@ import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_hom
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_state.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_state.dart';
-import 'package:flutter_boilerplate/event/components/event_list.dart';
-import 'package:flutter_boilerplate/event/components/event_matching_home_card.dart';
-import 'package:flutter_boilerplate/event/components/home_content.dart';
-import 'package:flutter_boilerplate/event/data/event_by_user_model.dart';
+import 'package:flutter_boilerplate/event/components/common/event_list.dart';
+import 'package:flutter_boilerplate/event/components/event_matching/event_matching_home_card.dart';
+import 'package:flutter_boilerplate/event/components/common/home_content.dart';
+import 'package:flutter_boilerplate/event/data/events_by_user/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
-import 'package:flutter_boilerplate/page/event_matching.dart';
-import 'package:flutter_boilerplate/page/profile.dart';
+import 'package:flutter_boilerplate/page/event/event_matching.dart';
+import 'package:flutter_boilerplate/page/user/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
-import 'package:flutter_boilerplate/user/bloc/user_cubit.dart';
-import 'package:flutter_boilerplate/user/bloc/user_state.dart';
-import 'package:flutter_boilerplate/user/data/user_repository.dart';
+import 'package:flutter_boilerplate/user/bloc/common/user_cubit.dart';
+import 'package:flutter_boilerplate/user/bloc/common/user_state.dart';
+import 'package:flutter_boilerplate/user/data/common/user_repository.dart';
 
 class Homepage extends StatefulWidget {
   final HandlePageCallBack handlePageChanged;
