@@ -29,6 +29,7 @@ enum TextButtonType {
   secondary,
   tertiary,
   error,
+  errorInverse,
   tertiaryDark,
 }
 
@@ -291,4 +292,9 @@ enum ImageInputAction {
   DO_NOTHING,
   UPLOAD,
   REMOVE,
+}
+
+enum EventJoinedCardType {
+  SCHEDULED,
+  HISTORY,
 }
