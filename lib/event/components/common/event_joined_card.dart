@@ -6,6 +6,7 @@ import 'package:flutter_boilerplate/event/components/common/event_content_card.d
 import 'package:flutter_boilerplate/event/components/event_history/event_attendees.dart';
 
 class EventJoinedCard extends StatelessWidget {
+  final int eventID;
   final String title;
   final String author;
   final String month;
@@ -14,9 +15,11 @@ class EventJoinedCard extends StatelessWidget {
   final String location;
   final EventJoinedCardType type;
   final Widget? bottomContent;
+  final void Function(int eventID)? onCancelClick;
 
   const EventJoinedCard({
     Key? key,
+    required this.eventID,
     required this.title,
     required this.author,
     required this.month,
@@ -25,7 +28,13 @@ class EventJoinedCard extends StatelessWidget {
     required this.location,
     this.bottomContent,
     this.type = EventJoinedCardType.HISTORY,
-  }) : super(key: key);
+    this.onCancelClick,
+  })  : assert(
+            type == EventJoinedCardType.SCHEDULED
+                ? onCancelClick != null
+                : true,
+            "OnCancelClick is required for type SCHEDULED"),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +73,8 @@ class EventJoinedCard extends StatelessWidget {
           vertical: CustomPadding.xs, horizontal: CustomPadding.sm),
       onPressedHandler: () {
         // HANDLE CANCEL HERE
+        if (onCancelClick == null) return;
+        onCancelClick!(eventID);
       },
       labelFontSize: CustomFontSize.sm,
       height: 0,
