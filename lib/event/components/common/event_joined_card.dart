@@ -3,7 +3,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/common/event_content_card.dart';
-import 'package:flutter_boilerplate/event/components/event_history/event_attendees.dart';
+import 'package:flutter_boilerplate/event/components/common/event_attendees.dart';
 
 class EventJoinedCard extends StatelessWidget {
   final int eventID;
