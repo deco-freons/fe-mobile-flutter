@@ -14,6 +14,7 @@ class EventCardLarge extends StatelessWidget {
   final String month;
   final String date;
   final String? image;
+  final bool isAssetImage;
   final double width;
   final double height;
   final VoidCallback onTapHandler;
@@ -29,6 +30,7 @@ class EventCardLarge extends StatelessWidget {
     required this.month,
     required this.date,
     this.image,
+    this.isAssetImage = false,
     required this.onTapHandler,
     this.loading = false,
     this.width = 340.0,
@@ -45,6 +47,7 @@ class EventCardLarge extends StatelessWidget {
     this.month = '',
     this.date = '',
     this.image,
+    this.isAssetImage = false,
     required this.onTapHandler,
     this.loading = true,
     this.width = 340.0,
@@ -65,98 +68,109 @@ class EventCardLarge extends StatelessWidget {
                     BorderRadius.all(Radius.circular(CustomRadius.xxl))),
             child: InkWell(
               onTap: onTapHandler,
-              child: NetworkImageContainer(
-                width: width,
-                height: height,
-                image: image,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: CustomPadding.md),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ClipRRect(
-                      child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-                          child: Container(
-                            width: 311.0,
-                            height: 96.0,
-                            decoration: BoxDecoration(
-                              color: neutral.shade400.withOpacity(0.6),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(CustomRadius.xxl),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(CustomPadding.xs),
-                              child: Column(children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: CustomPadding.base),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          FittedBox(
-                                            child: Text(
-                                              title,
-                                              style: const TextStyle(
-                                                fontSize: CustomFontSize.sm,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            'By $author',
-                                            style: TextStyle(
-                                              fontSize: 10.0,
-                                              color: neutral.shade700,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    DateCard(month: month, date: date)
-                                  ],
-                                ),
-                                Expanded(
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.location_on_outlined,
-                                        color: primary,
-                                        size: 40,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text('$distance km'),
-                                            Expanded(
-                                              child: Text(
-                                                location,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ]),
-                            ),
-                          )),
-                    ),
-                  ),
-                ),
-              ),
+              child: isAssetImage
+                  ? Container(
+                      width: width,
+                      height: height,
+                      decoration: BoxDecoration(
+                          image: image != null
+                              ? DecorationImage(
+                                  image: AssetImage(image!), fit: BoxFit.cover)
+                              : null),
+                      child: buildContent(),
+                    )
+                  : NetworkImageContainer(
+                      width: width,
+                      height: height,
+                      image: image,
+                      child: buildContent()),
             ),
           )
         : BuildLoading.buildRectangularLoading(
             width: 342, height: 257, borderRadius: 20);
+  }
+
+  Widget buildContent() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: CustomPadding.md),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ClipRRect(
+          child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+              child: Container(
+                width: 311.0,
+                height: 96.0,
+                decoration: BoxDecoration(
+                  color: neutral.shade400.withOpacity(0.6),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(CustomRadius.xxl),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(CustomPadding.xs),
+                  child: Column(children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: CustomPadding.base),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              FittedBox(
+                                child: Text(
+                                  title,
+                                  style: const TextStyle(
+                                    fontSize: CustomFontSize.sm,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                'By $author',
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                  color: neutral.shade700,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        DateCard(month: month, date: date)
+                      ],
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on_outlined,
+                            color: primary,
+                            size: 40,
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('$distance km'),
+                                Expanded(
+                                  child: Text(
+                                    location,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ]),
+                ),
+              )),
+        ),
+      ),
+    );
   }
 }

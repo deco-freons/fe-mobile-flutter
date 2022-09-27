@@ -56,7 +56,7 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             if (state is AuthAuthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
-                  LocationPermission.routeName, (route) => false);
+                  LocationPermission.routeName, (route) => false, arguments: false);
             } else if (state is AuthUnauthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
                   Landing.routeName, (route) => false);

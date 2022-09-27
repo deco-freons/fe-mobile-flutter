@@ -11,6 +11,7 @@ class EventMatchingCardHome extends StatelessWidget {
   final String month;
   final String date;
   final String? image;
+  final bool isAssetImage;
   final VoidCallback onTapHandler;
   final bool loading;
   final bool isEventEmpty;
@@ -24,6 +25,7 @@ class EventMatchingCardHome extends StatelessWidget {
       required this.month,
       required this.date,
       this.image,
+      this.isAssetImage = false,
       required this.onTapHandler,
       this.loading = false,
       this.isEventEmpty = false})
@@ -38,6 +40,7 @@ class EventMatchingCardHome extends StatelessWidget {
       this.month = '',
       this.date = '',
       this.image,
+      this.isAssetImage = false,
       required this.onTapHandler,
       this.loading = false,
       this.isEventEmpty = false})
@@ -91,6 +94,7 @@ class EventMatchingCardHome extends StatelessWidget {
                   month: month,
                   date: date,
                   image: image,
+                  isAssetImage: isAssetImage,
                   onTapHandler: onTapHandler,
                   width: 330,
                   height: 320,

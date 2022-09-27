@@ -11,6 +11,7 @@ class HomeContent extends StatefulWidget {
   final double titleRightSpacing;
   final Widget secondWidget;
   final bool isCentered;
+  final bool onlyContent;
 
   const HomeContent(
       {Key? key,
@@ -22,7 +23,8 @@ class HomeContent extends StatefulWidget {
       this.titleLeftSpacing = CustomPadding.body,
       this.titleRightSpacing = CustomPadding.body,
       this.secondWidget = const Text(''),
-      this.isCentered = false})
+      this.isCentered = false,
+      this.onlyContent = false})
       : super(key: key);
 
   @override
@@ -35,30 +37,32 @@ class _HomeContentState extends State<HomeContent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-            padding: EdgeInsets.only(
-                bottom: widget.titleBottomSpacing,
-                left: widget.titleLeftSpacing,
-                right: widget.titleRightSpacing),
-            child: (widget.isPair)
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
+        !widget.onlyContent
+            ? Padding(
+                padding: EdgeInsets.only(
+                    bottom: widget.titleBottomSpacing,
+                    left: widget.titleLeftSpacing,
+                    right: widget.titleRightSpacing),
+                child: (widget.isPair)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.title,
+                            style: const TextStyle(
+                                fontSize: CustomFontSize.lg,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          widget.secondWidget,
+                        ],
+                      )
+                    : Text(
                         widget.title,
                         style: const TextStyle(
                             fontSize: CustomFontSize.lg,
                             fontWeight: FontWeight.bold),
-                      ),
-                      widget.secondWidget,
-                    ],
-                  )
-                : Text(
-                    widget.title,
-                    style: const TextStyle(
-                        fontSize: CustomFontSize.lg,
-                        fontWeight: FontWeight.bold),
-                  )),
+                      ))
+            : const SizedBox.shrink(),
         Center(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,

@@ -96,6 +96,12 @@ flutter:
     - lib/common/assets/images/HeartIcon.png
     - lib/common/assets/images/WhoopsImage.png
     - lib/common/assets/files/express_public_location.json
+    - lib/common/assets/images/TapGestureIcon.png
+    - lib/common/assets/images/SwipeRightGestureIcon.png
+    - lib/common/assets/images/SwipeLeftGestureIcon.png
+    - lib/common/assets/images/LargeEventImage.png
+    - lib/common/assets/images/SmallEventImageBand.png
+    - lib/common/assets/images/SmallEventImageCake.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

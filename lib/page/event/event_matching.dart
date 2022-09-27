@@ -51,7 +51,7 @@ class _EventMatchingState extends State<EventMatching> {
           widget: Builder(builder: (context) {
             return Padding(
               padding: const EdgeInsets.symmetric(
-                  vertical: CustomPadding.body, horizontal: CustomPadding.sm),
+                  vertical: CustomPadding.base, horizontal: CustomPadding.sm),
               child: DecoratedBox(
                 decoration: BoxDecoration(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
