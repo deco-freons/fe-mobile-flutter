@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/common/event_joined_card.dart';
 
@@ -14,6 +15,7 @@ class EventHistory extends StatefulWidget {
 class _EventHistoryState extends State<EventHistory>
     with AutomaticKeepAliveClientMixin<EventHistory> {
   bool keepAlive = true;
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -26,13 +28,15 @@ class _EventHistoryState extends State<EventHistory>
             horizontal: CustomPadding.body, vertical: CustomPadding.base),
         itemCount: 3,
         itemBuilder: (context, index) {
-          return const EventJoinedCard(
+          return EventJoinedCard(
+            eventID: index,
             title: "Title",
             author: "author",
             month: "month",
             date: "date",
             distance: 12,
             location: "location",
+            type: EventJoinedCardType.HISTORY,
           );
         },
         separatorBuilder: (context, index) => const SizedBox(
