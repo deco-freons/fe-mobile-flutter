@@ -20,25 +20,27 @@ class NetworkImageContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return image != null
-        ? CachedNetworkImage(
-            fadeInDuration: const Duration(milliseconds: 0),
-            placeholderFadeInDuration: const Duration(milliseconds: 0),
-            fadeOutDuration: const Duration(milliseconds: 0),
-            imageUrl: image!,
-            imageBuilder: (context, imageProvider) => Container(
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: imageProvider,
-                  fit: BoxFit.cover,
+        ? SizedBox(
+            width: width,
+            height: height,
+            child: CachedNetworkImage(
+              fadeInDuration: const Duration(milliseconds: 0),
+              placeholderFadeInDuration: const Duration(milliseconds: 0),
+              fadeOutDuration: const Duration(milliseconds: 0),
+              imageUrl: image!,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
+                child: child,
               ),
-              child: child,
+              placeholder: (context, url) =>
+                  BuildLoading.buildRectangularLoading(height: height),
+              errorWidget: (context, url, error) => buildDefaultContainer(),
             ),
-            placeholder: (context, url) =>
-                BuildLoading.buildRectangularLoading(height: height),
-            errorWidget: (context, url, error) => buildDefaultContainer(),
           )
         : buildDefaultContainer();
   }
