@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/exception/not_found_exception.dart';
 
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/get_it.dart';
+import 'package:flutter_boilerplate/preference/data/preference_model.dart';
 import 'package:flutter_boilerplate/preference/data/preference_repository.dart';
 import 'preference_state.dart';
 
@@ -25,8 +27,12 @@ class PreferenceCubit extends BaseCubit<PreferenceState> {
       }
       Map<String, dynamic> userMap = json.decode(user);
       List<String> preferenceList = data;
-
-      userMap['preferences'] = preferenceList;
+      List<PreferenceModel> preferenceModelList = PrefType.values
+          .where((pref) => preferenceList.contains(pref.name))
+          .map((pref) => PreferenceModel(
+              preferenceID: pref.name, preferenceName: pref.desc))
+          .toList();
+      userMap['preferences'] = preferenceModelList;
       userMap['isFirstLogin'] = false;
       await secureStorage.set(key: 'user', value: json.encode(userMap));
       await _preferenceRepository.setFirstPreference(data);

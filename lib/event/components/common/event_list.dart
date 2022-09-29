@@ -13,13 +13,15 @@ class EventList extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isLoading;
   final String title;
-  const EventList(
-      {Key? key,
-      required this.events,
-      required this.onPressed,
-      required this.isLoading,
-      required this.title})
-      : super(key: key);
+  final bool isAssetImage;
+  const EventList({
+    Key? key,
+    required this.events,
+    required this.onPressed,
+    required this.isLoading,
+    required this.title,
+    this.isAssetImage = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,8 @@ class EventList extends StatelessWidget {
                         distance: event.distance,
                         month: splittedDate[0].substring(0, 3),
                         date: splittedDate[1].substring(0, 2),
-                        image: event.eventImage?.imageUrl);
+                        image: event.eventImage?.imageUrl,
+                        isAssetImage: isAssetImage);
                   }).toList());
   }
 }

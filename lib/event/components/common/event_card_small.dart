@@ -12,6 +12,7 @@ class EventCardSmall extends StatefulWidget {
   final String month;
   final String date;
   final String? image;
+  final bool isAssetImage;
   final bool loading;
 
   const EventCardSmall({
@@ -22,6 +23,7 @@ class EventCardSmall extends StatefulWidget {
     required this.month,
     required this.date,
     this.image,
+    this.isAssetImage = false,
     this.loading = false,
   }) : super(key: key);
 
@@ -33,6 +35,7 @@ class EventCardSmall extends StatefulWidget {
     this.month = '',
     this.date = '',
     this.image = '',
+    this.isAssetImage = false,
     this.loading = true,
   }) : super(key: key);
 
@@ -68,21 +71,24 @@ class _EventCardSmallState extends State<EventCardSmall> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20.0)),
                           ),
-                          child: NetworkImageContainer(
-                            width: 174.0,
-                            height: 139.0,
-                            image: widget.image,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 9.0, right: 9.0),
-                              child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: DateCard(
-                                    month: widget.month,
-                                    date: widget.date,
-                                  )),
-                            ),
-                          ),
+                          child: widget.isAssetImage
+                              ? Container(
+                                  width: 174.0,
+                                  height: 139.0,
+                                  decoration: BoxDecoration(
+                                      image: widget.image != null
+                                          ? DecorationImage(
+                                              image: AssetImage(widget.image!),
+                                              fit: BoxFit.cover)
+                                          : null),
+                                  child: buildDateCard(),
+                                )
+                              : NetworkImageContainer(
+                                  width: 174.0,
+                                  height: 139.0,
+                                  image: widget.image,
+                                  child: buildDateCard(),
+                                ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -119,5 +125,17 @@ class _EventCardSmallState extends State<EventCardSmall> {
           )
         : BuildLoading.buildRectangularLoading(
             width: 192, height: 210, borderRadius: 20);
+  }
+
+  Widget buildDateCard() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 9.0, right: 9.0),
+      child: Align(
+          alignment: Alignment.topRight,
+          child: DateCard(
+            month: widget.month,
+            date: widget.date,
+          )),
+    );
   }
 }

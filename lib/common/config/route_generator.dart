@@ -26,6 +26,8 @@ import 'package:flutter_boilerplate/page/auth/register.dart';
 import 'package:flutter_boilerplate/page/search/search_location.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_boilerplate/page/splash.dart';
+import 'package:flutter_boilerplate/page/walkthrough/dummy_event_matching.dart';
+import 'package:flutter_boilerplate/page/walkthrough/dummy_homepage.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -86,8 +88,10 @@ class RouteGenerator {
       case SearchEvents.routeName:
         return MaterialPageRoute(builder: (context) => const SearchEvents());
       case LocationPermission.routeName:
+        bool isFirstLogin = args as bool;
         return MaterialPageRoute(
-            builder: (context) => const LocationPermission());
+            builder: (context) =>
+                LocationPermission(isFirstLogin: isFirstLogin));
       case LocationDenied.routeName:
         return MaterialPageRoute(builder: (context) => const LocationDenied());
       case EventParticipants.routeName:
@@ -104,6 +108,11 @@ class RouteGenerator {
                 ));
       case EventMatching.routeName:
         return MaterialPageRoute(builder: (context) => const EventMatching());
+      case DummyHomepage.routeName:
+        return MaterialPageRoute(builder: (context) => const DummyHomepage());
+      case DummyEventMatching.routeName:
+        return MaterialPageRoute(
+            builder: (context) => const DummyEventMatching());
       default:
         return _errorRoute();
     }

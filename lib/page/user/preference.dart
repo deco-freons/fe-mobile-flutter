@@ -71,7 +71,8 @@ class _PreferenceState extends State<Preference> {
           },
           listener: (context, state) {
             if (state is PreferenceSuccessState) {
-              Navigator.pushNamed(context, LocationPermission.routeName);
+              Navigator.pushNamed(context, LocationPermission.routeName,
+                  arguments: true);
             }
           },
         ),
