@@ -9,6 +9,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event/create_event_state.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event/create_event_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event/create_event_repository.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
@@ -149,26 +150,32 @@ class _CreateEventFormState extends State<CreateEventForm> {
       submitTitle: 'Create',
       submitHandler: () {
         CreateEventModel data = CreateEventModel(
-            eventName: eventName.controller.text,
-            categories:
-                category.preferences.map((pref) => pref.preferenceID).toList(),
-            date: date.controller.text,
-            startTime: eventTime.controller.text,
-            endTime: eventTime.secondController != null
-                ? eventTime.secondController!.text
-                : eventTime.controller.text,
-            longitude: location.lng.toString(),
-            latitude: location.lat.toString(),
-            location: location.googleMapSuburbId != null
-                ? location.googleMapSuburbId!
-                : 0,
-            locationName: location.controller.text,
-            shortDescription: shortDescription.controller.text != ""
-                ? shortDescription.controller.text
-                : "No description",
-            description: description.controller.text != ""
-                ? description.controller.text
-                : "No description");
+          eventName: eventName.controller.text,
+          categories:
+              category.preferences.map((pref) => pref.preferenceID).toList(),
+          date: date.controller.text,
+          startTime: eventTime.controller.text,
+          endTime: eventTime.secondController != null
+              ? eventTime.secondController!.text
+              : eventTime.controller.text,
+          longitude: location.lng.toString(),
+          latitude: location.lat.toString(),
+          location: location.googleMapSuburbId != null
+              ? location.googleMapSuburbId!
+              : 0,
+          locationName: location.controller.text,
+          shortDescription: shortDescription.controller.text != ""
+              ? shortDescription.controller.text
+              : "No description",
+          description: description.controller.text != ""
+              ? description.controller.text
+              : "No description",
+          eventPrice: EventPriceModel(
+              fee: price.controller.text != ""
+                  ? double.parse(price.controller.text)
+                  : 0,
+              currency: "AU\$"),
+        );
 
         submit(context, data, image.image);
       },
