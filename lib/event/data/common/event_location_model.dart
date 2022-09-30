@@ -8,7 +8,10 @@ class EventLocationModel extends BaseModel {
   final String suburb;
   final String city;
 
-  const EventLocationModel({required this.suburb, required this.city});
+  const EventLocationModel({
+    required this.suburb,
+    required this.city,
+  });
 
   factory EventLocationModel.fromJson(Map<String, dynamic> json) =>
       _$EventLocationModelFromJson(json);

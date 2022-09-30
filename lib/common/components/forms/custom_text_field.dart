@@ -15,7 +15,7 @@ import 'package:flutter_boilerplate/common/data/brisbane_location_model.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/common/data/search_location_response_model.dart';
 import 'package:flutter_boilerplate/common/utils/brisbane_location_util.dart';
-import 'package:flutter_boilerplate/common/data/event_location_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
 import 'package:flutter_boilerplate/page/search/search_location.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/preference/data/preference_model.dart';

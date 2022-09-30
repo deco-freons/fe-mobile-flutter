@@ -1,7 +1,7 @@
 import 'package:flutter_boilerplate/common/bloc/base_cubit.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 
 class SearchEventsCubit extends BaseCubit<SearchEventsState> {
   final SearchEventsRepository _searchEventsRepository;
-  List<PopularEventModel> eventList;
+  List<EventModel> eventList;
   int pageCount = 0;
   SearchEventsCubit(this._searchEventsRepository)
       : eventList = [],
@@ -25,7 +25,7 @@ class SearchEventsCubit extends BaseCubit<SearchEventsState> {
       RequestGetEventModel request =
           data.toRequestGetEventModel(position, todaysDate);
 
-      List<PopularEventModel> events =
+      List<EventModel> events =
           await _searchEventsRepository.searchEvents(request);
 
       eventList = [...events];
@@ -45,7 +45,7 @@ class SearchEventsCubit extends BaseCubit<SearchEventsState> {
       RequestGetEventModel request =
           data.toRequestGetEventModel(position, todaysDate);
 
-      List<PopularEventModel> events =
+      List<EventModel> events =
           await _searchEventsRepository.getMoreSearchEvents(request, pageCount);
 
       bool hasMore = events.isNotEmpty;

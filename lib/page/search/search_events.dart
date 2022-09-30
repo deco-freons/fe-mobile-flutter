@@ -10,7 +10,7 @@ import 'package:flutter_boilerplate/event/bloc/search_event/search_event_cubit.d
 import 'package:flutter_boilerplate/event/bloc/search_event/search_event_state.dart';
 import 'package:flutter_boilerplate/event/components/common/event_card_large.dart';
 import 'package:flutter_boilerplate/event/components/common/no_events_card.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
 import 'package:flutter_boilerplate/page/event/event_detail.dart';
@@ -238,7 +238,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     );
   }
 
-  Widget buildEvent(BuildContext context, PopularEventModel? event) {
+  Widget buildEvent(BuildContext context, EventModel? event) {
     if (event == null) {
       return const SizedBox.shrink();
     }

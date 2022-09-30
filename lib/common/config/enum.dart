@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum TextFieldType {
   string,
@@ -298,3 +299,35 @@ enum EventJoinedCardType {
   SCHEDULED,
   HISTORY,
 }
+
+enum EventStatus {
+  @JsonValue("Created")
+  CREATED,
+  @JsonValue("Coming Soon")
+  COMING_SOON,
+  @JsonValue("Ongoing")
+  ONGOING,
+  @JsonValue("In Progress")
+  IN_PROGRESS,
+  @JsonValue("Done")
+  DONE,
+}
+
+// extension EventStatusExtension on EventStatus {
+//   String get value {
+//     switch (this) {
+//       case EventStatus.CREATED:
+//         return "Created";
+//       case EventStatus.COMING_SOON:
+//         return "Coming Soon";
+//       case EventStatus.ONGOING:
+//         return "Ongoing";
+//       case EventStatus.IN_PROGRESS:
+//         return "In Progress";
+//       case EventStatus.DONE:
+//         return "Done";
+//       default:
+//         return "";
+//     }
+//   }
+// }

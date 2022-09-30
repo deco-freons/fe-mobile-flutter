@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 
 @immutable
 abstract class EventMatchingHomeState implements BaseState {
@@ -16,7 +16,7 @@ class EventMatchingHomeLoadingState extends EventMatchingHomeState {
 }
 
 class EventMatchingHomeSuccessState extends EventMatchingHomeState {
-  final List<PopularEventModel> events;
+  final List<EventModel> events;
 
   const EventMatchingHomeSuccessState({
     required this.events,
