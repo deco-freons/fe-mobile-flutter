@@ -102,4 +102,8 @@ class CustomFormInput {
             ? ImageInputAction.UPLOAD
             : ImageInputAction.DO_NOTHING;
   }
+
+  void setDisable(bool newValue) {
+    disable = newValue;
+  }
 }

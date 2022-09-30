@@ -13,7 +13,6 @@ import 'package:flutter_boilerplate/event/data/create_event/create_event_model.d
 import 'package:flutter_boilerplate/event/data/create_event/create_event_repository.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 
-
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
   static const routeName = '/create-event';
@@ -128,6 +127,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
     type: TextFieldType.location,
     initialgoogleMapSuburb: "",
   );
+  final CustomFormInput price = CustomFormInput(
+    label: 'Price',
+    type: TextFieldType.price,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -139,6 +142,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
         date,
         eventTime,
         location,
+        price,
         shortDescription,
         description
       ],
