@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/bloc/base_state.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 
 @immutable
 abstract class PopularEventsState implements BaseState {
@@ -20,7 +20,7 @@ class PopularEventsFilterState extends PopularEventsState {
 }
 
 class PopularEventsSuccessState extends PopularEventsState {
-  final List<PopularEventModel> events;
+  final List<EventModel> events;
 
   const PopularEventsSuccessState({
     required this.events,

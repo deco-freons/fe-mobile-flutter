@@ -11,7 +11,7 @@ class EventsHistoryCubit extends BaseCubit<EventsHistoryState> {
 
   Future<void> getEventsHistory() async {
     try {
-      await _eventsHistoryRepository.getEventsHistory();
+      _eventsHistoryRepository;
     } catch (e) {
       String message = ErrorHandler.handle(e);
       emit(EventsHistoryErrorState(errorMessage: message));

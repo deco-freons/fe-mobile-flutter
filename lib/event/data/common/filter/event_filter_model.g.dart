@@ -20,6 +20,10 @@ EventFilterModel _$EventFilterModelFromJson(Map<String, dynamic> json) =>
           ? null
           : DaysToEventModel.fromJson(
               json['daysToEvent'] as Map<String, dynamic>),
+      eventStatus: json['eventStatus'] == null
+          ? null
+          : EventStatusRequestModel.fromJson(
+              json['eventStatus'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventFilterModelToJson(EventFilterModel instance) {
@@ -34,5 +38,6 @@ Map<String, dynamic> _$EventFilterModelToJson(EventFilterModel instance) {
   writeNotNull('eventCategories', instance.eventCategories);
   writeNotNull('eventRadius', instance.eventRadius);
   writeNotNull('daysToEvent', instance.daysToEvent);
+  writeNotNull('eventStatus', instance.eventStatus);
   return val;
 }

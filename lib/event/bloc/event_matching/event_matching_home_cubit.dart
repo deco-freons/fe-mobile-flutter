@@ -4,7 +4,7 @@ import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_state.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
 import 'package:flutter_boilerplate/event/data/common/sort/event_sort_model.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_radius_model.dart';
@@ -32,7 +32,7 @@ class EventMatchingHomeCubit extends BaseCubit<EventMatchingHomeState> {
             isMoreOrLess: EventSort.mostPopular.order),
       );
 
-      List<PopularEventModel> res =
+      List<EventModel> res =
           await _eventMatchingHomeRepository.getEventMatchingHome(request);
 
       emit(EventMatchingHomeSuccessState(events: res));
