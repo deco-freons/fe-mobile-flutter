@@ -9,7 +9,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event/create_event_state.dart';
-import 'package:flutter_boilerplate/event/data/common/event_price_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_request_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event/create_event_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event/create_event_repository.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
@@ -99,7 +99,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final CustomFormInput image =
       CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
   final CustomFormInput eventName =
-      CustomFormInput(label: 'Event Name', type: TextFieldType.string);
+      CustomFormInput(label: 'Event Name', type: TextFieldType.string, required: true);
   final CustomFormInput category = CustomFormInput(
     label: 'Category',
     type: TextFieldType.interest,
@@ -170,9 +170,9 @@ class _CreateEventFormState extends State<CreateEventForm> {
           description: description.controller.text != ""
               ? description.controller.text
               : "No description",
-          eventPrice: EventPriceModel(
+          eventPrice: EventPriceRequestModel(
               fee: price.controller.text != ""
-                  ? double.parse(price.controller.text)
+                  ? int.parse(price.controller.text)
                   : 0,
               currency: "AU\$"),
         );

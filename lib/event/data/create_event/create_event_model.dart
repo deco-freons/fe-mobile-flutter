@@ -1,5 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base/base_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_price_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_request_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'create_event_model.g.dart';
@@ -17,7 +17,7 @@ class CreateEventModel extends BaseModel {
   final String locationName;
   final String shortDescription;
   final String description;
-  final EventPriceModel eventPrice;
+  final EventPriceRequestModel eventPrice;
 
   const CreateEventModel(
       {required this.eventName,

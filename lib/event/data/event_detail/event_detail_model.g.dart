@@ -20,6 +20,8 @@ EventDetailModel _$EventDetailModelFromJson(Map<String, dynamic> json) =>
       latitude: (json['latitude'] as num).toDouble(),
       shortDescription: json['shortDescription'] as String,
       description: json['description'] as String,
+      eventPrice: EventPriceResponseModel.fromJson(
+          json['eventPrice'] as Map<String, dynamic>),
       eventCreator: EventParticipantModel.fromJson(
           json['eventCreator'] as Map<String, dynamic>),
       participants: json['participants'] as int,
@@ -47,6 +49,7 @@ Map<String, dynamic> _$EventDetailModelToJson(EventDetailModel instance) =>
       'latitude': instance.latitude,
       'shortDescription': instance.shortDescription,
       'description': instance.description,
+      'eventPrice': instance.eventPrice,
       'eventCreator': instance.eventCreator,
       'participants': instance.participants,
       'participantsList': instance.participantsList,

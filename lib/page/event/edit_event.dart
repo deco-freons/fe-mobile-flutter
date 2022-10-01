@@ -56,7 +56,10 @@ class _EditEventState extends State<EditEvent> {
                 ),
               );
             } else if (state is UpdateEventDetailErrorState) {
-              return EditEventForm(errorMessage: state.errorMessage);
+              return EditEventForm(
+                errorMessage: state.errorMessage,
+                eventDetail: widget.eventDetail,
+              );
             } else {
               return EditEventForm(eventDetail: widget.eventDetail);
             }
@@ -110,7 +113,8 @@ class _EditEventFormState extends State<EditEventForm> {
     final CustomFormInput eventName = CustomFormInput(
         label: 'Event Name',
         type: TextFieldType.string,
-        initialValue: event?.eventName);
+        initialValue: event?.eventName,
+        required: true);
     final CustomFormInput category = CustomFormInput(
       label: 'Category',
       type: TextFieldType.interest,
@@ -138,6 +142,11 @@ class _EditEventFormState extends State<EditEventForm> {
       label: 'Description',
       type: TextFieldType.textArea,
       initialValue: event?.description,
+    );
+    final CustomFormInput price = CustomFormInput(
+      label: 'Price',
+      type: TextFieldType.price,
+      initialValue: event?.eventPrice.fee.toString(),
     );
     final CustomFormInput location = CustomFormInput(
       label: 'Location',
@@ -184,6 +193,7 @@ class _EditEventFormState extends State<EditEventForm> {
         date,
         eventTime,
         location,
+        price,
         shortDescription,
         description,
       ],
@@ -209,7 +219,11 @@ class _EditEventFormState extends State<EditEventForm> {
               participated: event.participated,
               locationName: location.controller.text,
               location: location.location,
-              eventImage: event.eventImage);
+              eventImage: event.eventImage,
+              eventPrice: event.eventPrice.copyWith(
+                  fee: price.controller.text != ""
+                      ? int.parse(price.controller.text)
+                      : 0));
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,
             isEventCreator: true,

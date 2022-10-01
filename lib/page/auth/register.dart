@@ -84,17 +84,27 @@ class RegisterForm extends StatelessWidget {
 
   RegisterForm({Key? key, this.errorMessage = ""}) : super(key: key);
 
-  final CustomFormInput firstName =
-      CustomFormInput(label: 'First Name', type: TextFieldType.string);
-  final CustomFormInput lastName =
-      CustomFormInput(label: 'Last Name', type: TextFieldType.string);
+  final CustomFormInput firstName = CustomFormInput(
+    label: 'First Name',
+    type: TextFieldType.string,
+    required: true,
+  );
+  final CustomFormInput lastName = CustomFormInput(
+    label: 'Last Name',
+    type: TextFieldType.string,
+    required: true,
+  );
   final CustomFormInput username = CustomFormInput(
       label: 'Username',
       type: TextFieldType.string,
       pattern: usernamePattern,
+      required: true,
       errorMessage: "error");
   final CustomFormInput email = CustomFormInput(
-      label: 'Email', type: TextFieldType.string, errorMessage: "error");
+      label: 'Email',
+      type: TextFieldType.string,
+      required: true,
+      errorMessage: "error");
   final CustomFormInput birthDate = CustomFormInput(
       label: 'Birth Date',
       type: TextFieldType.date,
@@ -108,6 +118,7 @@ class RegisterForm extends StatelessWidget {
       label: 'Password',
       type: TextFieldType.password,
       pattern: passwordPattern,
+      required: true,
       errorMessage: "Password must be 8-20 character (including number)",
       confirmField: true);
   final CustomFormInput showLocationPermission = CustomFormInput(
