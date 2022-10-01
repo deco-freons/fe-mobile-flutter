@@ -4,6 +4,7 @@ import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_state.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_radius_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_status_request_model.dart';
 import 'package:flutter_boilerplate/event/data/common/sort/event_sort_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_repository.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
@@ -36,6 +37,7 @@ class EventMatchingCubit extends BaseCubit<EventMatchingState> {
             radius: radius.value,
             isMoreOrLess: radius.isMoreOrLess,
           ),
+          eventStatus: const EventStatusRequestModel(status: [EventStatus.COMING_SOON]),
         ),
         sort: EventSortModel(sortBy: sort.value, isMoreOrLess: sort.order),
       );

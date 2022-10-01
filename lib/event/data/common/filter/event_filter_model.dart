@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/event/data/common/filter/days_to_event_model
 import 'package:flutter_boilerplate/event/data/common/filter/event_categories_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_radius_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_status_request_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/participant_size_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'event_filter_model.g.dart';
@@ -13,11 +14,13 @@ class EventFilterModel extends BaseModel {
   final EventRadiusModel? eventRadius;
   final DaysToEventModel? daysToEvent;
   final EventStatusRequestModel? eventStatus;
+  final ParticipantSizeModel? eventParticipants;
 
   const EventFilterModel({
     this.eventCategories,
     this.eventRadius,
     this.daysToEvent,
+    this.eventParticipants,
     this.eventStatus,
   });
 
