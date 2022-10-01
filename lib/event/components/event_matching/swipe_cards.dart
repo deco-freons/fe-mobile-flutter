@@ -205,11 +205,29 @@ class _SwipeCardsState extends State<SwipeCards> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomChip(label: '${widget.distance} km'),
+                        CustomChip(
+                          label: '${widget.distance} km',
+                          boxShadow: [
+                            BoxShadow(
+                              color: neutral.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 4,
+                              offset: const Offset(0, 3),
+                            )
+                          ],
+                        ),
                         const SizedBox(
                           width: CustomPadding.md,
                         ),
                         CustomChip(
+                            boxShadow: [
+                              BoxShadow(
+                                color: neutral.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: const Offset(0, 3),
+                              )
+                            ],
                             color: success,
                             label: widget.fee > 0 ? "\$${widget.fee}" : "FREE")
                       ],
