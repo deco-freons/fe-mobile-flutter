@@ -21,6 +21,8 @@ EventModel _$EventModelFromJson(Map<String, dynamic> json) => EventModel(
       participants: json['participants'] as int,
       eventStatus: EventStatusModel.fromJson(
           json['eventStatus'] as Map<String, dynamic>),
+      eventPrice: EventPriceResponseModel.fromJson(
+          json['eventPrice'] as Map<String, dynamic>),
       eventImage: json['eventImage'] == null
           ? null
           : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
@@ -39,5 +41,6 @@ Map<String, dynamic> _$EventModelToJson(EventModel instance) =>
       'locationName': instance.locationName,
       'participants': instance.participants,
       'eventStatus': instance.eventStatus,
+      'eventPrice': instance.eventPrice,
       'eventImage': instance.eventImage,
     };

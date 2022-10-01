@@ -229,19 +229,21 @@ class _EventMatchingState extends State<EventMatching> {
             child: Stack(
               children: events
                   .map((event) => SwipeCards(
-                      eventID: event.eventID,
-                      eventName: event.eventName,
-                      participants: event.participants,
-                      date: event.date,
-                      suburb: event.location.suburb,
-                      city: event.location.city,
-                      locationName: event.locationName,
-                      distance: event.distance,
-                      startTime: event.startTime,
-                      endTime: event.endTime,
-                      shortDescription: event.shortDescription,
-                      image: event.eventImage?.imageUrl,
-                      isFront: events.last == event))
+                        eventID: event.eventID,
+                        eventName: event.eventName,
+                        participants: event.participants,
+                        date: event.date,
+                        suburb: event.location.suburb,
+                        city: event.location.city,
+                        locationName: event.locationName,
+                        distance: event.distance,
+                        startTime: event.startTime,
+                        endTime: event.endTime,
+                        shortDescription: event.shortDescription,
+                        image: event.eventImage?.imageUrl,
+                        fee: event.eventPrice.fee,
+                        isFront: events.last == event,
+                      ))
                   .toList(),
             ),
           );

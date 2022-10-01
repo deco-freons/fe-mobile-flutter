@@ -170,6 +170,7 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
       type: EventJoinedCardType.HISTORY,
       participants: event.participantsList,
       isEventCreator: event.isEventCreator,
+      fee: event.eventPrice.fee,
     );
   }
 
