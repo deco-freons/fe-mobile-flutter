@@ -168,6 +168,7 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
       location: '${event.locationName}, ${event.location.city}',
       type: EventJoinedCardType.SCHEDULED,
       participants: event.participantsList,
+      isEventCreator: event.isEventCreator,
       onCancelClick: (eventID) {},
     );
   }

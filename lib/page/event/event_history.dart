@@ -169,6 +169,7 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
       location: '${event.locationName}, ${event.location.city}',
       type: EventJoinedCardType.HISTORY,
       participants: event.participantsList,
+      isEventCreator: event.isEventCreator,
     );
   }
 
