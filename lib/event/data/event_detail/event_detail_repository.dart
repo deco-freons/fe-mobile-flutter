@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/common/utils/file_parser.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_image_request_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_request_model.dart';
 import 'package:flutter_boilerplate/event/data/update_event/edit_event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_detail_data_provider.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_detail_response_model.dart';
@@ -106,6 +107,10 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
       locationName: updatedModel.event.locationName,
       shortDescription: updatedModel.event.shortDescription,
       description: updatedModel.event.description,
+      eventStatus: updatedModel.event.eventStatus.statusName.name,
+      eventPrice: EventPriceRequestModel(
+          fee: updatedModel.event.eventPrice.fee,
+          currency: updatedModel.event.eventPrice.currency.currencyShortName),
     );
     await _eventDetailDataProvider.editEvent(requestData);
 

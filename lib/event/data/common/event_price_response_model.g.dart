@@ -20,5 +20,5 @@ Map<String, dynamic> _$EventPriceResponseModelToJson(
     <String, dynamic>{
       'priceID': instance.priceID,
       'fee': instance.fee,
-      'currency': instance.currency,
+      'currency': instance.currency.toJson(),
     };

@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'event_currency_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class EventCurrencyModel extends BaseModel {
   final String currencyShortName;
   const EventCurrencyModel({required this.currencyShortName});

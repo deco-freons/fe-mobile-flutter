@@ -211,14 +211,19 @@ class _EditEventFormState extends State<EditEventForm> {
                   : eventTime.controller.text,
               longitude: location.lng,
               latitude: location.lat,
-              shortDescription: shortDescription.controller.text,
-              description: description.controller.text,
+              shortDescription: shortDescription.controller.text != ""
+                  ? shortDescription.controller.text
+                  : "No Description",
+              description: description.controller.text != ""
+                  ? description.controller.text
+                  : "No Description",
               eventCreator: event.eventCreator,
               participants: event.participants,
               participantsList: event.participantsList,
               participated: event.participated,
               locationName: location.controller.text,
               location: location.location,
+              eventStatus: event.eventStatus,
               eventImage: event.eventImage,
               eventPrice: event.eventPrice.copyWith(
                   fee: price.controller.text != ""
