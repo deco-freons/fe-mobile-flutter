@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/layout/confirmation_modal_bottom.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/date_parser.dart';
-import 'package:flutter_boilerplate/event/bloc/events_history/events_history_cubit.dart';
-import 'package:flutter_boilerplate/event/bloc/events_history/events_history_state.dart';
+import 'package:flutter_boilerplate/event/bloc/events_schedule/events_schedue_state.dart';
+import 'package:flutter_boilerplate/event/bloc/events_schedule/events_schedule_cubit.dart';
 import 'package:flutter_boilerplate/event/components/common/event_joined_card.dart';
 import 'package:flutter_boilerplate/event/data/common/event_joined_model.dart';
 import 'package:flutter_boilerplate/event/data/events_joined/events_joined_repository.dart';
 import 'package:flutter_boilerplate/get_it.dart';
 
-class EventHistory extends StatefulWidget {
-  const EventHistory({Key? key}) : super(key: key);
-  static const routeName = "/history";
-
+class EventSchedule extends StatefulWidget {
+  const EventSchedule({Key? key}) : super(key: key);
+  static const routeName = "/event-schedule";
   @override
-  State<EventHistory> createState() => _EventHistoryState();
+  State<EventSchedule> createState() => _EventScheduleState();
 }
 
-class _EventHistoryState extends State<EventHistory>
-    with AutomaticKeepAliveClientMixin<EventHistory> {
+class _EventScheduleState extends State<EventSchedule>
+    with AutomaticKeepAliveClientMixin<EventSchedule> {
   bool keepAlive = true;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider<EventsHistoryCubit>(
+    return BlocProvider<EventsScheduleCubit>(
       create: (context) =>
-          EventsHistoryCubit(getIt.get<EventsJoinedRepository>())
-            ..getEventsHistory(0),
+          EventsScheduleCubit(getIt.get<EventsJoinedRepository>())
+            ..getEventsSchedule(0),
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: neutral.shade100,
-          appBar: const PageAppBar(title: "History"),
-          body: const BuildEventHistory()),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: neutral.shade100,
+        appBar: const PageAppBar(title: "Scheduled Events"),
+        body: const BuildEventSchedule(),
+      ),
     );
   }
 
@@ -42,14 +43,14 @@ class _EventHistoryState extends State<EventHistory>
   bool get wantKeepAlive => keepAlive;
 }
 
-class BuildEventHistory extends StatefulWidget {
-  const BuildEventHistory({Key? key}) : super(key: key);
+class BuildEventSchedule extends StatefulWidget {
+  const BuildEventSchedule({Key? key}) : super(key: key);
 
   @override
-  State<BuildEventHistory> createState() => _BuildEventHistoryState();
+  State<BuildEventSchedule> createState() => _BuildEventScheduleState();
 }
 
-class _BuildEventHistoryState extends State<BuildEventHistory> {
+class _BuildEventScheduleState extends State<BuildEventSchedule> {
   final ScrollController _scrollController = ScrollController();
   int page = 0;
 
@@ -58,14 +59,13 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
     _scrollController.addListener(() {
       if (_scrollController.offset ==
           _scrollController.position.maxScrollExtent) {
-        EventsHistoryCubit eventsHistoryCubit =
-            context.read<EventsHistoryCubit>();
-        EventsHistoryState state = eventsHistoryCubit.state;
-        if (state is EventsHistorySuccessState) {
+        EventsScheduleCubit eventsScheduleCubit =
+            context.read<EventsScheduleCubit>();
+        EventsScheduleState state = eventsScheduleCubit.state;
+        if (state is EventsScheduleSuccessState) {
           if (state.hasMore) {
             page = page + 1;
-
-            eventsHistoryCubit.getEventsHistory(page);
+            eventsScheduleCubit.getEventsSchedule(page);
           }
         }
       }
@@ -84,24 +84,25 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
     return RefreshIndicator(
       onRefresh: () async {
         page = 0;
-        await context.read<EventsHistoryCubit>().getEventsHistory(page);
+        await context.read<EventsScheduleCubit>().getEventsSchedule(page);
       },
       child: ListView(
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
-          BlocConsumer<EventsHistoryCubit, EventsHistoryState>(
+          BlocConsumer<EventsScheduleCubit, EventsScheduleState>(
             listener: (context, state) {
-              if (state is EventsHistoryFetchMoreErrorState) {
+              if (state is EventsScheduleFetchMoreErrorState) {
                 showSnackbar(state.errorMessage);
               }
-              if (state is EventsHistoryErrorState) {
+              if (state is EventsScheduleErrorState) {
                 page = 0;
                 showSnackbar(state.errorMessage);
               }
             },
             buildWhen: (previous, current) {
-              return current is! EventsHistoryFetchMoreLoadingState;
+              return current is! EventsScheduleFetchMoreLoadingState &&
+                  current is! EventScheduleLeaveLoadingState;
             },
             builder: (context, state) {
               return ListView.separated(
@@ -112,15 +113,15 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
                     vertical: CustomPadding.base),
                 itemCount: getItemCount(state),
                 itemBuilder: (context, index) {
-                  if (state is EventsHistorySuccessState) {
+                  if (state is EventsScheduleSuccessState) {
                     return buildCard(context, state.events[index]);
                   }
 
-                  if (state is EventsHistoryFetchMoreErrorState) {
+                  if (state is EventsScheduleFetchMoreErrorState) {
                     return buildCard(context, state.events[index]);
                   }
 
-                  if (state is EventsHistoryLoadingState) {
+                  if (state is EventsScheduleLoadingState) {
                     return const EventJoinedCard.loading();
                   }
 
@@ -132,9 +133,9 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
               );
             },
           ),
-          BlocBuilder<EventsHistoryCubit, EventsHistoryState>(
+          BlocBuilder<EventsScheduleCubit, EventsScheduleState>(
             builder: (context, state) {
-              return state is EventsHistoryFetchMoreLoadingState
+              return state is EventsScheduleFetchMoreLoadingState
                   ? const Center(
                       child: CircularProgressIndicator(
                         color: primary,
@@ -145,6 +146,37 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
           )
         ],
       ),
+    );
+  }
+
+  showLeaveModal(int eventID, BuildContext blocContext) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return ConfirmationModalBottom(
+          description: "Are you sure you want to leave this event?",
+          confirmText: "Leave",
+          confirmButtonType: TextButtonType.error,
+          onConfirmPressed: () {
+            blocContext
+                .read<EventsScheduleCubit>()
+                .leaveEvent(eventID)
+                .then((value) {
+              Navigator.of(context).pop();
+            });
+          },
+          cancelText: "Cancel",
+          cancelButtonType: TextButtonType.tertiaryDark,
+          onCancelPressed: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 
@@ -167,18 +199,21 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
       date: splittedDate[1].substring(0, 2),
       distance: event.distance,
       location: '${event.locationName}, ${event.location.city}',
-      type: EventJoinedCardType.HISTORY,
+      type: EventJoinedCardType.SCHEDULED,
       participants: event.participantsList,
       isEventCreator: event.isEventCreator,
+      onCancelClick: (eventID) {
+        showLeaveModal(eventID, context);
+      },
     );
   }
 
-  int getItemCount(EventsHistoryState state) =>
-      state is EventsHistorySuccessState
+  int getItemCount(EventsScheduleState state) =>
+      state is EventsScheduleSuccessState
           ? state.events.length
-          : state is EventsHistoryFetchMoreErrorState
+          : state is EventsScheduleFetchMoreErrorState
               ? state.events.length
-              : state is EventsHistoryLoadingState
+              : state is EventsScheduleLoadingState
                   ? 4
                   : 0;
 }

@@ -18,6 +18,7 @@ class EventJoinedCard extends StatelessWidget {
   final String location;
   final EventJoinedCardType type;
   final bool isLoading;
+  final bool isEventCreator;
   final List<EventParticipantModel> participants;
 
   final void Function(int eventID)? onCancelClick;
@@ -35,6 +36,7 @@ class EventJoinedCard extends StatelessWidget {
     this.isLoading = false,
     this.onCancelClick,
     required this.participants,
+    required this.isEventCreator,
   })  : assert(
             type == EventJoinedCardType.SCHEDULED
                 ? onCancelClick != null
@@ -54,7 +56,8 @@ class EventJoinedCard extends StatelessWidget {
       this.type = EventJoinedCardType.HISTORY,
       this.isLoading = true,
       this.onCancelClick,
-      this.participants = const []})
+      this.participants = const [],
+      this.isEventCreator = false})
       : super(key: key);
 
   @override
@@ -99,20 +102,22 @@ class EventJoinedCard extends StatelessWidget {
   }
 
   Widget buildCancel() {
-    return CustomButton(
-      label: "Cancel",
-      padding: const EdgeInsets.symmetric(
-          vertical: CustomPadding.xs, horizontal: CustomPadding.sm),
-      onPressedHandler: () {
-        // HANDLE CANCEL HERE
-        if (onCancelClick == null) return;
-        onCancelClick!(eventID);
-      },
-      labelFontSize: CustomFontSize.sm,
-      height: 0,
-      width: 0,
-      type: ButtonType.red,
-    );
+    return !isEventCreator
+        ? CustomButton(
+            label: "Cancel",
+            padding: const EdgeInsets.symmetric(
+                vertical: CustomPadding.xs, horizontal: CustomPadding.sm),
+            onPressedHandler: () {
+              // HANDLE CANCEL HERE
+              if (onCancelClick == null) return;
+              onCancelClick!(eventID);
+            },
+            labelFontSize: CustomFontSize.sm,
+            height: 0,
+            width: 0,
+            type: ButtonType.red,
+          )
+        : const SizedBox.shrink();
   }
 
   Widget buildRating() {

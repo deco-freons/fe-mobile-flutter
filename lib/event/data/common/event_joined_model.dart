@@ -10,6 +10,7 @@ part 'event_joined_model.g.dart';
 @JsonSerializable()
 class EventJoinedModel extends EventModel {
   final List<EventParticipantModel> participantsList;
+  final bool isEventCreator;
 
   const EventJoinedModel(
       {required int eventID,
@@ -24,7 +25,8 @@ class EventJoinedModel extends EventModel {
       required int participants,
       required EventStatusModel eventStatus,
       ImageModel? eventImage,
-      required this.participantsList})
+      required this.participantsList,
+      required this.isEventCreator})
       : super(
           eventID: eventID,
           eventName: eventName,

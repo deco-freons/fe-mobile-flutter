@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/components/layout/custom_bottom_navig
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/event/create_event.dart';
 import 'package:flutter_boilerplate/page/event/event_history.dart';
+import 'package:flutter_boilerplate/page/event/event_schedule.dart';
 import 'package:flutter_boilerplate/page/homepage.dart';
 import 'package:flutter_boilerplate/page/search/search_events.dart';
 
@@ -19,7 +20,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedPageIndex = 0;
 
   final SearchEvents _searchPage = const SearchEvents();
-  final Widget _eventPage = const SizedBox();
+  final Widget _eventSchedulePage = const EventSchedule();
   final Widget _historyPage = const EventHistory();
 
   @override
@@ -62,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
           children: <Widget>[
             Homepage(handlePageChanged: handlePageChanged),
             _searchPage,
-            _eventPage,
+            _eventSchedulePage,
             _historyPage
           ],
         ),
