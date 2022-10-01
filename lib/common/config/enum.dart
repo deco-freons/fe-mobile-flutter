@@ -312,22 +312,3 @@ enum EventStatus {
   @JsonValue("Done")
   DONE,
 }
-
-// extension EventStatusExtension on EventStatus {
-//   String get value {
-//     switch (this) {
-//       case EventStatus.CREATED:
-//         return "Created";
-//       case EventStatus.COMING_SOON:
-//         return "Coming Soon";
-//       case EventStatus.ONGOING:
-//         return "Ongoing";
-//       case EventStatus.IN_PROGRESS:
-//         return "In Progress";
-//       case EventStatus.DONE:
-//         return "Done";
-//       default:
-//         return "";
-//     }
-//   }
-// }
