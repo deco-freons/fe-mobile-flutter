@@ -23,6 +23,7 @@ class SwipeCards extends StatefulWidget {
   final String? image;
   final bool isEventEmpty;
   final bool isFront;
+  final int fee;
 
   const SwipeCards({
     Key? key,
@@ -40,6 +41,7 @@ class SwipeCards extends StatefulWidget {
     required this.distance,
     this.image,
     required this.isFront,
+    required this.fee,
   }) : super(key: key);
 
   const SwipeCards.empty({
@@ -58,6 +60,7 @@ class SwipeCards extends StatefulWidget {
     this.distance = 0,
     this.image,
     this.isFront = false,
+    this.fee = 0,
   }) : super(key: key);
 
   @override
@@ -203,6 +206,12 @@ class _SwipeCardsState extends State<SwipeCards> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomChip(label: '${widget.distance} km'),
+                        const SizedBox(
+                          width: CustomPadding.md,
+                        ),
+                        CustomChip(
+                            color: success,
+                            label: widget.fee > 0 ? "\$${widget.fee}" : "FREE")
                       ],
                     )
                   ],

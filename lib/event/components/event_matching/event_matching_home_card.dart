@@ -15,6 +15,7 @@ class EventMatchingCardHome extends StatelessWidget {
   final VoidCallback onTapHandler;
   final bool loading;
   final bool isEventEmpty;
+  final int fee;
 
   const EventMatchingCardHome(
       {Key? key,
@@ -28,23 +29,25 @@ class EventMatchingCardHome extends StatelessWidget {
       this.isAssetImage = false,
       required this.onTapHandler,
       this.loading = false,
-      this.isEventEmpty = false})
+      this.isEventEmpty = false,
+      required this.fee})
       : super(key: key);
 
-  const EventMatchingCardHome.empty(
-      {Key? key,
-      this.title = '',
-      this.author = '',
-      this.distance = 0,
-      this.location = '',
-      this.month = '',
-      this.date = '',
-      this.image,
-      this.isAssetImage = false,
-      required this.onTapHandler,
-      this.loading = false,
-      this.isEventEmpty = false})
-      : super(key: key);
+  const EventMatchingCardHome.empty({
+    Key? key,
+    this.title = '',
+    this.author = '',
+    this.distance = 0,
+    this.location = '',
+    this.month = '',
+    this.date = '',
+    this.image,
+    this.isAssetImage = false,
+    required this.onTapHandler,
+    this.loading = false,
+    this.isEventEmpty = false,
+    this.fee = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +102,7 @@ class EventMatchingCardHome extends StatelessWidget {
                   width: 330,
                   height: 320,
                   elevation: 3.0,
+                  fee: fee,
                 )
     ]);
   }

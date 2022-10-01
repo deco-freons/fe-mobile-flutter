@@ -2,6 +2,7 @@ import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_response_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_status_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -29,21 +30,22 @@ class EventMatchingResponseModel extends EventModel {
     required String locationName,
     required int participants,
     required EventStatusModel eventStatus,
+    required EventPriceResponseModel eventPrice,
     ImageModel? eventImage,
   }) : super(
-          eventID: eventID,
-          eventName: eventName,
-          date: date,
-          distance: distance,
-          longitude: longitude,
-          latitude: latitude,
-          eventCreator: eventCreator,
-          location: location,
-          locationName: locationName,
-          participants: participants,
-          eventImage: eventImage,
-          eventStatus: eventStatus,
-        );
+            eventID: eventID,
+            eventName: eventName,
+            date: date,
+            distance: distance,
+            longitude: longitude,
+            latitude: latitude,
+            eventCreator: eventCreator,
+            location: location,
+            locationName: locationName,
+            participants: participants,
+            eventImage: eventImage,
+            eventStatus: eventStatus,
+            eventPrice: eventPrice);
 
   factory EventMatchingResponseModel.fromJson(Map<String, dynamic> json) =>
       _$EventMatchingResponseModelFromJson(json);

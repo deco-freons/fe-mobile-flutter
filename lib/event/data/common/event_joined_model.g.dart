@@ -29,6 +29,8 @@ EventJoinedModel _$EventJoinedModelFromJson(Map<String, dynamic> json) =>
           .map((e) => EventParticipantModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       isEventCreator: json['isEventCreator'] as bool,
+      eventPrice: EventPriceResponseModel.fromJson(
+          json['eventPrice'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventJoinedModelToJson(EventJoinedModel instance) =>
@@ -44,6 +46,7 @@ Map<String, dynamic> _$EventJoinedModelToJson(EventJoinedModel instance) =>
       'locationName': instance.locationName,
       'participants': instance.participants,
       'eventStatus': instance.eventStatus,
+      'eventPrice': instance.eventPrice,
       'eventImage': instance.eventImage,
       'participantsList': instance.participantsList,
       'isEventCreator': instance.isEventCreator,

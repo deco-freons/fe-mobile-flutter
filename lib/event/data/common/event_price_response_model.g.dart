@@ -9,7 +9,7 @@ part of 'event_price_response_model.dart';
 EventPriceResponseModel _$EventPriceResponseModelFromJson(
         Map<String, dynamic> json) =>
     EventPriceResponseModel(
-      priceID: json['priceID'] as int,
+      priceID: json['priceID'] as int?,
       fee: json['fee'] as int,
       currency:
           EventCurrencyModel.fromJson(json['currency'] as Map<String, dynamic>),

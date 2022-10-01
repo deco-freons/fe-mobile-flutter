@@ -18,6 +18,7 @@ class EventCardLarge extends StatelessWidget {
   final VoidCallback onTapHandler;
   final double elevation;
   final bool loading;
+  final int fee;
 
   const EventCardLarge({
     Key? key,
@@ -34,6 +35,7 @@ class EventCardLarge extends StatelessWidget {
     this.width = 340.0,
     this.height = 256.0,
     this.elevation = 8.0,
+    required this.fee,
   }) : super(key: key);
 
   const EventCardLarge.loading({
@@ -51,6 +53,7 @@ class EventCardLarge extends StatelessWidget {
     this.width = 340.0,
     this.height = 256.0,
     this.elevation = 8.0,
+    this.fee = 0,
   }) : super(key: key);
 
   @override
@@ -106,6 +109,7 @@ class EventCardLarge extends StatelessWidget {
               distance: distance,
               location: location,
               width: 312.0,
+              fee: fee,
               color: image == null ? neutral.shade100.withOpacity(0.4) : null,
             ),
           ),

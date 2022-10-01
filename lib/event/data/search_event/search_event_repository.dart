@@ -16,7 +16,6 @@ class SearchEventsRepositoryImpl extends SearchEventsRepository {
   @override
   Future<List<EventModel>> searchEvents(RequestGetEventModel data) async {
     final response = await _eventDataProvider.searchEvents(data.toJson());
-
     List<EventModel> events = List<EventModel>.from(
         response["events"].map((model) => EventModel.fromJson(model)));
 

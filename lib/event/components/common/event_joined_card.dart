@@ -20,6 +20,7 @@ class EventJoinedCard extends StatelessWidget {
   final bool isLoading;
   final bool isEventCreator;
   final List<EventParticipantModel> participants;
+  final int fee;
 
   final void Function(int eventID)? onCancelClick;
 
@@ -37,6 +38,7 @@ class EventJoinedCard extends StatelessWidget {
     this.onCancelClick,
     required this.participants,
     required this.isEventCreator,
+    required this.fee,
   })  : assert(
             type == EventJoinedCardType.SCHEDULED
                 ? onCancelClick != null
@@ -44,21 +46,22 @@ class EventJoinedCard extends StatelessWidget {
             "OnCancelClick is required for type SCHEDULED"),
         super(key: key);
 
-  const EventJoinedCard.loading(
-      {Key? key,
-      this.eventID = 0,
-      this.title = "",
-      this.author = "",
-      this.month = "",
-      this.date = "",
-      this.distance = 0,
-      this.location = "",
-      this.type = EventJoinedCardType.HISTORY,
-      this.isLoading = true,
-      this.onCancelClick,
-      this.participants = const [],
-      this.isEventCreator = false})
-      : super(key: key);
+  const EventJoinedCard.loading({
+    Key? key,
+    this.eventID = 0,
+    this.title = "",
+    this.author = "",
+    this.month = "",
+    this.date = "",
+    this.distance = 0,
+    this.location = "",
+    this.type = EventJoinedCardType.HISTORY,
+    this.isLoading = true,
+    this.onCancelClick,
+    this.participants = const [],
+    this.isEventCreator = false,
+    this.fee = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +81,7 @@ class EventJoinedCard extends StatelessWidget {
               color: neutral.shade100,
               elevation: 7,
               verticalPadding: CustomPadding.base,
+              fee: fee,
               bottomContent: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
