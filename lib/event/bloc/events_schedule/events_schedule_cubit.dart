@@ -28,7 +28,7 @@ class EventsScheduleCubit extends BaseCubit<EventsScheduleState> {
           await _eventsJoinedRepository.getJoinedEvents(data, page);
       _eventsSchedule = page > 0 ? [..._eventsSchedule, ...events] : events;
       emit(EventsScheduleSuccessState(
-          events: _eventsSchedule, hasMore: events.isNotEmpty));
+          events: _eventsSchedule, hasMore: events.isNotEmpty, message: ""));
     } catch (e) {
       String message = ErrorHandler.handle(e);
       page > 0
@@ -44,8 +44,8 @@ class EventsScheduleCubit extends BaseCubit<EventsScheduleState> {
       String message = await _eventsJoinedRepository.leaveEvent(eventID);
       _eventsSchedule =
           _eventsSchedule.where((event) => event.eventID != eventID).toList();
-      emit(EventScheduleLeaveSuccessState(
-          message: message, events: _eventsSchedule));
+      emit(EventsScheduleSuccessState(
+          message: message, events: _eventsSchedule, hasMore: true));
     } catch (e) {
       String message = ErrorHandler.handle(e);
       emit(EventsScheduleFetchMoreErrorState(

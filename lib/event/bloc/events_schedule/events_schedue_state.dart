@@ -16,8 +16,9 @@ class EventsScheduleLoadingState extends EventsScheduleState {
 class EventsScheduleSuccessState extends EventsScheduleState {
   final bool hasMore;
   final List<EventJoinedModel> events;
+  final String message;
   const EventsScheduleSuccessState(
-      {required this.events, required this.hasMore});
+      {required this.events, required this.hasMore, required this.message});
 }
 
 class EventsScheduleFetchMoreLoadingState extends EventsScheduleState {
@@ -28,13 +29,6 @@ class EventsScheduleFetchMoreLoadingState extends EventsScheduleState {
 
 class EventScheduleLeaveLoadingState extends EventsScheduleState {
   const EventScheduleLeaveLoadingState();
-}
-
-class EventScheduleLeaveSuccessState extends EventsScheduleState {
-  final String message;
-  final List<EventJoinedModel> events;
-  const EventScheduleLeaveSuccessState(
-      {required this.message, required this.events});
 }
 
 class EventsScheduleFetchMoreErrorState extends EventsScheduleState {

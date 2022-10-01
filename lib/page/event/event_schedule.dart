@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/common/components/layout/confirmation_modal_bottom.dart';
 import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -100,7 +101,8 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
               }
             },
             buildWhen: (previous, current) {
-              return current is! EventsScheduleFetchMoreLoadingState;
+              return current is! EventsScheduleFetchMoreLoadingState &&
+                  current is! EventScheduleLeaveLoadingState;
             },
             builder: (context, state) {
               return ListView.separated(
@@ -147,6 +149,37 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
     );
   }
 
+  showLeaveModal(int eventID, BuildContext blocContext) {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
+        ),
+      ),
+      context: context,
+      builder: (context) {
+        return ConfirmationModalBottom(
+          description: "Are you sure you want to leave this event?",
+          confirmText: "Leave",
+          confirmButtonType: TextButtonType.error,
+          onConfirmPressed: () {
+            blocContext
+                .read<EventsScheduleCubit>()
+                .leaveEvent(eventID)
+                .then((value) {
+              Navigator.of(context).pop();
+            });
+          },
+          cancelText: "Cancel",
+          cancelButtonType: TextButtonType.tertiaryDark,
+          onCancelPressed: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
+    );
+  }
+
   showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -169,7 +202,9 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
       type: EventJoinedCardType.SCHEDULED,
       participants: event.participantsList,
       isEventCreator: event.isEventCreator,
-      onCancelClick: (eventID) {},
+      onCancelClick: (eventID) {
+        showLeaveModal(eventID, context);
+      },
     );
   }
 
