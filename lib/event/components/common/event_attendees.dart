@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
 
 class EventAttendees extends StatelessWidget {
-  final List<String> attendees;
+  final List<EventParticipantModel> attendees;
   const EventAttendees({Key? key, required this.attendees}) : super(key: key);
 
   @override
@@ -30,10 +31,8 @@ class EventAttendees extends StatelessWidget {
   List<Widget> buildImageAvatars() {
     return attendees
         .take(3)
-        .map((attendee) => const NetworkImageAvatar(
-            imageUrl:
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80",
-            radius: 12.5))
+        .map((attendee) => NetworkImageAvatar(
+            imageUrl: attendee.userImage?.imageUrl, radius: 12.5))
         .toList();
   }
 }
