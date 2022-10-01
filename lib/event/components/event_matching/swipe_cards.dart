@@ -266,6 +266,7 @@ class _SwipeCardsState extends State<SwipeCards> {
         color: neutral.shade700,
         fontSize: CustomFontSize.md,
         fontWeight: FontWeight.bold,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }
