@@ -9,9 +9,10 @@ import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/components/common/event_list.dart';
 import 'package:flutter_boilerplate/event/components/event_matching/event_matching_home_card.dart';
 import 'package:flutter_boilerplate/event/components/common/home_content.dart';
+import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_location_model.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_status_model.dart';
 import 'package:flutter_boilerplate/event/data/events_by_user/event_by_user_model.dart';
 import 'package:flutter_boilerplate/page/walkthrough/dummy_event_matching.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
@@ -39,8 +40,8 @@ class _DummyHomepageState extends State<DummyHomepage> {
     isAssetImage: true,
     onTapHandler: () {},
   );
-  List<PopularEventModel> events = [
-    const PopularEventModel(
+  List<EventModel> events = [
+    const EventModel(
         eventID: 1,
         eventName: "Live Music at City Hall",
         date: "2000-12-12",
@@ -49,13 +50,13 @@ class _DummyHomepageState extends State<DummyHomepage> {
         latitude: 13,
         eventCreator: EventParticipantModel(
             username: "creator1", firstName: "Dwayne", lastName: "Johnson"),
-        location: PopularEventLocationModel(
-            suburb: "Brisbane City", city: "Brisbane", state: "Queensland"),
+        location: EventLocationModel(suburb: "Brisbane City", city: "Brisbane"),
         locationName: "City Hall",
         participants: 12,
+        eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
         eventImage: ImageModel(
             imageUrl: "lib/common/assets/images/SmallEventImageBand.png")),
-    const PopularEventModel(
+    const EventModel(
       eventID: 2,
       eventName: "Dessert Crawl at West End",
       date: "2023-06-04",
@@ -64,10 +65,10 @@ class _DummyHomepageState extends State<DummyHomepage> {
       latitude: 12,
       eventCreator: EventParticipantModel(
           username: "creator1", firstName: "Zahra", lastName: "Abraara"),
-      location: PopularEventLocationModel(
-          suburb: "West End", city: "Brisbane", state: "Queensland"),
+      location: EventLocationModel(suburb: "West End", city: "Brisbane"),
       locationName: "Kings George Station",
       participants: 10,
+      eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
       eventImage: ImageModel(
           imageUrl: "lib/common/assets/images/SmallEventImageCake.png"),
     ),

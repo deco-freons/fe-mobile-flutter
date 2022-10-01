@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/common/event_content_card.dart';
 import 'package:flutter_boilerplate/event/components/common/event_attendees.dart';
+import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
+import 'package:flutter_boilerplate/page/event/event_detail.dart';
 
 class EventJoinedCard extends StatelessWidget {
   final int eventID;
@@ -14,7 +17,9 @@ class EventJoinedCard extends StatelessWidget {
   final double distance;
   final String location;
   final EventJoinedCardType type;
-  final Widget? bottomContent;
+  final bool isLoading;
+  final List<EventParticipantModel> participants;
+
   final void Function(int eventID)? onCancelClick;
 
   const EventJoinedCard({
@@ -26,9 +31,10 @@ class EventJoinedCard extends StatelessWidget {
     required this.date,
     required this.distance,
     required this.location,
-    this.bottomContent,
     this.type = EventJoinedCardType.HISTORY,
+    this.isLoading = false,
     this.onCancelClick,
+    required this.participants,
   })  : assert(
             type == EventJoinedCardType.SCHEDULED
                 ? onCancelClick != null
@@ -36,34 +42,60 @@ class EventJoinedCard extends StatelessWidget {
             "OnCancelClick is required for type SCHEDULED"),
         super(key: key);
 
+  const EventJoinedCard.loading(
+      {Key? key,
+      this.eventID = 0,
+      this.title = "",
+      this.author = "",
+      this.month = "",
+      this.date = "",
+      this.distance = 0,
+      this.location = "",
+      this.type = EventJoinedCardType.HISTORY,
+      this.isLoading = true,
+      this.onCancelClick,
+      this.participants = const []})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return EventContentCard(
-      title: title,
-      month: month,
-      date: date,
-      distance: distance,
-      location: location,
-      author: author,
-      color: neutral.shade100,
-      elevation: 7,
-      verticalPadding: CustomPadding.base,
-      bottomContent: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(
-                top: CustomPadding.sm, left: CustomPadding.base),
-            child: EventAttendees(
-              attendees: ["a", "b", "c", "d", "e"],
+    return !isLoading
+        ? GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, EventDetail.routeName,
+                  arguments: eventID);
+            },
+            child: EventContentCard(
+              title: title,
+              month: month,
+              date: date,
+              distance: distance,
+              location: location,
+              author: author,
+              color: neutral.shade100,
+              elevation: 7,
+              verticalPadding: CustomPadding.base,
+              bottomContent: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: CustomPadding.sm, left: CustomPadding.base),
+                    child: EventAttendees(
+                      attendees: participants,
+                    ),
+                  ),
+                  type == EventJoinedCardType.HISTORY
+                      ? buildRating()
+                      : buildCancel()
+                ],
+              ),
             ),
-          ),
-          type == EventJoinedCardType.HISTORY ? buildRating() : buildCancel()
-        ],
-      ),
-    );
+          )
+        : BuildLoading.buildRectangularLoading(
+            height: 130, borderRadius: CustomRadius.xxl);
   }
 
   Widget buildCancel() {

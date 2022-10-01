@@ -5,7 +5,7 @@ class EventsHistoryDataProvider extends BaseDataProvider {
   Future<dynamic> getEventsHistory(
       EventJoinedRequestModel data, int page) async {
     return super.networkClient.post(
-        path: "/event/read/join?skip=$page&take=10",
+        path: "/event/read/join?skip=$page&take=5",
         body: data.toJson(),
         authorized: true);
   }

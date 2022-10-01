@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -95,37 +93,21 @@ class EventCardLarge extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: CustomPadding.md),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: ClipRRect(
-          child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-              child: Container(
-                width: 311.0,
-                height: 96.0,
-                decoration: BoxDecoration(
-                  color: neutral.shade400.withOpacity(0.6),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(CustomRadius.xxl),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: CustomPadding.md),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: EventContentCard(
-                      author: author,
-                      title: title,
-                      month: month,
-                      date: date,
-                      distance: distance,
-                      location: location,
-                      width: 312.0,
-                      color: image == null
-                          ? neutral.shade100.withOpacity(0.4)
-                          : null,
-                    ),
-                  ),
-                ),
-              )),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: CustomPadding.md),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: EventContentCard(
+              author: author,
+              title: title,
+              month: month,
+              date: date,
+              distance: distance,
+              location: location,
+              width: 312.0,
+              color: image == null ? neutral.shade100.withOpacity(0.4) : null,
+            ),
+          ),
         ),
       ),
     );
