@@ -17,6 +17,7 @@ enum TextFieldType {
   interest,
   checkbox,
   toggleSwitch,
+  price,
 }
 
 enum ButtonType {

@@ -44,7 +44,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
         controller: widget.input.controller,
         readOnly: true,
         style: widget.inputStyle,
@@ -53,11 +53,23 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
               borderSide: BorderSide.none,
             ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderSide: BorderSide(
+                  width: 1.0, color: Theme.of(context).colorScheme.error),
+            ),
             filled: true,
             fillColor: primary.shade300,
             suffixIcon: const Icon(Icons.calendar_today_outlined)),
         onTap: () {
           _selectDate(context);
+        },
+        validator: (value) {
+          if (widget.input.controller.text == "") {
+            return "Required field";
+          } else {
+            return null;
+          }
         });
   }
 }

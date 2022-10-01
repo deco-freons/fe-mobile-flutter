@@ -9,10 +9,10 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event/create_event_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/create_event/create_event_state.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_request_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event/create_event_model.dart';
 import 'package:flutter_boilerplate/event/data/create_event/create_event_repository.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
-
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({Key? key}) : super(key: key);
@@ -99,7 +99,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
   final CustomFormInput image =
       CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
   final CustomFormInput eventName =
-      CustomFormInput(label: 'Event Name', type: TextFieldType.string);
+      CustomFormInput(label: 'Event Name', type: TextFieldType.string, required: true);
   final CustomFormInput category = CustomFormInput(
     label: 'Category',
     type: TextFieldType.interest,
@@ -128,6 +128,10 @@ class _CreateEventFormState extends State<CreateEventForm> {
     type: TextFieldType.location,
     initialgoogleMapSuburb: "",
   );
+  final CustomFormInput price = CustomFormInput(
+    label: 'Price',
+    type: TextFieldType.price,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -139,32 +143,39 @@ class _CreateEventFormState extends State<CreateEventForm> {
         date,
         eventTime,
         location,
+        price,
         shortDescription,
         description
       ],
       submitTitle: 'Create',
       submitHandler: () {
         CreateEventModel data = CreateEventModel(
-            eventName: eventName.controller.text,
-            categories:
-                category.preferences.map((pref) => pref.preferenceID).toList(),
-            date: date.controller.text,
-            startTime: eventTime.controller.text,
-            endTime: eventTime.secondController != null
-                ? eventTime.secondController!.text
-                : eventTime.controller.text,
-            longitude: location.lng.toString(),
-            latitude: location.lat.toString(),
-            location: location.googleMapSuburbId != null
-                ? location.googleMapSuburbId!
-                : 0,
-            locationName: location.controller.text,
-            shortDescription: shortDescription.controller.text != ""
-                ? shortDescription.controller.text
-                : "No description",
-            description: description.controller.text != ""
-                ? description.controller.text
-                : "No description");
+          eventName: eventName.controller.text,
+          categories:
+              category.preferences.map((pref) => pref.preferenceID).toList(),
+          date: date.controller.text,
+          startTime: eventTime.controller.text,
+          endTime: eventTime.secondController != null
+              ? eventTime.secondController!.text
+              : eventTime.controller.text,
+          longitude: location.lng.toString(),
+          latitude: location.lat.toString(),
+          location: location.googleMapSuburbId != null
+              ? location.googleMapSuburbId!
+              : 0,
+          locationName: location.controller.text,
+          shortDescription: shortDescription.controller.text != ""
+              ? shortDescription.controller.text
+              : "No description",
+          description: description.controller.text != ""
+              ? description.controller.text
+              : "No description",
+          eventPrice: EventPriceRequestModel(
+              fee: price.controller.text != ""
+                  ? int.parse(price.controller.text)
+                  : 0,
+              currency: "AU\$"),
+        );
 
         submit(context, data, image.image);
       },

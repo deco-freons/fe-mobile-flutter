@@ -22,6 +22,9 @@ EditEventModel _$EditEventModelFromJson(Map<String, dynamic> json) =>
       locationName: json['locationName'] as String,
       shortDescription: json['shortDescription'] as String,
       description: json['description'] as String,
+      eventStatus: json['eventStatus'] as String,
+      eventPrice: EventPriceRequestModel.fromJson(
+          json['eventPrice'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EditEventModelToJson(EditEventModel instance) =>
@@ -38,4 +41,6 @@ Map<String, dynamic> _$EditEventModelToJson(EditEventModel instance) =>
       'locationName': instance.locationName,
       'shortDescription': instance.shortDescription,
       'description': instance.description,
+      'eventStatus': instance.eventStatus,
+      'eventPrice': instance.eventPrice.toJson(),
     };

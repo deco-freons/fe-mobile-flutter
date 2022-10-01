@@ -21,6 +21,8 @@ CreateEventModel _$CreateEventModelFromJson(Map<String, dynamic> json) =>
       locationName: json['locationName'] as String,
       shortDescription: json['shortDescription'] as String,
       description: json['description'] as String,
+      eventPrice: EventPriceRequestModel.fromJson(
+          json['eventPrice'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$CreateEventModelToJson(CreateEventModel instance) =>
@@ -36,4 +38,5 @@ Map<String, dynamic> _$CreateEventModelToJson(CreateEventModel instance) =>
       'locationName': instance.locationName,
       'shortDescription': instance.shortDescription,
       'description': instance.description,
+      'eventPrice': instance.eventPrice,
     };

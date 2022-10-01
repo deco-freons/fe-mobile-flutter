@@ -1,4 +1,5 @@
 import 'package:flutter_boilerplate/common/data/base/base_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_request_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'create_event_model.g.dart';
@@ -16,6 +17,7 @@ class CreateEventModel extends BaseModel {
   final String locationName;
   final String shortDescription;
   final String description;
+  final EventPriceRequestModel eventPrice;
 
   const CreateEventModel(
       {required this.eventName,
@@ -28,7 +30,8 @@ class CreateEventModel extends BaseModel {
       required this.location,
       required this.locationName,
       required this.shortDescription,
-      required this.description});
+      required this.description,
+      required this.eventPrice});
 
   factory CreateEventModel.fromJson(Map<String, dynamic> json) =>
       _$CreateEventModelFromJson(json);

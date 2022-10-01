@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
-import 'package:flutter_boilerplate/common/components/forms/custom_text_field.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_field.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/auth/forget_password.dart';
@@ -59,6 +59,7 @@ class CustomForm extends StatefulWidget {
 
 class _CustomFormState extends State<CustomForm> {
   final _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +77,8 @@ class _CustomFormState extends State<CustomForm> {
       ),
       child: Form(
         key: _formKey,
+        autovalidateMode:
+            _autoValidate ? AutovalidateMode.onUserInteraction : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -106,7 +109,7 @@ class _CustomFormState extends State<CustomForm> {
               shrinkWrap: true,
               itemCount: widget.inputs.length,
               itemBuilder: (context, index) {
-                return CustomTextField(
+                return CustomFormField(
                   formKey: _formKey,
                   input: widget.inputs[index],
                   labelColor: widget.labelColor,
@@ -135,6 +138,9 @@ class _CustomFormState extends State<CustomForm> {
                 type: ButtonType.primary,
                 cornerRadius: widget.submitButtonRadius,
                 onPressedHandler: () {
+                  setState(() {
+                    _autoValidate = true;
+                  });
                   if (_formKey.currentState!.validate()) {
                     widget.submitHandler();
                   }

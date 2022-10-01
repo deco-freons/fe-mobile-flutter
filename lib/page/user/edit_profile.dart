@@ -83,11 +83,13 @@ class _EditProfileState extends State<EditProfile> {
       label: "First Name",
       type: TextFieldType.string,
       initialValue: user.firstName,
+      required: true,
     );
     CustomFormInput lastName = CustomFormInput(
       label: "Last Name",
       type: TextFieldType.string,
       initialValue: user.lastName,
+      required: true,
     );
     CustomFormInput username = CustomFormInput(
       label: "Username",

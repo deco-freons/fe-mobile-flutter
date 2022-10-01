@@ -32,6 +32,7 @@ class CustomFormInput {
   File? image;
   String? initialImage;
   ImageInputAction imageInputAction;
+  bool required;
   CustomFormInput(
       {required this.label,
       required this.type,
@@ -54,7 +55,8 @@ class CustomFormInput {
       this.initialgoogleMapSuburb,
       this.image,
       this.initialImage,
-      this.imageInputAction = ImageInputAction.DO_NOTHING})
+      this.imageInputAction = ImageInputAction.DO_NOTHING,
+      this.required = false})
       : firstDate = firstDate ?? DateTime(1900),
         lastDate = lastDate ?? DateTime(2101),
         initialValue = initialValue ?? "",
@@ -101,5 +103,9 @@ class CustomFormInput {
         : image != null
             ? ImageInputAction.UPLOAD
             : ImageInputAction.DO_NOTHING;
+  }
+
+  void setDisable(bool newValue) {
+    disable = newValue;
   }
 }
