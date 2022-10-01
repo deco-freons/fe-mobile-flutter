@@ -31,10 +31,11 @@ class _EventScheduleState extends State<EventSchedule>
           EventsScheduleCubit(getIt.get<EventsJoinedRepository>())
             ..getEventsSchedule(0),
       child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: neutral.shade100,
-          appBar: const PageAppBar(title: "Scheduled Events"),
-          body: const BuildEventSchedule()),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: neutral.shade100,
+        appBar: const PageAppBar(title: "Scheduled Events"),
+        body: const BuildEventSchedule(),
+      ),
     );
   }
 
@@ -64,7 +65,6 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
         if (state is EventsScheduleSuccessState) {
           if (state.hasMore) {
             page = page + 1;
-
             eventsScheduleCubit.getEventsSchedule(page);
           }
         }
