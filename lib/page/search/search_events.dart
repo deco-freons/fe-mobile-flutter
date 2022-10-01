@@ -269,6 +269,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
         onCategoryTap: handleCategoryTap,
         onTimeTap: handleTimeTap,
         onDistanceTap: handleDistanceTap,
+        onSizeTap: handleSizeTap,
         onSortTap: handleSortTap,
         resetFilter: resetFilter,
         onAllTap: handleAllTap,
@@ -322,6 +323,15 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
             .map((distance) => distance.data == choosenDistance
                 ? distance.copyWith(isPicked: !distance.isPicked)
                 : distance.copyWith(isPicked: false))
+            .toList());
+  }
+
+  void handleSizeTap(SizeFilter choosenSize) {
+    filter = filter.copyWith(
+        sizeCheck: filter.sizeCheck
+            .map((size) => size.data == choosenSize
+                ? size.copyWith(isPicked: !size.isPicked)
+                : size.copyWith(isPicked: false))
             .toList());
   }
 

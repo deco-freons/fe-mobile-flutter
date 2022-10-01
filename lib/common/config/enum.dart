@@ -227,6 +227,47 @@ extension DistanceFilterExtension on DistanceFilter {
   }
 }
 
+enum SizeFilter {
+  lessThanTen,
+  tenToTwenty,
+  moreThanTwenty,
+}
+
+extension SizeFilterExtension on SizeFilter {
+  String get desc {
+    switch (this) {
+      case SizeFilter.lessThanTen:
+        return '<= 10 participants';
+      case SizeFilter.tenToTwenty:
+        return '10 < participants <= 20 ';
+      case SizeFilter.moreThanTwenty:
+        return '> 20 participants';
+    }
+  }
+
+  int get value {
+    switch (this) {
+      case SizeFilter.lessThanTen:
+        return 10;
+      case SizeFilter.tenToTwenty:
+        return 20;
+      case SizeFilter.moreThanTwenty:
+        return 20;
+    }
+  }
+
+  String get isMoreOrLess {
+    switch (this) {
+      case SizeFilter.lessThanTen:
+        return 'LESS';
+      case SizeFilter.tenToTwenty:
+        return 'LESS';
+      case SizeFilter.moreThanTwenty:
+        return 'MORE';
+    }
+  }
+}
+
 enum EventSort {
   daysNearToFar,
   daysFarToNear,

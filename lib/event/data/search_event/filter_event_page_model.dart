@@ -17,6 +17,7 @@ class FilterEventPageModel extends BaseModel {
   final List<ItemFilterModel<PrefType>> prefCheck;
   final List<ItemFilterModel<TimeFilter>> timeCheck;
   final List<ItemFilterModel<DistanceFilter>> distanceCheck;
+  final List<ItemFilterModel<SizeFilter>> sizeCheck;
   final List<ItemFilterModel<EventSort>> sortCheck;
 
   FilterEventPageModel({
@@ -24,6 +25,7 @@ class FilterEventPageModel extends BaseModel {
     List<ItemFilterModel<PrefType>>? prefCheck,
     List<ItemFilterModel<TimeFilter>>? timeCheck,
     List<ItemFilterModel<DistanceFilter>>? distanceCheck,
+    List<ItemFilterModel<SizeFilter>>? sizeCheck,
     List<ItemFilterModel<EventSort>>? sortCheck,
     bool? allCheck,
   })  : prefCheck = prefCheck ??
@@ -35,6 +37,10 @@ class FilterEventPageModel extends BaseModel {
         distanceCheck = distanceCheck ??
             DistanceFilter.values
                 .map((distance) => ItemFilterModel(data: distance))
+                .toList(),
+        sizeCheck = sizeCheck ??
+            SizeFilter.values
+                .map((size) => ItemFilterModel(data: size))
                 .toList(),
         sortCheck = sortCheck ??
             EventSort.values
@@ -49,6 +55,7 @@ class FilterEventPageModel extends BaseModel {
     List<ItemFilterModel<PrefType>>? prefCheck,
     List<ItemFilterModel<TimeFilter>>? timeCheck,
     List<ItemFilterModel<DistanceFilter>>? distanceCheck,
+    List<ItemFilterModel<SizeFilter>>? sizeCheck,
     List<ItemFilterModel<EventSort>>? sortCheck,
     bool? allCheck,
     String? searchTerm,
@@ -57,6 +64,7 @@ class FilterEventPageModel extends BaseModel {
         prefCheck: prefCheck ?? this.prefCheck,
         timeCheck: timeCheck ?? this.timeCheck,
         distanceCheck: distanceCheck ?? this.distanceCheck,
+        sizeCheck: sizeCheck ?? this.sizeCheck,
         sortCheck: sortCheck ?? this.sortCheck,
         allCheck: allCheck ?? this.allCheck,
         searchTerm: searchTerm ?? this.searchTerm);
@@ -130,6 +138,8 @@ class FilterEventPageModel extends BaseModel {
         return distanceCheck
             .firstWhere((distance) => distance.data == key)
             .isPicked;
+      case SizeFilter:
+        return sizeCheck.firstWhere((size) => size.data == key).isPicked;
       case EventSort:
         return sortCheck.firstWhere((sort) => sort.data == key).isPicked;
       default:

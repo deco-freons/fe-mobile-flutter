@@ -13,6 +13,7 @@ class SearchEventsFilter extends StatelessWidget {
   final void Function(PrefType) onCategoryTap;
   final void Function(TimeFilter) onTimeTap;
   final void Function(DistanceFilter) onDistanceTap;
+  final void Function(SizeFilter) onSizeTap;
   final void Function(EventSort) onSortTap;
   final VoidCallback resetFilter;
   final VoidCallback onAllTap;
@@ -25,6 +26,7 @@ class SearchEventsFilter extends StatelessWidget {
     required this.onTimeTap,
     required this.onDistanceTap,
     required this.onSortTap,
+    required this.onSizeTap,
     required this.resetFilter,
     required this.onAllTap,
     required this.setState,
@@ -35,32 +37,67 @@ class SearchEventsFilter extends StatelessWidget {
     return Scaffold(
       body: Container(
         color: Theme.of(context).colorScheme.secondary,
-        padding: const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
         child: SafeArea(
-            child: ListView(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: CustomTextButton(
-                text: "Close",
-                onPressedHandler: () {
-                  Navigator.pop(context);
-                },
-                fontSize: CustomFontSize.base,
-                type: TextButtonType.primary,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
+                  child: CustomTextButton(
+                    text: "Close",
+                    onPressedHandler: () {
+                      Navigator.pop(context);
+                    },
+                    fontSize: CustomFontSize.base,
+                    type: TextButtonType.primary,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            buildFilter(context)
-          ],
-        )),
+              Container(
+                height: CustomPadding.sm,
+                decoration: BoxDecoration(
+                  color: neutral.shade100,
+                  border: Border(
+                    bottom: BorderSide(width: 1.5, color: neutral.shade400),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
+                  child: ListView(
+                    children: [
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      buildFilter()
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: neutral.shade100,
+                  border: Border(
+                    bottom: BorderSide(width: 1.5, color: neutral.shade400),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              buildBottomButtons(context)
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  buildFilter(context) {
+  buildFilter() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -120,6 +157,20 @@ class SearchEventsFilter extends StatelessWidget {
               .toList(),
         ),
         FilterContent(
+          title: 'Event Size',
+          widgets: SizeFilter.values
+              .map((size) => FilterButton(
+                    desc: size.desc,
+                    onPressedHandler: () {
+                      setState(() {
+                        onSizeTap(size);
+                      });
+                    },
+                    isActive: filter.isFilterPicked(size),
+                  ))
+              .toList(),
+        ),
+        FilterContent(
             title: 'Sort',
             widgets: EventSort.values
                 .map((sort) => FilterButton(
@@ -132,45 +183,55 @@ class SearchEventsFilter extends StatelessWidget {
                       isActive: filter.isFilterPicked(sort),
                     ))
                 .toList()),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            CustomButton(
-              label: "Clear filters",
-              labelFontSize: CustomFontSize.sm,
-              height: 40,
-              width: 10,
-              cornerRadius: 10.0,
-              type: ButtonType.inverse,
-              hasBorder: true,
-              borderColor: neutral.shade400,
-              elevation: 0,
-              onPressedHandler: () {
-                setState(
-                  () {
-                    resetFilter();
-                  },
-                );
-              },
-            ),
-            CustomButton(
-              label: "Show results",
-              labelFontSize: CustomFontSize.sm,
-              height: 40,
-              width: 10,
-              cornerRadius: 10.0,
-              type: ButtonType.primary,
-              elevation: 0,
-              onPressedHandler: () {
-                Navigator.pop(context, "submit");
-              },
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 20.0,
-        )
       ],
+    );
+  }
+
+  buildBottomButtons(context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomButton(
+                label: "Clear filters",
+                labelFontSize: CustomFontSize.sm,
+                height: 40,
+                width: 10,
+                cornerRadius: 10.0,
+                type: ButtonType.inverse,
+                hasBorder: true,
+                borderColor: neutral.shade400,
+                elevation: 0,
+                onPressedHandler: () {
+                  setState(
+                    () {
+                      resetFilter();
+                    },
+                  );
+                },
+              ),
+              CustomButton(
+                label: "Show results",
+                labelFontSize: CustomFontSize.sm,
+                height: 40,
+                width: 10,
+                cornerRadius: 10.0,
+                type: ButtonType.primary,
+                elevation: 0,
+                onPressedHandler: () {
+                  Navigator.pop(context, "submit");
+                },
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 20.0,
+          )
+        ],
+      ),
     );
   }
 }
