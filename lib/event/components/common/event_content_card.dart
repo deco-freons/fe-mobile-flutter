@@ -55,9 +55,11 @@ class EventContentCard extends StatelessWidget {
               color: color ?? neutral.shade400.withOpacity(0.6),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: CustomPadding.xs,
-                  vertical: verticalPadding ?? CustomPadding.sm),
+              padding: EdgeInsets.only(
+                  right: CustomPadding.md,
+                  left: CustomPadding.xs,
+                  top: verticalPadding ?? CustomPadding.sm,
+                  bottom: verticalPadding ?? CustomPadding.sm),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [

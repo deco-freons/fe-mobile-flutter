@@ -19,6 +19,7 @@ class _DateCardState extends State<DateCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.zero,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(CustomRadius.md)),
       ),
