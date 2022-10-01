@@ -34,7 +34,7 @@ class CustomSearchBar extends StatelessWidget {
                 : null,
             labelText: label,
             floatingLabelBehavior: FloatingLabelBehavior.never,
-            labelStyle: TextStyle(color: neutral.shade300),
+            labelStyle: TextStyle(color: neutral.shade500),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(32.0),
               borderSide: BorderSide.none,

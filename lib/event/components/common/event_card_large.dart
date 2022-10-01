@@ -1,14 +1,12 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/utils/build_loading.dart';
-import 'package:flutter_boilerplate/event/components/common/date_card.dart';
+import 'package:flutter_boilerplate/event/components/common/event_content_card.dart';
 
 class EventCardLarge extends StatelessWidget {
   final String title;
-  final String? author;
+  final String author;
   final double distance;
   final String location;
   final String month;
@@ -95,80 +93,21 @@ class EventCardLarge extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: CustomPadding.md),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: ClipRRect(
-          child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
-              child: Container(
-                width: 311.0,
-                height: 96.0,
-                decoration: BoxDecoration(
-                  color: neutral.shade400.withOpacity(0.6),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(CustomRadius.xxl),
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(CustomPadding.xs),
-                  child: Column(children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: CustomPadding.base),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FittedBox(
-                                child: Text(
-                                  title,
-                                  style: const TextStyle(
-                                    fontSize: CustomFontSize.sm,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'By $author',
-                                style: TextStyle(
-                                  fontSize: 10.0,
-                                  color: neutral.shade700,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        DateCard(month: month, date: date)
-                      ],
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on_outlined,
-                            color: primary,
-                            size: 40,
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('$distance km'),
-                                Expanded(
-                                  child: Text(
-                                    location,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ]),
-                ),
-              )),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: CustomPadding.md),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: EventContentCard(
+              author: author,
+              title: title,
+              month: month,
+              date: date,
+              distance: distance,
+              location: location,
+              width: 312.0,
+              color: image == null ? neutral.shade100.withOpacity(0.4) : null,
+            ),
+          ),
         ),
       ),
     );

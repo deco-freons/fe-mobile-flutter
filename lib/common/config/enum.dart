@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 enum TextFieldType {
   string,
@@ -29,6 +30,7 @@ enum TextButtonType {
   secondary,
   tertiary,
   error,
+  errorInverse,
   tertiaryDark,
 }
 
@@ -332,4 +334,22 @@ enum ImageInputAction {
   DO_NOTHING,
   UPLOAD,
   REMOVE,
+}
+
+enum EventJoinedCardType {
+  SCHEDULED,
+  HISTORY,
+}
+
+enum EventStatus {
+  @JsonValue("Created")
+  CREATED,
+  @JsonValue("Coming Soon")
+  COMING_SOON,
+  @JsonValue("Ongoing")
+  ONGOING,
+  @JsonValue("In Progress")
+  IN_PROGRESS,
+  @JsonValue("Done")
+  DONE,
 }

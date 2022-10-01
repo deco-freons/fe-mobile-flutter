@@ -8,8 +8,9 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/components/common/event_info.dart';
 import 'package:flutter_boilerplate/event/components/common/see_more.dart';
+import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_location_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_status_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/walkthrough/dummy_homepage.dart';
@@ -36,12 +37,12 @@ class _DummyEventMatchingState extends State<DummyEventMatching> {
       latitude: 12,
       eventCreator: EventParticipantModel(
           username: "JennieKim", firstName: "Jennie", lastName: "Kim"),
-      location: PopularEventLocationModel(
-          suburb: "Docklands", city: "Melbourne", state: "Victoria"),
+      location: EventLocationModel(suburb: "Docklands", city: "Melbourne"),
       locationName: "Marvel Stadium",
       participants: 10,
       startTime: "11:11",
       endTime: "12:12",
+      eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
       eventImage:
           ImageModel(imageUrl: "lib/common/assets/images/LargeEventImage.png"),
       shortDescription:

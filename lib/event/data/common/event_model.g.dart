@@ -1,23 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'event_matching_response_model.dart';
+part of 'event_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-EventMatchingResponseModel _$EventMatchingResponseModelFromJson(
-        Map<String, dynamic> json) =>
-    EventMatchingResponseModel(
+EventModel _$EventModelFromJson(Map<String, dynamic> json) => EventModel(
       eventID: json['eventID'] as int,
       eventName: json['eventName'] as String,
       date: json['date'] as String,
-      startTime: json['startTime'] as String,
-      endTime: json['endTime'] as String,
       distance: (json['distance'] as num).toDouble(),
       longitude: (json['longitude'] as num).toDouble(),
       latitude: (json['latitude'] as num).toDouble(),
-      shortDescription: json['shortDescription'] as String,
       eventCreator: EventParticipantModel.fromJson(
           json['eventCreator'] as Map<String, dynamic>),
       location:
@@ -31,8 +26,7 @@ EventMatchingResponseModel _$EventMatchingResponseModelFromJson(
           : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$EventMatchingResponseModelToJson(
-        EventMatchingResponseModel instance) =>
+Map<String, dynamic> _$EventModelToJson(EventModel instance) =>
     <String, dynamic>{
       'eventID': instance.eventID,
       'eventName': instance.eventName,
@@ -46,7 +40,4 @@ Map<String, dynamic> _$EventMatchingResponseModelToJson(
       'participants': instance.participants,
       'eventStatus': instance.eventStatus,
       'eventImage': instance.eventImage,
-      'startTime': instance.startTime,
-      'endTime': instance.endTime,
-      'shortDescription': instance.shortDescription,
     };

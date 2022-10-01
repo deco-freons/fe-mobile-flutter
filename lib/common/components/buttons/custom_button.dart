@@ -13,25 +13,29 @@ class CustomButton extends StatelessWidget {
   final double width;
   final bool hasBorder;
   final Color borderColor;
+  final EdgeInsetsGeometry? padding;
 
-  const CustomButton({
-    Key? key,
-    required this.label,
-    required this.type,
-    this.onPressedHandler,
-    this.cornerRadius = CustomRadius.lg,
-    this.labelFontSize = CustomFontSize.lg,
-    this.elevation,
-    this.hasBorder = false,
-    this.borderColor = Colors.black,
-    this.height = 52,
-    this.width = double.infinity,
-  }) : super(key: key);
+  const CustomButton(
+      {Key? key,
+      required this.label,
+      required this.type,
+      this.onPressedHandler,
+      this.cornerRadius = CustomRadius.lg,
+      this.labelFontSize = CustomFontSize.lg,
+      this.elevation,
+      this.hasBorder = false,
+      this.borderColor = Colors.black,
+      this.height = 52,
+      this.width = double.infinity,
+      this.padding})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: padding,
           onSurface: neutral,
           primary: type == ButtonType.primary
               ? Theme.of(context).colorScheme.primary

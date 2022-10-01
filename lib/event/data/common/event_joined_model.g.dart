@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'popular_event_model.dart';
+part of 'event_joined_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PopularEventModel _$PopularEventModelFromJson(Map<String, dynamic> json) =>
-    PopularEventModel(
+EventJoinedModel _$EventJoinedModelFromJson(Map<String, dynamic> json) =>
+    EventJoinedModel(
       eventID: json['eventID'] as int,
       eventName: json['eventName'] as String,
       date: json['date'] as String,
@@ -16,16 +16,21 @@ PopularEventModel _$PopularEventModelFromJson(Map<String, dynamic> json) =>
       latitude: (json['latitude'] as num).toDouble(),
       eventCreator: EventParticipantModel.fromJson(
           json['eventCreator'] as Map<String, dynamic>),
-      location: PopularEventLocationModel.fromJson(
-          json['location'] as Map<String, dynamic>),
+      location:
+          EventLocationModel.fromJson(json['location'] as Map<String, dynamic>),
       locationName: json['locationName'] as String,
       participants: json['participants'] as int,
+      eventStatus: EventStatusModel.fromJson(
+          json['eventStatus'] as Map<String, dynamic>),
       eventImage: json['eventImage'] == null
           ? null
           : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
+      participantsList: (json['participantsList'] as List<dynamic>)
+          .map((e) => EventParticipantModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
-Map<String, dynamic> _$PopularEventModelToJson(PopularEventModel instance) =>
+Map<String, dynamic> _$EventJoinedModelToJson(EventJoinedModel instance) =>
     <String, dynamic>{
       'eventID': instance.eventID,
       'eventName': instance.eventName,
@@ -37,5 +42,7 @@ Map<String, dynamic> _$PopularEventModelToJson(PopularEventModel instance) =>
       'location': instance.location,
       'locationName': instance.locationName,
       'participants': instance.participants,
+      'eventStatus': instance.eventStatus,
       'eventImage': instance.eventImage,
+      'participantsList': instance.participantsList,
     };

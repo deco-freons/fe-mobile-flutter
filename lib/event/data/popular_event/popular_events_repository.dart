@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/data/base/base_repository.dart';
-import 'package:flutter_boilerplate/event/data/common/popular_event_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
 import 'popular_events_data_provider.dart';
 
 @immutable
 abstract class PopularEventsRepository implements BaseRepository {
-  Future<List<PopularEventModel>> getPopularEvents(RequestGetEventModel data);
+  Future<List<EventModel>> getPopularEvents(RequestGetEventModel data);
 }
 
 class PopularEventsRepositoryImpl extends PopularEventsRepository {
@@ -14,11 +14,11 @@ class PopularEventsRepositoryImpl extends PopularEventsRepository {
       PopularEventsDataProvider();
 
   @override
-  Future<List<PopularEventModel>> getPopularEvents(
-      RequestGetEventModel data) async {
+  Future<List<EventModel>> getPopularEvents(RequestGetEventModel data) async {
     final response = await _eventDataProvider.getPopularEvents(data.toJson());
-    List<PopularEventModel> events = List<PopularEventModel>.from(
-        response["events"].map((model) => PopularEventModel.fromJson(model)));
+
+    List<EventModel> events = List<EventModel>.from(
+        response["events"].map((model) => EventModel.fromJson(model)));
     return events;
   }
 }
