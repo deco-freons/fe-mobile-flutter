@@ -8,12 +8,14 @@ class NetworkImageContainer extends StatelessWidget {
   final double height;
   final String? image;
   final Widget? child;
+  final double? emptyImageIconTopPadding;
   const NetworkImageContainer({
     Key? key,
     this.width = double.infinity,
     this.height = double.infinity,
     this.image,
     Widget? child,
+    this.emptyImageIconTopPadding,
   })  : child = child ?? const SizedBox.shrink(),
         super(key: key);
 
@@ -47,12 +49,19 @@ class NetworkImageContainer extends StatelessWidget {
 
   Widget buildDefaultContainer() {
     return Container(
+      color: primary.shade300,
       width: width,
       height: height,
-      decoration: BoxDecoration(
-        color: neutral.shade400,
+      child: Stack(
+        alignment: AlignmentDirectional.center,
+        children: <Widget>[
+          Positioned(
+            top: emptyImageIconTopPadding,
+            child: Image.asset("lib/common/assets/images/NoEventImageIcon.png"),
+          ),
+          child ?? const SizedBox.shrink(),
+        ],
       ),
-      child: child,
     );
   }
 }

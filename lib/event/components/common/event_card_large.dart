@@ -81,6 +81,7 @@ class EventCardLarge extends StatelessWidget {
                       width: width,
                       height: height,
                       image: image,
+                      emptyImageIconTopPadding: height / 7,
                       child: buildContent()),
             ),
           )
