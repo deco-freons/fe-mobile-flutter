@@ -174,60 +174,62 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                   ),
                   child: SizedBox(
                     width: double.infinity,
-                    child: isEventEmpty
-                        ? const FittedBox(
-                            child: Padding(
-                            padding: EdgeInsets.only(top: CustomPadding.base),
-                            child: NoEventsCard(),
-                          ))
-                        : isSuccessState || isFetchMoreErrorState
-                            ? RefreshIndicator(
-                                onRefresh: (() async {
-                                  context
-                                      .read<SearchEventsCubit>()
-                                      .searchEvents(filter);
-                                }),
-                                child: ListView.builder(
-                                  cacheExtent: 200,
-                                  padding: const EdgeInsets.only(
-                                      top: CustomPadding.lg),
-                                  itemCount: isSuccessState
+                    child: isSuccessState || isFetchMoreErrorState
+                        ? RefreshIndicator(
+                            onRefresh: (() async {
+                              context
+                                  .read<SearchEventsCubit>()
+                                  .searchEvents(filter);
+                            }),
+                            child: ListView.builder(
+                              cacheExtent: 200,
+                              padding:
+                                  const EdgeInsets.only(top: CustomPadding.lg),
+                              itemCount: isSuccessState
+                                  ? (isEventEmpty ? 1 : state.events.length)
+                                  : isFetchMoreErrorState
                                       ? state.events.length
-                                      : isFetchMoreErrorState
-                                          ? state.events.length
-                                          : 0,
-                                  shrinkWrap: true,
-                                  controller: _scrollController,
-                                  itemBuilder: ((context, index) {
-                                    return buildEvent(
+                                      : 0,
+                              shrinkWrap: true,
+                              controller: _scrollController,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: ((context, index) {
+                                return isEventEmpty
+                                    ? const FittedBox(
+                                        child: Padding(
+                                        padding: EdgeInsets.only(
+                                            top: CustomPadding.base),
+                                        child: NoEventsCard(),
+                                      ))
+                                    : buildEvent(
                                         context,
                                         isSuccessState
                                             ? state.events[index]
                                             : isFetchMoreErrorState
                                                 ? state.events[index]
                                                 : null);
-                                  }),
-                                ),
-                              )
-                            : ListView(
-                                shrinkWrap: true,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: CustomPadding.xl,
-                                        top: CustomPadding.base),
-                                    child: EventCardLarge.loading(
-                                        onTapHandler: () {}),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        bottom: CustomPadding.xl),
-                                    child: EventCardLarge.loading(
-                                        onTapHandler: () {}),
-                                  ),
-                                  EventCardLarge.loading(onTapHandler: () {})
-                                ],
+                              }),
+                            ),
+                          )
+                        : ListView(
+                            shrinkWrap: true,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: CustomPadding.xl,
+                                    top: CustomPadding.base),
+                                child:
+                                    EventCardLarge.loading(onTapHandler: () {}),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: CustomPadding.xl),
+                                child:
+                                    EventCardLarge.loading(onTapHandler: () {}),
+                              ),
+                              EventCardLarge.loading(onTapHandler: () {})
+                            ],
+                          ),
                   ),
                 ),
               );

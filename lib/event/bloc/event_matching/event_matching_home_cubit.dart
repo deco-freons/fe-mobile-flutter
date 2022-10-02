@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/utils/error_handler.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_state.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_status_request_model.dart';
 import 'package:flutter_boilerplate/event/data/common/sort/event_sort_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
@@ -25,8 +26,10 @@ class EventMatchingHomeCubit extends BaseCubit<EventMatchingHomeState> {
         latitude: position.latitude,
         longitude: position.longitude,
         filter: EventFilterModel(
-            eventRadius: EventRadiusModel(
-                radius: radius.value, isMoreOrLess: radius.isMoreOrLess)),
+          eventRadius: EventRadiusModel(
+              radius: radius.value, isMoreOrLess: radius.isMoreOrLess),
+          eventStatus: const EventStatusRequestModel(status: [EventStatus.COMING_SOON]),
+        ),
         sort: EventSortModel(
             sortBy: EventSort.mostPopular.value,
             isMoreOrLess: EventSort.mostPopular.order),
