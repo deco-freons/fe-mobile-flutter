@@ -15,7 +15,7 @@ class EventMatchingCardHome extends StatelessWidget {
   final VoidCallback onTapHandler;
   final bool loading;
   final bool isEventEmpty;
-  final int fee;
+  final double fee;
 
   const EventMatchingCardHome(
       {Key? key,

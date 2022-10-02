@@ -20,7 +20,7 @@ class EventJoinedCard extends StatelessWidget {
   final bool isLoading;
   final bool isEventCreator;
   final List<EventParticipantModel> participants;
-  final int fee;
+  final double fee;
 
   final void Function(int eventID)? onCancelClick;
 

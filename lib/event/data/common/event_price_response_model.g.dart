@@ -10,7 +10,7 @@ EventPriceResponseModel _$EventPriceResponseModelFromJson(
         Map<String, dynamic> json) =>
     EventPriceResponseModel(
       priceID: json['priceID'] as int?,
-      fee: json['fee'] as int,
+      fee: (json['fee'] as num).toDouble(),
       currency:
           EventCurrencyModel.fromJson(json['currency'] as Map<String, dynamic>),
     );

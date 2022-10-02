@@ -98,8 +98,8 @@ class CreateEventForm extends StatefulWidget {
 class _CreateEventFormState extends State<CreateEventForm> {
   final CustomFormInput image =
       CustomFormInput(label: 'Add Photo', type: TextFieldType.eventImage);
-  final CustomFormInput eventName =
-      CustomFormInput(label: 'Event Name', type: TextFieldType.string, required: true);
+  final CustomFormInput eventName = CustomFormInput(
+      label: 'Event Name', type: TextFieldType.string, required: true);
   final CustomFormInput category = CustomFormInput(
     label: 'Category',
     type: TextFieldType.interest,
@@ -172,7 +172,7 @@ class _CreateEventFormState extends State<CreateEventForm> {
               : "No description",
           eventPrice: EventPriceRequestModel(
               fee: price.controller.text != ""
-                  ? int.parse(price.controller.text)
+                  ? double.parse(price.controller.text)
                   : 0,
               currency: "AU\$"),
         );
