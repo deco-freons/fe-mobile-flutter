@@ -50,13 +50,15 @@ class EventList extends StatelessWidget {
                         .format(DateTime.parse(event.date));
                     List<String> splittedDate = formattedDate.split(' ');
                     return EventCardSmall(
-                        eventID: event.eventID,
-                        title: event.eventName,
-                        distance: event.distance,
-                        month: splittedDate[0].substring(0, 3),
-                        date: splittedDate[1].substring(0, 2),
-                        image: event.eventImage?.imageUrl,
-                        isAssetImage: isAssetImage);
+                      eventID: event.eventID,
+                      title: event.eventName,
+                      distance: event.distance,
+                      month: splittedDate[0].substring(0, 3),
+                      date: splittedDate[1].substring(0, 2),
+                      image: event.eventImage?.imageUrl,
+                      isAssetImage: isAssetImage,
+                      fee: event.eventPrice.fee,
+                    );
                   }).toList());
   }
 }

@@ -9,7 +9,7 @@ part of 'event_price_request_model.dart';
 EventPriceRequestModel _$EventPriceRequestModelFromJson(
         Map<String, dynamic> json) =>
     EventPriceRequestModel(
-      fee: json['fee'] as int,
+      fee: (json['fee'] as num).toDouble(),
       currency: json['currency'] as String,
     );
 

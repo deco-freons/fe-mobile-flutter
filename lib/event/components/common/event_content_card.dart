@@ -18,7 +18,7 @@ class EventContentCard extends StatelessWidget {
   final bool isBlurred;
   final double elevation;
   final double? verticalPadding;
-  final int fee;
+  final double fee;
 
   const EventContentCard({
     Key? key,

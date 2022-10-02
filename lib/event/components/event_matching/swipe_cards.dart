@@ -23,7 +23,7 @@ class SwipeCards extends StatefulWidget {
   final String? image;
   final bool isEventEmpty;
   final bool isFront;
-  final int fee;
+  final double fee;
 
   const SwipeCards({
     Key? key,

@@ -42,7 +42,7 @@ Map<String, dynamic> _$EventFilterModelToJson(EventFilterModel instance) {
   writeNotNull('eventCategories', instance.eventCategories);
   writeNotNull('eventRadius', instance.eventRadius);
   writeNotNull('daysToEvent', instance.daysToEvent);
-  writeNotNull('eventParticipants', instance.eventParticipants);
   writeNotNull('eventStatus', instance.eventStatus);
+  writeNotNull('eventParticipants', instance.eventParticipants);
   return val;
 }

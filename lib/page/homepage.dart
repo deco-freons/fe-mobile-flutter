@@ -273,7 +273,8 @@ class _BuildHomeState extends State<BuildHome> {
                           date: event.date,
                           latitude: event.latitude,
                           longitude: event.longitude,
-                          eventImage: event.eventImage))
+                          eventImage: event.eventImage,
+                          eventPrice: event.eventPrice))
                       .toList()
                   : [],
               onPressed: () {

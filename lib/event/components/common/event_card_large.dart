@@ -18,7 +18,7 @@ class EventCardLarge extends StatelessWidget {
   final VoidCallback onTapHandler;
   final double elevation;
   final bool loading;
-  final int fee;
+  final double fee;
 
   const EventCardLarge({
     Key? key,

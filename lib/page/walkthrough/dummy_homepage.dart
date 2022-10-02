@@ -266,14 +266,18 @@ class _DummyHomepageState extends State<DummyHomepage> {
             isLoading: false,
             isAssetImage: true,
             events: events
-                .map((event) => EventByUserModel(
+                .map(
+                  (event) => EventByUserModel(
                     eventID: event.eventID,
                     eventName: event.eventName,
                     distance: event.distance,
                     date: event.date,
                     latitude: event.latitude,
                     longitude: event.longitude,
-                    eventImage: event.eventImage))
+                    eventImage: event.eventImage,
+                    eventPrice: event.eventPrice,
+                  ),
+                )
                 .toList(),
             onPressed: () {},
           ),
