@@ -89,8 +89,14 @@ class EventCardSmall extends StatelessWidget {
                                       right: CustomPadding.sm,
                                     ),
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
-                                        DateCard(month: month, date: date)
+                                        DateCard(month: month, date: date),
+                                        const SizedBox(
+                                          height: CustomPadding.xs,
+                                        ),
+                                        buildFee(),
                                       ],
                                     ),
                                   ),
@@ -116,35 +122,7 @@ class EventCardSmall extends StatelessWidget {
                                           child: BackdropFilter(
                                             filter: ImageFilter.blur(
                                                 sigmaX: 3.0, sigmaY: 3.0),
-                                            child: Card(
-                                              elevation: 0,
-                                              color: neutral.shade100,
-                                              margin: EdgeInsets.zero,
-                                              shape:
-                                                  const RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(
-                                                      CustomRadius.md),
-                                                ),
-                                              ),
-                                              child: Container(
-                                                height: 38.0,
-                                                width: 38.0,
-                                                padding:
-                                                    const EdgeInsets.all(1.0),
-                                                child: Center(
-                                                  child: Text(
-                                                    fee > 0 ? "\$\$" : "FREE",
-                                                    style: const TextStyle(
-                                                        color: success,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize:
-                                                            CustomFontSize.xs),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            child: buildFee(),
                                           ),
                                         )
                                       ],
@@ -189,5 +167,32 @@ class EventCardSmall extends StatelessWidget {
           )
         : BuildLoading.buildRectangularLoading(
             width: 192, height: 210, borderRadius: 20);
+  }
+
+  Widget buildFee() {
+    return Card(
+      elevation: 0,
+      color: neutral.shade100,
+      margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(CustomRadius.md),
+        ),
+      ),
+      child: Container(
+        height: 24.0,
+        width: 38.0,
+        padding: const EdgeInsets.all(1.0),
+        child: Center(
+          child: Text(
+            fee > 0 ? "\$\$" : "FREE",
+            style: const TextStyle(
+                color: success,
+                fontWeight: FontWeight.bold,
+                fontSize: CustomFontSize.xs),
+          ),
+        ),
+      ),
+    );
   }
 }
