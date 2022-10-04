@@ -9,9 +9,11 @@ import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/components/common/event_list.dart';
 import 'package:flutter_boilerplate/event/components/event_matching/event_matching_home_card.dart';
 import 'package:flutter_boilerplate/event/components/common/home_content.dart';
+import 'package:flutter_boilerplate/event/data/common/event_currency_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_response_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_status_model.dart';
 import 'package:flutter_boilerplate/event/data/events_by_user/event_by_user_model.dart';
 import 'package:flutter_boilerplate/page/walkthrough/dummy_event_matching.dart';
@@ -38,24 +40,31 @@ class _DummyHomepageState extends State<DummyHomepage> {
     date: "24",
     image: "lib/common/assets/images/LargeEventImage.png",
     isAssetImage: true,
+    fee: 0,
     onTapHandler: () {},
   );
   List<EventModel> events = [
     const EventModel(
-        eventID: 1,
-        eventName: "Live Music at City Hall",
-        date: "2000-12-12",
-        distance: 2,
-        longitude: 13,
-        latitude: 13,
-        eventCreator: EventParticipantModel(
-            username: "creator1", firstName: "Dwayne", lastName: "Johnson"),
-        location: EventLocationModel(suburb: "Brisbane City", city: "Brisbane"),
-        locationName: "City Hall",
-        participants: 12,
-        eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
-        eventImage: ImageModel(
-            imageUrl: "lib/common/assets/images/SmallEventImageBand.png")),
+      eventID: 1,
+      eventName: "Live Music at City Hall",
+      date: "2000-12-12",
+      distance: 2,
+      longitude: 13,
+      latitude: 13,
+      eventCreator: EventParticipantModel(
+          username: "creator1", firstName: "Dwayne", lastName: "Johnson"),
+      location: EventLocationModel(suburb: "Brisbane City", city: "Brisbane"),
+      locationName: "City Hall",
+      participants: 12,
+      eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
+      eventImage: ImageModel(
+          imageUrl: "lib/common/assets/images/SmallEventImageBand.png"),
+      eventPrice: EventPriceResponseModel(
+        priceID: 0,
+        fee: 20,
+        currency: EventCurrencyModel(currencyShortName: "AU\$"),
+      ),
+    ),
     const EventModel(
       eventID: 2,
       eventName: "Dessert Crawl at West End",
@@ -71,6 +80,11 @@ class _DummyHomepageState extends State<DummyHomepage> {
       eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
       eventImage: ImageModel(
           imageUrl: "lib/common/assets/images/SmallEventImageCake.png"),
+      eventPrice: EventPriceResponseModel(
+        priceID: 0,
+        fee: 20,
+        currency: EventCurrencyModel(currencyShortName: "AU\$"),
+      ),
     ),
   ];
 
@@ -252,14 +266,18 @@ class _DummyHomepageState extends State<DummyHomepage> {
             isLoading: false,
             isAssetImage: true,
             events: events
-                .map((event) => EventByUserModel(
+                .map(
+                  (event) => EventByUserModel(
                     eventID: event.eventID,
                     eventName: event.eventName,
                     distance: event.distance,
                     date: event.date,
                     latitude: event.latitude,
                     longitude: event.longitude,
-                    eventImage: event.eventImage))
+                    eventImage: event.eventImage,
+                    eventPrice: event.eventPrice,
+                  ),
+                )
                 .toList(),
             onPressed: () {},
           ),

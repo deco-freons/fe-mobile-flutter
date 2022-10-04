@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_chip.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
@@ -285,28 +286,35 @@ class _EventDetailState extends State<EventDetail> {
         ? SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Wrap(
-              direction: Axis.horizontal,
-              spacing: CustomPadding.md,
-              children: state.model.event.categories
-                  .map(
-                    (category) => Container(
-                      padding: const EdgeInsets.all(CustomPadding.sm),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(CustomRadius.xl),
-                        color: primary.shade300,
-                      ),
-                      child: Text(
-                        category.preferenceName,
-                        style: TextStyle(
-                          color: neutral.shade700,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13,
-                        ),
-                      ),
+                direction: Axis.horizontal,
+                spacing: CustomPadding.md,
+                children: [
+                  CustomChip(
+                    color: success,
+                    label: state.model.event.eventPrice.fee > 0
+                        ? '\$${state.model.event.eventPrice.fee}'
+                        : 'FREE',
+                    width: null,
+                    height: null,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: CustomPadding.sm,
+                      horizontal: CustomPadding.md,
                     ),
-                  )
-                  .toList(),
-            ),
+                  ),
+                  ...state.model.event.categories
+                      .map((category) => CustomChip(
+                            label: category.preferenceName,
+                            fontColor: neutral.shade700,
+                            color: primary.shade300,
+                            width: null,
+                            height: null,
+                            padding: const EdgeInsets.symmetric(
+                              vertical: CustomPadding.sm,
+                              horizontal: CustomPadding.base,
+                            ),
+                          ))
+                      .toList(),
+                ]),
           )
         : BuildLoading.buildRectangularLoading(
             height: 16, width: 70, verticalPadding: CustomPadding.xs);

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_boilerplate/common/utils/build_loading.dart';
 import 'package:flutter_boilerplate/event/components/common/date_card.dart';
 import 'package:flutter_boilerplate/page/event/event_detail.dart';
 
-class EventCardSmall extends StatefulWidget {
+class EventCardSmall extends StatelessWidget {
   final int eventID;
   final String title;
   final double distance;
@@ -14,6 +16,7 @@ class EventCardSmall extends StatefulWidget {
   final String? image;
   final bool isAssetImage;
   final bool loading;
+  final double fee;
 
   const EventCardSmall({
     Key? key,
@@ -22,6 +25,7 @@ class EventCardSmall extends StatefulWidget {
     required this.distance,
     required this.month,
     required this.date,
+    required this.fee,
     this.image,
     this.isAssetImage = false,
     this.loading = false,
@@ -37,29 +41,27 @@ class EventCardSmall extends StatefulWidget {
     this.image = '',
     this.isAssetImage = false,
     this.loading = true,
+    this.fee = 0,
   }) : super(key: key);
 
   @override
-  State<EventCardSmall> createState() => _EventCardSmallState();
-}
-
-class _EventCardSmallState extends State<EventCardSmall> {
-  @override
   Widget build(BuildContext context) {
-    return !widget.loading
+    double imageWidth = 176.0;
+    double imageHeight = 136.0;
+    return !loading
         ? Card(
-            margin: const EdgeInsets.symmetric(vertical: 4.0),
+            margin: const EdgeInsets.symmetric(vertical: CustomPadding.xs),
             elevation: 3.0,
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             child: InkWell(
               onTap: () {
                 Navigator.pushNamed(context, EventDetail.routeName,
-                    arguments: widget.eventID);
+                    arguments: eventID);
               },
               child: SizedBox(
                 width: 192.0,
-                height: 210.0,
+                height: 208.0,
                 child: Padding(
                     padding: const EdgeInsets.all(CustomPadding.sm),
                     child: Column(
@@ -68,31 +70,72 @@ class _EventCardSmallState extends State<EventCardSmall> {
                         Card(
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0)),
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(CustomRadius.xxl)),
                           ),
-                          child: widget.isAssetImage
+                          child: isAssetImage
                               ? Container(
-                                  width: 174.0,
-                                  height: 139.0,
+                                  width: imageWidth,
+                                  height: imageHeight,
                                   decoration: BoxDecoration(
-                                      image: widget.image != null
+                                      image: image != null
                                           ? DecorationImage(
-                                              image: AssetImage(widget.image!),
-                                              fit: BoxFit.cover)
+                                              image: AssetImage(image!),
+                                              fit: BoxFit.cover,
+                                            )
                                           : null),
-                                  child: buildDateCard(),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: CustomPadding.sm,
+                                      right: CustomPadding.sm,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        DateCard(month: month, date: date),
+                                        const SizedBox(
+                                          height: CustomPadding.xs,
+                                        ),
+                                        buildFee(),
+                                      ],
+                                    ),
+                                  ),
                                 )
                               : NetworkImageContainer(
-                                  width: 174.0,
-                                  height: 139.0,
-                                  image: widget.image,
-                                  child: buildDateCard(),
+                                  width: imageWidth,
+                                  height: imageHeight,
+                                  image: image,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: CustomPadding.sm,
+                                      right: CustomPadding.sm,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        DateCard(month: month, date: date),
+                                        const SizedBox(
+                                          height: CustomPadding.xs,
+                                        ),
+                                        ClipRRect(
+                                          child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 3.0, sigmaY: 3.0),
+                                            child: buildFee(),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 7.0, right: 7.0, top: 1.0),
+                              left: CustomPadding.sm,
+                              right: CustomPadding.sm,
+                              top: 1.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -100,7 +143,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(bottom: 5.0),
                                   child: Text(
-                                    widget.title,
+                                    title,
                                     style: const TextStyle(
                                       fontSize: 14.0,
                                       fontWeight: FontWeight.bold,
@@ -109,7 +152,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                                 ),
                               ),
                               Text(
-                                '${widget.distance}km',
+                                '${distance}km',
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   color: neutral.shade700,
@@ -127,15 +170,31 @@ class _EventCardSmallState extends State<EventCardSmall> {
             width: 192, height: 210, borderRadius: 20);
   }
 
-  Widget buildDateCard() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 9.0, right: 9.0),
-      child: Align(
-          alignment: Alignment.topRight,
-          child: DateCard(
-            month: widget.month,
-            date: widget.date,
-          )),
+  Widget buildFee() {
+    return Card(
+      elevation: 0,
+      color: neutral.shade100,
+      margin: EdgeInsets.zero,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(CustomRadius.md),
+        ),
+      ),
+      child: Container(
+        height: 24.0,
+        width: 38.0,
+        padding: const EdgeInsets.all(1.0),
+        child: Center(
+          child: Text(
+            fee > 0 ? "\$\$" : "FREE",
+            style: const TextStyle(
+              color: success,
+              fontWeight: FontWeight.bold,
+              fontSize: CustomFontSize.xs,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -17,6 +17,8 @@ EventByUserModel _$EventByUserModelFromJson(Map<String, dynamic> json) =>
       eventImage: json['eventImage'] == null
           ? null
           : ImageModel.fromJson(json['eventImage'] as Map<String, dynamic>),
+      eventPrice: EventPriceResponseModel.fromJson(
+          json['eventPrice'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$EventByUserModelToJson(EventByUserModel instance) =>
@@ -28,4 +30,5 @@ Map<String, dynamic> _$EventByUserModelToJson(EventByUserModel instance) =>
       'longitude': instance.longitude,
       'latitude': instance.latitude,
       'eventImage': instance.eventImage,
+      'eventPrice': instance.eventPrice,
     };

@@ -227,7 +227,7 @@ class _EditEventFormState extends State<EditEventForm> {
               eventImage: event.eventImage,
               eventPrice: event.eventPrice.copyWith(
                   fee: price.controller.text != ""
-                      ? int.parse(price.controller.text)
+                      ? double.parse(price.controller.text)
                       : 0));
           EventDetailResponseModel data = EventDetailResponseModel(
             event: updatedEvent,

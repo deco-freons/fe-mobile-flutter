@@ -8,8 +8,10 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/common/data/image_model.dart';
 import 'package:flutter_boilerplate/event/components/common/event_info.dart';
 import 'package:flutter_boilerplate/event/components/common/see_more.dart';
+import 'package:flutter_boilerplate/event/data/common/event_currency_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
+import 'package:flutter_boilerplate/event/data/common/event_price_response_model.dart';
 import 'package:flutter_boilerplate/event/data/common/event_status_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
@@ -47,6 +49,11 @@ class _DummyEventMatchingState extends State<DummyEventMatching> {
           ImageModel(imageUrl: "lib/common/assets/images/LargeEventImage.png"),
       shortDescription:
           "Harry Styles Love On Tour Melbourne concert for you Harry Style's fan.",
+      eventPrice: EventPriceResponseModel(
+        priceID: 0,
+        fee: 20,
+        currency: EventCurrencyModel(currencyShortName: "AU\$"),
+      ),
     ),
   ];
 

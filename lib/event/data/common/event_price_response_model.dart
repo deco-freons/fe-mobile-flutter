@@ -6,14 +6,14 @@ part 'event_price_response_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class EventPriceResponseModel extends BaseModel {
-  final int priceID;
-  final int fee;
+  final int? priceID;
+  final double fee;
   final EventCurrencyModel currency;
   const EventPriceResponseModel(
-      {required this.priceID, required this.fee, required this.currency});
+      {this.priceID, required this.fee, required this.currency});
 
   EventPriceResponseModel copyWith(
-      {int? priceID, int? fee, EventCurrencyModel? currency}) {
+      {int? priceID, double? fee, EventCurrencyModel? currency}) {
     return EventPriceResponseModel(
       priceID: priceID ?? this.priceID,
       fee: fee ?? this.fee,

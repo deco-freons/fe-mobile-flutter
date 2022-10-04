@@ -23,6 +23,7 @@ class SwipeCards extends StatefulWidget {
   final String? image;
   final bool isEventEmpty;
   final bool isFront;
+  final double fee;
 
   const SwipeCards({
     Key? key,
@@ -40,6 +41,7 @@ class SwipeCards extends StatefulWidget {
     required this.distance,
     this.image,
     required this.isFront,
+    required this.fee,
   }) : super(key: key);
 
   const SwipeCards.empty({
@@ -58,6 +60,7 @@ class SwipeCards extends StatefulWidget {
     this.distance = 0,
     this.image,
     this.isFront = false,
+    this.fee = 0,
   }) : super(key: key);
 
   @override
@@ -202,7 +205,31 @@ class _SwipeCardsState extends State<SwipeCards> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        CustomChip(label: '${widget.distance} km'),
+                        CustomChip(
+                          label: '${widget.distance} km',
+                          boxShadow: [
+                            BoxShadow(
+                              color: neutral.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 4,
+                              offset: const Offset(0, 3),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          width: CustomPadding.md,
+                        ),
+                        CustomChip(
+                            boxShadow: [
+                              BoxShadow(
+                                color: neutral.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 4,
+                                offset: const Offset(0, 3),
+                              )
+                            ],
+                            color: success,
+                            label: widget.fee > 0 ? "\$${widget.fee}" : "FREE")
                       ],
                     )
                   ],

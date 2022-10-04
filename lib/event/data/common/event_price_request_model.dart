@@ -5,7 +5,7 @@ part 'event_price_request_model.g.dart';
 
 @JsonSerializable()
 class EventPriceRequestModel extends BaseModel {
-  final int fee;
+  final double fee;
   final String currency;
   const EventPriceRequestModel({required this.fee, required this.currency});
 

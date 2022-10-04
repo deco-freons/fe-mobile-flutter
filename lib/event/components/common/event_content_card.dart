@@ -18,23 +18,25 @@ class EventContentCard extends StatelessWidget {
   final bool isBlurred;
   final double elevation;
   final double? verticalPadding;
+  final double fee;
 
-  const EventContentCard(
-      {Key? key,
-      required this.title,
-      this.author,
-      required this.month,
-      required this.date,
-      required this.distance,
-      required this.location,
-      this.width,
-      this.height,
-      this.color,
-      this.bottomContent,
-      this.isBlurred = true,
-      this.elevation = 0,
-      this.verticalPadding})
-      : super(key: key);
+  const EventContentCard({
+    Key? key,
+    required this.title,
+    this.author,
+    required this.month,
+    required this.date,
+    required this.distance,
+    required this.location,
+    this.width,
+    this.height,
+    this.color,
+    this.bottomContent,
+    this.isBlurred = true,
+    this.elevation = 0,
+    this.verticalPadding,
+    required this.fee,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,17 +66,17 @@ class EventContentCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Flexible(
-                        child: Padding(
-                          padding:
-                              const EdgeInsets.only(left: CustomPadding.base),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: CustomPadding.base),
+                              child: Text(
                                 title,
                                 style: const TextStyle(
                                   fontSize: CustomFontSize.sm,
@@ -82,40 +84,63 @@ class EventContentCard extends StatelessWidget {
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Text(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: CustomPadding.base),
+                              child: Text(
                                 'By $author',
                                 style: TextStyle(
                                   fontSize: 10.0,
                                   color: neutral.shade700,
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      DateCard(month: month, date: date)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.location_on_outlined,
-                        color: primary,
-                        size: 40,
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text('$distance km'),
-                            Text(
-                              location,
-                              overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: CustomPadding.sm,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  color: primary,
+                                  size: 40,
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text('$distance km'),
+                                      Text(
+                                        location,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      )
+                      ),
+                      Column(
+                        children: [
+                          DateCard(month: month, date: date),
+                          const SizedBox(
+                            height: CustomPadding.sm,
+                          ),
+                          Text(
+                            fee > 0 ? "\$$fee" : "FREE",
+                            style: const TextStyle(
+                              color: success,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        ],
+                      ),
                     ],
                   ),
                   bottomContent ?? const SizedBox.shrink()

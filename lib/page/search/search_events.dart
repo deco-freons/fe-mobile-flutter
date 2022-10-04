@@ -256,6 +256,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
           month: splittedDate[0].substring(0, 3),
           date: splittedDate[1].substring(0, 2),
           image: event.eventImage?.imageUrl,
+          fee: 0,
           onTapHandler: () {
             Navigator.of(context)
                 .pushNamed(EventDetail.routeName, arguments: event.eventID);

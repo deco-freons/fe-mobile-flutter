@@ -202,6 +202,7 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
       type: EventJoinedCardType.SCHEDULED,
       participants: event.participantsList,
       isEventCreator: event.isEventCreator,
+      fee: event.eventPrice.fee,
       onCancelClick: (eventID) {
         showLeaveModal(eventID, context);
       },
