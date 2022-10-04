@@ -81,7 +81,8 @@ class EventCardSmall extends StatelessWidget {
                                       image: image != null
                                           ? DecorationImage(
                                               image: AssetImage(image!),
-                                              fit: BoxFit.cover)
+                                              fit: BoxFit.cover,
+                                            )
                                           : null),
                                   child: Padding(
                                     padding: const EdgeInsets.only(
@@ -187,9 +188,10 @@ class EventCardSmall extends StatelessWidget {
           child: Text(
             fee > 0 ? "\$\$" : "FREE",
             style: const TextStyle(
-                color: success,
-                fontWeight: FontWeight.bold,
-                fontSize: CustomFontSize.xs),
+              color: success,
+              fontWeight: FontWeight.bold,
+              fontSize: CustomFontSize.xs,
+            ),
           ),
         ),
       ),
