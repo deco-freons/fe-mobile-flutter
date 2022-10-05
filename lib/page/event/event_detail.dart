@@ -17,7 +17,8 @@ import 'package:flutter_boilerplate/event/bloc/update_event/update_event_detail_
 import 'package:flutter_boilerplate/event/bloc/update_event/update_event_detail_state.dart';
 import 'package:flutter_boilerplate/event/components/event_detail/edit_bottom_modal.dart';
 import 'package:flutter_boilerplate/event/components/common/event_info.dart';
-import 'package:flutter_boilerplate/event/components/event_detail/leave_bottom_modal.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/leave_confirmation_modal.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/report_bottom_modal.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_detail_response_model.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_place_model.dart';
 import 'package:flutter_boilerplate/event/components/common/see_more.dart';
@@ -112,7 +113,7 @@ class _EventDetailState extends State<EventDetail> {
                           onPressed: () {
                             // OPEN MORE HERE
                             if (isSuccessState) {
-                              showLeaveOrEditBottomModal(blocContext,
+                              showReportOrEditBottomModal(blocContext,
                                   state.model, state.model.isEventCreator);
                             }
                           },
@@ -193,7 +194,8 @@ class _EventDetailState extends State<EventDetail> {
                             const SizedBox(
                               height: 25,
                             ),
-                            _buildJoinButton(state, blocContext)
+                            _buildJoinButton(state, blocContext),
+                            _buildLeaveButton(state, blocContext)
                           ],
                         ),
                       ),
@@ -208,7 +210,47 @@ class _EventDetailState extends State<EventDetail> {
     );
   }
 
-  showLeaveOrEditBottomModal(BuildContext blocContext,
+  Widget _buildLeaveButton(
+      EventDetailState eventDetailState, BuildContext blocContext) {
+    return eventDetailState.status == LoadingType.SUCCESS
+        ? eventDetailState.model.event.participated
+            ? Center(
+                child: CustomTextButton(
+                  text: "Leave",
+                  textWeight: FontWeight.bold,
+                  onPressedHandler: () {
+                    showModalBottomSheet(
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(40),
+                        ),
+                      ),
+                      context: context,
+                      builder: (context) {
+                        return LeaveConfirmationModal(
+                          onLeavePressed: () {
+                            blocContext
+                                .read<UpdateEventDetailCubit>()
+                                .leaveEvent(
+                                    eventDetailState.model.event.eventID)
+                                .then(
+                              (value) {
+                                Navigator.of(context).pop();
+                              },
+                            );
+                          },
+                        );
+                      },
+                    );
+                  },
+                  type: TextButtonType.error,
+                ),
+              )
+            : const SizedBox.shrink()
+        : const SizedBox.shrink();
+  }
+
+  showReportOrEditBottomModal(BuildContext blocContext,
       EventDetailResponseModel eventDetail, bool isEventCreator) {
     showModalBottomSheet(
       context: blocContext,
@@ -220,9 +262,7 @@ class _EventDetailState extends State<EventDetail> {
       builder: (context) {
         return isEventCreator
             ? EditBottomModal(eventDetail: eventDetail)
-            : LeaveBottomModal(
-                eventID: eventDetail.event.eventID,
-              );
+            : const ReportBottomModal();
       },
     );
   }
@@ -230,23 +270,18 @@ class _EventDetailState extends State<EventDetail> {
   Widget _buildJoinButton(
       EventDetailState eventDetailState, BuildContext context) {
     return eventDetailState.status == LoadingType.SUCCESS
-        ? BlocBuilder<UpdateEventDetailCubit, UpdateEventDetailState>(
-            builder: (context, state) {
-              return CustomButton(
-                  label: !eventDetailState.model.event.participated
-                      ? "Join event"
-                      : "Event Joined",
-                  type: ButtonType.primary,
-                  cornerRadius: CustomRadius.button,
-                  onPressedHandler: !eventDetailState.model.event.participated
-                      ? () async {
-                          final cubit = context.read<UpdateEventDetailCubit>();
-                          await cubit
-                              .joinEvent(eventDetailState.model.event.eventID);
-                        }
-                      : null);
-            },
-          )
+        ? CustomButton(
+            label: !eventDetailState.model.event.participated
+                ? "Join event"
+                : "Event Joined",
+            type: ButtonType.primary,
+            cornerRadius: CustomRadius.button,
+            onPressedHandler: !eventDetailState.model.event.participated
+                ? () async {
+                    final cubit = context.read<UpdateEventDetailCubit>();
+                    await cubit.joinEvent(eventDetailState.model.event.eventID);
+                  }
+                : null)
         : ShimmerWidget.rectangular(
             height: 52,
             shapeBorder: RoundedRectangleBorder(

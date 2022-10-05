@@ -106,29 +106,13 @@ class EventCardSmall extends StatelessWidget {
                                   width: imageWidth,
                                   height: imageHeight,
                                   image: image,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: CustomPadding.sm,
-                                      right: CustomPadding.sm,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        DateCard(month: month, date: date),
-                                        const SizedBox(
-                                          height: CustomPadding.xs,
+                                  child: image != null
+                                      ? buildOverlay()
+                                      : Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          child: buildOverlay(),
                                         ),
-                                        ClipRRect(
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(
-                                                sigmaX: 3.0, sigmaY: 3.0),
-                                            child: buildFee(),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
                                 ),
                         ),
                         Padding(
@@ -168,6 +152,30 @@ class EventCardSmall extends StatelessWidget {
           )
         : BuildLoading.buildRectangularLoading(
             width: 192, height: 210, borderRadius: 20);
+  }
+
+  Widget buildOverlay() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        top: CustomPadding.sm,
+        right: CustomPadding.sm,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          DateCard(month: month, date: date),
+          const SizedBox(
+            height: CustomPadding.xs,
+          ),
+          ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+              child: buildFee(),
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget buildFee() {
