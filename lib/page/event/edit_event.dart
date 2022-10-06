@@ -168,7 +168,6 @@ class _EditEventFormState extends State<EditEventForm> {
       ImageInputAction action,
     ) async {
       final cubit = context.read<UpdateEventDetailCubit>();
-
       List<dynamic> jsonResult = jsonDecode(await _brisbaneLocationJson);
       BrisbaneLocationListModel locationListModel = BrisbaneLocationListModel(
           brisbaneLocations: BrisbaneLocationUtil.createModel(jsonResult));

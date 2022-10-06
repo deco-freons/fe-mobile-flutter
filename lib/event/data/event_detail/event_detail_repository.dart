@@ -125,7 +125,6 @@ class EventDetailRepositoryImpl extends EventDetailRepository {
     if (action == ImageInputAction.REMOVE) {
       // Remove image here
     }
-
     _controller.add(model);
     return action == ImageInputAction.DO_NOTHING || updatedImage != null;
   }

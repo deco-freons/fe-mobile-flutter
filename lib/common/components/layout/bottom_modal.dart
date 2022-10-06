@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
 class BottomModal {
-  static void baseModalBottomSheet(
-      {required BuildContext context, required child}) {
+  static void showBaseModalBottomSheet(
+      {required BuildContext context,
+      required Widget Function(BuildContext) builder}) {
     showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(40),
-          ),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(40),
         ),
-        context: context,
-        builder: (BuildContext bc) => child);
+      ),
+      context: context,
+      builder: builder,
+    );
   }
 }
