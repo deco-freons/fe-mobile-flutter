@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 
-class HomeContent extends StatefulWidget {
+class HomeContent extends StatelessWidget {
   final String title;
   final List<Widget> contentWidgets;
   final bool isPair;
@@ -28,67 +28,66 @@ class HomeContent extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<HomeContent> createState() => _HomeContentState();
-}
-
-class _HomeContentState extends State<HomeContent> {
-  @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        !widget.onlyContent
+        !onlyContent
             ? Padding(
                 padding: EdgeInsets.only(
-                    bottom: widget.titleBottomSpacing,
-                    left: widget.titleLeftSpacing,
-                    right: widget.titleRightSpacing),
-                child: (widget.isPair)
+                    bottom: titleBottomSpacing,
+                    left: titleLeftSpacing,
+                    right: titleRightSpacing),
+                child: (isPair)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            widget.title,
+                            title,
                             style: const TextStyle(
                                 fontSize: CustomFontSize.lg,
                                 fontWeight: FontWeight.bold),
                           ),
-                          widget.secondWidget,
+                          secondWidget,
                         ],
                       )
                     : Text(
-                        widget.title,
+                        title,
                         style: const TextStyle(
                             fontSize: CustomFontSize.lg,
                             fontWeight: FontWeight.bold),
                       ))
             : const SizedBox.shrink(),
-        Center(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Wrap(
-              spacing: widget.contentSpacing,
-              children: widget.contentWidgets
-                  .asMap()
-                  .map((i, element) => MapEntry(
-                      i,
-                      Padding(
-                        padding: i == 0
-                            ? EdgeInsets.only(
-                                left:
-                                    widget.isCentered ? 0 : CustomPadding.body)
-                            : i == widget.contentWidgets.length - 1
-                                ? const EdgeInsets.only(
-                                    right: CustomPadding.body)
-                                : EdgeInsets.zero,
-                        child: element,
-                      )))
-                  .values
-                  .toList(),
-            ),
-          ),
-        ),
+        isCentered
+            ? Center(
+                child: buildContent(),
+              )
+            : buildContent(),
       ],
+    );
+  }
+
+  Widget buildContent() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Wrap(
+        spacing: contentSpacing,
+        children: contentWidgets
+            .asMap()
+            .map((i, element) => MapEntry(
+                i,
+                Padding(
+                  padding: i == 0
+                      ? EdgeInsets.only(
+                          left: isCentered ? 0 : CustomPadding.body)
+                      : i == contentWidgets.length - 1
+                          ? const EdgeInsets.only(right: CustomPadding.body)
+                          : EdgeInsets.zero,
+                  child: element,
+                )))
+            .values
+            .toList(),
+      ),
     );
   }
 }

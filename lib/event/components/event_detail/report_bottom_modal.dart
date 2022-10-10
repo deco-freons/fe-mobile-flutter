@@ -3,13 +3,15 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/components/event_detail/event_detail_modal.dart';
-import 'package:flutter_boilerplate/event/data/event_detail/event_detail_response_model.dart';
-import 'package:flutter_boilerplate/page/event/edit_event.dart';
 
-class EditBottomModal extends StatelessWidget {
-  final EventDetailResponseModel eventDetail;
-  const EditBottomModal({Key? key, required this.eventDetail})
+class ReportBottomModal extends StatelessWidget {
+  final CustomVoidCallback<bool> reportEvent;
+  final bool isReported;
+
+  const ReportBottomModal(
+      {Key? key, required this.reportEvent, required this.isReported})
       : super(key: key);
 
   @override
@@ -17,28 +19,30 @@ class EditBottomModal extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: CustomPadding.xxl, vertical: CustomPadding.xl),
-      height: 230,
+      height: 185,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomTextButton(
-              text: "Edit",
-              fontSize: CustomFontSize.lg,
-              type: TextButtonType.tertiaryDark,
-              onPressedHandler: () {
-                Navigator.pushNamed(context, EditEvent.routeName,
-                    arguments: eventDetail);
-              }),
-          CustomTextButton(
-            text: "Delete",
-            fontSize: CustomFontSize.lg,
-            type: TextButtonType.error,
-            onPressedHandler: () {
-              showDeleteConfirmation(context);
+            text: isReported ? "Event Reported" : "Report Event",
+            fontSize: 20,
+            type: isReported
+                ? TextButtonType.tertiary
+                : TextButtonType.tertiaryDark,
+            onPressedHandler: () async {
+              if (isReported) return;
+              final res = await EventDetailBottomModal.showReportFormModal(
+                  context: context);
+
+              if (res != null) {
+                reportEvent(true);
+                await EventDetailBottomModal.showReportConfirmed(
+                    context: context);
+              }
             },
           ),
           const SizedBox(
-            height: 23,
+            height: 20,
           ),
           CustomButton(
             label: "Close",
@@ -51,10 +55,5 @@ class EditBottomModal extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  showDeleteConfirmation(BuildContext context) {
-    EventDetailBottomModal.showDeleteConfirmationModal(
-        context: context, eventID: eventDetail.event.eventID);
   }
 }

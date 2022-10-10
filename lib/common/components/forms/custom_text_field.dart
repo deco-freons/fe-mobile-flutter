@@ -61,9 +61,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           maxLength: widget.input.maxLength,
           style: widget.inputStyle,
           decoration: InputDecoration(
-              hintText: widget.input.type == TextFieldType.textArea
-                  ? 'Please enter ${widget.input.label} here...'
-                  : "",
+              hintText: widget.input.placeholder ??
+                  (widget.input.type == TextFieldType.textArea
+                      ? 'Please enter ${widget.input.label} here...'
+                      : null),
               errorBorder: OutlineInputBorder(
                 borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 borderSide: BorderSide(

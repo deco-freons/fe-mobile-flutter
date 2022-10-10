@@ -15,6 +15,7 @@ class CustomFormInput {
   bool confirmField;
   String initialValue;
   String initialSecondValue;
+  String? placeholder;
   TextEditingController controller = TextEditingController();
   TextEditingController? secondController;
   TextEditingController confirmController = TextEditingController();
@@ -45,6 +46,7 @@ class CustomFormInput {
       String? initialSecondValue,
       this.lat = 0,
       this.lng = 0,
+      this.placeholder,
       this.disable = false,
       List<PreferenceModel>? preferences,
       this.checkbox = false,

@@ -84,7 +84,7 @@ class ForgetForm extends StatelessWidget {
       submitTitle: 'Submit',
       textButton: "Back to sign in",
       submitPadding: 35.0,
-      textButtonPadding: 35.0,
+      secondaryActionPadding: 35.0,
       bottomPadding: 194.0,
       submitHandler: () {
         ForgetModel data = ForgetModel(

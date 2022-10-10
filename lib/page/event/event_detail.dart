@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/common/components/buttons/circle_icon_button.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
-import 'package:flutter_boilerplate/common/components/buttons/custom_chip.dart';
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_avatar.dart';
 import 'package:flutter_boilerplate/common/components/layout/network_image_container.dart';
@@ -15,15 +14,15 @@ import 'package:flutter_boilerplate/event/bloc/event_detail/event_detail_cubit.d
 import 'package:flutter_boilerplate/event/bloc/event_detail/event_detail_state.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event/update_event_detail_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/update_event/update_event_detail_state.dart';
-import 'package:flutter_boilerplate/event/components/event_detail/edit_bottom_modal.dart';
 import 'package:flutter_boilerplate/event/components/common/event_info.dart';
-import 'package:flutter_boilerplate/event/components/event_detail/leave_bottom_modal.dart';
-import 'package:flutter_boilerplate/event/data/event_detail/event_detail_response_model.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/event_detail_categories.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/event_detail_modal.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/event_detail_participants.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/event_reported.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_place_model.dart';
 import 'package:flutter_boilerplate/event/components/common/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_detail_repository.dart';
 import 'package:flutter_boilerplate/get_it.dart';
-import 'package:flutter_boilerplate/page/event/event_participants.dart';
 import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
@@ -41,6 +40,14 @@ class EventDetail extends StatefulWidget {
 final googleApiKey = dotenv.env['googleApiKey'];
 
 class _EventDetailState extends State<EventDetail> {
+  bool isReported = false;
+
+  void updateEventReported(bool updatedValue) {
+    setState(() {
+      isReported = updatedValue;
+    });
+  }
+
   @override
   Widget build(BuildContext buildContext) {
     return MultiBlocProvider(
@@ -112,8 +119,13 @@ class _EventDetailState extends State<EventDetail> {
                           onPressed: () {
                             // OPEN MORE HERE
                             if (isSuccessState) {
-                              showLeaveOrEditBottomModal(blocContext,
-                                  state.model, state.model.isEventCreator);
+                              EventDetailBottomModal.showReportOrEditModal(
+                                context: blocContext,
+                                eventDetail: state.model,
+                                isEventCreator: state.model.isEventCreator,
+                                reportEvent: updateEventReported,
+                                isReported: isReported,
+                              );
                             }
                           },
                         ),
@@ -133,19 +145,19 @@ class _EventDetailState extends State<EventDetail> {
                           children: [
                             _buildEventCategory(state),
                             const SizedBox(
-                              height: 10,
+                              height: CustomPadding.base,
                             ),
                             _buildEventName(state),
                             const SizedBox(
-                              height: 15,
+                              height: CustomPadding.md,
                             ),
                             _buildEventCreatorDetail(state),
                             const SizedBox(
-                              height: 15,
+                              height: CustomPadding.md,
                             ),
                             _buildParticipantsDetail(state),
                             const SizedBox(
-                              height: 25,
+                              height: CustomPadding.md,
                             ),
                             isSuccessState
                                 ? EventInfo(
@@ -193,7 +205,8 @@ class _EventDetailState extends State<EventDetail> {
                             const SizedBox(
                               height: 25,
                             ),
-                            _buildJoinButton(state, blocContext)
+                            _buildJoinButton(state, blocContext),
+                            _buildLeaveButton(state, blocContext)
                           ],
                         ),
                       ),
@@ -208,45 +221,49 @@ class _EventDetailState extends State<EventDetail> {
     );
   }
 
-  showLeaveOrEditBottomModal(BuildContext blocContext,
-      EventDetailResponseModel eventDetail, bool isEventCreator) {
-    showModalBottomSheet(
-      context: blocContext,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(CustomRadius.body),
-        ),
-      ),
-      builder: (context) {
-        return isEventCreator
-            ? EditBottomModal(eventDetail: eventDetail)
-            : LeaveBottomModal(
-                eventID: eventDetail.event.eventID,
-              );
-      },
-    );
+  Widget _buildLeaveButton(
+      EventDetailState eventDetailState, BuildContext blocContext) {
+    return eventDetailState.status == LoadingType.SUCCESS
+        ? eventDetailState.model.event.participated &&
+                !eventDetailState.model.isEventCreator
+            ? Center(
+                child: CustomTextButton(
+                  text: "Leave",
+                  textWeight: FontWeight.bold,
+                  type: TextButtonType.error,
+                  onPressedHandler: () {
+                    EventDetailBottomModal.showLeaveConfirmationModal(
+                        context: context,
+                        onLeavePressed: () {
+                          blocContext
+                              .read<UpdateEventDetailCubit>()
+                              .leaveEvent(eventDetailState.model.event.eventID)
+                              .then((value) {
+                            Navigator.of(context).pop();
+                          });
+                        });
+                  },
+                ),
+              )
+            : const SizedBox.shrink()
+        : const SizedBox.shrink();
   }
 
   Widget _buildJoinButton(
       EventDetailState eventDetailState, BuildContext context) {
     return eventDetailState.status == LoadingType.SUCCESS
-        ? BlocBuilder<UpdateEventDetailCubit, UpdateEventDetailState>(
-            builder: (context, state) {
-              return CustomButton(
-                  label: !eventDetailState.model.event.participated
-                      ? "Join event"
-                      : "Event Joined",
-                  type: ButtonType.primary,
-                  cornerRadius: CustomRadius.button,
-                  onPressedHandler: !eventDetailState.model.event.participated
-                      ? () async {
-                          final cubit = context.read<UpdateEventDetailCubit>();
-                          await cubit
-                              .joinEvent(eventDetailState.model.event.eventID);
-                        }
-                      : null);
-            },
-          )
+        ? CustomButton(
+            label: !eventDetailState.model.event.participated
+                ? "Join event"
+                : "Event Joined",
+            type: ButtonType.primary,
+            cornerRadius: CustomRadius.button,
+            onPressedHandler: !eventDetailState.model.event.participated
+                ? () async {
+                    final cubit = context.read<UpdateEventDetailCubit>();
+                    await cubit.joinEvent(eventDetailState.model.event.eventID);
+                  }
+                : null)
         : ShimmerWidget.rectangular(
             height: 52,
             shapeBorder: RoundedRectangleBorder(
@@ -283,39 +300,10 @@ class _EventDetailState extends State<EventDetail> {
 
   Widget _buildEventCategory(EventDetailState state) {
     return state.status == LoadingType.SUCCESS
-        ? SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Wrap(
-                direction: Axis.horizontal,
-                spacing: CustomPadding.md,
-                children: [
-                  CustomChip(
-                    color: success,
-                    label: state.model.event.eventPrice.fee > 0
-                        ? '\$${state.model.event.eventPrice.fee}'
-                        : 'FREE',
-                    width: null,
-                    height: null,
-                    padding: const EdgeInsets.symmetric(
-                      vertical: CustomPadding.sm,
-                      horizontal: CustomPadding.md,
-                    ),
-                  ),
-                  ...state.model.event.categories
-                      .map((category) => CustomChip(
-                            label: category.preferenceName,
-                            fontColor: neutral.shade700,
-                            color: primary.shade300,
-                            width: null,
-                            height: null,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: CustomPadding.sm,
-                              horizontal: CustomPadding.base,
-                            ),
-                          ))
-                      .toList(),
-                ]),
-          )
+        ? Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            EventDetailCategories(event: state.model.event),
+            isReported ? const EventReported() : const SizedBox.shrink(),
+          ])
         : BuildLoading.buildRectangularLoading(
             height: 16, width: 70, verticalPadding: CustomPadding.xs);
   }
@@ -357,55 +345,8 @@ class _EventDetailState extends State<EventDetail> {
   }
 
   Widget _buildParticipantsDetail(EventDetailState state) {
-    return Row(
-      children: [
-        state.status == LoadingType.SUCCESS
-            ? RichText(
-                text: TextSpan(
-                  text: state.model.event.participants.toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: neutral.shade900,
-                    fontSize: CustomFontSize.base,
-                  ),
-                  children: const <TextSpan>[
-                    TextSpan(
-                      text: " people are going:",
-                      style: TextStyle(
-                        color: neutral,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : BuildLoading.buildRectangularLoading(
-                height: 16, width: 150, verticalPadding: 3),
-        const SizedBox(
-          width: 15,
-        ),
-        ...state.model.event.participantsList.take(3).map(
-              (participant) => Padding(
-                padding: const EdgeInsets.all(1),
-                child: state.status == LoadingType.SUCCESS
-                    ? NetworkImageAvatar(
-                        imageUrl: participant.userImage?.imageUrl, radius: 10)
-                    : const ShimmerWidget.circular(width: 20, height: 20),
-              ),
-            ),
-        const Spacer(),
-        state.status == LoadingType.SUCCESS
-            ? CustomTextButton(
-                text: "View All",
-                fontSize: CustomFontSize.base,
-                onPressedHandler: () {
-                  // GO TO VIEW ALL PARTICIPANTS PAGE
-                  Navigator.of(context).pushNamed(EventParticipants.routeName,
-                      arguments: state.model.event.participantsList);
-                },
-              )
-            : BuildLoading.buildRectangularLoading(
-                height: 25, width: 65, verticalPadding: 3)
-      ],
-    );
+    return state.status == LoadingType.SUCCESS
+        ? EventDetailParticipants(event: state.model.event)
+        : const EventDetailParticipants.loading();
   }
 }

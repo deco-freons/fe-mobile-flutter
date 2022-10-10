@@ -49,6 +49,7 @@ class _AppViewState extends State<AppView> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: _navigatorKey,
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: CustomTheme.theme,
       builder: (context, child) {
@@ -56,7 +57,8 @@ class _AppViewState extends State<AppView> {
           listener: (context, state) {
             if (state is AuthAuthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
-                  LocationPermission.routeName, (route) => false, arguments: false);
+                  LocationPermission.routeName, (route) => false,
+                  arguments: false);
             } else if (state is AuthUnauthenticatedState) {
               _navigator.pushNamedAndRemoveUntil(
                   Landing.routeName, (route) => false);

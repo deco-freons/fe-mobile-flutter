@@ -122,7 +122,7 @@ class _BuildHomeState extends State<BuildHome> {
                       if (state is UserSuccessState) {
                         imageUrl = state.user.userImage?.imageUrl;
                       }
-                      return NetworkImageAvatar(imageUrl: imageUrl, radius: 25);
+                      return NetworkImageAvatar(imageUrl: imageUrl, radius: 23);
                     },
                   ),
                 ),
@@ -172,20 +172,22 @@ class _BuildHomeState extends State<BuildHome> {
                   } else {
                     List<String> splittedDate =
                         DateParser.parseEventDate(state.events[0].date);
-                    return EventMatchingCardHome(
-                        title: state.events[0].eventName,
-                        author: state.events[0].eventCreator.username,
-                        distance: state.events[0].distance,
-                        location:
-                            '${state.events[0].locationName}, ${state.events[0].location.city}',
-                        month: splittedDate[0].substring(0, 3),
-                        date: splittedDate[1].substring(0, 2),
-                        image: state.events[0].eventImage?.imageUrl,
-                        fee: state.events[0].eventPrice.fee,
-                        onTapHandler: () {
-                          Navigator.of(context)
-                              .pushNamed(EventMatching.routeName);
-                        });
+                    return Center(
+                      child: EventMatchingCardHome(
+                          title: state.events[0].eventName,
+                          author: state.events[0].eventCreator.username,
+                          distance: state.events[0].distance,
+                          location:
+                              '${state.events[0].locationName}, ${state.events[0].location.city}',
+                          month: splittedDate[0].substring(0, 3),
+                          date: splittedDate[1].substring(0, 2),
+                          image: state.events[0].eventImage?.imageUrl,
+                          fee: state.events[0].eventPrice.fee,
+                          onTapHandler: () {
+                            Navigator.of(context)
+                                .pushNamed(EventMatching.routeName);
+                          }),
+                    );
                   }
                 } else {
                   return EventMatchingCardHome.empty(

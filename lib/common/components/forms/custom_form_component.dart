@@ -18,13 +18,14 @@ class CustomForm extends StatefulWidget {
   final VoidCallback textButtonHandler;
   final String errorMessage;
   final double submitPadding;
-  final double textButtonPadding;
   final double topPadding;
   final double bottomPadding;
   final double sidePadding;
   final Color labelColor;
   final TextStyle inputStyle;
   final double submitButtonRadius;
+  final double secondaryActionPadding;
+  final TextButtonType textButtonType;
 
   CustomForm({
     Key? key,
@@ -38,11 +39,12 @@ class CustomForm extends StatefulWidget {
     this.textButton = "",
     this.hasForgotPassword = false,
     this.submitPadding = 45.0,
-    this.textButtonPadding = 48.0,
     this.topPadding = CustomPadding.xxxl,
     this.bottomPadding = 40.0,
     this.sidePadding = CustomPadding.xl,
     this.submitButtonRadius = CustomPadding.lg,
+    this.secondaryActionPadding = 40.0,
+    this.textButtonType = TextButtonType.tertiary,
     Color? labelColor,
     TextStyle? inputStyle,
   })  : labelColor = labelColor ?? neutral.shade700,
@@ -111,6 +113,7 @@ class _CustomFormState extends State<CustomForm> {
               itemBuilder: (context, index) {
                 return CustomFormField(
                   formKey: _formKey,
+                  isFirst: index == 0,
                   input: widget.inputs[index],
                   labelColor: widget.labelColor,
                   inputStyle: widget.inputStyle,
@@ -149,7 +152,7 @@ class _CustomFormState extends State<CustomForm> {
             ),
             if (widget.bottomText != '' || widget.textButton != '')
               Padding(
-                padding: const EdgeInsets.only(top: 48.0, bottom: 40.0),
+                padding: EdgeInsets.only(top: widget.secondaryActionPadding),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -164,9 +167,7 @@ class _CustomFormState extends State<CustomForm> {
                     if (widget.textButton != '')
                       CustomTextButton(
                         text: widget.textButton,
-                        type: widget.bottomText == ''
-                            ? TextButtonType.tertiary
-                            : TextButtonType.primary,
+                        type: widget.textButtonType,
                         onPressedHandler: widget.textButtonHandler,
                       ),
                   ],
