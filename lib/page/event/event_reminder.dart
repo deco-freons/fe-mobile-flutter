@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/bloc/event_reminder/event_reminder_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_reminder/event_reminder_state.dart';
 import 'package:flutter_boilerplate/event/components/common/event_joined_card.dart';
+import 'package:flutter_boilerplate/event/components/common/no_events_card.dart';
 import 'package:flutter_boilerplate/event/components/event_reminder/event_reminder_card.dart';
 import 'package:flutter_boilerplate/event/data/common/event_joined_model.dart';
 import 'package:flutter_boilerplate/event/data/events_joined/events_joined_repository.dart';
@@ -110,18 +111,32 @@ class _BuildEventReminderState extends State<BuildEventReminder> {
                 itemCount: getItemCount(state),
                 itemBuilder: (context, index) {
                   if (state is EventsReminderSuccessState) {
-                    return buildCard(
-                        context, events[index], index, state.hasMore);
+                    if (events.isEmpty) {
+                      buildEmptyCard();
+                    } else {
+                      return buildCard(
+                          context, events[index], index, state.hasMore);
+                    }
                   }
+
                   if (state is EventsReminderFetchMoreErrorState) {
-                    return buildCard(context, events[index], index, false);
+                    if (events.isEmpty) {
+                      buildEmptyCard();
+                    } else {
+                      return buildCard(context, events[index], index, false);
+                    }
                   }
 
                   if (state is EventsReminderLoadingState) {
                     return const EventJoinedCard.loading();
                   }
 
-                  return const SizedBox.shrink();
+                  return const FittedBox(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: CustomPadding.base),
+                      child: NoEventsCard(),
+                    ),
+                  );
                 },
                 separatorBuilder: (context, index) => const SizedBox(
                   height: CustomPadding.xxl,
@@ -173,12 +188,24 @@ class _BuildEventReminderState extends State<BuildEventReminder> {
     );
   }
 
-  int getItemCount(EventsReminderState state) =>
-      state is EventsReminderSuccessState
-          ? state.events.length
-          : state is EventsReminderFetchMoreErrorState
-              ? state.events.length
-              : state is EventsReminderLoadingState
-                  ? 4
-                  : 0;
+  Widget buildEmptyCard() {
+    return const FittedBox(
+      child: Padding(
+        padding: EdgeInsets.only(top: CustomPadding.base),
+        child: NoEventsCard(),
+      ),
+    );
+  }
+
+  int getItemCount(EventsReminderState state) {
+    return state is EventsReminderSuccessState
+        ? events.isEmpty
+            ? 1
+            : state.events.length
+        : state is EventsReminderFetchMoreErrorState
+            ? state.events.length
+            : state is EventsReminderLoadingState
+                ? 4
+                : 1;
+  }
 }
