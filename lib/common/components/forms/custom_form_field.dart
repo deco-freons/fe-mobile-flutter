@@ -21,6 +21,7 @@ class CustomFormField extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final Color labelColor;
   final TextStyle inputStyle;
+  final bool isFirst;
 
   const CustomFormField({
     Key? key,
@@ -28,6 +29,7 @@ class CustomFormField extends StatefulWidget {
     required this.formKey,
     required this.labelColor,
     required this.inputStyle,
+    required this.isFirst,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,6 @@ class CustomFormField extends StatefulWidget {
 }
 
 class _CustomFormFieldState extends State<CustomFormField> {
-
   TextStyle customFontStyle(double size) {
     return TextStyle(fontSize: size, fontWeight: FontWeight.bold);
   }
@@ -51,7 +52,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: CustomPadding.base),
+      padding: EdgeInsets.only(top: widget.isFirst ? 0 : CustomPadding.base),
       child: widget.input.type == TextFieldType.checkbox
           ? CustomCheckboxField(input: widget.input)
           : widget.input.type == TextFieldType.toggleSwitch

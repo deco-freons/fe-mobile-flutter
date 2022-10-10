@@ -18,6 +18,7 @@ import 'package:flutter_boilerplate/event/components/common/event_info.dart';
 import 'package:flutter_boilerplate/event/components/event_detail/event_detail_categories.dart';
 import 'package:flutter_boilerplate/event/components/event_detail/event_detail_modal.dart';
 import 'package:flutter_boilerplate/event/components/event_detail/event_detail_participants.dart';
+import 'package:flutter_boilerplate/event/components/event_detail/event_reported.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_place_model.dart';
 import 'package:flutter_boilerplate/event/components/common/see_more.dart';
 import 'package:flutter_boilerplate/event/data/event_detail/event_detail_repository.dart';
@@ -39,6 +40,14 @@ class EventDetail extends StatefulWidget {
 final googleApiKey = dotenv.env['googleApiKey'];
 
 class _EventDetailState extends State<EventDetail> {
+  bool isReported = false;
+
+  void updateEventReported(bool updatedValue) {
+    setState(() {
+      isReported = updatedValue;
+    });
+  }
+
   @override
   Widget build(BuildContext buildContext) {
     return MultiBlocProvider(
@@ -111,9 +120,12 @@ class _EventDetailState extends State<EventDetail> {
                             // OPEN MORE HERE
                             if (isSuccessState) {
                               EventDetailBottomModal.showReportOrEditModal(
-                                  context: blocContext,
-                                  eventDetail: state.model,
-                                  isEventCreator: state.model.isEventCreator);
+                                context: blocContext,
+                                eventDetail: state.model,
+                                isEventCreator: state.model.isEventCreator,
+                                reportEvent: updateEventReported,
+                                isReported: isReported,
+                              );
                             }
                           },
                         ),
@@ -288,7 +300,10 @@ class _EventDetailState extends State<EventDetail> {
 
   Widget _buildEventCategory(EventDetailState state) {
     return state.status == LoadingType.SUCCESS
-        ? EventDetailCategories(event: state.model.event)
+        ? Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            EventDetailCategories(event: state.model.event),
+            isReported ? const EventReported() : const SizedBox.shrink(),
+          ])
         : BuildLoading.buildRectangularLoading(
             height: 16, width: 70, verticalPadding: CustomPadding.xs);
   }

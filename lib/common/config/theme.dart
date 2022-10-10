@@ -79,6 +79,19 @@ const MaterialColor success = MaterialColor(0xFF16932A, <int, Color>{
   900: Color(0xFF16932A),
 });
 
+const MaterialColor warning = MaterialColor(0xFFEDF132, <int, Color>{
+  50: Color(0xFFEDF132),
+  100: Color(0xFFEDF132),
+  200: Color(0xFFEDF132),
+  300: Color(0xFFEDF132),
+  400: Color(0xFFEDF132),
+  500: Color(0xFFEDF132),
+  600: Color(0xFFEDF132),
+  700: Color(0xFFEDF132),
+  800: Color(0xFFEDF132),
+  900: Color(0xFFEDF132),
+});
+
 const double appBarHeight = 64.0;
 
 class CustomPadding {

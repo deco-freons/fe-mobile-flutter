@@ -10,38 +10,40 @@ class EventDetailCategories extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Wrap(
-          direction: Axis.horizontal,
-          spacing: CustomPadding.md,
-          children: [
-            CustomChip(
-              color: success,
-              label: event.eventPrice.fee > 0
-                  ? '\$${event.eventPrice.fee}'
-                  : 'FREE',
-              width: null,
-              height: null,
-              padding: const EdgeInsets.symmetric(
-                vertical: CustomPadding.sm,
-                horizontal: CustomPadding.md,
+    return Expanded(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Wrap(
+            direction: Axis.horizontal,
+            spacing: CustomPadding.md,
+            children: [
+              CustomChip(
+                color: success,
+                label: event.eventPrice.fee > 0
+                    ? '\$${event.eventPrice.fee}'
+                    : 'FREE',
+                width: null,
+                height: null,
+                padding: const EdgeInsets.symmetric(
+                  vertical: CustomPadding.sm,
+                  horizontal: CustomPadding.md,
+                ),
               ),
-            ),
-            ...event.categories
-                .map((category) => CustomChip(
-                      label: category.preferenceName,
-                      fontColor: neutral.shade700,
-                      color: primary.shade300,
-                      width: null,
-                      height: null,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: CustomPadding.sm,
-                        horizontal: CustomPadding.base,
-                      ),
-                    ))
-                .toList(),
-          ]),
+              ...event.categories
+                  .map((category) => CustomChip(
+                        label: category.preferenceName,
+                        fontColor: neutral.shade700,
+                        color: primary.shade300,
+                        width: null,
+                        height: null,
+                        padding: const EdgeInsets.symmetric(
+                          vertical: CustomPadding.sm,
+                          horizontal: CustomPadding.base,
+                        ),
+                      ))
+                  .toList(),
+            ]),
+      ),
     );
   }
 }
