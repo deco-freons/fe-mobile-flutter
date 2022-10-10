@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/page/event/event_detail.dart';
 import 'package:flutter_boilerplate/page/event/event_matching.dart';
 import 'package:flutter_boilerplate/page/event/event_participants.dart';
 import 'package:flutter_boilerplate/page/auth/forget_password.dart';
+import 'package:flutter_boilerplate/page/event/event_reminder.dart';
 import 'package:flutter_boilerplate/page/user/friend_profile.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
@@ -113,6 +114,8 @@ class RouteGenerator {
       case DummyEventMatching.routeName:
         return MaterialPageRoute(
             builder: (context) => const DummyEventMatching());
+      case EventReminder.routeName:
+        return MaterialPageRoute(builder: (context) => const EventReminder());
       default:
         return _errorRoute();
     }
