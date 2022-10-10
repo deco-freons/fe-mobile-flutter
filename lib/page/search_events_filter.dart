@@ -8,13 +8,14 @@ import 'package:flutter_boilerplate/event/components/search_event/filter_content
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 
-class SearchEventsFilter extends StatelessWidget {
+class SearchEventsFilter extends StatefulWidget {
   final FilterEventPageModel filter;
   final void Function(PrefType) onCategoryTap;
   final void Function(TimeFilter) onTimeTap;
   final void Function(DistanceFilter) onDistanceTap;
   final void Function(SizeFilter) onSizeTap;
   final void Function(EventSort) onSortTap;
+  final void Function(int) onPriceSlider;
   final VoidCallback resetFilter;
   final VoidCallback onAllTap;
   final StateSetter setState;
@@ -27,11 +28,17 @@ class SearchEventsFilter extends StatelessWidget {
     required this.onDistanceTap,
     required this.onSortTap,
     required this.onSizeTap,
+    required this.onPriceSlider,
     required this.resetFilter,
     required this.onAllTap,
     required this.setState,
   }) : super(key: key);
 
+  @override
+  State<SearchEventsFilter> createState() => _SearchEventsFilterState();
+}
+
+class _SearchEventsFilterState extends State<SearchEventsFilter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,17 +72,13 @@ class SearchEventsFilter extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
-                  child: ListView(
-                    children: [
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      buildFilter()
-                    ],
-                  ),
+                child: ListView(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    buildFilter()
+                  ],
                 ),
               ),
               Container(
@@ -108,22 +111,23 @@ class SearchEventsFilter extends StatelessWidget {
               type: PrefType.GM,
               isAll: true,
               onPressedHandler: () {
-                setState(() {
-                  onAllTap();
+                widget.setState(() {
+                  widget.onAllTap();
                 });
               },
-              isActive: filter.allCheck,
+              isActive: widget.filter.allCheck,
             ),
             ...PrefType.values
                 .map((pref) => PreferenceButton(
                       type: pref,
                       onPressedHandler: () {
-                        setState(() {
-                          onCategoryTap(pref);
+                        widget.setState(() {
+                          widget.onCategoryTap(pref);
                         });
                       },
-                      isActive:
-                          filter.allCheck ? false : filter.isFilterPicked(pref),
+                      isActive: widget.filter.allCheck
+                          ? false
+                          : widget.filter.isFilterPicked(pref),
                     ))
                 .toList()
           ],
@@ -134,11 +138,11 @@ class SearchEventsFilter extends StatelessWidget {
               .map((time) => FilterButton(
                     desc: time.desc,
                     onPressedHandler: () {
-                      setState(() {
-                        onTimeTap(time);
+                      widget.setState(() {
+                        widget.onTimeTap(time);
                       });
                     },
-                    isActive: filter.isFilterPicked(time),
+                    isActive: widget.filter.isFilterPicked(time),
                   ))
               .toList(),
         ),
@@ -148,11 +152,11 @@ class SearchEventsFilter extends StatelessWidget {
               .map((distance) => FilterButton(
                     desc: distance.desc,
                     onPressedHandler: () {
-                      setState(() {
-                        onDistanceTap(distance);
+                      widget.setState(() {
+                        widget.onDistanceTap(distance);
                       });
                     },
-                    isActive: filter.isFilterPicked(distance),
+                    isActive: widget.filter.isFilterPicked(distance),
                   ))
               .toList(),
         ),
@@ -162,13 +166,48 @@ class SearchEventsFilter extends StatelessWidget {
               .map((size) => FilterButton(
                     desc: size.desc,
                     onPressedHandler: () {
-                      setState(() {
-                        onSizeTap(size);
+                      widget.setState(() {
+                        widget.onSizeTap(size);
                       });
                     },
-                    isActive: filter.isFilterPicked(size),
+                    isActive: widget.filter.isFilterPicked(size),
                   ))
               .toList(),
+        ),
+        FilterContent(
+          title: 'Event Price',
+          widgetPadding: CustomPadding.xs,
+          widgets: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: CustomPadding.xxl),
+              child: Row(
+                mainAxisAlignment: widget.filter.chosenPrice.round() == 0 ||
+                        widget.filter.chosenPrice.round() == 501
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceBetween,
+                children: (widget.filter.chosenPrice == 0)
+                    ? [const Text('Free')]
+                    : (widget.filter.chosenPrice == 501)
+                        ? [const Text('Any price')]
+                        : [
+                            const Text('\$ 0'),
+                            Text('\$ ${widget.filter.chosenPrice.round()}')
+                          ],
+              ),
+            ),
+            Slider(
+              value: widget.filter.chosenPrice.toDouble(),
+              onChanged: (chosenPrice) {
+                widget.setState(() {
+                  widget.onPriceSlider(chosenPrice.round());
+                });
+              },
+              min: 0,
+              max: 501.0,
+              divisions: 500,
+            ),
+          ],
         ),
         FilterContent(
             title: 'Sort',
@@ -176,11 +215,11 @@ class SearchEventsFilter extends StatelessWidget {
                 .map((sort) => FilterButton(
                       desc: sort.desc,
                       onPressedHandler: () {
-                        setState(() {
-                          onSortTap(sort);
+                        widget.setState(() {
+                          widget.onSortTap(sort);
                         });
                       },
-                      isActive: filter.isFilterPicked(sort),
+                      isActive: widget.filter.isFilterPicked(sort),
                     ))
                 .toList()),
       ],
@@ -206,9 +245,9 @@ class SearchEventsFilter extends StatelessWidget {
                 borderColor: neutral.shade400,
                 elevation: 0,
                 onPressedHandler: () {
-                  setState(
+                  widget.setState(
                     () {
-                      resetFilter();
+                      widget.resetFilter();
                     },
                   );
                 },

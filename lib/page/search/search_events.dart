@@ -276,6 +276,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
         onSortTap: handleSortTap,
         resetFilter: resetFilter,
         onAllTap: handleAllTap,
+        onPriceSlider: handlePriceSlider,
       );
     });
   }
@@ -345,5 +346,9 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 ? sort.copyWith(isPicked: !sort.isPicked)
                 : sort.copyWith(isPicked: false))
             .toList());
+  }
+
+  void handlePriceSlider(int choosenPrice) {
+    filter = filter.copyWith(chosenPrice: choosenPrice);
   }
 }
