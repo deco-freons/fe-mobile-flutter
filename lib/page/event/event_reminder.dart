@@ -10,6 +10,7 @@ import 'package:flutter_boilerplate/event/components/event_reminder/event_remind
 import 'package:flutter_boilerplate/event/data/common/event_joined_model.dart';
 import 'package:flutter_boilerplate/event/data/events_joined/events_joined_repository.dart';
 import 'package:flutter_boilerplate/get_it.dart';
+import 'package:flutter_boilerplate/page/event/event_detail.dart';
 
 class EventReminder extends StatefulWidget {
   const EventReminder({Key? key}) : super(key: key);
@@ -171,20 +172,26 @@ class _BuildEventReminderState extends State<BuildEventReminder> {
 
   Widget buildCard(
       BuildContext context, EventJoinedModel event, int index, bool hasMore) {
-    return EventReminderCard(
-      eventName: event.eventName,
-      imageUrl: event.eventImage?.imageUrl,
-      handleDismissClick: () async {
-        setState(() {
-          events.removeAt(index);
-        });
-        if (events.length < 5 && hasMore) {
-          page = page + 1;
-          await context
-              .read<EventsReminderCubit>()
-              .getEventsReminder(page, events);
-        }
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, EventDetail.routeName,
+            arguments: event.eventID);
       },
+      child: EventReminderCard(
+        eventName: event.eventName,
+        imageUrl: event.eventImage?.imageUrl,
+        handleDismissClick: () async {
+          setState(() {
+            events.removeAt(index);
+          });
+          if (events.length < 5 && hasMore) {
+            page = page + 1;
+            await context
+                .read<EventsReminderCubit>()
+                .getEventsReminder(page, events);
+          }
+        },
+      ),
     );
   }
 
