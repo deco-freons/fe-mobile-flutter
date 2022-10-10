@@ -125,23 +125,20 @@ class EventJoinedCard extends StatelessWidget {
   }
 
   Widget buildRating() {
-    return Padding(
-      padding: const EdgeInsets.only(right: CustomPadding.base),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: const [
-          Icon(
-            Icons.star,
-            color: primary,
-          ),
-          Text(
-            "5.0",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: CustomFontSize.sm),
-          )
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: const [
+        Icon(
+          Icons.star,
+          color: primary,
+        ),
+        Text(
+          "5.0",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: CustomFontSize.sm),
+        )
+      ],
     );
   }
 }

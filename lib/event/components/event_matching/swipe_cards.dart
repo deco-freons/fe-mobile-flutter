@@ -82,7 +82,7 @@ class _SwipeCardsState extends State<SwipeCards> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.isFront ? buildFrontCard() : buildCard();
+    return widget.isFront ? buildFrontCard() : buildCard(context);
   }
 
   Widget buildFrontCard() {
@@ -96,7 +96,7 @@ class _SwipeCardsState extends State<SwipeCards> {
             curve: Curves.easeInOut,
             duration: Duration(milliseconds: milliseconds),
             transform: Matrix4.identity()..translate(position.dx),
-            child: buildCard());
+            child: buildCard(context));
       }),
       onPanStart: (details) {
         final provider = Provider.of<CardProvider>(context, listen: false);
@@ -113,9 +113,12 @@ class _SwipeCardsState extends State<SwipeCards> {
     );
   }
 
-  Widget buildCard() {
+  Widget buildCard(BuildContext context) {
     return !widget.isEventEmpty
         ? Container(
+            constraints: BoxConstraints(
+              minHeight: MediaQuery.of(context).size.height * 0.725,
+            ),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(CustomRadius.xxl),
                 boxShadow: [
@@ -135,6 +138,7 @@ class _SwipeCardsState extends State<SwipeCards> {
                 padding: const EdgeInsets.all(CustomPadding.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Stack(children: [
                       ClipRRect(
@@ -323,7 +327,7 @@ class _SwipeCardsState extends State<SwipeCards> {
   Widget _buildEventDescription(String shortDescription) {
     return SeeMore(
       text: shortDescription == "-" ? "No description" : shortDescription,
-      characterLimit: 140,
+      characterLimit: 100,
       fontSize: CustomFontSize.sm,
     );
   }
