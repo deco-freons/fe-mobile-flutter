@@ -39,10 +39,10 @@ Map<String, dynamic> _$EventFilterModelToJson(EventFilterModel instance) {
     }
   }
 
-  writeNotNull('eventCategories', instance.eventCategories);
-  writeNotNull('eventRadius', instance.eventRadius);
-  writeNotNull('daysToEvent', instance.daysToEvent);
-  writeNotNull('eventStatus', instance.eventStatus);
-  writeNotNull('eventParticipants', instance.eventParticipants);
+  writeNotNull('eventCategories', instance.eventCategories?.toJson());
+  writeNotNull('eventRadius', instance.eventRadius?.toJson());
+  writeNotNull('daysToEvent', instance.daysToEvent?.toJson());
+  writeNotNull('eventStatus', instance.eventStatus?.toJson());
+  writeNotNull('eventParticipants', instance.eventParticipants?.toJson());
   return val;
 }
