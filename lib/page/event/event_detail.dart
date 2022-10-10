@@ -122,7 +122,7 @@ class _EventDetailState extends State<EventDetail> {
                               EventDetailBottomModal.showReportOrEditModal(
                                 context: blocContext,
                                 eventDetail: state.model,
-                                isEventCreator: state.model.isEventCreator,
+                                isEventCreator: !state.model.isEventCreator,
                                 reportEvent: updateEventReported,
                                 isReported: isReported,
                               );

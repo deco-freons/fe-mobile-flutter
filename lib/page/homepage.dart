@@ -122,7 +122,7 @@ class _BuildHomeState extends State<BuildHome> {
                       if (state is UserSuccessState) {
                         imageUrl = state.user.userImage?.imageUrl;
                       }
-                      return NetworkImageAvatar(imageUrl: imageUrl, radius: 25);
+                      return NetworkImageAvatar(imageUrl: imageUrl, radius: 23);
                     },
                   ),
                 ),

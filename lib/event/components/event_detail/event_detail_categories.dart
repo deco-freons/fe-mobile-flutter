@@ -12,10 +12,11 @@ class EventDetailCategories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
+        clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
         child: Wrap(
             direction: Axis.horizontal,
-            spacing: CustomPadding.md,
+            spacing: CustomPadding.sm,
             children: [
               CustomChip(
                 color: success,
