@@ -5,13 +5,14 @@ class FilterContent extends StatelessWidget {
   final List<Widget> widgets;
   final double widgetPadding;
 
-  const FilterContent({Key? key, required this.widgets, this.widgetPadding = 0})
+  const FilterContent(
+      {Key? key, required this.widgets, this.widgetPadding = CustomPadding.xxl})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(horizontal: widgetPadding),

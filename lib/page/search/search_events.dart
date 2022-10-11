@@ -354,7 +354,12 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     filter = filter.copyWith(chosenPrice: choosenPrice);
   }
 
-  void handlePanelTap(List<bool> isOpen) {
-    filter = filter.copyWith(panelIsOpen: isOpen);
+  void handlePanelTap(int index, bool isOpen) {
+    List<bool> isOpenList = filter.panelIsOpen
+        .asMap()
+        .map((key, value) => MapEntry(key, key == index ? !isOpen : value))
+        .values
+        .toList();
+    filter = filter.copyWith(panelIsOpen: isOpenList);
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart
 import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_button.dart';
 import 'package:flutter_boilerplate/event/components/search_event/filter_content.dart';
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
@@ -10,14 +11,14 @@ import 'package:flutter_boilerplate/preference/components/preference_button.dart
 
 class SearchEventsFilter extends StatefulWidget {
   final FilterEventPageModel filter;
-  final void Function(PrefType) onCategoryTap;
-  final void Function(TimeFilter) onTimeTap;
-  final void Function(DistanceFilter) onDistanceTap;
-  final void Function(SizeFilter) onSizeTap;
-  final void Function(EventSort) onSortTap;
-  final void Function(int) onPriceSlider;
-  final void Function(List<bool>) onPanelTap;
-  final void Function(List<bool>) resetFilter;
+  final CustomVoidCallback<PrefType> onCategoryTap;
+  final CustomVoidCallback<TimeFilter> onTimeTap;
+  final CustomVoidCallback<DistanceFilter> onDistanceTap;
+  final CustomVoidCallback<SizeFilter> onSizeTap;
+  final CustomVoidCallback<EventSort> onSortTap;
+  final CustomVoidCallback<int> onPriceSlider;
+  final CustomVoidCallback<List<bool>> resetFilter;
+  final void Function(int, bool) onPanelTap;
   final VoidCallback onAllTap;
   final StateSetter setState;
 
@@ -41,14 +42,6 @@ class SearchEventsFilter extends StatefulWidget {
 }
 
 class _SearchEventsFilterState extends State<SearchEventsFilter> {
-  List<bool> isOpen = [];
-
-  @override
-  void initState() {
-    super.initState();
-    isOpen = widget.filter.panelIsOpen;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,9 +103,8 @@ class _SearchEventsFilterState extends State<SearchEventsFilter> {
       elevation: 1,
       expandedHeaderPadding: EdgeInsets.zero,
       expansionCallback: ((i, isExpanded) {
-        setState(() {
-          isOpen[i] = !isExpanded;
-          widget.onPanelTap(isOpen);
+        widget.setState(() {
+          widget.onPanelTap(i, isExpanded);
         });
       }),
       children: [
@@ -121,7 +113,6 @@ class _SearchEventsFilterState extends State<SearchEventsFilter> {
           0,
           'Categories',
           FilterContent(
-            widgetPadding: CustomPadding.xxl,
             widgets: [
               PreferenceButton(
                 type: PrefType.GM,
@@ -247,7 +238,6 @@ class _SearchEventsFilterState extends State<SearchEventsFilter> {
           5,
           'Sort',
           FilterContent(
-            widgetPadding: CustomPadding.base,
             widgets: EventSort.values
                 .map((sort) => FilterButton(
                       desc: sort.desc,
