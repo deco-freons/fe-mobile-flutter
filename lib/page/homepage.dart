@@ -18,6 +18,7 @@ import 'package:flutter_boilerplate/event/data/event_matching/event_matching_hom
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/page/event/event_matching.dart';
+import 'package:flutter_boilerplate/page/event/event_reminder.dart';
 import 'package:flutter_boilerplate/page/user/profile.dart';
 import 'package:flutter_boilerplate/preference/components/preference_button.dart';
 import 'package:flutter_boilerplate/user/bloc/common/user_cubit.dart';
@@ -127,7 +128,9 @@ class _BuildHomeState extends State<BuildHome> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(context).pushNamed(EventReminder.routeName);
+                  },
                   child: const Icon(
                     Icons.notifications_outlined,
                     size: 45.0,

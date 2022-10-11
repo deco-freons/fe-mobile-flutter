@@ -30,7 +30,7 @@ class CardProvider extends ChangeNotifier {
   }
 
   EventMatchingResponseModel getCurrentEvent() {
-    return _events.last;
+    return _events.first;
   }
 
   void startPosition(DragStartDetails details) {
@@ -114,7 +114,7 @@ class CardProvider extends ChangeNotifier {
 
     await Future.delayed(const Duration(milliseconds: 200));
     if (events.isNotEmpty) {
-      _events.removeLast();
+      _events.removeAt(0);
     }
     resetPosition();
     loading = false;

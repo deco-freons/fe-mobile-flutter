@@ -39,7 +39,7 @@ class CustomButton extends StatelessWidget {
           onSurface: neutral,
           primary: type == ButtonType.primary
               ? Theme.of(context).colorScheme.primary
-              : type == ButtonType.inverse
+              : type == ButtonType.inverse || type == ButtonType.neutral
                   ? Theme.of(context).colorScheme.secondary
                   : Theme.of(context).colorScheme.error,
           onPrimary: type == ButtonType.primary
@@ -59,7 +59,9 @@ class CustomButton extends StatelessWidget {
               ? neutral.shade600
               : type == ButtonType.inverse
                   ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.secondary,
+                  : type == ButtonType.neutral
+                      ? neutral.shade500
+                      : Theme.of(context).colorScheme.secondary,
           fontSize: labelFontSize,
           fontWeight: FontWeight.bold,
         ),

@@ -23,6 +23,7 @@ enum TextFieldType {
 enum ButtonType {
   primary,
   inverse,
+  neutral,
   red,
 }
 
@@ -340,6 +341,7 @@ enum ImageInputAction {
 enum EventJoinedCardType {
   SCHEDULED,
   HISTORY,
+  REMINDER,
 }
 
 enum EventStatus {

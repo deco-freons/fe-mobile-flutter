@@ -108,6 +108,7 @@ class LoginForm extends StatelessWidget {
       hasForgotPassword: true,
       bottomText: "Don't have an account?",
       textButton: "Register",
+      textButtonType: TextButtonType.primary,
       submitHandler: () {
         LoginModel data = LoginModel(
             username: username.controller.text,

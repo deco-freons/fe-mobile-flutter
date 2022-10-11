@@ -8,7 +8,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'event_filter_model.g.dart';
 
-@JsonSerializable(includeIfNull: false)
+@JsonSerializable(explicitToJson: true, includeIfNull: false)
 class EventFilterModel extends BaseModel {
   final EventCategoriesModel? eventCategories;
   final EventRadiusModel? eventRadius;

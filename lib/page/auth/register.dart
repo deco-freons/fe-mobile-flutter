@@ -144,6 +144,7 @@ class RegisterForm extends StatelessWidget {
       submitTitle: 'Create Account',
       bottomText: 'Already have an account?',
       textButton: "Sign In",
+      textButtonType: TextButtonType.primary,
       submitHandler: () {
         RegisterModel data = RegisterModel(
           username: username.controller.text,
