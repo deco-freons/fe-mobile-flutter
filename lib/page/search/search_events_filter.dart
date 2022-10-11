@@ -133,7 +133,7 @@ class _SearchEventsFilterState extends State<SearchEventsFilter> {
           ],
         ),
         FilterContent(
-          title: 'Week',
+          title: 'Days to Event',
           widgets: TimeFilter.values
               .map((time) => FilterButton(
                     desc: time.desc,
@@ -147,7 +147,7 @@ class _SearchEventsFilterState extends State<SearchEventsFilter> {
               .toList(),
         ),
         FilterContent(
-          title: 'Distance',
+          title: 'Radius',
           widgets: DistanceFilter.values
               .map((distance) => FilterButton(
                     desc: distance.desc,
