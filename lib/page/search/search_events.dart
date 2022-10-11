@@ -14,7 +14,7 @@ import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/filter_event_page_model.dart';
 import 'package:flutter_boilerplate/event/data/search_event/search_event_repository.dart';
 import 'package:flutter_boilerplate/page/event/event_detail.dart';
-import 'package:flutter_boilerplate/page/search_events_filter.dart';
+import 'package:flutter_boilerplate/page/search/search_events_filter.dart';
 
 class SearchEvents extends StatefulWidget {
   const SearchEvents({Key? key}) : super(key: key);
@@ -276,6 +276,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
         onSortTap: handleSortTap,
         resetFilter: resetFilter,
         onAllTap: handleAllTap,
+        onPriceSlider: handlePriceSlider,
       );
     });
   }
@@ -345,5 +346,9 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
                 ? sort.copyWith(isPicked: !sort.isPicked)
                 : sort.copyWith(isPicked: false))
             .toList());
+  }
+
+  void handlePriceSlider(int choosenPrice) {
+    filter = filter.copyWith(chosenPrice: choosenPrice);
   }
 }

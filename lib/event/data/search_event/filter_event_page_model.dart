@@ -1,6 +1,7 @@
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/data/base/base_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_filter_model.dart';
+import 'package:flutter_boilerplate/event/data/common/filter/event_price_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/event_status_request_model.dart';
 import 'package:flutter_boilerplate/event/data/common/filter/participant_size_model.dart';
 import 'package:flutter_boilerplate/event/data/common/request_get_event_model.dart';
@@ -21,6 +22,7 @@ class FilterEventPageModel extends BaseModel {
   final List<ItemFilterModel<DistanceFilter>> distanceCheck;
   final List<ItemFilterModel<SizeFilter>> sizeCheck;
   final List<ItemFilterModel<EventSort>> sortCheck;
+  final int chosenPrice;
 
   FilterEventPageModel({
     this.searchTerm = "",
@@ -30,6 +32,7 @@ class FilterEventPageModel extends BaseModel {
     List<ItemFilterModel<SizeFilter>>? sizeCheck,
     List<ItemFilterModel<EventSort>>? sortCheck,
     bool? allCheck,
+    int? chosenPrice,
   })  : prefCheck = prefCheck ??
             PrefType.values
                 .map((pref) => ItemFilterModel(data: pref, isPicked: true))
@@ -48,7 +51,8 @@ class FilterEventPageModel extends BaseModel {
             EventSort.values
                 .map((sort) => ItemFilterModel(data: sort))
                 .toList(),
-        allCheck = allCheck ?? true;
+        allCheck = allCheck ?? true,
+        chosenPrice = chosenPrice ?? 501;
 
   @override
   List<Object> get props => [];
@@ -61,15 +65,18 @@ class FilterEventPageModel extends BaseModel {
     List<ItemFilterModel<EventSort>>? sortCheck,
     bool? allCheck,
     String? searchTerm,
+    int? chosenPrice,
   }) {
     return FilterEventPageModel(
-        prefCheck: prefCheck ?? this.prefCheck,
-        timeCheck: timeCheck ?? this.timeCheck,
-        distanceCheck: distanceCheck ?? this.distanceCheck,
-        sizeCheck: sizeCheck ?? this.sizeCheck,
-        sortCheck: sortCheck ?? this.sortCheck,
-        allCheck: allCheck ?? this.allCheck,
-        searchTerm: searchTerm ?? this.searchTerm);
+      prefCheck: prefCheck ?? this.prefCheck,
+      timeCheck: timeCheck ?? this.timeCheck,
+      distanceCheck: distanceCheck ?? this.distanceCheck,
+      sizeCheck: sizeCheck ?? this.sizeCheck,
+      sortCheck: sortCheck ?? this.sortCheck,
+      allCheck: allCheck ?? this.allCheck,
+      searchTerm: searchTerm ?? this.searchTerm,
+      chosenPrice: chosenPrice ?? this.chosenPrice,
+    );
   }
 
   bool isOnePreferencePicked(PrefType choosenCategory) {
@@ -92,42 +99,44 @@ class FilterEventPageModel extends BaseModel {
         latitude: position.latitude,
         longitude: position.longitude,
         todaysDate: date,
-        filter: (isCategoryExist || isRadiusExist || isTimeExist || isSizeExist)
-            ? EventFilterModel(
-                eventCategories: isCategoryExist
-                    ? EventCategoriesModel(
-                        category: prefCheck
-                            .where((pref) => pref.isPicked)
-                            .map((filteredPref) => filteredPref.data.name)
-                            .toList())
-                    : null,
-                eventRadius: isRadiusExist
-                    ? distanceCheck
-                        .where((dist) => dist.isPicked)
-                        .map((filteredDist) => EventRadiusModel(
-                            radius: filteredDist.data.value,
-                            isMoreOrLess: filteredDist.data.isMoreOrLess))
-                        .first
-                    : null,
-                daysToEvent: isTimeExist
-                    ? timeCheck
-                        .where((time) => time.isPicked)
-                        .map((filteredTime) => DaysToEventModel(
-                            days: filteredTime.data.value,
-                            isMoreOrLess: filteredTime.data.isMoreOrLess))
-                        .first
-                    : null,
-                eventParticipants: isSizeExist
-                    ? sizeCheck
-                        .where((size) => size.isPicked)
-                        .map((filteredSize) => ParticipantSizeModel(
-                            participants: filteredSize.data.value,
-                            isMoreOrLess: filteredSize.data.isMoreOrLess))
-                        .first
-                    : null,
-                eventStatus:
-                    const EventStatusRequestModel(status: [EventStatus.COMING_SOON, EventStatus.ONGOING]))
-            : null,
+        filter: EventFilterModel(
+          eventCategories: isCategoryExist
+              ? EventCategoriesModel(
+                  category: prefCheck
+                      .where((pref) => pref.isPicked)
+                      .map((filteredPref) => filteredPref.data.name)
+                      .toList())
+              : null,
+          eventRadius: isRadiusExist
+              ? distanceCheck
+                  .where((dist) => dist.isPicked)
+                  .map((filteredDist) => EventRadiusModel(
+                      radius: filteredDist.data.value,
+                      isMoreOrLess: filteredDist.data.isMoreOrLess))
+                  .first
+              : null,
+          daysToEvent: isTimeExist
+              ? timeCheck
+                  .where((time) => time.isPicked)
+                  .map((filteredTime) => DaysToEventModel(
+                      days: filteredTime.data.value,
+                      isMoreOrLess: filteredTime.data.isMoreOrLess))
+                  .first
+              : null,
+          eventParticipants: isSizeExist
+              ? sizeCheck
+                  .where((size) => size.isPicked)
+                  .map((filteredSize) => ParticipantSizeModel(
+                      participants: filteredSize.data.value,
+                      isMoreOrLess: filteredSize.data.isMoreOrLess))
+                  .first
+              : null,
+          eventPrice: chosenPrice != 501
+              ? EventPriceModel(price: chosenPrice, isMoreOrLess: 'LESS')
+              : null,
+          eventStatus: const EventStatusRequestModel(
+              status: [EventStatus.COMING_SOON, EventStatus.ONGOING]),
+        ),
         sort: sortCheck.any((sort) => sort.isPicked)
             ? sortCheck
                 .where((sort) => sort.isPicked)

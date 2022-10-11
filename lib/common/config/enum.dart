@@ -278,6 +278,8 @@ enum EventSort {
   mostPopular,
   distanceNearToFar,
   distanceFarToNear,
+  priceLowToHigh,
+  priceHighToLow
 }
 
 extension EventSortExtension on EventSort {
@@ -293,6 +295,10 @@ extension EventSortExtension on EventSort {
         return 'Distance: Nearest to Farthest';
       case EventSort.distanceFarToNear:
         return 'Distance: Farthest to Nearest';
+      case EventSort.priceLowToHigh:
+        return 'Price: Lowest to Highest';
+      case EventSort.priceHighToLow:
+        return 'Price: Highest to Lowest';
     }
   }
 
@@ -308,6 +314,10 @@ extension EventSortExtension on EventSort {
         return 'DISTANCE';
       case EventSort.distanceFarToNear:
         return 'DISTANCE';
+      case EventSort.priceLowToHigh:
+        return 'PRICE';
+      case EventSort.priceHighToLow:
+        return 'PRICE';
     }
   }
 
@@ -322,6 +332,10 @@ extension EventSortExtension on EventSort {
       case EventSort.distanceNearToFar:
         return 'LESS';
       case EventSort.distanceFarToNear:
+        return 'MORE';
+      case EventSort.priceLowToHigh:
+        return 'LESS';
+      case EventSort.priceHighToLow:
         return 'MORE';
     }
   }
