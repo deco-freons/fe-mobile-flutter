@@ -23,6 +23,7 @@ class FilterEventPageModel extends BaseModel {
   final List<ItemFilterModel<SizeFilter>> sizeCheck;
   final List<ItemFilterModel<EventSort>> sortCheck;
   final int chosenPrice;
+  final List<bool> panelIsOpen;
 
   FilterEventPageModel({
     this.searchTerm = "",
@@ -33,6 +34,7 @@ class FilterEventPageModel extends BaseModel {
     List<ItemFilterModel<EventSort>>? sortCheck,
     bool? allCheck,
     int? chosenPrice,
+    List<bool>? panelIsOpen,
   })  : prefCheck = prefCheck ??
             PrefType.values
                 .map((pref) => ItemFilterModel(data: pref, isPicked: true))
@@ -52,7 +54,8 @@ class FilterEventPageModel extends BaseModel {
                 .map((sort) => ItemFilterModel(data: sort))
                 .toList(),
         allCheck = allCheck ?? true,
-        chosenPrice = chosenPrice ?? 501;
+        chosenPrice = chosenPrice ?? 501,
+        panelIsOpen = panelIsOpen ?? List.filled(6, false);
 
   @override
   List<Object> get props => [];
@@ -66,6 +69,7 @@ class FilterEventPageModel extends BaseModel {
     bool? allCheck,
     String? searchTerm,
     int? chosenPrice,
+    List<bool>? panelIsOpen,
   }) {
     return FilterEventPageModel(
       prefCheck: prefCheck ?? this.prefCheck,
@@ -76,6 +80,7 @@ class FilterEventPageModel extends BaseModel {
       allCheck: allCheck ?? this.allCheck,
       searchTerm: searchTerm ?? this.searchTerm,
       chosenPrice: chosenPrice ?? this.chosenPrice,
+      panelIsOpen: panelIsOpen ?? this.panelIsOpen,
     );
   }
 
