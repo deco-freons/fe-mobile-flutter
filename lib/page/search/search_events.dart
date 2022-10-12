@@ -274,6 +274,7 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
         onDistanceTap: handleDistanceTap,
         onSizeTap: handleSizeTap,
         onSortTap: handleSortTap,
+        onPanelTap: handlePanelTap,
         resetFilter: resetFilter,
         onAllTap: handleAllTap,
         onPriceSlider: handlePriceSlider,
@@ -285,8 +286,9 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
     filter = filterInitial;
   }
 
-  void resetFilter() {
-    filter = FilterEventPageModel(searchTerm: filter.searchTerm);
+  void resetFilter(List<bool> initialPanelIsOpen) {
+    filter = FilterEventPageModel(
+        searchTerm: filter.searchTerm, panelIsOpen: initialPanelIsOpen);
   }
 
   void handleAllTap() {
@@ -350,5 +352,14 @@ class _BuildSearchEventsState extends State<BuildSearchEvents> {
 
   void handlePriceSlider(int choosenPrice) {
     filter = filter.copyWith(chosenPrice: choosenPrice);
+  }
+
+  void handlePanelTap(int index, bool isOpen) {
+    List<bool> isOpenList = filter.panelIsOpen
+        .asMap()
+        .map((key, value) => MapEntry(key, key == index ? !isOpen : value))
+        .values
+        .toList();
+    filter = filter.copyWith(panelIsOpen: isOpenList);
   }
 }
