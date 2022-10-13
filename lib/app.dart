@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/bloc/auth/auth_bloc.dart';
 import 'package:flutter_boilerplate/auth/data/auth/auth_repository.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
+import 'package:flutter_boilerplate/common/utils/navigator_util.dart';
 import 'package:flutter_boilerplate/page/landing.dart';
 import 'package:flutter_boilerplate/page/get_started.dart';
 import 'package:flutter_boilerplate/page/location_permission.dart';
@@ -33,9 +34,7 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
-  final _navigatorKey = GlobalKey<NavigatorState>();
-
-  NavigatorState get _navigator => _navigatorKey.currentState!;
+  NavigatorState get _navigator => NavigatorUtil.navigatorKey.currentState!;
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: _navigatorKey,
+      navigatorKey: NavigatorUtil.navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: CustomTheme.theme,
