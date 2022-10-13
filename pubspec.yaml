@@ -99,6 +99,8 @@ flutter:
     - lib/common/assets/images/WhoopsImage.png
     - lib/common/assets/files/express_public_location.json
     - lib/common/assets/images/TapGestureIcon.png
+    - lib/common/assets/images/TapGestureIconDown.png
+    - lib/common/assets/images/TapGestureIconDownFlipped.png
     - lib/common/assets/images/SwipeRightGestureIcon.png
     - lib/common/assets/images/SwipeLeftGestureIcon.png
     - lib/common/assets/images/LargeEventImage.png
