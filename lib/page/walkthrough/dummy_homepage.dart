@@ -9,7 +9,7 @@ import 'package:flutter_boilerplate/event/components/common/event_list.dart';
 import 'package:flutter_boilerplate/event/components/common/home_content.dart';
 import 'package:flutter_boilerplate/event/components/walkthrough/homepage_overlay_app_bar.dart';
 import 'package:flutter_boilerplate/event/components/walkthrough/homepage_overlay_event_matching.dart';
-import 'package:flutter_boilerplate/event/components/walkthrough/homepage_overlay_navbar_create_event.dart';
+import 'package:flutter_boilerplate/event/components/walkthrough/homepage_overlay_create_event.dart';
 import 'package:flutter_boilerplate/event/components/walkthrough/homepage_overlay_notifications.dart';
 import 'package:flutter_boilerplate/event/components/walkthrough/homepage_overlay_profile.dart';
 import 'package:flutter_boilerplate/event/data/events_by_user/event_by_user_model.dart';
@@ -62,7 +62,7 @@ class _DummyHomepageState extends State<DummyHomepage> {
                   onNextPressed: nextPage, onBackPressed: () {}),
               HomepageOverlayNotification(
                   onNextPressed: nextPage, onBackPressed: prevPage),
-              HomepageOverlayNavbarCreateEvent(
+              HomepageOverlayCreateEvent(
                   onNextPressed: nextPage, onBackPressed: prevPage),
               HomepageOverlayAppBarHomepage.homepage(
                   onNextPressed: nextPage, onBackPressed: prevPage),
