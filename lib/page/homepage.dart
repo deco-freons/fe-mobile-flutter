@@ -13,10 +13,13 @@ import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_stat
 import 'package:flutter_boilerplate/event/components/common/event_list.dart';
 import 'package:flutter_boilerplate/event/components/event_matching/event_matching_home_card.dart';
 import 'package:flutter_boilerplate/event/components/common/home_content.dart';
+import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/events_by_user/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
+import 'package:flutter_boilerplate/get_it.dart';
+import 'package:flutter_boilerplate/notification/notification_service.dart';
 import 'package:flutter_boilerplate/page/event/event_matching.dart';
 import 'package:flutter_boilerplate/page/event/event_reminder.dart';
 import 'package:flutter_boilerplate/page/user/profile.dart';
@@ -97,6 +100,20 @@ class _BuildHomeState extends State<BuildHome> {
       .toList();
   DistanceFilter radiusValue = DistanceFilter.ten;
   List<DistanceFilter> radiusOptions = DistanceFilter.values;
+
+  final NotificationService _notificationService =
+      getIt.get<NotificationService>();
+
+  Future<void> scheduleNotification(int id) async {
+    await _notificationService.scheduleNotification(
+      id: 1,
+      title: "Event Nearby Found!",
+      body: "We found a event near your location. Click to see more.",
+      milisecondFromNow:
+          DateTime.now().add(const Duration(seconds: 5)).millisecondsSinceEpoch,
+      payload: id.toString(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -258,8 +275,16 @@ class _BuildHomeState extends State<BuildHome> {
         const SizedBox(
           height: 22,
         ),
-        BlocBuilder<PopularEventsCubit, PopularEventsState>(
-            builder: (context, state) {
+        BlocConsumer<PopularEventsCubit, PopularEventsState>(
+            listener: (context, state) async {
+          if (state is PopularEventsSuccessState) {
+            List<EventModel> events = state.events;
+            events.sort(((a, b) => a.distance.compareTo(b.distance)));
+            if (events.isNotEmpty) {
+              await scheduleNotification(events[0].eventID);
+            }
+          }
+        }, builder: (context, state) {
           if (state is PopularEventsErrorState) {
             return Center(child: Text(state.errorMessage));
           }
