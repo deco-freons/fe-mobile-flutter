@@ -46,7 +46,7 @@ class _EventMatchingState extends State<EventMatching> {
         backgroundColor: neutral.shade100,
         resizeToAvoidBottomInset: true,
         appBar: PageAppBar(
-          title: "Featured",
+          title: "Let's Match",
           hasLeadingWidget: true,
           widget: Builder(builder: (context) {
             return Padding(
@@ -126,7 +126,7 @@ class _EventMatchingState extends State<EventMatching> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: CustomPadding.xl),
                                 child: const Text(
-                                  "Successfully joined event",
+                                  "Congratulations!\nYou've matched this event",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontSize: CustomFontSize.lg,
@@ -229,21 +229,21 @@ class _EventMatchingState extends State<EventMatching> {
             child: Stack(
               children: events.reversed
                   .map((event) => SwipeCards(
-                    eventID: event.eventID,
-                    eventName: event.eventName,
-                    participants: event.participants,
-                    date: event.date,
-                    suburb: event.location.suburb,
-                    city: event.location.city,
-                    locationName: event.locationName,
-                    distance: event.distance,
-                    startTime: event.startTime,
-                    endTime: event.endTime,
-                    shortDescription: event.shortDescription,
-                    image: event.eventImage?.imageUrl,
-                    fee: event.eventPrice.fee,
-                    isFront: events.first == event,
-                  ))
+                        eventID: event.eventID,
+                        eventName: event.eventName,
+                        participants: event.participants,
+                        date: event.date,
+                        suburb: event.location.suburb,
+                        city: event.location.city,
+                        locationName: event.locationName,
+                        distance: event.distance,
+                        startTime: event.startTime,
+                        endTime: event.endTime,
+                        shortDescription: event.shortDescription,
+                        image: event.eventImage?.imageUrl,
+                        fee: event.eventPrice.fee,
+                        isFront: events.first == event,
+                      ))
                   .toList(),
             ),
           );

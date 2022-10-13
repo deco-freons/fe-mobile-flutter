@@ -33,7 +33,10 @@ class _EventScheduleState extends State<EventSchedule>
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: neutral.shade100,
-        appBar: const PageAppBar(title: "Scheduled Events"),
+        appBar: const PageAppBar(
+          title: "Upcoming Joined Events",
+          subTitle: "We're looking forward to see you here!",
+        ),
         body: const BuildEventSchedule(),
       ),
     );

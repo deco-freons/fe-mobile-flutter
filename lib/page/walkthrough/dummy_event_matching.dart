@@ -48,7 +48,7 @@ class _DummyEventMatchingState extends State<DummyEventMatching> {
       backgroundColor: neutral.shade100,
       resizeToAvoidBottomInset: true,
       appBar: PageAppBar(
-        title: "Featured",
+        title: "Let's Match",
         hasLeadingWidget: true,
         widget: Builder(builder: (context) {
           return Padding(

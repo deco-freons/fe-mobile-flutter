@@ -59,7 +59,7 @@ class _LandingState extends State<Landing> {
                 padding: const EdgeInsets.only(
                     left: CustomPadding.base, right: CustomPadding.base),
                 child: Text(
-                  'Create, Find, and Join event around you!',
+                  'Your comfortable gathering space',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,
@@ -71,11 +71,11 @@ class _LandingState extends State<Landing> {
               Padding(
                 padding: const EdgeInsets.only(
                   top: CustomPadding.xl,
-                  left: CustomPadding.base,
-                  right: CustomPadding.base,
+                  left: CustomPadding.lg,
+                  right: CustomPadding.lg,
                 ),
                 child: Text(
-                  'Lorem ipsum dolor sit amet. Qui voluptatibus officiis et quibusdam',
+                  'Create, Find, and Join event around you!',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.secondary,

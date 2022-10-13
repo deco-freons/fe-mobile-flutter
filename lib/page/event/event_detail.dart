@@ -27,6 +27,8 @@ import 'package:flutter_boilerplate/page/show_location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 
+const int snackbarDuration = 1000;
+
 class EventDetail extends StatefulWidget {
   static const routeName = "/event-detail";
   final int eventID;
@@ -75,6 +77,25 @@ class _EventDetailState extends State<EventDetail> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(state.errorMessage),
+                      ),
+                    );
+                  } else if (state is UpdateEventDetailLeaveSuccessState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration:
+                            const Duration(milliseconds: snackbarDuration),
+                        content: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: CustomPadding.xl),
+                          child: const Text(
+                            "It's okay! See you on another occasion!",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: CustomFontSize.lg,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   }

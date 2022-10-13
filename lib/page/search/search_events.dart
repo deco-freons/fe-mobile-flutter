@@ -37,7 +37,8 @@ class _SearchEventsState extends State<SearchEvents>
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: const PageAppBar(title: "Search Events", hasDivider: false),
+        appBar:
+            const PageAppBar(title: "Let's find something!", hasDivider: false),
         body: Container(
           color: Theme.of(context).colorScheme.secondary,
           child: SafeArea(

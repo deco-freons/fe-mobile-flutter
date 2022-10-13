@@ -18,6 +18,7 @@ class EventParticipants extends StatelessWidget {
       appBar: const PageAppBar(
         title: "Participants",
         hasLeadingWidget: true,
+        subTitle: "Don't worry, you're not going to be alone!",
       ),
       body: SafeArea(
         child: ListView.separated(

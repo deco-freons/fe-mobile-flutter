@@ -158,7 +158,8 @@ class _BuildHomeState extends State<BuildHome> {
           ),
         ),
         HomeContent(
-            title: 'Featured',
+            title: "Let's Match!",
+            subTitle: "Events that might spark your interest.",
             isPair: true,
             isCentered: true,
             secondWidget: DecoratedBox(

@@ -6,6 +6,7 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool hasLeadingWidget;
   final Widget? leadingWidget;
   final String title;
+  final String subTitle;
   final Widget? widget;
   final double? leadingWidth;
 
@@ -14,6 +15,7 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
       {Key? key,
       this.hasLeadingWidget = false,
       required this.title,
+      this.subTitle = '',
       this.widget,
       this.leadingWidget,
       this.leadingWidth,
@@ -25,7 +27,8 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
-      toolbarHeight: appBarHeight,
+      toolbarHeight:
+          subTitle.isNotEmpty ? appBarWithSubTitleHeight : appBarHeight,
       backgroundColor: neutral.shade100,
       titleSpacing: 0,
       leadingWidth: leadingWidth,
@@ -45,9 +48,36 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
       bottom: hasDivider
           ? PreferredSize(
               preferredSize: const Size.fromHeight(1.5),
-              child: Container(
-                height: 1,
-                color: neutral.shade400,
+              child: Column(
+                children: subTitle.isNotEmpty
+                    ? [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: CustomPadding.base),
+                          child: Text(
+                            subTitle,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: neutral.shade500,
+                              fontSize: CustomFontSize.base,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 1,
+                          color: neutral.shade400,
+                        ),
+                      ]
+                    : [
+                        Container(
+                          height: 1,
+                          color: neutral.shade400,
+                        )
+                      ],
               ),
             )
           : null,
@@ -65,5 +95,6 @@ class PageAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(appBarHeight);
+  Size get preferredSize => Size.fromHeight(
+      subTitle.isNotEmpty ? appBarWithSubTitleHeight : appBarHeight);
 }

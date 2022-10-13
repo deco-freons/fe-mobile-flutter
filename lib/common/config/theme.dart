@@ -93,6 +93,7 @@ const MaterialColor warning = MaterialColor(0xFFEDF132, <int, Color>{
 });
 
 const double appBarHeight = 64.0;
+const double appBarWithSubTitleHeight = 100.0;
 
 class CustomPadding {
   static const body = 28.0;

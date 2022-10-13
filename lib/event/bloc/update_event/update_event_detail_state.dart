@@ -12,8 +12,12 @@ class UpdateEventDetailLoadingState extends UpdateEventDetailState {
   const UpdateEventDetailLoadingState();
 }
 
-class UpdateEventDetailSuccessState extends UpdateEventDetailState {
-  const UpdateEventDetailSuccessState();
+class UpdateEventDetailJoinSuccessState extends UpdateEventDetailState {
+  const UpdateEventDetailJoinSuccessState();
+}
+
+class UpdateEventDetailLeaveSuccessState extends UpdateEventDetailState {
+  const UpdateEventDetailLeaveSuccessState();
 }
 
 class UpdateEventDetailDeletedState extends UpdateEventDetailState {

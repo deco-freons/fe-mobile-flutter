@@ -79,7 +79,8 @@ class EventMatchingCardHome extends StatelessWidget {
                           const SizedBox(
                             height: 40,
                           ),
-                          const Text('Hmm, no sign of any events',
+                          const Text(
+                              'Unfortunately, there are no signs of any event nearby :(',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: CustomFontSize.lg,

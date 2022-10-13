@@ -33,7 +33,11 @@ class _EventHistoryState extends State<EventHistory>
       child: Scaffold(
           resizeToAvoidBottomInset: false,
           backgroundColor: neutral.shade100,
-          appBar: const PageAppBar(title: "History"),
+          appBar: const PageAppBar(
+            title: "History",
+            subTitle:
+                "Congratulations! These are the list of events you have attended.",
+          ),
           body: const BuildEventHistory()),
     );
   }
