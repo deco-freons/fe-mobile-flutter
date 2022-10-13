@@ -5,14 +5,10 @@ import 'package:flutter_boilerplate/common/components/layout/page_app_bar.dart';
 import 'package:flutter_boilerplate/common/components/layout/walkthrough_text_box.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
-import 'package:flutter_boilerplate/common/data/image_model.dart';
+import 'package:flutter_boilerplate/common/config/walkthrough_constants.dart';
 import 'package:flutter_boilerplate/event/components/common/event_info.dart';
 import 'package:flutter_boilerplate/event/components/common/see_more.dart';
-import 'package:flutter_boilerplate/event/data/common/event_currency_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_location_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_participant_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_price_response_model.dart';
-import 'package:flutter_boilerplate/event/data/common/event_status_model.dart';
+import 'package:flutter_boilerplate/event/components/walkthrough/walkthrough_overlay.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_response_model.dart';
 import 'package:flutter_boilerplate/page/dashboard.dart';
 import 'package:flutter_boilerplate/page/walkthrough/dummy_homepage.dart';
@@ -29,33 +25,6 @@ class DummyEventMatching extends StatefulWidget {
 class _DummyEventMatchingState extends State<DummyEventMatching> {
   final List<DistanceFilter> radiusOptions = DistanceFilter.values;
   final DistanceFilter radiusValue = DistanceFilter.ten;
-  final List<EventMatchingResponseModel> events = [
-    const EventMatchingResponseModel(
-      eventID: 1,
-      eventName: "Harry Styles with Jennie",
-      date: "2023-03-24",
-      distance: 2,
-      longitude: 12,
-      latitude: 12,
-      eventCreator: EventParticipantModel(
-          username: "JennieKim", firstName: "Jennie", lastName: "Kim"),
-      location: EventLocationModel(suburb: "Docklands", city: "Melbourne"),
-      locationName: "Marvel Stadium",
-      participants: 10,
-      startTime: "11:11",
-      endTime: "12:12",
-      eventStatus: EventStatusModel(statusName: EventStatus.COMING_SOON),
-      eventImage:
-          ImageModel(imageUrl: "lib/common/assets/images/LargeEventImage.png"),
-      shortDescription:
-          "Harry Styles Love On Tour Melbourne concert for you Harry Style's fan.",
-      eventPrice: EventPriceResponseModel(
-        priceID: 0,
-        fee: 20,
-        currency: EventCurrencyModel(currencyShortName: "AU\$"),
-      ),
-    ),
-  ];
 
   @override
   void initState() {
@@ -71,58 +40,50 @@ class _DummyEventMatchingState extends State<DummyEventMatching> {
       builder: (BuildContext context) {
         bool secondPage = false;
         return StatefulBuilder(
-          builder: (context, setState) => WillPopScope(
-            onWillPop: () {
-              if (secondPage) {
-                setState(() {
-                  secondPage = false;
-                });
-              } else {
-                Navigator.of(context).pushNamed(DummyHomepage.routeName);
-              }
-              return Future.value(false);
-            },
-            child: Material(
-              color: Colors.transparent,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: CustomPadding.lg),
-                child: Stack(children: [
-                  Align(
-                    alignment:
-                        secondPage ? Alignment.topLeft : Alignment.topRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 350),
-                      child: Image.asset(secondPage
-                          ? "lib/common/assets/images/SwipeLeftGestureIcon.png"
-                          : "lib/common/assets/images/SwipeRightGestureIcon.png"),
-                    ),
-                  ),
-                  WalkthroughTextBox(
-                      topMargin: 540,
-                      text: secondPage
-                          ? "If you're not interested in joining this event, swipe left or click the X button."
-                          : "If you're interested in joining this event, swipe right or click the heart button.",
-                      buttonText: secondPage ? "Finish" : "Next",
-                      onTapHandler: () {
-                        if (secondPage) {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            Dashboard.routeName,
-                            (route) => false,
-                          );
-                        } else {
-                          setState(() {
-                            secondPage = true;
-                          });
-                        }
-                      }),
-                  buildButtons(!secondPage, false),
-                  buildButtons(secondPage, true),
-                ]),
-              ),
-            ),
-          ),
-        );
+            builder: (context, setState) => WalkthroughOverlay(
+                    handleWillPop: () {
+                      if (secondPage) {
+                        setState(() {
+                          secondPage = false;
+                        });
+                      } else {
+                        Navigator.of(context)
+                            .pushNamed(DummyHomepage.routeName, arguments: 7);
+                      }
+                    },
+                    children: [
+                      Align(
+                        alignment:
+                            secondPage ? Alignment.topLeft : Alignment.topRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 350),
+                          child: Image.asset(secondPage
+                              ? "lib/common/assets/images/SwipeLeftGestureIcon.png"
+                              : "lib/common/assets/images/SwipeRightGestureIcon.png"),
+                        ),
+                      ),
+                      WalkthroughTextBox(
+                          topMargin: 540,
+                          text: secondPage
+                              ? "If you're not interested in joining this event, swipe left or click the X button."
+                              : "If you're interested in joining this event, swipe right or click the heart button.",
+                          buttonText: secondPage ? "Finish" : "Next",
+                          onTapHandler: () {
+                            if (secondPage) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                Dashboard.routeName,
+                                (route) => false,
+                              );
+                            } else {
+                              setState(() {
+                                secondPage = true;
+                              });
+                            }
+                          }),
+                      buildButtons(!secondPage, false),
+                      buildButtons(secondPage, true),
+                    ])
+            );
       },
     );
   }
@@ -204,7 +165,7 @@ class _DummyEventMatchingState extends State<DummyEventMatching> {
             Container(
               constraints: BoxConstraints(
                   minHeight: MediaQuery.of(context).size.height * 70 / 100),
-              child: buildCards(events),
+              child: buildCards(exampleEventMatching),
             ),
           ]),
         ),

@@ -110,7 +110,14 @@ class RouteGenerator {
       case EventMatching.routeName:
         return MaterialPageRoute(builder: (context) => const EventMatching());
       case DummyHomepage.routeName:
-        return MaterialPageRoute(builder: (context) => const DummyHomepage());
+        int userID = 0;
+        if (args != null) {
+          userID = args as int;
+        }
+        return MaterialPageRoute(
+            builder: (context) => DummyHomepage(
+                  index: userID,
+                ));
       case DummyEventMatching.routeName:
         return MaterialPageRoute(
             builder: (context) => const DummyEventMatching());
