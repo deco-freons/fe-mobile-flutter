@@ -5,6 +5,7 @@ import 'package:flutter_boilerplate/page/location_denied.dart';
 import 'package:flutter_boilerplate/page/walkthrough/dummy_homepage.dart';
 import 'package:flutter_boilerplate/user/bloc/location_permission/location_cubit.dart';
 import 'package:flutter_boilerplate/user/bloc/location_permission/location_state.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../common/config/theme.dart';
 
 class LocationPermission extends StatelessWidget {
@@ -27,12 +28,17 @@ class LocationPermission extends StatelessWidget {
               child: BlocConsumer<LocationCubit, LocationState>(
             listener: (context, state) {
               if (state is LocationAllowedState) {
-                if (isFirstLogin) {
+                if (dotenv.env['releaseEnv'] == 'dev') {
                   Navigator.pushNamedAndRemoveUntil(
                       context, DummyHomepage.routeName, (route) => false);
                 } else {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, Dashboard.routeName, (route) => false);
+                  if (isFirstLogin) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, DummyHomepage.routeName, (route) => false);
+                  } else {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, Dashboard.routeName, (route) => false);
+                  }
                 }
               } else if (state is LocationDeniedState) {
                 Navigator.pushNamedAndRemoveUntil(
