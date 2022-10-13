@@ -3,10 +3,10 @@ import 'package:flutter_boilerplate/common/components/layout/walkthrough_text_bo
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/event/components/walkthrough/walkthrough_overlay.dart';
 
-class HomepageOverlayNavbarCreateEvent extends StatelessWidget {
+class HomepageOverlayCreateEvent extends StatelessWidget {
   final VoidCallback onNextPressed;
   final VoidCallback onBackPressed;
-  const HomepageOverlayNavbarCreateEvent(
+  const HomepageOverlayCreateEvent(
       {Key? key, required this.onNextPressed, required this.onBackPressed})
       : super(key: key);
 
