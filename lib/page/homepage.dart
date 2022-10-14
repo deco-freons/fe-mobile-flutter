@@ -108,7 +108,7 @@ class _BuildHomeState extends State<BuildHome> {
     await _notificationService.scheduleNotification(
       id: 1,
       title: "Event Nearby Found!",
-      body: "We found a event near your location. Click to see more.",
+      body: "We found an event near your location. Click to see more.",
       milisecondFromNow:
           DateTime.now().add(const Duration(seconds: 5)).millisecondsSinceEpoch,
       payload: id.toString(),
@@ -119,202 +119,213 @@ class _BuildHomeState extends State<BuildHome> {
   Widget build(BuildContext context) {
     UserCubit userCubit = context.read<UserCubit>();
 
-    return ListView(
-      children: [
-        SizedBox(
-          height: appBarHeight,
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: CustomPadding.body, right: CustomPadding.body),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () async {
-                    await Navigator.pushNamed(context, Profile.routeName);
-                    userCubit.getUser();
-                  },
-                  child: BlocBuilder<UserCubit, UserState>(
-                    builder: (context, state) {
-                      String? imageUrl;
-                      if (state is UserSuccessState) {
-                        imageUrl = state.user.userImage?.imageUrl;
-                      }
-                      return NetworkImageAvatar(imageUrl: imageUrl, radius: 23);
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<UserCubit>().getUser();
+        context.read<PopularEventsCubit>().getPopularEvents([], radiusValue);
+        context
+            .read<EventMatchingHomeCubit>()
+            .getEventMatchingHome(radiusValue);
+      },
+      child: ListView(
+        children: [
+          SizedBox(
+            height: appBarHeight,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: CustomPadding.body, right: CustomPadding.body),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      await Navigator.pushNamed(context, Profile.routeName);
+                      userCubit.getUser();
                     },
+                    child: BlocBuilder<UserCubit, UserState>(
+                      builder: (context, state) {
+                        String? imageUrl;
+                        if (state is UserSuccessState) {
+                          imageUrl = state.user.userImage?.imageUrl;
+                        }
+                        return NetworkImageAvatar(
+                            imageUrl: imageUrl, radius: 23);
+                      },
+                    ),
                   ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(EventReminder.routeName);
-                  },
-                  child: const Icon(
-                    Icons.notifications_outlined,
-                    size: 45.0,
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(EventReminder.routeName);
+                    },
+                    child: const Icon(
+                      Icons.notifications_outlined,
+                      size: 45.0,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        HomeContent(
-            title: "Let's Match!",
-            subTitle: "Events that might spark your interest.",
-            isPair: true,
-            isCentered: true,
-            secondWidget: DecoratedBox(
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(color: neutral.shade500)),
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: CustomDropdownButton(
-                    options: radiusOptions,
-                    texts: radiusValue.descList,
-                    initialValue: radiusValue,
-                    callback: (newValue) {
-                      radiusValue = newValue;
-                      getPopularEvents(context, [], radiusValue);
-                      getEventMatchingHome(context, radiusValue);
-                    },
-                  )),
-            ),
-            contentWidgets: [
-              BlocBuilder<EventMatchingHomeCubit, EventMatchingHomeState>(
-                  builder: (context, state) {
-                if (state is EventMatchingHomeErrorState) {
-                  return Center(child: Text(state.errorMessage));
-                } else if (state is EventMatchingHomeSuccessState) {
-                  if (state.events.isEmpty) {
+          HomeContent(
+              title: "Let's Match!",
+              subTitle: "Events that might spark your interest.",
+              isPair: true,
+              isCentered: true,
+              secondWidget: DecoratedBox(
+                decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    border: Border.all(color: neutral.shade500)),
+                child: Padding(
+                    padding: const EdgeInsets.only(left: 10.0),
+                    child: CustomDropdownButton(
+                      options: radiusOptions,
+                      texts: radiusValue.descList,
+                      initialValue: radiusValue,
+                      callback: (newValue) {
+                        radiusValue = newValue;
+                        getPopularEvents(context, [], radiusValue);
+                        getEventMatchingHome(context, radiusValue);
+                      },
+                    )),
+              ),
+              contentWidgets: [
+                BlocBuilder<EventMatchingHomeCubit, EventMatchingHomeState>(
+                    builder: (context, state) {
+                  if (state is EventMatchingHomeErrorState) {
+                    return Center(child: Text(state.errorMessage));
+                  } else if (state is EventMatchingHomeSuccessState) {
+                    if (state.events.isEmpty) {
+                      return EventMatchingCardHome.empty(
+                        isEventEmpty: true,
+                        onTapHandler: () {},
+                      );
+                    } else {
+                      List<String> splittedDate =
+                          DateParser.parseEventDate(state.events[0].date);
+                      return Center(
+                        child: EventMatchingCardHome(
+                            title: state.events[0].eventName,
+                            author: state.events[0].eventCreator.username,
+                            distance: state.events[0].distance,
+                            location:
+                                '${state.events[0].locationName}, ${state.events[0].location.city}',
+                            month: splittedDate[0].substring(0, 3),
+                            date: splittedDate[1].substring(0, 2),
+                            image: state.events[0].eventImage?.imageUrl,
+                            fee: state.events[0].eventPrice.fee,
+                            onTapHandler: () {
+                              Navigator.of(context)
+                                  .pushNamed(EventMatching.routeName);
+                            }),
+                      );
+                    }
+                  } else {
                     return EventMatchingCardHome.empty(
-                      isEventEmpty: true,
+                      loading: true,
                       onTapHandler: () {},
                     );
-                  } else {
-                    List<String> splittedDate =
-                        DateParser.parseEventDate(state.events[0].date);
-                    return Center(
-                      child: EventMatchingCardHome(
-                          title: state.events[0].eventName,
-                          author: state.events[0].eventCreator.username,
-                          distance: state.events[0].distance,
-                          location:
-                              '${state.events[0].locationName}, ${state.events[0].location.city}',
-                          month: splittedDate[0].substring(0, 3),
-                          date: splittedDate[1].substring(0, 2),
-                          image: state.events[0].eventImage?.imageUrl,
-                          fee: state.events[0].eventPrice.fee,
-                          onTapHandler: () {
-                            Navigator.of(context)
-                                .pushNamed(EventMatching.routeName);
-                          }),
-                    );
                   }
-                } else {
-                  return EventMatchingCardHome.empty(
-                    loading: true,
-                    onTapHandler: () {},
-                  );
-                }
-              }),
-            ]),
-        const SizedBox(
-          height: 32,
-        ),
-        HomeContent(title: 'Categories', contentWidgets: [
-          PreferenceButton(
-            type: PrefType.GM,
-            isAll: true,
-            elevation: 4.0,
-            onPressedHandler: () {
-              if (allCheck) return;
-              setState(() {
-                allCheck = true;
-                prefs =
-                    prefs.map((pref) => pref.copyWith(isPicked: true)).toList();
-                getPopularEvents(context, [], radiusValue);
-              });
-            },
-            isActive: allCheck,
+                }),
+              ]),
+          const SizedBox(
+            height: 32,
           ),
-          for (PrefType pref in PrefType.values)
+          HomeContent(title: 'Categories', contentWidgets: [
             PreferenceButton(
-              type: pref,
+              type: PrefType.GM,
+              isAll: true,
               elevation: 4.0,
               onPressedHandler: () {
-                List<ItemFilterModel<PrefType>> isOnePrefPicked =
-                    prefs.where((currPref) => currPref.isPicked).toList();
-
-                if (isOnePrefPicked.length == 1) {
-                  if (isOnePrefPicked.first.data == pref) return;
-                }
+                if (allCheck) return;
                 setState(() {
+                  allCheck = true;
                   prefs = prefs
-                      .map((currPref) => currPref.data == pref
-                          ? currPref.copyWith(
-                              isPicked: allCheck ? null : !currPref.isPicked)
-                          : currPref.copyWith(
-                              isPicked: allCheck ? false : null))
+                      .map((pref) => pref.copyWith(isPicked: true))
                       .toList();
-                  allCheck = false;
-                  getPopularEvents(
-                      context,
-                      prefs
-                          .where((currPref) => currPref.isPicked)
-                          .map((currPref) => currPref.data.name)
-                          .toList(),
-                      radiusValue);
+                  getPopularEvents(context, [], radiusValue);
                 });
               },
-              isActive: allCheck
-                  ? false
-                  : prefs
-                      .firstWhere((currPref) => currPref.data == pref)
-                      .isPicked,
-            )
-        ]),
-        const SizedBox(
-          height: 22,
-        ),
-        BlocConsumer<PopularEventsCubit, PopularEventsState>(
-            listener: (context, state) async {
-          if (state is PopularEventsSuccessState) {
-            List<EventModel> events = state.events;
-            events.sort(((a, b) => a.distance.compareTo(b.distance)));
-            if (events.isNotEmpty) {
-              await scheduleNotification(events[0].eventID);
-            }
-          }
-        }, builder: (context, state) {
-          if (state is PopularEventsErrorState) {
-            return Center(child: Text(state.errorMessage));
-          }
-          bool isSuccessState = state is PopularEventsSuccessState;
-          return Padding(
-            padding: const EdgeInsets.only(bottom: CustomPadding.xxxl),
-            child: EventList(
-              title: "Popular events",
-              isLoading: !isSuccessState,
-              events: state is PopularEventsSuccessState
-                  ? state.events
-                      .map((event) => EventByUserModel(
-                          eventID: event.eventID,
-                          eventName: event.eventName,
-                          distance: event.distance,
-                          date: event.date,
-                          latitude: event.latitude,
-                          longitude: event.longitude,
-                          eventImage: event.eventImage,
-                          eventPrice: event.eventPrice))
-                      .toList()
-                  : [],
-              onPressed: () {
-                widget.handlePageChanged(1);
-              },
+              isActive: allCheck,
             ),
-          );
-        }),
-      ],
+            for (PrefType pref in PrefType.values)
+              PreferenceButton(
+                type: pref,
+                elevation: 4.0,
+                onPressedHandler: () {
+                  List<ItemFilterModel<PrefType>> isOnePrefPicked =
+                      prefs.where((currPref) => currPref.isPicked).toList();
+
+                  if (isOnePrefPicked.length == 1) {
+                    if (isOnePrefPicked.first.data == pref) return;
+                  }
+                  setState(() {
+                    prefs = prefs
+                        .map((currPref) => currPref.data == pref
+                            ? currPref.copyWith(
+                                isPicked: allCheck ? null : !currPref.isPicked)
+                            : currPref.copyWith(
+                                isPicked: allCheck ? false : null))
+                        .toList();
+                    allCheck = false;
+                    getPopularEvents(
+                        context,
+                        prefs
+                            .where((currPref) => currPref.isPicked)
+                            .map((currPref) => currPref.data.name)
+                            .toList(),
+                        radiusValue);
+                  });
+                },
+                isActive: allCheck
+                    ? false
+                    : prefs
+                        .firstWhere((currPref) => currPref.data == pref)
+                        .isPicked,
+              )
+          ]),
+          const SizedBox(
+            height: 22,
+          ),
+          BlocConsumer<PopularEventsCubit, PopularEventsState>(
+              listener: (context, state) async {
+            if (state is PopularEventsSuccessState) {
+              List<EventModel> events = state.events;
+              events.sort(((a, b) => a.distance.compareTo(b.distance)));
+              if (events.isNotEmpty) {
+                await scheduleNotification(events[0].eventID);
+              }
+            }
+          }, builder: (context, state) {
+            if (state is PopularEventsErrorState) {
+              return Center(child: Text(state.errorMessage));
+            }
+            bool isSuccessState = state is PopularEventsSuccessState;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: CustomPadding.xxxl),
+              child: EventList(
+                title: "Popular events",
+                isLoading: !isSuccessState,
+                events: state is PopularEventsSuccessState
+                    ? state.events
+                        .map((event) => EventByUserModel(
+                            eventID: event.eventID,
+                            eventName: event.eventName,
+                            distance: event.distance,
+                            date: event.date,
+                            latitude: event.latitude,
+                            longitude: event.longitude,
+                            eventImage: event.eventImage,
+                            eventPrice: event.eventPrice))
+                        .toList()
+                    : [],
+                onPressed: () {
+                  widget.handlePageChanged(1);
+                },
+              ),
+            );
+          }),
+        ],
+      ),
     );
   }
 

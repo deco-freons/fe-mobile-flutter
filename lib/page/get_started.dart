@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
+import 'package:flutter_boilerplate/common/components/layout/logo.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
+import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/user/preference.dart';
-
-import '../common/components/buttons/custom_button.dart';
-import '../common/config/theme.dart';
 
 class GetStarted extends StatefulWidget {
   const GetStarted({Key? key}) : super(key: key);
@@ -43,8 +43,14 @@ class _GetStartedState extends State<GetStarted> {
         Padding(
           padding: const EdgeInsets.only(top: 156.0),
           child: Center(
-              child:
-                  Image.asset('lib/common/assets/images/GlobeIconLarge.png')),
+            child: Column(
+              children: const [
+                Logo(width: 160),
+                SizedBox(height: 20),
+                Logo.text(width: 300)
+              ],
+            ),
+          ),
         ),
         Column(
           children: [

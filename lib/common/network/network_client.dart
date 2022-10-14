@@ -15,6 +15,7 @@ import 'package:flutter_boilerplate/common/network/network_logging.dart';
 import 'package:flutter_boilerplate/common/network/network_refresh.dart';
 import 'package:flutter_boilerplate/common/utils/secure_storage..dart';
 import 'package:flutter_boilerplate/get_it.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class NetworkClient {
   final Dio dio = Dio(
@@ -23,7 +24,10 @@ class NetworkClient {
         connectTimeout: 30000,
         receiveTimeout: 30000,
         contentType: "application/json"),
-  )..interceptors.addAll([Logging(), Refresh()]);
+  )..interceptors.addAll(((dotenv.env['releaseEnv'] == 'prod') |
+          (dotenv.env['releaseEnv'] == 'demo'))
+      ? [Refresh()]
+      : [Logging(), Refresh()]);
   final String env = "DEV";
   final secureStorage = getIt.get<SecureStorage>();
 

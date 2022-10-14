@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_boilerplate/auth/bloc/login/login_cubit.dart';
+import 'package:flutter_boilerplate/auth/bloc/login/login_state.dart';
 import 'package:flutter_boilerplate/auth/data/auth/auth_repository.dart';
+import 'package:flutter_boilerplate/auth/data/login/login_model.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_component.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/layout/logo.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/auth/register.dart';
-import '../../auth/bloc/login/login_cubit.dart';
-import '../../auth/bloc/login/login_state.dart';
-import '../../auth/data/login/login_model.dart';
-import '../../common/components/forms/custom_form_component.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -40,16 +41,14 @@ class _LoginState extends State<Login> {
       padding: EdgeInsets.zero,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: CustomPadding.xl),
-          child: Hero(
-            tag: "Logo",
-            child: Center(
-              child: Image.asset(
-                'lib/common/assets/images/GlobeIconMedium.png',
-                width: 192.0,
-                height: 192.0,
-              ),
-            ),
+          padding: const EdgeInsets.symmetric(vertical: 110),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Logo(height: 80),
+              SizedBox(width: 10),
+              Logo.slogan(height: 80),
+            ],
           ),
         ),
         Padding(

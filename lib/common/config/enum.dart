@@ -370,3 +370,9 @@ enum EventStatus {
   @JsonValue("Done")
   DONE,
 }
+
+enum LogoType {
+  logo,
+  slogan,
+  text,
+}

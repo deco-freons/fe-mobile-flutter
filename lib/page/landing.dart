@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_button.dart';
+import 'package:flutter_boilerplate/common/components/buttons/custom_text_button.dart';
+import 'package:flutter_boilerplate/common/components/layout/logo.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/auth/register.dart';
 import 'package:flutter_boilerplate/page/auth/login.dart';
-
-import '../common/components/buttons/custom_button.dart';
-import '../common/components/buttons/custom_text_button.dart';
 
 class Landing extends StatefulWidget {
   const Landing({Key? key}) : super(key: key);
@@ -42,17 +42,20 @@ class _LandingState extends State<Landing> {
     return ListView(
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 72.0),
-          child: Hero(
-            tag: "Logo",
-            child: Center(
-                child: Image.asset(
-                    'lib/common/assets/images/GlobeIconMedium.png')),
+          padding: const EdgeInsets.only(top: 90.0, bottom: 40),
+          child: Center(
+            child: Column(
+              children: const [
+                Logo(width: 160),
+                SizedBox(height: 20),
+                Logo.text(width: 300)
+              ],
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(
-              left: CustomPadding.body, right: CustomPadding.body, top: 55),
+              left: CustomPadding.body, right: CustomPadding.body, top: 30),
           child: Column(
             children: [
               Padding(

@@ -3,9 +3,9 @@
     
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <application
-        android:label="flutter_boilerplate"
+        android:label="Gatherly"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/launcher_icon"
         android:allowBackup="true" 
         android:fullBackupContent="@xml/backup_rules">>
       

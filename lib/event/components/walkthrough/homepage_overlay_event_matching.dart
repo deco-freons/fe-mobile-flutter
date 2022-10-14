@@ -19,7 +19,7 @@ class HomepageOverlayEventMatching extends StatelessWidget {
       handleWillPop: onBackPressed,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 120),
+          padding: const EdgeInsets.only(top: 150),
           child: ListView(shrinkWrap: true, children: [
             Container(
               decoration: BoxDecoration(
@@ -38,12 +38,12 @@ class HomepageOverlayEventMatching extends StatelessWidget {
         Align(
           alignment: Alignment.topCenter,
           child: Padding(
-            padding: const EdgeInsets.only(top: 440),
+            padding: const EdgeInsets.only(top: 470),
             child: Image.asset("lib/common/assets/images/TapGestureIcon.png"),
           ),
         ),
         WalkthroughTextBox(
-          topMargin: 550,
+          topMargin: 580,
           text: "Click here to see what we've curated for you!",
           buttonText: "Next",
           onTapHandler: () {

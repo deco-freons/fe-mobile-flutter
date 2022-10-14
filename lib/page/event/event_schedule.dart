@@ -35,7 +35,6 @@ class _EventScheduleState extends State<EventSchedule>
         backgroundColor: neutral.shade100,
         appBar: const PageAppBar(
           title: "Upcoming Joined Events",
-          subTitle: "We're looking forward to see you here!",
         ),
         body: const BuildEventSchedule(),
       ),
@@ -93,6 +92,19 @@ class _BuildEventScheduleState extends State<BuildEventSchedule> {
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: CustomPadding.xxxl, vertical: CustomPadding.base),
+            child: Text(
+              "We're looking forward to see you here!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: neutral.shade500,
+                fontSize: CustomFontSize.md,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           BlocConsumer<EventsScheduleCubit, EventsScheduleState>(
             listener: (context, state) {
               if (state is EventsScheduleFetchMoreErrorState) {

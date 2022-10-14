@@ -35,8 +35,6 @@ class _EventHistoryState extends State<EventHistory>
           backgroundColor: neutral.shade100,
           appBar: const PageAppBar(
             title: "History",
-            subTitle:
-                "Congratulations! These are the list of events you have attended.",
           ),
           body: const BuildEventHistory()),
     );
@@ -94,6 +92,19 @@ class _BuildEventHistoryState extends State<BuildEventHistory> {
         controller: _scrollController,
         physics: const AlwaysScrollableScrollPhysics(),
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: CustomPadding.xxxl, vertical: CustomPadding.base),
+            child: Text(
+              "Congratulations! These are the list of events you have attended.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: neutral.shade500,
+                fontSize: CustomFontSize.md,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
           BlocConsumer<EventsHistoryCubit, EventsHistoryState>(
             listener: (context, state) {
               if (state is EventsHistoryFetchMoreErrorState) {
