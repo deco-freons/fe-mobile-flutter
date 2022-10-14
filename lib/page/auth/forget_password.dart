@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_boilerplate/common/config/theme.dart';
-import '../../auth/bloc/forget_password/forget_state.dart';
-import '../../auth/data/forget_password/forget_repository.dart';
-import '../../common/components/forms/custom_form_input_class.dart';
-import '../../common/config/enum.dart';
-import '../../auth/bloc/forget_password/forget_cubit.dart';
-import '../../auth/data/forget_password/forget_model.dart';
-import '../../common/components/forms/custom_form_component.dart';
+import 'package:flutter_boilerplate/auth/bloc/forget_password/forget_cubit.dart';
+import 'package:flutter_boilerplate/auth/bloc/forget_password/forget_state.dart';
+import 'package:flutter_boilerplate/auth/data/forget_password/forget_model.dart';
+import 'package:flutter_boilerplate/auth/data/forget_password/forget_repository.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_component.dart';
+import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
+import 'package:flutter_boilerplate/common/components/layout/logo.dart';
+import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'register.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -38,10 +38,17 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       padding: EdgeInsets.zero,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: CustomPadding.xxxl, bottom: 45.0),
+          padding: const EdgeInsets.symmetric(vertical: 110),
           child: Center(
-              child:
-                  Image.asset('lib/common/assets/images/GlobeIconSmall.png')),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Logo(height: 80),
+                SizedBox(width: 10),
+                Logo.slogan(height: 80),
+              ],
+            ),
+          ),
         ),
         BlocConsumer<ForgetCubit, ForgetState>(
           builder: (context, state) {

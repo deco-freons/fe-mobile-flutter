@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boilerplate/common/components/layout/logo.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -18,10 +19,13 @@ class _SplashState extends State<Splash> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Hero(
-                tag: "Logo",
-                child: Image.asset(
-                    'lib/common/assets/images/GlobeIconMedium.png')),
+            Column(
+              children: const [
+                Logo(width: 160),
+                SizedBox(height: 20),
+                Logo.text(width: 300)
+              ],
+            ),
             const SizedBox(
               height: 40.0,
             ),

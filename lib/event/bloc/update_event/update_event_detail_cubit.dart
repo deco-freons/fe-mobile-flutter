@@ -17,7 +17,7 @@ class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
     try {
       emit(const UpdateEventDetailLoadingState());
       await _eventDetailRepository.joinEvent(eventID);
-      emit(const UpdateEventDetailSuccessState());
+      emit(const UpdateEventDetailJoinSuccessState());
     } catch (e) {
       emit(UpdateEventDetailErrorState(errorMessage: ErrorHandler.handle(e)));
     }
@@ -28,7 +28,7 @@ class UpdateEventDetailCubit extends BaseCubit<UpdateEventDetailState> {
       emit(const UpdateEventDetailLoadingState());
       await _eventDetailRepository.leaveEvent(eventID);
 
-      emit(const UpdateEventDetailSuccessState());
+      emit(const UpdateEventDetailLeaveSuccessState());
     } catch (e) {
       emit(UpdateEventDetailErrorState(errorMessage: ErrorHandler.handle(e)));
     }

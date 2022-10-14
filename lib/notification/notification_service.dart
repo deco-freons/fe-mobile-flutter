@@ -12,8 +12,7 @@ class NotificationService {
 
   Future<void> setup() async {
     try {
-      const androidSetting =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+      const androidSetting = AndroidInitializationSettings('gatherly_icon');
       const iosSetting = DarwinInitializationSettings();
 
       const initSettings =

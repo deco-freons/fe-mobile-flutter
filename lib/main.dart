@@ -6,8 +6,8 @@ import 'package:flutter_boilerplate/notification/notification_service.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
-  await setUp();
   await dotenv.load(fileName: ".env");
+  await setUp();
   await getIt.get<NotificationService>().setup();
 
   runApp(App(

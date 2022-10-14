@@ -24,24 +24,37 @@ class EventParticipants extends StatelessWidget {
             separatorBuilder: (context, index) {
               return const SizedBox(height: 37);
             },
-            itemCount: participants.length,
+            itemCount: participants.length + 1,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.only(
                     left: CustomPadding.body,
                     right: CustomPadding.body,
-                    top: index == 0 ? CustomPadding.body : 0),
-                child: ParticipantCard(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                        FriendProfile.routeName,
-                        arguments: participants[index].userID,
-                      );
-                    },
-                    userImage: participants[index].userImage?.imageUrl,
-                    firstName: participants[index].firstName,
-                    lastName: participants[index].lastName,
-                    location: participants[index].location?.suburb ?? ""),
+                    top: index == 0 ? CustomPadding.body : 0,
+                    bottom:
+                        index == participants.length ? CustomPadding.body : 0),
+                child: index == 0
+                    ? Text(
+                        "Don't worry, you're not going to be alone!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: neutral.shade500,
+                          fontSize: CustomFontSize.md,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    : ParticipantCard(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(
+                            FriendProfile.routeName,
+                            arguments: participants[index].userID,
+                          );
+                        },
+                        userImage: participants[index - 1].userImage?.imageUrl,
+                        firstName: participants[index - 1].firstName,
+                        lastName: participants[index - 1].lastName,
+                        location:
+                            participants[index - 1].location?.suburb ?? ""),
               );
             }),
       ),

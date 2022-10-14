@@ -28,7 +28,7 @@ class LocationPermission extends StatelessWidget {
               child: BlocConsumer<LocationCubit, LocationState>(
             listener: (context, state) {
               if (state is LocationAllowedState) {
-                if (dotenv.env['releaseEnv'] == 'dev') {
+                if (dotenv.env['releaseEnv'] == 'demo') {
                   Navigator.pushNamedAndRemoveUntil(
                       context, DummyHomepage.routeName, (route) => false);
                 } else {

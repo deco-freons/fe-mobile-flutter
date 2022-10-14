@@ -3,6 +3,7 @@ import 'package:flutter_boilerplate/common/config/theme.dart';
 
 class HomeContent extends StatelessWidget {
   final String title;
+  final String subTitle;
   final List<Widget> contentWidgets;
   final bool isPair;
   final double contentSpacing;
@@ -17,6 +18,7 @@ class HomeContent extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.contentWidgets,
+      this.subTitle = '',
       this.isPair = false,
       this.contentSpacing = CustomPadding.md,
       this.titleBottomSpacing = CustomPadding.md,
@@ -39,24 +41,33 @@ class HomeContent extends StatelessWidget {
                     left: titleLeftSpacing,
                     right: titleRightSpacing),
                 child: (isPair)
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                                fontSize: CustomFontSize.lg,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          secondWidget,
-                        ],
-                      )
+                    ? (subTitle.isNotEmpty
+                        ? Column(
+                            children: [
+                              buildPair(),
+                              SizedBox(height: subTitle.isEmpty ? 0 : 10),
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  subTitle,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                    color: neutral.shade500,
+                                    fontSize: CustomFontSize.base,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : buildPair())
                     : Text(
                         title,
                         style: const TextStyle(
                             fontSize: CustomFontSize.lg,
                             fontWeight: FontWeight.bold),
-                      ))
+                      ),
+              )
             : const SizedBox.shrink(),
         isCentered
             ? Center(
@@ -88,6 +99,20 @@ class HomeContent extends StatelessWidget {
             .values
             .toList(),
       ),
+    );
+  }
+
+  Widget buildPair() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+              fontSize: CustomFontSize.lg, fontWeight: FontWeight.bold),
+        ),
+        secondWidget,
+      ],
     );
   }
 }

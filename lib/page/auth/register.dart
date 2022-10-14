@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_boilerplate/auth/bloc/register/register_cubit.dart';
+import 'package:flutter_boilerplate/auth/bloc/register/register_state.dart';
 import 'package:flutter_boilerplate/auth/data/register/register_model.dart';
 import 'package:flutter_boilerplate/auth/data/register/register_repository.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_input_class.dart';
 import 'package:flutter_boilerplate/common/components/forms/custom_form_component.dart';
+import 'package:flutter_boilerplate/common/components/layout/logo.dart';
 import 'package:flutter_boilerplate/common/config/enum.dart';
 import 'package:flutter_boilerplate/common/config/regex.dart';
 import 'package:flutter_boilerplate/common/config/theme.dart';
 import 'package:flutter_boilerplate/page/auth/email_confirmation.dart';
 import 'package:flutter_boilerplate/page/auth/login.dart';
-import '../../auth/bloc/register/register_state.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -43,15 +44,13 @@ class _RegisterState extends State<Register> {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: CustomPadding.xxl, bottom: 45.0),
-          child: Hero(
-            tag: "Logo",
-            child: Center(
-              child: Image.asset(
-                'lib/common/assets/images/GlobeIconMedium.png',
-                width: 192.0,
-                height: 192.0,
-              ),
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Logo(height: 80),
+              SizedBox(width: 10),
+              Logo.slogan(height: 80),
+            ],
           ),
         ),
         BlocConsumer<RegisterCubit, RegisterState>(
