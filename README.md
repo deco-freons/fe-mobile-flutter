@@ -96,6 +96,6 @@ Before installing the project, make sure you have Flutter installed by following
   - Click the latest release in the github page
     ![releases](lib/common/assets/images/readme/releases.jpg)
   - you can find the APKs for the gatherly at the bottom of the page
-    ![apks](lib/common/assets/images/readme/apks.jpg)
+    ![apk_images](lib/common/assets/images/readme/apks.jpg)
 
   Once you've downloaded the APK, run the apk in your phone to install the app
