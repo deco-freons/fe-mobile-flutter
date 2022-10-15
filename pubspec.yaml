@@ -88,9 +88,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - .env
-    - lib/common/assets/images/GlobeIconLarge.png
-    - lib/common/assets/images/GlobeIconMedium.png
-    - lib/common/assets/images/GlobeIconSmall.png
     - lib/common/assets/images/EmailDelivered.png
     - lib/common/assets/images/CircleAvatarDefault.png
     - lib/common/assets/images/TrophyIcon.png
@@ -137,4 +134,4 @@ flutter:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "lib/common/assets/images/GatherlyIcon.png"  
+  image_path: "lib/common/assets/images/GatherlyIcon.png"
