@@ -6,6 +6,10 @@
 
 Gatherly is a mobile based application, which helps socially isolated young people to join events and socialise. Gatherly shows events around the user based on their interests and the user can swipe left or right on the events to either skip or join the events. They can also see the event details and the number of participants before joining an event to make sure they are comfortable when attending the events. Gatherly also provides search feature for people that wants to schedule events beforehand.
 
+## About the Repository
+
+This repository contains the code base for the main mobile application
+
 ## Technology Stacks
 
 - Flutter 3.3.4
@@ -92,8 +96,8 @@ Before installing the project, make sure you have Flutter installed by following
 
   You can download the Gatherly APK from these links:
 
-  - [Gatherly demo](https://drive.google.com/file/d/1CNGG5g4IMPL2XqtYzudARilljgZOpUSv/view?usp=sharing)
-  - [Gatherly production](https://drive.google.com/file/d/1uvEo0zhap_42r1TBjCd3dFaSK0LRCdff/view?usp=sharing)
+  - [Gatherly demo](https://drive.google.com/file/d/1Kbf793K9MLH9fUQ5dSdfJhBOtvbnDMzH/view?usp=sharing)
+  - [Gatherly production](https://drive.google.com/file/d/15AqWE3OjxfubfT4o-ws-o0NWek-c1in4/view?usp=sharing)
 
   Alternatively you can access the APK from the release section
 
