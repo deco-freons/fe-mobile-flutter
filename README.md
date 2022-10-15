@@ -1,10 +1,14 @@
 # Gatherly Frontend Mobile
 
-![Gatherly](readme_images/logo-new-05.png)
+![Gatherly](readme_images/logo.png)
 
 ## About Gatherly
 
 Gatherly is a mobile based application, which helps socially isolated young people to join events and socialise. Gatherly shows events around the user based on their interests and the user can swipe left or right on the events to either skip or join the events. They can also see the event details and the number of participants before joining an event to make sure they are comfortable when attending the events. Gatherly also provides search feature for people that wants to schedule events beforehand.
+
+## Technology Stacks
+
+- Flutter 3.3.4
 
 ## Getting Started
 
@@ -53,7 +57,7 @@ Before installing the project, make sure you have Flutter installed by following
   - Choose your device model and system image then click **Finish**
   - Run your newly created virtual device by clicking the play button (make sure you have enough disk space to run the emulator)
     ![Run_emulator](readme_images/run_emulator.jpg)
-    <img src="lib/common/assets/images/readme/emulator.png" alt="emulator" width="200"/>
+    <img src="readme_images/emulator.png" alt="emulator" width="200"/>
   - Once the emulator is running, make sure your virtual device is connected to your IDE
     - if you're using VScode this is what it looks like when you're connected
       ![vscode_connected](readme_images/vscode_connected.png)
