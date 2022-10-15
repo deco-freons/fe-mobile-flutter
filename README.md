@@ -1,6 +1,6 @@
 # Gatherly Frontend Mobile
 
-![Gatherly](lib/common/assets/images/readme/logo-new-05.png)
+![Gatherly](readme_images/logo-new-05.png)
 
 ## About Gatherly
 
@@ -42,23 +42,23 @@ Before installing the project, make sure you have Flutter installed by following
   - Download Android Studio from this [link](https://developer.android.com/studio)
   - Open your Android Studio
   - Go to your SDK manager by clicking **More Actions > SDK Manager**
-    ![Sdk_manager](lib/common/assets/images/readme/sdk_manager.png)
+    ![Sdk_manager](readme_images/sdk_manager.png)
   - Navigate to SDK Tools tab and make sure that these tools are installed:
     - Android SDK Command Line Tools
     - Android Emulator
     - Android SDK Platform Tools
-      ![Sdk_tools](lib/common/assets/images/readme/sdk_tools.png)
+      ![Sdk_tools](readme_images/sdk_tools.png)
   - Go to your virtual device manager by clicking **More Actions > Virtual Device Manager**
   - Click **Create device**
   - Choose your device model and system image then click **Finish**
   - Run your newly created virtual device by clicking the play button (make sure you have enough disk space to run the emulator)
-    ![Run_emulator](lib/common/assets/images/readme/run_emulator.jpg)
+    ![Run_emulator](readme_images/run_emulator.jpg)
     <img src="lib/common/assets/images/readme/emulator.png" alt="emulator" width="200"/>
   - Once the emulator is running, make sure your virtual device is connected to your IDE
     - if you're using VScode this is what it looks like when you're connected
-      ![vscode_connected](lib/common/assets/images/readme/vscode_connected.png)
+      ![vscode_connected](readme_images/vscode_connected.png)
     - if you're using Android Studio this is what it looks like when you're connected
-      ![android_studio_connected](lib/common/assets/images/readme/android_studio_connected.jpg)
+      ![android_studio_connected](readme_images/android_studio_connected.jpg)
   - Run the project from your terminal
     ```sh
     flutter pub run lib/main.dart
@@ -94,8 +94,8 @@ Before installing the project, make sure you have Flutter installed by following
   Alternatively you can access the APK from the release section
 
   - Click the latest release in the github page
-    ![releases](lib/common/assets/images/readme/releases.jpg)
+    ![releases](readme_images/releases.jpg)
   - you can find the APKs for the gatherly at the bottom of the page
-    ![apk_images](lib/common/assets/images/readme/apks.jpg)
+    ![apk_images](readme_images/apks.jpg)
 
   Once you've downloaded the APK, run the apk in your phone to install the app
