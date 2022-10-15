@@ -96,13 +96,8 @@ Before installing the project, make sure you have Flutter installed by following
 
   You can download the Gatherly APK from these links:
 
-<<<<<<< HEAD
   - [Gatherly demo](https://drive.google.com/file/d/1Kbf793K9MLH9fUQ5dSdfJhBOtvbnDMzH/view?usp=sharing)
   - [Gatherly production](https://drive.google.com/file/d/15AqWE3OjxfubfT4o-ws-o0NWek-c1in4/view?usp=sharing)
-=======
-  - [Gatherly demo](https://drive.google.com/file/d/1CNGG5g4IMPL2XqtYzudARilljgZOpUSv/view?usp=sharing)
-  - [Gatherly production](https://drive.google.com/file/d/1uvEo0zhap_42r1TBjCd3dFaSK0LRCdff/view?usp=sharing)
->>>>>>> 2689951b182780b584e7f1cc5fe8747e6e058b07
 
   Alternatively you can access the APK from the release section
 
