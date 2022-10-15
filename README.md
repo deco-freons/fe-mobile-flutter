@@ -14,6 +14,27 @@ This repository contains the code base for the main mobile application
 
 - Flutter 3.3.4
 
+## Folder Structure
+
+```
+└── lib
+    ├── common
+    │   ├── assets: assets such as image, font, etc.
+    │   ├── bloc: bloc state management base
+    │   ├── components: widgets used across the app
+    │   ├── config: general configuration and constants
+    │   ├── data: base model, repository, and data provider
+    │   ├── exception: custom exceptions
+    │   ├── network: handles network tasks
+    │   └── utils: static utility classes
+    ├── service_name
+    │   ├── bloc: bloc state management for the service
+    │   ├── components: widgets used by the service
+    │   └── data: model, repository, and data provider for the service
+    └── pages
+        └── service_name: pages for the service
+```
+
 ## Getting Started
 
 ### Prerequisites
@@ -35,6 +56,11 @@ Before installing the project, make sure you have Flutter installed by following
    googleApiKey='YOUR_GOOGLE_API_KEY'
    releaseEnv='dev' or 'prod' or 'demo'
    ```
+   - example:
+     ```sh
+     googleApiKey='CIzaSGAJ0****EXAMPLE****xhC8q5_ftdogbvw'
+     releaseEnv='prod'
+     ```
 
 ### Running the Project
 
@@ -99,11 +125,11 @@ Before installing the project, make sure you have Flutter installed by following
   - [Gatherly demo](https://drive.google.com/file/d/1Kbf793K9MLH9fUQ5dSdfJhBOtvbnDMzH/view?usp=sharing)
   - [Gatherly production](https://drive.google.com/file/d/15AqWE3OjxfubfT4o-ws-o0NWek-c1in4/view?usp=sharing)
 
-  Alternatively you can access the APK from the release section
+Alternatively you can access the APK from the release section
 
-  - Click the latest release in the github page
-    ![releases](readme_images/releases.jpg)
-  - you can find the APKs for the gatherly at the bottom of the page
-    ![apk_images](readme_images/apks.jpg)
+- Click the latest release in the github page
+  ![releases](readme_images/releases.jpg)
+- you can find the APKs for the gatherly at the bottom of the page
+  ![apk_images](readme_images/apks.jpg)
 
-  Once you've downloaded the APK, run the apk in your phone to install the app
+Once you've downloaded the APK, run the apk in your phone to install the app
