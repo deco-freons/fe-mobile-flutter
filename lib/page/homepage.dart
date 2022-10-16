@@ -8,6 +8,8 @@ import 'package:flutter_boilerplate/common/utils/date_parser.dart';
 import 'package:flutter_boilerplate/common/utils/typedef.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/event_matching/event_matching_home_state.dart';
+import 'package:flutter_boilerplate/event/bloc/event_reminder/event_reminder_cubit.dart';
+import 'package:flutter_boilerplate/event/bloc/event_reminder/event_reminder_state.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_cubit.dart';
 import 'package:flutter_boilerplate/event/bloc/popular_event/popular_events_state.dart';
 import 'package:flutter_boilerplate/event/components/common/event_list.dart';
@@ -16,6 +18,7 @@ import 'package:flutter_boilerplate/event/components/common/home_content.dart';
 import 'package:flutter_boilerplate/event/data/common/event_model.dart';
 import 'package:flutter_boilerplate/event/data/events_by_user/event_by_user_model.dart';
 import 'package:flutter_boilerplate/event/data/event_matching/event_matching_home_repository.dart';
+import 'package:flutter_boilerplate/event/data/events_joined/events_joined_repository.dart';
 import 'package:flutter_boilerplate/event/data/popular_event/popular_events_repository.dart';
 import 'package:flutter_boilerplate/common/data/item_filter_model.dart';
 import 'package:flutter_boilerplate/get_it.dart';
@@ -61,6 +64,11 @@ class _HomepageState extends State<Homepage>
               EventMatchingHomeCubit(EventMatchingHomeRepositoryImpl())
                 ..getEventMatchingHome(radiusValue),
         ),
+        BlocProvider<EventsReminderCubit>(
+          create: (context) =>
+              EventsReminderCubit(getIt.get<EventsJoinedRepository>())
+                ..getEventsReminder(0, []),
+        )
       ],
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -126,6 +134,7 @@ class _BuildHomeState extends State<BuildHome> {
         context
             .read<EventMatchingHomeCubit>()
             .getEventMatchingHome(radiusValue);
+        context.read<EventsReminderCubit>().getEventsReminder(0, []);
       },
       child: ListView(
         children: [
@@ -157,9 +166,42 @@ class _BuildHomeState extends State<BuildHome> {
                     onTap: () {
                       Navigator.of(context).pushNamed(EventReminder.routeName);
                     },
-                    child: const Icon(
-                      Icons.notifications_outlined,
-                      size: 45.0,
+                    child:
+                        BlocBuilder<EventsReminderCubit, EventsReminderState>(
+                      builder: (context, state) {
+                        int notificationsCount = 0;
+                        if (state is EventsReminderSuccessState) {
+                          notificationsCount = state.events.length;
+                        }
+                        if (notificationsCount > 0) {
+                          return Stack(children: [
+                            const Icon(
+                              Icons.notifications_outlined,
+                              size: 45.0,
+                            ),
+                            Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: CustomPadding.xs),
+                                decoration: BoxDecoration(
+                                    color: error,
+                                    borderRadius: BorderRadius.circular(100)),
+                                child: Text(
+                                  notificationsCount.toString(),
+                                  style: TextStyle(color: neutral.shade100),
+                                ),
+                              ),
+                            )
+                          ]);
+                        } else {
+                          return const Icon(
+                            Icons.notifications_outlined,
+                            size: 45.0,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ],
