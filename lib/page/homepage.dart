@@ -134,6 +134,7 @@ class _BuildHomeState extends State<BuildHome> {
         context
             .read<EventMatchingHomeCubit>()
             .getEventMatchingHome(radiusValue);
+        context.read<EventsReminderCubit>().getEventsReminder(0, []);
       },
       child: ListView(
         children: [
